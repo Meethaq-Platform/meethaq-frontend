@@ -1,50 +1,35 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-
-const API_URL = process.env.API_URL;
+import { ApiError, serverApi } from "@/src/features/auth/lib/server-api";
 
 export async function GET() {
   try {
-    const cookieStore = await cookies();
+    const data = await serverApi("/Auth/me");
 
-    const accessToken = cookieStore.get("access_token")?.value;
-
-    if (!accessToken) {
+    return NextResponse.json(data);
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 401) {
       return NextResponse.json(
         {
           success: false,
           message: "Not authenticated.",
+          data: null,
+          errors: null,
         },
         { status: 401 },
       );
     }
 
-    const response = await fetch(`${API_URL}/Auth/me`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    console.error("GET /api/auth/me error:", error);
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: data.message || "Failed to get current user.",
-          errors: data.errors ?? null,
-        },
-        { status: response.status },
-      );
-    }
-
-    return NextResponse.json(data);
-  } catch {
     return NextResponse.json(
       {
         success: false,
-        message: "Unable to connect to the server.",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Unable to connect to the server.",
+        data: null,
+        errors: null,
       },
       { status: 500 },
     );
