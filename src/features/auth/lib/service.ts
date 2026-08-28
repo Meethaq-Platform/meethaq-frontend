@@ -40,3 +40,17 @@ export async function loginUser(data: LoginRequest): Promise<LoginResponse> {
 
   return result;
 }
+
+export async function logoutUser() {
+  const response = await fetch("/api/auth/logout", {
+    method: "POST",
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Logout failed.");
+  }
+
+  return result;
+}
