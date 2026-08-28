@@ -27,9 +27,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${cairo.variable} ${plexArabic.variable} h-full antialiased`}
     >
-      <QueryProvider>
-        <body className="flex flex-col min-h-full">{children}</body>
-      </QueryProvider>
+      <body className="flex flex-col min-h-full">
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   );
 }

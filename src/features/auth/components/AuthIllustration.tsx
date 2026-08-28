@@ -9,6 +9,7 @@ export function AuthIllustration() {
         className="w-[550px] h-[550px]"
         width={300}
         height={300}
+        priority
       />
     </div>
   );
