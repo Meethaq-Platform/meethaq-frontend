@@ -1,5 +1,6 @@
 import { RegisterRequest, RegisterResponse } from "../types/register";
 import { LoginRequest, LoginResponse } from "../types/login";
+import { MeResponse } from "../types/me";
 
 export async function registerUser(
   data: RegisterRequest,
@@ -53,4 +54,16 @@ export async function logoutUser() {
   }
 
   return result;
+}
+
+export async function getCurrentUser(): Promise<MeResponse> {
+  const response = await fetch("/api/auth/me");
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to get current user.");
+  }
+
+  return data;
 }
