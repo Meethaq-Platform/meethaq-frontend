@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { AuthHeader } from "./AuthHeader";
 import { AuthCard } from "./AuthCard";
 import { useForm } from "react-hook-form";

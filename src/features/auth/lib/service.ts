@@ -1,14 +1,24 @@
-import { api } from "./api";
 import { RegisterRequest, RegisterResponse } from "../types/register";
 import { LoginRequest, LoginResponse } from "../types/login";
 
 export async function registerUser(
   data: RegisterRequest,
 ): Promise<RegisterResponse> {
-  return api<RegisterResponse>("/Auth/register", {
+  const response = await fetch("/api/auth/register", {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(data),
   });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Registration failed.");
+  }
+
+  return result;
 }
 
 export async function loginUser(data: LoginRequest): Promise<LoginResponse> {
