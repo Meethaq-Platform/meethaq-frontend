@@ -21,6 +21,10 @@ export async function serverApi<T>(
   options?: RequestInit,
   isRetry = false,
 ): Promise<T> {
+  if (!API_URL) {
+    throw new Error("API_URL environment variable is not set");
+  }
+
   const cookieStore = await cookies();
 
   const accessToken = cookieStore.get("access_token")?.value;
@@ -33,8 +37,8 @@ export async function serverApi<T>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
       ...options?.headers,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 
