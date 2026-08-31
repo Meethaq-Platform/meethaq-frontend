@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cairo, IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
+import { QueryProvider } from "../shared/providers/QueryProvider";
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -26,7 +27,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${cairo.variable} ${plexArabic.variable} h-full antialiased`}
     >
-      <body className="flex flex-col min-h-full">{children}</body>
+      <body className="flex flex-col min-h-full">
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   );
 }
