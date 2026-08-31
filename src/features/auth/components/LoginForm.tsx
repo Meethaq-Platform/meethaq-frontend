@@ -65,7 +65,7 @@ export function LoginForm() {
             message={
               error instanceof Error
                 ? error.message
-                : "Registration failed. Please try again."
+                : "Login failed. Please try again."
             }
           />
         )}
