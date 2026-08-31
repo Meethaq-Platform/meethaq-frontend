@@ -52,6 +52,7 @@ export async function POST(request: Request) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
+      expires: new Date(responseData.refreshTokenExpiration),
     });
 
     return res;
