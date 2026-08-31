@@ -15,11 +15,7 @@ export interface AuthUser {
   roles: UserRole[];
 }
 
-export interface RegisterResponseData extends AuthUser {
-  token: string;
-  refreshToken: string;
-  refreshTokenExpiration: string;
-}
+export type RegisterResponseData = AuthUser;
 
 export interface RegisterResponse {
   success: boolean;
