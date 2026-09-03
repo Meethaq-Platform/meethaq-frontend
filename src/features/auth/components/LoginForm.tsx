@@ -5,6 +5,7 @@ import { AuthCard } from "./AuthCard";
 import { AuthHeader } from "./AuthHeader";
 import Button from "@/src/shared/components/Button";
 import Input from "@/src/shared/components/Input";
+import PasswordInput from "@/src/shared/components/PasswordInput";
 import { LoginFormValues, loginSchema } from "../schemas/login.schema";
 import { useLogin } from "../hooks/useLogin";
 import { useRouter } from "next/navigation";
@@ -50,12 +51,11 @@ export function LoginForm() {
           placeholder="you@example.com"
         />
         <InputError message={errors.emailOrFullName?.message} />
-        <Input
+        <PasswordInput
           id="password"
           {...register("password")}
           name="password"
           label="Password"
-          type="password"
           placeholder="••••••••"
         />
         <InputError message={errors.password?.message} />

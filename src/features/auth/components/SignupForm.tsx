@@ -15,6 +15,7 @@ import { useState } from "react";
 import Button from "@/src/shared/components/Button";
 import Input from "@/src/shared/components/Input";
 import InputError from "@/src/shared/components/InputError";
+import PasswordInput from "@/src/shared/components/PasswordInput";
 import SuccessfulRegister from "./SuccessfulRegister";
 
 export function SignupForm() {
@@ -95,11 +96,10 @@ export function SignupForm() {
 
             {/* Password */}
             <div>
-              <Input
+              <PasswordInput
                 id="password"
                 {...register("password")}
                 label="Password"
-                type="password"
                 placeholder="••••••••"
               />
               <InputError message={errors.password?.message} />
