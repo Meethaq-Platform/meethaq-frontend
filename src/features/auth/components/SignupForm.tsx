@@ -2,7 +2,7 @@
 
 import { AuthHeader } from "./AuthHeader";
 import { AuthCard } from "./AuthCard";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
@@ -22,6 +22,8 @@ export function SignupForm() {
   const {
     register,
     handleSubmit,
+    control,
+    setValue,
     formState: { errors },
   } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -34,6 +36,7 @@ export function SignupForm() {
     },
   });
 
+  const role = useWatch({ control, name: "role" });
   const { mutate, isPending, isError, error } = useRegister();
   const [isRegistered, setIsRegistered] = useState(false);
 
@@ -52,11 +55,11 @@ export function SignupForm() {
       ) : (
         <>
           {" "}
-          <AuthHeader
-            title="Create your account"
-            description="Join Meethaq and get started today."
-          />
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+          <AuthHeader title="Create your account" />
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="relative space-y-3"
+          >
             {/* Name */}
             <div className="gap-4 grid grid-cols-1 sm:grid-cols-2">
               <div>
@@ -106,7 +109,13 @@ export function SignupForm() {
             </div>
             <div className="flex flex-wrap justify-between items-center gap-8 mt-6">
               {/* Role */}
-              <RoleSelection register={register} errors={errors} />
+              <RoleSelection
+                value={role}
+                onChange={(role) =>
+                  setValue("role", role, { shouldValidate: true })
+                }
+                error={errors.role?.message}
+              />
               {/* API errors */}
               {isError && (
                 <InputError

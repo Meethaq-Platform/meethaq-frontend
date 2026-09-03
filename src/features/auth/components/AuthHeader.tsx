@@ -1,6 +1,6 @@
 interface AuthHeaderProps {
   title: string;
-  description: string;
+  description?: string;
 }
 
 export function AuthHeader({ title, description }: AuthHeaderProps) {

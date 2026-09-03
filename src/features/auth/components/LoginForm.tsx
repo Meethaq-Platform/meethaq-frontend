@@ -39,7 +39,7 @@ export function LoginForm() {
 
   return (
     <AuthCard>
-      <AuthHeader title="Welcome back" description="Sign in to your account." />
+      <AuthHeader title="Sign in to your account" />
 
       <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
         <Input
