@@ -2,7 +2,7 @@
 
 import { AuthHeader } from "./AuthHeader";
 import { AuthCard } from "./AuthCard";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
@@ -15,12 +15,15 @@ import { useState } from "react";
 import Button from "@/src/shared/components/Button";
 import Input from "@/src/shared/components/Input";
 import InputError from "@/src/shared/components/InputError";
+import PasswordInput from "@/src/shared/components/PasswordInput";
 import SuccessfulRegister from "./SuccessfulRegister";
 
 export function SignupForm() {
   const {
     register,
     handleSubmit,
+    control,
+    setValue,
     formState: { errors },
   } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -33,6 +36,7 @@ export function SignupForm() {
     },
   });
 
+  const role = useWatch({ control, name: "role" });
   const { mutate, isPending, isError, error } = useRegister();
   const [isRegistered, setIsRegistered] = useState(false);
 
@@ -51,10 +55,7 @@ export function SignupForm() {
       ) : (
         <>
           {" "}
-          <AuthHeader
-            title="Create your account"
-            description="Join Meethaq and get started today."
-          />
+          <AuthHeader title="Create your account" />
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             {/* Name */}
             <div className="gap-4 grid grid-cols-1 sm:grid-cols-2">
@@ -95,18 +96,23 @@ export function SignupForm() {
 
             {/* Password */}
             <div>
-              <Input
+              <PasswordInput
                 id="password"
                 {...register("password")}
                 label="Password"
-                type="password"
                 placeholder="••••••••"
               />
               <InputError message={errors.password?.message} />
             </div>
-            <div className="flex flex-wrap justify-between items-center gap-8 mt-6">
+            <div className="bottom-0 sticky flex flex-wrap justify-between items-center gap-8 bg-surface mt-6 pt-3 border-t border-border">
               {/* Role */}
-              <RoleSelection register={register} errors={errors} />
+              <RoleSelection
+                value={role}
+                onChange={(role) =>
+                  setValue("role", role, { shouldValidate: true })
+                }
+                error={errors.role?.message}
+              />
               {/* API errors */}
               {isError && (
                 <InputError

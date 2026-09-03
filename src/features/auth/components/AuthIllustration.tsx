@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export function AuthIllustration() {
   return (
-    <div className="z-10 relative flex justify-center items-center">
+    <div className="hidden z-10 relative lg:flex justify-center items-center">
       <Image
         src="/illustrations/signing-contract.gif"
         alt="Signing a contract"

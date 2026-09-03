@@ -2,26 +2,15 @@
 
 import { useState } from "react";
 import { ChevronDown, LogOut } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 import { useCurrentUser } from "../hooks/useCurrentUser";
-import { logoutUser } from "../lib/service";
+import { useLogout } from "../hooks/useLogout";
 
 export default function UserMenu() {
-  const router = useRouter();
   const { data: user, isLoading } = useCurrentUser();
+  const handleLogout = useLogout();
 
   const [isOpen, setIsOpen] = useState(false);
-
-  const handleLogout = async () => {
-    try {
-      await logoutUser();
-      router.push("/login");
-      router.refresh();
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-  };
 
   if (isLoading || !user) {
     return null;
