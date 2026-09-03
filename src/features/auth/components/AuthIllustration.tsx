@@ -6,7 +6,7 @@ export function AuthIllustration() {
       <Image
         src="/illustrations/signing-contract.gif"
         alt="Signing a contract"
-        className="w-17.5 h-137.5"
+        className="w-[550px] h-[550px]"
         width={300}
         height={300}
         priority

@@ -56,10 +56,7 @@ export function SignupForm() {
         <>
           {" "}
           <AuthHeader title="Create your account" />
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="relative space-y-3"
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             {/* Name */}
             <div className="gap-4 grid grid-cols-1 sm:grid-cols-2">
               <div>
@@ -107,7 +104,7 @@ export function SignupForm() {
               />
               <InputError message={errors.password?.message} />
             </div>
-            <div className="flex flex-wrap justify-between items-center gap-8 mt-6">
+            <div className="bottom-0 sticky flex flex-wrap justify-between items-center gap-8 bg-surface mt-6 pt-3 border-t border-border">
               {/* Role */}
               <RoleSelection
                 value={role}

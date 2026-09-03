@@ -5,7 +5,5 @@ interface AuthCardProps {
 }
 
 export function AuthCard({ children }: AuthCardProps) {
-  return (
-    <div className="w-full max-w-md h-[400px] overflow-y-auto">{children}</div>
-  );
+  return <div className="w-full h-100 overflow-y-auto">{children}</div>;
 }
