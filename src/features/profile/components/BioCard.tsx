@@ -1,19 +1,13 @@
-import type { ReactNode } from "react";
-
-import type { Profile } from "../types/profile";
 import { ProfileSectionCard } from "./ProfileSectionCard";
 
 interface BioCardProps {
-  profile: Profile;
-  action?: ReactNode;
+  bio: string;
 }
 
-export function BioCard({ profile, action }: BioCardProps) {
+export function BioCard({ bio }: BioCardProps) {
   return (
-    <ProfileSectionCard title="Bio" action={action}>
-      <p className="text-text-primary text-sm leading-relaxed">
-        {profile.bio}
-      </p>
+    <ProfileSectionCard title="Bio">
+      <p className="text-text-primary text-sm leading-relaxed">{bio}</p>
     </ProfileSectionCard>
   );
 }
