@@ -38,7 +38,7 @@ export function Sidebar() {
         </button>
       </div>
 
-      <nav className="flex flex-col flex-1 gap-1 px-3 py-4 overflow-y-auto">
+      <nav className="flex flex-col flex-1 gap-1 px-3 py-4">
         {navItems.map((item) => (
           <NavItem key={item.href} item={item} />
         ))}
