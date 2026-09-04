@@ -3,12 +3,12 @@ export interface Profile {
   userId: string;
   fullName: string;
   email: string;
-  phoneNumber: string;
-  profileImage: string;
+  phoneNumber: string | null;
+  profileImage: string | null;
   userRole: string;
-  country: string;
-  professionalTitle: string;
-  bio: string;
+  country: string | null;
+  professionalTitle: string | null;
+  bio: string | null;
   createdAt: string;
   updatedAt: string;
 }
