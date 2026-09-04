@@ -10,10 +10,28 @@ export class ApiError extends Error {
   constructor(
     message: string,
     public status: number,
+    public errors: string[] | null = null,
   ) {
     super(message);
     this.name = "ApiError";
   }
+}
+
+function extractErrorMessage(data: Record<string, unknown> | null): string {
+  if (!data) return "Something went wrong";
+  if (typeof data.message === "string") return data.message;
+  if (typeof data.title === "string") return data.title;
+  return "Something went wrong";
+}
+
+// ASP.NET's ProblemDetails validation shape is { errors: { Field: ["msg", ...] } }.
+function extractErrorList(data: Record<string, unknown> | null): string[] | null {
+  if (!data || !data.errors) return null;
+  if (Array.isArray(data.errors)) return data.errors;
+  if (typeof data.errors === "object") {
+    return Object.values(data.errors as Record<string, string[]>).flat();
+  }
+  return null;
 }
 
 export async function serverApi<T>(
@@ -65,8 +83,9 @@ export async function serverApi<T>(
 
   if (!response.ok) {
     throw new ApiError(
-      data?.message || "Something went wrong",
+      extractErrorMessage(data),
       response.status,
+      extractErrorList(data),
     );
   }
 

@@ -7,15 +7,15 @@ export async function GET() {
 
     return NextResponse.json(data);
   } catch (error) {
-    if (error instanceof ApiError && error.status === 401) {
+    if (error instanceof ApiError) {
       return NextResponse.json(
         {
           success: false,
-          message: "Not authenticated.",
+          message: error.status === 401 ? "Not authenticated." : error.message,
           data: null,
-          errors: null,
+          errors: error.errors,
         },
-        { status: 401 },
+        { status: error.status },
       );
     }
 
@@ -24,10 +24,7 @@ export async function GET() {
     return NextResponse.json(
       {
         success: false,
-        message:
-          error instanceof Error
-            ? error.message
-            : "Unable to connect to the server.",
+        message: "Unable to connect to the server.",
         data: null,
         errors: null,
       },
