@@ -7,8 +7,8 @@ export interface Profile {
   profileImage: string | null;
   userRole: string;
   country: string | null;
-  professionalTitle: string | null;
-  bio: string | null;
+  professionalTitle?: string | null;
+  bio?: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -18,4 +18,20 @@ export interface ProfileResponse {
   message: string;
   data: Profile;
   errors: string[] | null;
+}
+
+export interface UpdateFreelancerProfileRequest {
+  fullName: string;
+  phoneNumber: string;
+  profileImage?: string;
+  country?: string;
+  professionalTitle: string;
+  bio?: string;
+}
+
+export interface UpdateClientProfileRequest {
+  fullName: string;
+  phoneNumber: string;
+  profileImage?: string;
+  country?: string;
 }
