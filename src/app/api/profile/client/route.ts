@@ -1,16 +1,22 @@
 import { NextResponse } from "next/server";
-import { ApiError, serverApi } from "@/src/features/auth/lib/server-api";
+import { ApiError, serverApi, toAbsoluteUrl } from "@/src/features/auth/lib/server-api";
+import type { ProfileResponse } from "@/src/features/profile/types/profile";
 
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
 
-    const data = await serverApi("/Profile/client", {
+    const data = await serverApi<ProfileResponse>("/Profile/client", {
       method: "PUT",
       body: JSON.stringify(body),
     });
 
-    return NextResponse.json(data);
+    return NextResponse.json({
+      ...data,
+      data: data.data
+        ? { ...data.data, profileImage: toAbsoluteUrl(data.data.profileImage) }
+        : data.data,
+    });
   } catch (error) {
     if (error instanceof ApiError) {
       return NextResponse.json(
