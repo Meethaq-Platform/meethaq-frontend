@@ -56,7 +56,9 @@ export default function ProfileData({ isEditing, onDone }: ProfileDataProps) {
 
   return (
     <>
-      <ProfileOverviewCard profile={{ fullName, userRole, country }} />
+      <ProfileOverviewCard
+        profile={{ fullName, userRole, country, profileImage: data.profileImage }}
+      />
       <PersonalInformationCard
         profile={{
           fullName,
