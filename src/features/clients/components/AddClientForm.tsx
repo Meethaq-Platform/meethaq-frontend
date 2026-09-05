@@ -10,6 +10,7 @@ import {
 import { useCreateClient } from "../hooks/useCreateClient";
 import Input from "@/src/shared/components/Input";
 import InputError from "@/src/shared/components/InputError";
+import Textarea from "@/src/shared/components/Textarea";
 import Button from "@/src/shared/components/Button";
 
 interface AddClientFormProps {
@@ -24,7 +25,7 @@ export function AddClientForm({ onSuccess, onCancel }: AddClientFormProps) {
     formState: { errors },
   } = useForm<AddClientFormValues>({
     resolver: zodResolver(addClientSchema),
-    defaultValues: { fullName: "", email: "", companyName: "" },
+    defaultValues: { email: "", companyName: "", notes: "" },
   });
 
   const { mutate, isPending, isError, error } = useCreateClient();
@@ -32,9 +33,9 @@ export function AddClientForm({ onSuccess, onCancel }: AddClientFormProps) {
   const onSubmit = (values: AddClientFormValues) => {
     mutate(
       {
-        fullName: values.fullName,
         email: values.email,
         companyName: values.companyName,
+        notes: values.notes,
       },
       { onSuccess },
     );
@@ -42,10 +43,10 @@ export function AddClientForm({ onSuccess, onCancel }: AddClientFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div>
-        <Input label="Full Name" {...register("fullName")} />
-        <InputError message={errors.fullName?.message} />
-      </div>
+      <p className="text-text-secondary text-sm">
+        The client must already have a Meethaq account — we&apos;ll look them
+        up by email.
+      </p>
 
       <div>
         <Input label="Email Address" type="email" {...register("email")} />
@@ -55,6 +56,11 @@ export function AddClientForm({ onSuccess, onCancel }: AddClientFormProps) {
       <div>
         <Input label="Company Name" {...register("companyName")} />
         <InputError message={errors.companyName?.message} />
+      </div>
+
+      <div>
+        <Textarea label="Notes" rows={3} {...register("notes")} />
+        <InputError message={errors.notes?.message} />
       </div>
 
       {isError && (
