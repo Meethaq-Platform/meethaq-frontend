@@ -35,3 +35,20 @@ export interface UpdateClientProfileRequest {
   profileImage?: string;
   country?: string;
 }
+
+export interface UpdateProfilePictureResponse {
+  success: boolean;
+  message: string;
+  data: {
+    profileImageUrl: string;
+    updatedAt: string;
+  };
+  errors: string[] | null;
+}
+
+export interface DeleteProfilePictureResponse {
+  success: boolean;
+  message: string;
+  data: boolean;
+  errors: string[] | null;
+}

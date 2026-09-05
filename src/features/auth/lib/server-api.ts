@@ -34,6 +34,17 @@ function extractErrorList(data: Record<string, unknown> | null): string[] | null
   return null;
 }
 
+// The backend returns file paths (e.g. profile images) relative to its own
+// origin, not the "/api" base — resolve them to absolute URLs the browser can load.
+export function toAbsoluteUrl(path: string | null | undefined): string | null {
+  if (!path) return null;
+  if (/^https?:\/\//i.test(path)) return path;
+  if (!API_URL) return path;
+
+  const origin = new URL(API_URL).origin;
+  return `${origin}${path.startsWith("/") ? "" : "/"}${path}`;
+}
+
 export async function serverApi<T>(
   endpoint: string,
   options?: RequestInit,
@@ -51,10 +62,13 @@ export async function serverApi<T>(
     throw new ApiError("Unauthorized", 401);
   }
 
+  // Let fetch set the multipart boundary itself for FormData bodies.
+  const isFormData = options?.body instanceof FormData;
+
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers: {
-      "Content-Type": "application/json",
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
       ...options?.headers,
       Authorization: `Bearer ${accessToken}`,
     },
