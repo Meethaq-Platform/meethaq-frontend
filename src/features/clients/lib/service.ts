@@ -1,5 +1,4 @@
 import type {
-  Client,
   ClientsListResponse,
   CreateClientRequest,
   CreateClientResponse,
@@ -26,34 +25,20 @@ export async function getClients(
   return data;
 }
 
-let mockRelationshipId = -1;
-
 export async function createClient(
   data: CreateClientRequest,
 ): Promise<CreateClientResponse> {
-  const newClient: Client = {
-    relationshipId: mockRelationshipId--,
-    clientFullName: data.fullName,
-    clientEmail: data.email,
-    clientPhoneNumber: null,
-    clientProfileImage: null,
-    clientCountry: null,
-    companyName: data.companyName?.trim() ? data.companyName.trim() : null,
-    notes: null,
-    dateAdded: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
+  const response = await fetch("/api/clients", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
 
-  return new Promise((resolve) =>
-    setTimeout(
-      () =>
-        resolve({
-          success: true,
-          message: "Client added successfully.",
-          data: newClient,
-          errors: null,
-        }),
-      400,
-    ),
-  );
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Failed to add client.");
+  }
+
+  return result;
 }
