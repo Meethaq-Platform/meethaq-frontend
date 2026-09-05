@@ -1,8 +1,10 @@
 import type {
+  ClientResponse,
   ClientsListResponse,
   CreateClientRequest,
   CreateClientResponse,
   GetClientsParams,
+  UpdateClientRequest,
 } from "../types/client";
 
 export async function getClients(
@@ -25,6 +27,18 @@ export async function getClients(
   return data;
 }
 
+export async function getClientById(id: string): Promise<ClientResponse> {
+  const response = await fetch(`/api/clients/${id}`);
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to load client.");
+  }
+
+  return data;
+}
+
 export async function createClient(
   data: CreateClientRequest,
 ): Promise<CreateClientResponse> {
@@ -38,6 +52,25 @@ export async function createClient(
 
   if (!response.ok) {
     throw new Error(result.message || "Failed to add client.");
+  }
+
+  return result;
+}
+
+export async function updateClient(
+  id: string,
+  data: UpdateClientRequest,
+): Promise<ClientResponse> {
+  const response = await fetch(`/api/clients/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Failed to update client.");
   }
 
   return result;

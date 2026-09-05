@@ -26,6 +26,13 @@ export interface ClientsListResponse {
   errors: string[] | null;
 }
 
+export interface ClientResponse {
+  success: boolean;
+  message: string;
+  data: Client | null;
+  errors: string[] | null;
+}
+
 export interface GetClientsParams {
   pageNumber: number;
   pageSize: number;
@@ -55,4 +62,10 @@ export interface CreateClientResponse {
   message: string;
   data: CreateClientResult;
   errors: string[] | null;
+}
+
+// Full-replacement PUT — both fields are always sent.
+export interface UpdateClientRequest {
+  companyName: string;
+  notes: string;
 }
