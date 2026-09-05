@@ -10,10 +10,39 @@ export class ApiError extends Error {
   constructor(
     message: string,
     public status: number,
+    public errors: string[] | null = null,
   ) {
     super(message);
     this.name = "ApiError";
   }
+}
+
+function extractErrorMessage(data: Record<string, unknown> | null): string {
+  if (!data) return "Something went wrong";
+  if (typeof data.message === "string") return data.message;
+  if (typeof data.title === "string") return data.title;
+  return "Something went wrong";
+}
+
+// ASP.NET's ProblemDetails validation shape is { errors: { Field: ["msg", ...] } }.
+function extractErrorList(data: Record<string, unknown> | null): string[] | null {
+  if (!data || !data.errors) return null;
+  if (Array.isArray(data.errors)) return data.errors;
+  if (typeof data.errors === "object") {
+    return Object.values(data.errors as Record<string, string[]>).flat();
+  }
+  return null;
+}
+
+// The backend returns file paths (e.g. profile images) relative to its own
+// origin, not the "/api" base — resolve them to absolute URLs the browser can load.
+export function toAbsoluteUrl(path: string | null | undefined): string | null {
+  if (!path) return null;
+  if (/^https?:\/\//i.test(path)) return path;
+  if (!API_URL) return path;
+
+  const origin = new URL(API_URL).origin;
+  return `${origin}${path.startsWith("/") ? "" : "/"}${path}`;
 }
 
 export async function serverApi<T>(
@@ -33,10 +62,13 @@ export async function serverApi<T>(
     throw new ApiError("Unauthorized", 401);
   }
 
+  // Let fetch set the multipart boundary itself for FormData bodies.
+  const isFormData = options?.body instanceof FormData;
+
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers: {
-      "Content-Type": "application/json",
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
       ...options?.headers,
       Authorization: `Bearer ${accessToken}`,
     },
@@ -65,8 +97,9 @@ export async function serverApi<T>(
 
   if (!response.ok) {
     throw new ApiError(
-      data?.message || "Something went wrong",
+      extractErrorMessage(data),
       response.status,
+      extractErrorList(data),
     );
   }
 

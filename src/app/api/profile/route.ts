@@ -1,11 +1,17 @@
 import { NextResponse } from "next/server";
-import { ApiError, serverApi } from "@/src/features/auth/lib/server-api";
+import { ApiError, serverApi, toAbsoluteUrl } from "@/src/features/auth/lib/server-api";
+import type { ProfileResponse } from "@/src/features/profile/types/profile";
 
 export async function GET() {
   try {
-    const data = await serverApi("/Auth/me");
+    const data = await serverApi<ProfileResponse>("/Profile");
 
-    return NextResponse.json(data);
+    return NextResponse.json({
+      ...data,
+      data: data.data
+        ? { ...data.data, profileImage: toAbsoluteUrl(data.data.profileImage) }
+        : data.data,
+    });
   } catch (error) {
     if (error instanceof ApiError) {
       return NextResponse.json(
@@ -19,7 +25,7 @@ export async function GET() {
       );
     }
 
-    console.error("GET /api/auth/me error:", error);
+    console.error("GET /api/profile error:", error);
 
     return NextResponse.json(
       {
