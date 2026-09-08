@@ -16,9 +16,14 @@ function withFallback(value?: string | null) {
 interface ProfileDataProps {
   isEditing: boolean;
   onDone: () => void;
+  onDirtyChange?: (isDirty: boolean) => void;
 }
 
-export default function ProfileData({ isEditing, onDone }: ProfileDataProps) {
+export default function ProfileData({
+  isEditing,
+  onDone,
+  onDirtyChange,
+}: ProfileDataProps) {
   const { data, isLoading, isError, refetch } = useProfile();
 
   if (isLoading) {
@@ -40,9 +45,17 @@ export default function ProfileData({ isEditing, onDone }: ProfileDataProps) {
 
   if (isEditing) {
     return data.userRole?.toLowerCase() === "freelancer" ? (
-      <EditFreelancerProfileForm profile={data} onSuccess={onDone} />
+      <EditFreelancerProfileForm
+        profile={data}
+        onSuccess={onDone}
+        onDirtyChange={onDirtyChange}
+      />
     ) : (
-      <EditClientProfileForm profile={data} onSuccess={onDone} />
+      <EditClientProfileForm
+        profile={data}
+        onSuccess={onDone}
+        onDirtyChange={onDirtyChange}
+      />
     );
   }
 

@@ -11,6 +11,7 @@ import Button from "@/src/shared/components/Button";
 export default function ProfilePage() {
   const { data } = useProfile();
   const [isEditing, setIsEditing] = useState(false);
+  const [isFormDirty, setIsFormDirty] = useState(false);
   const isSaving = useIsMutating({ mutationKey: ["update-profile"] }) > 0;
 
   return (
@@ -20,18 +21,20 @@ export default function ProfilePage() {
 
         {data &&
           (isEditing ? (
-            <div className="flex items-center gap-3">
-              <button
+            <div key="editing-actions" className="flex items-center gap-3">
+              <Button
                 type="button"
+                variant="amber"
                 onClick={() => setIsEditing(false)}
-                className="hover:opacity-90 px-4 rounded-xl h-11 font-semibold text-white text-sm transition bg-accent-value"
+                className="h-9"
               >
                 Cancel
-              </button>
+              </Button>
 
               <Button
                 type="submit"
                 form="profile-edit-form"
+                disabled={!isFormDirty}
                 loading={isSaving}
                 loadingText="Saving..."
                 className="h-9"
@@ -40,18 +43,27 @@ export default function ProfilePage() {
               </Button>
             </div>
           ) : (
-            <button
-              type="button"
-              onClick={() => setIsEditing(true)}
-              className="flex items-center gap-1.5 hover:opacity-90 px-4 rounded-xl h-11 font-semibold text-white text-sm transition bg-accent-value"
-            >
-              Edit
-              <Pencil size={14} />
-            </button>
+            <div key="viewing-actions">
+              <Button
+                type="button"
+                onClick={() => {
+                  setIsFormDirty(false);
+                  setIsEditing(true);
+                }}
+                className="flex items-center gap-1.5 h-9"
+              >
+                <Pencil size={14} />
+                Edit
+              </Button>
+            </div>
           ))}
       </div>
 
-      <ProfileData isEditing={isEditing} onDone={() => setIsEditing(false)} />
+      <ProfileData
+        isEditing={isEditing}
+        onDone={() => setIsEditing(false)}
+        onDirtyChange={setIsFormDirty}
+      />
     </div>
   );
 }
