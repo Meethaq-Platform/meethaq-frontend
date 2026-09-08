@@ -1,14 +1,11 @@
-import { requireRole } from "@/src/features/auth/lib/requireRole";
-import ProjectDetailPage from "@/src/features/projects/components/ProjectDetailPage";
+import ProjectDetailEntry from "@/src/features/projects/components/ProjectDetailEntry";
 
 export default async function ProjectDetail({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  await requireRole("freelancer");
-
   const { id } = await params;
 
-  return <ProjectDetailPage projectId={id} />;
+  return <ProjectDetailEntry projectId={id} />;
 }
