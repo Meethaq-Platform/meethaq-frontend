@@ -5,6 +5,7 @@ interface ProjectsPaginationProps {
   totalPages: number;
   totalCount: number;
   onPageChange: (page: number) => void;
+  itemLabel?: string;
 }
 
 export function ProjectsPagination({
@@ -12,6 +13,7 @@ export function ProjectsPagination({
   totalPages,
   totalCount,
   onPageChange,
+  itemLabel = "project",
 }: ProjectsPaginationProps) {
   if (totalPages <= 1) {
     return null;
@@ -20,8 +22,8 @@ export function ProjectsPagination({
   return (
     <div className="flex justify-between items-center px-6 py-3.5 border-border border-t">
       <p className="text-text-secondary text-sm">
-        Page {pageNumber} of {totalPages} · {totalCount}{" "}
-        {totalCount === 1 ? "project" : "projects"}
+        Page {pageNumber} of {totalPages} · {totalCount} {itemLabel}
+        {totalCount === 1 ? "" : "s"}
       </p>
 
       <div className="flex items-center gap-2">
