@@ -13,13 +13,14 @@ interface ConfirmModalProps {
   confirmingLabel?: string;
   cancelLabel?: string;
   isConfirming?: boolean;
-  variant?: "danger" | "amber";
+  variant?: "danger" | "amber" | "primary";
   errorMessage?: string;
 }
 
 const variantBg: Record<NonNullable<ConfirmModalProps["variant"]>, string> = {
   danger: "bg-danger",
   amber: "bg-accent-value",
+  primary: "bg-primary",
 };
 
 export default function ConfirmModal({
