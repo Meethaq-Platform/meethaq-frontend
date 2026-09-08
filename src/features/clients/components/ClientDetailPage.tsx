@@ -19,6 +19,7 @@ interface ClientDetailPageProps {
 export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
   const { data, isLoading, isError, refetch } = useClient(clientId);
   const [isEditing, setIsEditing] = useState(false);
+  const [isFormDirty, setIsFormDirty] = useState(false);
   const isSaving = useIsMutating({ mutationKey: ["update-client"] }) > 0;
 
   return (
@@ -34,18 +35,20 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
 
         {data &&
           (isEditing ? (
-            <div className="flex items-center gap-3">
-              <button
+            <div key="editing-actions" className="flex items-center gap-3">
+              <Button
                 type="button"
+                variant="amber"
                 onClick={() => setIsEditing(false)}
-                className="hover:bg-surface-muted px-4 rounded-xl h-9 font-semibold text-text-secondary text-sm transition"
+                className="h-9"
               >
                 Cancel
-              </button>
+              </Button>
 
               <Button
                 type="submit"
                 form="client-edit-form"
+                disabled={!isFormDirty}
                 loading={isSaving}
                 loadingText="Saving..."
                 className="h-9"
@@ -54,14 +57,19 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
               </Button>
             </div>
           ) : (
-            <Button
-              type="button"
-              onClick={() => setIsEditing(true)}
-              className="flex items-center gap-1.5 px-4 rounded-xl h-9 font-semibold text-text-secondary text-sm transition"
-            >
-              <Pencil size={14} />
-              Edit
-            </Button>
+            <div key="viewing-actions">
+              <Button
+                type="button"
+                onClick={() => {
+                  setIsFormDirty(false);
+                  setIsEditing(true);
+                }}
+                className="flex items-center gap-1.5 h-9"
+              >
+                <Pencil size={14} />
+                Edit
+              </Button>
+            </div>
           ))}
       </div>
 
@@ -125,6 +133,7 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
                 <EditClientForm
                   client={data}
                   onSuccess={() => setIsEditing(false)}
+                  onDirtyChange={setIsFormDirty}
                 />
               ) : (
                 <div className="gap-x-6 gap-y-6 grid grid-cols-1 sm:grid-cols-3">

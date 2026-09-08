@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -16,13 +17,18 @@ import Textarea from "@/src/shared/components/Textarea";
 interface EditClientFormProps {
   client: Client;
   onSuccess: () => void;
+  onDirtyChange?: (isDirty: boolean) => void;
 }
 
-export function EditClientForm({ client, onSuccess }: EditClientFormProps) {
+export function EditClientForm({
+  client,
+  onSuccess,
+  onDirtyChange,
+}: EditClientFormProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<UpdateClientFormValues>({
     resolver: zodResolver(updateClientSchema),
     defaultValues: {
@@ -31,11 +37,16 @@ export function EditClientForm({ client, onSuccess }: EditClientFormProps) {
     },
   });
 
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
+
   const { mutate, isError, error } = useUpdateClient(
     String(client.relationshipId),
   );
 
   const onSubmit = (values: UpdateClientFormValues) => {
+    if (!isDirty) return;
     mutate(values, { onSuccess });
   };
 
