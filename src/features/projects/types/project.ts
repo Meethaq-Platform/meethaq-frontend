@@ -1,5 +1,21 @@
 export type ProjectStatus = "Draft" | "Active" | "Cancelled" | "Completed";
 
+// Project.contractStatus/contractAction are already string-labeled by the
+// API (unlike the Contract entity's own numeric status), driving the CTA
+// shown on the project's Contract section.
+export type ProjectContractStatus =
+  | "None"
+  | "Draft"
+  | "PendingApproval"
+  | "ChangesRequested"
+  | "Approved";
+
+export type ProjectContractAction =
+  | "EditDraft"
+  | "AwaitingClientApproval"
+  | "ReviewChanges"
+  | "ViewContract";
+
 export interface Project {
   id: number;
   title: string;
@@ -12,6 +28,11 @@ export interface Project {
   acceptedAt: string | null;
   acceptedByClientId: number | null;
   acceptedByClientName: string | null;
+  totalValue: number | null;
+  contractStatus: ProjectContractStatus;
+  contractAction: ProjectContractAction | null;
+  contractFeedbackSummary: string | null;
+  contractApprovedAt: string | null;
   createdAt: string;
   updatedAt: string | null;
 }
@@ -63,6 +84,7 @@ export interface CreateProjectRequest {
 export interface UpdateProjectRequest {
   title: string;
   description: string;
+  totalValue?: number | null;
 }
 
 export interface LinkClientRequest {
