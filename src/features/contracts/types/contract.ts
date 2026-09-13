@@ -1,3 +1,5 @@
+import type { ProjectContractStatus } from "@/src/features/projects/types/project";
+
 // The Contract entity's own status/allocationMode are serialized as raw
 // integers by the API (unlike Project.status, which is a string) — verified
 // against the live backend rather than the swagger schema alone.
@@ -7,6 +9,20 @@ export const CONTRACT_STATUS_LABEL: Record<ContractStatus, string> = {
   0: "Draft",
   1: "Pending Approval",
   2: "Changes Requested",
+  3: "Approved",
+};
+
+// Contract mutations patch the contract's own query cache immediately but
+// only invalidate (not synchronously update) Project.contractStatus, so
+// deriving the badge from the fresh contract avoids it briefly disagreeing
+// with the rest of the page while the project query is still refetching.
+export const CONTRACT_STATUS_TO_PROJECT_STATUS: Record<
+  ContractStatus,
+  ProjectContractStatus
+> = {
+  0: "Draft",
+  1: "PendingApproval",
+  2: "ChangesRequested",
   3: "Approved",
 };
 

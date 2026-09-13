@@ -6,6 +6,7 @@ import { ArrowLeft, FileText, Pencil } from "lucide-react";
 
 import { useProject } from "@/src/features/projects/hooks/useProject";
 import { useContract } from "../hooks/useContract";
+import { CONTRACT_STATUS_TO_PROJECT_STATUS } from "../types/contract";
 import { ContractStatusBadge } from "./ContractStatusBadge";
 import { ContractForm } from "./ContractForm";
 import { ContractFeedbackBanner } from "./ContractFeedbackBanner";
@@ -85,6 +86,12 @@ export default function ContractWorkspacePage({
 
   const currentProject = project.data;
   const isEligible = Boolean(currentProject.clientId) && Boolean(currentProject.totalValue);
+  // Derive the badge from the freshly-mutated contract when one exists, so it
+  // never lags behind the rest of the page while the invalidated project
+  // query is still refetching in the background.
+  const displayedContractStatus = contract
+    ? CONTRACT_STATUS_TO_PROJECT_STATUS[contract.status]
+    : currentProject.contractStatus;
 
   return (
     <div className="space-y-6 mx-auto h-full">
@@ -199,7 +206,7 @@ export default function ContractWorkspacePage({
                   </div>
 
                   <div className="flex flex-col items-end gap-2 w-fit shrink-0">
-                    <ContractStatusBadge status={currentProject.contractStatus} />
+                    <ContractStatusBadge status={displayedContractStatus} />
                     <p className="text-text-secondary text-sm text-right">
                       {formatDate(contract.startDate)} –{" "}
                       {formatDate(contract.expectedEndDate)}
