@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-interface ProjectsPaginationProps {
+interface PaginationProps {
   pageNumber: number;
   totalPages: number;
   totalCount: number;
@@ -8,13 +8,13 @@ interface ProjectsPaginationProps {
   itemLabel?: string;
 }
 
-export function ProjectsPagination({
+export default function Pagination({
   pageNumber,
   totalPages,
   totalCount,
   onPageChange,
-  itemLabel = "project",
-}: ProjectsPaginationProps) {
+  itemLabel = "item",
+}: PaginationProps) {
   if (totalPages <= 1) {
     return null;
   }

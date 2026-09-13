@@ -3,7 +3,7 @@ import { ArrowRight, Mail } from "lucide-react";
 
 import type { ProjectInvitation } from "../types/client-project";
 import { ProjectStatusBadge } from "@/src/features/projects/components/ProjectStatusBadge";
-import { ProjectsPagination } from "@/src/features/projects/components/ProjectsPagination";
+import Pagination from "@/src/shared/components/Pagination";
 import EmptyState from "@/src/shared/components/EmptyState";
 
 interface InvitationsTableProps {
@@ -85,7 +85,7 @@ export function InvitationsTable({
         </table>
       </div>
 
-      <ProjectsPagination
+      <Pagination
         pageNumber={pageNumber}
         totalPages={totalPages}
         totalCount={totalCount}

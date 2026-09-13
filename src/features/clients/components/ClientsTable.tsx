@@ -3,7 +3,7 @@ import { ArrowRight, Users } from "lucide-react";
 
 import type { Client } from "../types/client";
 import { ClientAvatar } from "./ClientAvatar";
-import { ClientsPagination } from "./ClientsPagination";
+import Pagination from "@/src/shared/components/Pagination";
 import EmptyState from "@/src/shared/components/EmptyState";
 
 interface ClientsTableProps {
@@ -101,11 +101,12 @@ export function ClientsTable({
         </table>
       </div>
 
-      <ClientsPagination
+      <Pagination
         pageNumber={pageNumber}
         totalPages={totalPages}
         totalCount={totalCount}
         onPageChange={onPageChange}
+        itemLabel="client"
       />
     </div>
   );

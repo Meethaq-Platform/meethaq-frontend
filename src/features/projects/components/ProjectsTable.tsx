@@ -3,7 +3,7 @@ import { ArrowRight, Briefcase } from "lucide-react";
 
 import type { ProjectSummary } from "../types/project";
 import { ProjectStatusBadge } from "./ProjectStatusBadge";
-import { ProjectsPagination } from "./ProjectsPagination";
+import Pagination from "@/src/shared/components/Pagination";
 import EmptyState from "@/src/shared/components/EmptyState";
 
 interface ProjectsTableProps {
@@ -93,11 +93,12 @@ export function ProjectsTable({
         </table>
       </div>
 
-      <ProjectsPagination
+      <Pagination
         pageNumber={pageNumber}
         totalPages={totalPages}
         totalCount={totalCount}
         onPageChange={onPageChange}
+        itemLabel="project"
       />
     </div>
   );
