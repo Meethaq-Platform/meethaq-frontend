@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cairo, IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "../shared/providers/QueryProvider";
+import Toaster from "../shared/components/Toaster";
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex flex-col min-h-full">
         <QueryProvider>{children}</QueryProvider>
+        <Toaster />
       </body>
     </html>
   );
