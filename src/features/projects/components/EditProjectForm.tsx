@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   updateProjectSchema,
+  type UpdateProjectFormInput,
   type UpdateProjectFormValues,
 } from "../schemas/project.schema";
 import { useUpdateProject } from "../hooks/useUpdateProject";
@@ -29,11 +30,12 @@ export function EditProjectForm({
     register,
     handleSubmit,
     formState: { errors, isDirty },
-  } = useForm<UpdateProjectFormValues>({
+  } = useForm<UpdateProjectFormInput, unknown, UpdateProjectFormValues>({
     resolver: zodResolver(updateProjectSchema),
     defaultValues: {
       title: project.title,
       description: project.description ?? "",
+      totalValue: project.totalValue ?? "",
     },
   });
 
@@ -45,7 +47,13 @@ export function EditProjectForm({
 
   const onSubmit = (values: UpdateProjectFormValues) => {
     if (!isDirty) return;
-    mutate(values, { onSuccess });
+    mutate(
+      {
+        ...values,
+        totalValue: values.totalValue === "" ? null : values.totalValue,
+      },
+      { onSuccess },
+    );
   };
 
   return (
@@ -62,6 +70,18 @@ export function EditProjectForm({
       <div>
         <Textarea label="Description" rows={3} {...register("description")} />
         <InputError message={errors.description?.message} />
+      </div>
+
+      <div>
+        <Input
+          label="Project Value ($)"
+          type="number"
+          step="0.01"
+          min="0.01"
+          placeholder="e.g. 5000"
+          {...register("totalValue")}
+        />
+        <InputError message={errors.totalValue?.message} />
       </div>
 
       {isError && (

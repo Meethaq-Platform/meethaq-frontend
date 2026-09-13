@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Pencil } from "lucide-react";
+import { ArrowLeft, ArrowRight, Pencil } from "lucide-react";
 import { useIsMutating } from "@tanstack/react-query";
 
 import { useProject } from "../hooks/useProject";
@@ -10,9 +10,11 @@ import { ProjectStatusBadge } from "./ProjectStatusBadge";
 import { AssignClientControl } from "./AssignClientControl";
 import { CancelProjectButton } from "./CancelProjectButton";
 import { EditProjectForm } from "./EditProjectForm";
+import { ContractStatusBadge } from "@/src/features/contracts/components/ContractStatusBadge";
 import Button from "@/src/shared/components/Button";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
+import { formatCurrency } from "@/src/shared/lib/format";
 
 interface ProjectDetailPageProps {
   projectId: string;
@@ -120,6 +122,11 @@ export default function ProjectDetailPage({
               <p className="text-text-secondary text-sm text-right">
                 Created {new Date(data.createdAt).toLocaleDateString()}
               </p>
+              {data.totalValue != null && (
+                <p className="font-numbers font-semibold text-text-primary text-sm">
+                  {formatCurrency(data.totalValue)}
+                </p>
+              )}
             </div>
           </div>
 
@@ -140,6 +147,23 @@ export default function ProjectDetailPage({
               </p>
             )}
           </div>
+
+          <Link
+            href={`/projects/${data.id}/contract`}
+            className="flex justify-between items-center bg-surface hover:bg-surface-muted p-6 border border-border rounded-2xl transition"
+          >
+            <div>
+              <p className="mb-2 text-text-secondary text-xs uppercase tracking-wide">
+                Contract
+              </p>
+              <ContractStatusBadge status={data.contractStatus} />
+            </div>
+
+            <div className="flex items-center gap-1.5 font-semibold text-primary text-sm">
+              {data.contractStatus === "None" ? "Create Contract" : "Manage Contract"}
+              <ArrowRight size={16} />
+            </div>
+          </Link>
         </section>
       )}
     </div>
