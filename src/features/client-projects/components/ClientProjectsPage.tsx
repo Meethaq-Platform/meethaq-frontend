@@ -8,12 +8,12 @@ import { ClientProjectsSection } from "./ClientProjectsSection";
 type Tab = "invitations" | "projects";
 
 const tabs: { value: Tab; label: string }[] = [
-  { value: "invitations", label: "Invitations" },
   { value: "projects", label: "My Projects" },
+  { value: "invitations", label: "Invitations" },
 ];
 
 export default function ClientProjectsPage() {
-  const [tab, setTab] = useState<Tab>("invitations");
+  const [tab, setTab] = useState<Tab>("projects");
 
   return (
     <>
@@ -34,7 +34,11 @@ export default function ClientProjectsPage() {
         ))}
       </div>
 
-      {tab === "invitations" ? <InvitationsSection /> : <ClientProjectsSection />}
+      {tab === "invitations" ? (
+        <InvitationsSection />
+      ) : (
+        <ClientProjectsSection />
+      )}
     </>
   );
 }
