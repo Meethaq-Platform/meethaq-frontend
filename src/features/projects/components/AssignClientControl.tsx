@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Search, X } from "lucide-react";
 
 import { useClients } from "@/src/features/clients/hooks/useClients";
+import { useDebouncedValue } from "@/src/features/clients/hooks/useDebouncedValue";
 import { useAssignClient } from "../hooks/useAssignClient";
 import { useUnassignClient } from "../hooks/useUnassignClient";
 import Button from "@/src/shared/components/Button";
@@ -21,21 +22,55 @@ export function AssignClientControl({
   clientId,
   clientName,
 }: AssignClientControlProps) {
-  const [selectedId, setSelectedId] = useState("");
+  const [search, setSearch] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState<{
+    id: number;
+    name: string;
+  } | null>(null);
   const [isUnassignOpen, setIsUnassignOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const debouncedSearch = useDebouncedValue(search, 400);
   const { data: clients, isLoading: isLoadingClients } = useClients({
     pageNumber: 1,
-    pageSize: 50,
+    pageSize: 20,
+    search: debouncedSearch || undefined,
   });
 
   const assignClient = useAssignClient(String(projectId));
   const unassignClient = useUnassignClient(String(projectId));
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleSelect = (id: number, name: string) => {
+    setSelected({ id, name });
+    setSearch(name);
+    setIsOpen(false);
+  };
+
   const handleAssign = () => {
-    if (!selectedId) return;
+    if (!selected) return;
     assignClient.mutate(
-      { relationshipId: Number(selectedId) },
-      { onSuccess: () => setSelectedId("") },
+      { relationshipId: selected.id },
+      {
+        onSuccess: () => {
+          setSelected(null);
+          setSearch("");
+        },
+      },
     );
   };
 
@@ -84,26 +119,60 @@ export function AssignClientControl({
   return (
     <div className="space-y-2">
       <div className="flex gap-2">
-        <select
-          value={selectedId}
-          onChange={(event) => setSelectedId(event.target.value)}
-          disabled={isLoadingClients}
-          className="bg-surface px-3 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full h-10 text-text-primary text-sm transition"
-        >
-          <option value="">
-            {isLoadingClients ? "Loading clients..." : "Select a client"}
-          </option>
-          {clients?.items.map((client) => (
-            <option key={client.relationshipId} value={client.relationshipId}>
-              {client.clientFullName}
-            </option>
-          ))}
-        </select>
+        <div ref={containerRef} className="relative flex-1">
+          <Search
+            size={16}
+            className="top-1/2 left-3 absolute text-text-secondary -translate-y-1/2 pointer-events-none"
+          />
+
+          <input
+            type="text"
+            value={search}
+            onChange={(event) => {
+              setSearch(event.target.value);
+              setSelected(null);
+              setIsOpen(true);
+            }}
+            onFocus={() => setIsOpen(true)}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") setIsOpen(false);
+            }}
+            placeholder="Search clients by name..."
+            className="bg-surface py-2 pr-4 pl-9 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full h-10 text-text-primary placeholder:text-text-secondary text-sm transition"
+          />
+
+          {isOpen && (
+            <div className="top-full z-10 absolute bg-surface shadow-lg mt-1 border border-border rounded-xl w-full max-h-60 overflow-auto">
+              {isLoadingClients ? (
+                <p className="px-3 py-2 text-text-secondary text-sm">
+                  Loading...
+                </p>
+              ) : clients?.items.length ? (
+                clients.items.map((client) => (
+                  <button
+                    key={client.relationshipId}
+                    type="button"
+                    onClick={() =>
+                      handleSelect(client.relationshipId, client.clientFullName)
+                    }
+                    className="block hover:bg-surface-muted px-3 py-2 w-full text-text-primary text-sm text-left transition"
+                  >
+                    {client.clientFullName}
+                  </button>
+                ))
+              ) : (
+                <p className="px-3 py-2 text-text-secondary text-sm">
+                  No clients found.
+                </p>
+              )}
+            </div>
+          )}
+        </div>
 
         <Button
           type="button"
           onClick={handleAssign}
-          disabled={!selectedId}
+          disabled={!selected}
           loading={assignClient.isPending}
           loadingText="Assigning..."
           className="h-10 shrink-0"
