@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -19,16 +20,18 @@ import Textarea from "@/src/shared/components/Textarea";
 interface EditFreelancerProfileFormProps {
   profile: Profile;
   onSuccess: () => void;
+  onDirtyChange?: (isDirty: boolean) => void;
 }
 
 export function EditFreelancerProfileForm({
   profile,
   onSuccess,
+  onDirtyChange,
 }: EditFreelancerProfileFormProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<FreelancerProfileFormValues>({
     resolver: zodResolver(freelancerProfileSchema),
     defaultValues: {
@@ -40,9 +43,14 @@ export function EditFreelancerProfileForm({
     },
   });
 
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
+
   const { mutate, isError, error } = useUpdateFreelancerProfile();
 
   const onSubmit = (values: FreelancerProfileFormValues) => {
+    if (!isDirty) return;
     mutate(
       withOptionalFields(
         {

@@ -27,9 +27,8 @@ export default async function ProtectedLayout({
 
         <div className="flex flex-col flex-1 min-w-0">
           <Header />
-
           <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
-            {children}
+            <div className="pb-8 sm:pb-10 lg:pb-12">{children}</div>
           </main>
         </div>
       </div>

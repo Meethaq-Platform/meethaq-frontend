@@ -4,5 +4,6 @@ import { registerUser } from "../lib/service";
 export function useRegister() {
   return useMutation({
     mutationFn: registerUser,
+    meta: { suppressToast: true },
   });
 }

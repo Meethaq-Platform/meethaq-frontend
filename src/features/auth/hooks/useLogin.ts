@@ -4,5 +4,6 @@ import { loginUser } from "../lib/service";
 export function useLogin() {
   return useMutation({
     mutationFn: loginUser,
+    meta: { suppressToast: true },
   });
 }
