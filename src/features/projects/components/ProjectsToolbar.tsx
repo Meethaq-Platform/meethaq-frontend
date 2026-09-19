@@ -1,6 +1,5 @@
 "use client";
 
-import { Filter } from "lucide-react";
 import type { ProjectStatus } from "../types/project";
 
 interface ProjectsToolbarProps {
@@ -21,27 +20,22 @@ export function ProjectsToolbar({
   onStatusChange,
 }: ProjectsToolbarProps) {
   return (
-    <div className="flex sm:justify-end">
-      <div className="relative">
-        <Filter
-          size={15}
-          className="top-1/2 left-3 absolute text-text-secondary -translate-y-1/2 pointer-events-none"
-        />
-
-        <select
-          value={status}
-          onChange={(event) =>
-            onStatusChange(event.target.value as ProjectStatus | "")
-          }
-          className="bg-surface py-2 pr-8 pl-9 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full sm:w-auto h-full text-text-primary text-sm transition appearance-none"
+    <div className="flex flex-wrap sm:justify-end gap-2">
+      {statusOptions.map((option) => (
+        <button
+          key={option.value}
+          type="button"
+          onClick={() => onStatusChange(option.value)}
+          aria-pressed={status === option.value}
+          className={`px-4 h-9 rounded-lg font-medium text-sm transition ${
+            status === option.value
+              ? "bg-primary text-white"
+              : "bg-surface hover:bg-border/40 text-text-secondary hover:text-text-primary"
+          }`}
         >
-          {statusOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </div>
+          {option.label}
+        </button>
+      ))}
     </div>
   );
 }
