@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   createProjectSchema,
+  type CreateProjectFormInput,
   type CreateProjectFormValues,
 } from "../schemas/project.schema";
 import { useCreateProject } from "../hooks/useCreateProject";
@@ -23,16 +24,20 @@ export function AddProjectForm({ onSuccess, onCancel }: AddProjectFormProps) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateProjectFormValues>({
+  } = useForm<CreateProjectFormInput, unknown, CreateProjectFormValues>({
     resolver: zodResolver(createProjectSchema),
-    defaultValues: { title: "", description: "" },
+    defaultValues: { title: "", description: "", totalValue: "" },
   });
 
   const { mutate, isPending, isError, error } = useCreateProject();
 
   const onSubmit = (values: CreateProjectFormValues) => {
     mutate(
-      { title: values.title, description: values.description },
+      {
+        title: values.title,
+        description: values.description,
+        totalValue: values.totalValue === "" ? undefined : values.totalValue,
+      },
       { onSuccess },
     );
   };
@@ -47,6 +52,18 @@ export function AddProjectForm({ onSuccess, onCancel }: AddProjectFormProps) {
       <div>
         <Textarea label="Description" rows={3} {...register("description")} />
         <InputError message={errors.description?.message} />
+      </div>
+
+      <div>
+        <Input
+          label="Project Value ($)"
+          type="number"
+          step="0.01"
+          min="0.01"
+          placeholder="e.g. 5000"
+          {...register("totalValue")}
+        />
+        <InputError message={errors.totalValue?.message} />
       </div>
 
       {isError && (

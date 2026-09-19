@@ -85,6 +85,7 @@ export interface CreateProjectRequest {
   title: string;
   description?: string;
   relationshipId?: number;
+  totalValue?: number | null;
 }
 
 export interface UpdateProjectRequest {
