@@ -43,18 +43,18 @@ export function ClientsTable({
     <div className="bg-surface border border-border rounded-2xl overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead>
+          <thead className="bg-primary-muted">
             <tr className="border-border border-b">
-              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-left uppercase tracking-wide">
+              <th className="px-6 py-3.5 font-medium text-primary text-xs text-left uppercase tracking-wide">
                 Client
               </th>
-              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-left uppercase tracking-wide">
+              <th className="px-6 py-3.5 font-medium text-primary text-xs text-left uppercase tracking-wide">
                 Email
               </th>
-              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-left uppercase tracking-wide">
+              <th className="px-6 py-3.5 font-medium text-primary text-xs text-left uppercase tracking-wide">
                 Company
               </th>
-              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-right uppercase tracking-wide">
+              <th className="px-6 py-3.5 font-medium text-primary text-xs text-right uppercase tracking-wide">
                 <span className="sr-only">Actions</span>
               </th>
             </tr>
@@ -64,7 +64,7 @@ export function ClientsTable({
             {clients.map((client) => (
               <tr
                 key={client.relationshipId}
-                className="hover:bg-surface-muted transition"
+                className="hover:bg-border/40 transition"
               >
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
