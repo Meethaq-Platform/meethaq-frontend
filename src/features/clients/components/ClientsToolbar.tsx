@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpDown, Search } from "lucide-react";
+import { ArrowDown, ArrowUp, Search } from "lucide-react";
 
 interface ClientsToolbarProps {
   search: string;
@@ -9,20 +9,21 @@ interface ClientsToolbarProps {
   onSortChange: (value: string) => void;
 }
 
-// The only values /clients' SortBy param accepts.
-const sortOptions: { value: string; label: string }[] = [
-  { value: "newest", label: "Newest" },
-  { value: "oldest", label: "Oldest" },
-  { value: "name_asc", label: "Name (A–Z)" },
-  { value: "name_desc", label: "Name (Z–A)" },
-];
-
 export function ClientsToolbar({
   search,
   onSearchChange,
   sort,
   onSortChange,
 }: ClientsToolbarProps) {
+  const isDateActive = sort === "newest" || sort === "oldest";
+  const isNameActive = sort === "name_asc" || sort === "name_desc";
+
+  const toggleDate = () =>
+    onSortChange(sort === "newest" ? "oldest" : "newest");
+
+  const toggleName = () =>
+    onSortChange(sort === "name_asc" ? "name_desc" : "name_asc");
+
   return (
     <div className="flex sm:flex-row flex-col gap-3">
       <div className="relative flex-1 sm:max-w-md">
@@ -40,23 +41,38 @@ export function ClientsToolbar({
         />
       </div>
 
-      <div className="relative sm:ml-auto">
-        <ArrowUpDown
-          size={15}
-          className="top-1/2 left-3 absolute text-text-secondary -translate-y-1/2 pointer-events-none"
-        />
-
-        <select
-          value={sort}
-          onChange={(event) => onSortChange(event.target.value)}
-          className="bg-surface py-2 pr-8 pl-9 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full sm:w-auto h-full text-text-primary text-sm transition appearance-none"
+      <div className="flex gap-2 sm:ml-auto">
+        <button
+          type="button"
+          onClick={toggleDate}
+          aria-pressed={isDateActive}
+          className={`flex items-center gap-1.5 px-4 h-9 rounded-lg font-medium text-sm transition ${
+            isDateActive
+              ? "bg-primary text-white"
+              : "bg-surface hover:bg-border/40 text-text-secondary hover:text-text-primary"
+          }`}
         >
-          {sortOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+          {sort === "oldest" ? <ArrowUp size={14} /> : <ArrowDown size={14} />}
+          {sort === "oldest" ? "Oldest" : "Newest"}
+        </button>
+
+        <button
+          type="button"
+          onClick={toggleName}
+          aria-pressed={isNameActive}
+          className={`flex items-center gap-1.5 px-4 h-9 rounded-lg font-medium text-sm transition ${
+            isNameActive
+              ? "bg-primary text-white"
+              : "bg-surface hover:bg-border/40 text-text-secondary hover:text-text-primary"
+          }`}
+        >
+          {sort === "name_desc" ? (
+            <ArrowDown size={14} />
+          ) : (
+            <ArrowUp size={14} />
+          )}
+          {sort === "name_desc" ? "Name (Z–A)" : "Name (A–Z)"}
+        </button>
       </div>
     </div>
   );
