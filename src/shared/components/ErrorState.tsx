@@ -1,4 +1,4 @@
-import { AlertCircle, RefreshCw } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 
 interface ErrorStateProps {
   message?: string;
@@ -10,8 +10,13 @@ export default function ErrorState({
   onRetry,
 }: ErrorStateProps) {
   return (
-    <div className="flex flex-col justify-center items-center gap-3 py-16 h-full text-center">
-      <AlertCircle size={32} className="text-danger" />
+    <div className="flex flex-col justify-center items-center gap-3 py-12 h-full text-center">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/illustrations/error.svg"
+        alt=""
+        className="w-40 h-40 object-contain"
+      />
 
       <p className="text-text-secondary text-sm">{message}</p>
 
