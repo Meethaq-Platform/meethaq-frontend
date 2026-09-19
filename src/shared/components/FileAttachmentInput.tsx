@@ -44,7 +44,7 @@ export default function FileAttachmentInput({
   accept = DEFAULT_ACCEPTED_TYPES,
   maxSizeBytes = DEFAULT_MAX_SIZE_BYTES,
   maxFiles = 10,
-  label = "Attach files",
+  label,
 }: FileAttachmentInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
@@ -95,13 +95,16 @@ export default function FileAttachmentInput({
       <button
         type="button"
         onClick={() => fileInputRef.current?.click()}
-        className="flex items-center gap-1.5 hover:bg-surface-muted px-3 border border-border rounded-lg h-9 font-medium text-text-secondary text-sm transition"
+        aria-label={label ?? "Attach files"}
+        className="flex justify-center items-center gap-1.5 hover:bg-surface-muted px-3 border border-border rounded-xl w-11 h-11 font-medium text-text-secondary text-sm transition"
       >
         <Paperclip size={14} />
         {label}
       </button>
 
-      {validationError && <p className="text-danger text-sm">{validationError}</p>}
+      {validationError && (
+        <p className="text-danger text-sm">{validationError}</p>
+      )}
 
       {files.length > 0 && (
         <ul className="space-y-1.5">
@@ -113,14 +116,14 @@ export default function FileAttachmentInput({
               <span className="flex-1 min-w-0 text-text-primary truncate">
                 {file.name}
               </span>
-              <span className="shrink-0 text-text-secondary text-xs">
+              <span className="text-text-secondary text-xs shrink-0">
                 {formatFileSize(file.size)}
               </span>
               <button
                 type="button"
                 onClick={() => handleRemove(index)}
                 aria-label={`Remove ${file.name}`}
-                className="shrink-0 hover:text-danger text-text-secondary transition"
+                className="text-text-secondary hover:text-danger transition shrink-0"
               >
                 <X size={14} />
               </button>

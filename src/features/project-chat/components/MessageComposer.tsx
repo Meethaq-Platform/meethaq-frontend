@@ -43,8 +43,11 @@ export function MessageComposer({ projectId }: MessageComposerProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 p-4 border-border border-t">
-      <div className="flex items-end gap-2">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-3 p-4 border-border border-t"
+    >
+      <div className="flex items-center gap-2">
         <div className="flex-1">
           <Textarea
             rows={2}
@@ -53,6 +56,12 @@ export function MessageComposer({ projectId }: MessageComposerProps) {
           />
           <InputError message={errors.content?.message} />
         </div>
+
+        <FileAttachmentInput
+          files={files}
+          onChange={(next) => setValue("files", next, { shouldValidate: true })}
+          maxFiles={5}
+        />
 
         <button
           type="submit"
@@ -64,15 +73,13 @@ export function MessageComposer({ projectId }: MessageComposerProps) {
         </button>
       </div>
 
-      <FileAttachmentInput
-        files={files}
-        onChange={(next) => setValue("files", next, { shouldValidate: true })}
-        maxFiles={5}
-        label="Attach Files"
-      />
-
       {sendMessage.isError && (
-        <InputError message={getErrorMessage(sendMessage.error, "Failed to send message.")} />
+        <InputError
+          message={getErrorMessage(
+            sendMessage.error,
+            "Failed to send message.",
+          )}
+        />
       )}
     </form>
   );
