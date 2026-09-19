@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { History } from "lucide-react";
+import { ChevronDown, History } from "lucide-react";
 
 import { useActivity } from "../hooks/useActivity";
 import Spinner from "@/src/shared/components/Spinner";
@@ -13,9 +14,12 @@ interface ActivityTabProps {
   projectId: string;
 }
 
+const COLLAPSED_COUNT = 5;
+
 // Read-only for both participants — no edit/delete, matches Module 6's rule.
 export function ActivityTab({ projectId }: ActivityTabProps) {
   const { data: entries, isLoading, isError, refetch } = useActivity(projectId);
+  const [showAll, setShowAll] = useState(false);
 
   if (isLoading) {
     return (
@@ -44,10 +48,12 @@ export function ActivityTab({ projectId }: ActivityTabProps) {
   const sorted = [...entries].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   );
+  const visible = showAll ? sorted : sorted.slice(0, COLLAPSED_COUNT);
+  const remaining = sorted.length - visible.length;
 
   return (
     <div className="bg-surface border border-border rounded-2xl overflow-hidden">
-      {sorted.map((entry) => {
+      {visible.map((entry) => {
         // No dedicated deep link on the backend DTO — best-effort link to
         // the related milestone's detail page when one is present.
         const linkUrl = entry.milestoneId
@@ -78,6 +84,17 @@ export function ActivityTab({ projectId }: ActivityTabProps) {
           <div key={entry.activityId}>{content}</div>
         );
       })}
+
+      {remaining > 0 && (
+        <button
+          type="button"
+          onClick={() => setShowAll(true)}
+          className="flex justify-center items-center gap-1.5 hover:bg-surface-muted py-3 border-border border-t w-full font-medium text-primary text-sm transition"
+        >
+          Show {remaining} More
+          <ChevronDown size={14} />
+        </button>
+      )}
     </div>
   );
 }
