@@ -1,0 +1,63 @@
+import Link from "next/link";
+import {
+  AlertTriangle,
+  Bell,
+  CalendarClock,
+  CheckCircle2,
+  Clock,
+  MessageSquare,
+  MessageSquareWarning,
+  Upload,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+
+import type { Notification } from "../types/notification";
+import RelativeTime from "@/src/shared/components/RelativeTime";
+
+// eventType is a plain string on the backend (no enum values listed in
+// swagger) — this map is a best-effort guess at casing; any unrecognized
+// value falls back to a generic bell icon rather than breaking the row.
+const eventIcons: Record<string, LucideIcon> = {
+  NewProjectMessage: MessageSquare,
+  MilestoneSubmitted: Upload,
+  RevisionRequested: MessageSquareWarning,
+  DeliverableAccepted: CheckCircle2,
+  MilestoneDeadlineApproaching: CalendarClock,
+  ReviewDeadlineApproaching: Clock,
+  ReviewOverdue: AlertTriangle,
+};
+
+interface NotificationRowProps {
+  notification: Notification;
+  onOpen: (id: number) => void;
+}
+
+export function NotificationRow({ notification, onOpen }: NotificationRowProps) {
+  const Icon = eventIcons[notification.eventType] ?? Bell;
+
+  return (
+    <Link
+      href={notification.actionUrl}
+      onClick={() => onOpen(notification.notificationId)}
+      className={`flex items-start gap-3 px-4 py-3 hover:bg-surface-muted transition ${
+        notification.isRead ? "" : "bg-primary-muted/40"
+      }`}
+    >
+      <div className="flex justify-center items-center bg-surface-muted mt-0.5 rounded-full w-8 h-8 text-text-secondary shrink-0">
+        <Icon size={14} />
+      </div>
+
+      <div className="flex-1 min-w-0">
+        <p className="font-medium text-text-primary text-sm">{notification.title}</p>
+        <p className="text-text-secondary text-sm">{notification.message}</p>
+        <p className="mt-0.5 text-text-secondary text-xs">
+          <RelativeTime value={notification.createdAt} />
+        </p>
+      </div>
+
+      {!notification.isRead && (
+        <span className="bg-primary mt-2 rounded-full w-2 h-2 shrink-0" />
+      )}
+    </Link>
+  );
+}
