@@ -1,7 +1,8 @@
 "use client";
 
+import type { UIEvent } from "react";
 import { useEffect, useRef, useState } from "react";
-import { Bell, CheckCheck } from "lucide-react";
+import { Bell, CheckCheck, Loader2 } from "lucide-react";
 
 import { useNotifications } from "../hooks/useNotifications";
 import { useMarkNotificationRead } from "../hooks/useMarkNotificationRead";
@@ -10,6 +11,10 @@ import { NotificationRow } from "./NotificationRow";
 import Spinner from "@/src/shared/components/Spinner";
 import EmptyState from "@/src/shared/components/EmptyState";
 
+// Fetch the next page once the panel is scrolled within this many pixels of
+// its bottom edge.
+const SCROLL_THRESHOLD_PX = 48;
+
 // Replaces the previously-static NotificationButton stub. No shared
 // Popover exists in this codebase, so the dropdown panel is hand-rolled
 // (absolute positioning + a document click listener to close on outside click).
@@ -17,7 +22,8 @@ export function NotificationBell() {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { data, isLoading } = useNotifications();
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useNotifications();
   const markRead = useMarkNotificationRead();
   const markAllRead = useMarkAllNotificationsRead();
 
@@ -34,7 +40,19 @@ export function NotificationBell() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open]);
 
-  const unreadCount = data?.unreadCount ?? 0;
+  const items = data?.pages.flatMap((page) => page?.items ?? []) ?? [];
+  // The freshest page's unreadCount is the authoritative running total —
+  // every page carries the same global count, duplicated at fetch time.
+  const unreadCount = data?.pages[0]?.unreadCount ?? 0;
+
+  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
+    if (!hasNextPage || isFetchingNextPage) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
+    if (scrollHeight - scrollTop - clientHeight < SCROLL_THRESHOLD_PX) {
+      fetchNextPage();
+    }
+  };
 
   return (
     <div ref={containerRef} className="relative">
@@ -66,26 +84,34 @@ export function NotificationBell() {
             )}
           </div>
 
-          <div className="max-h-96 overflow-y-auto">
+          <div className="max-h-96 overflow-y-auto" onScroll={handleScroll}>
             {isLoading ? (
               <div className="flex justify-center py-8">
                 <Spinner size={20} />
               </div>
-            ) : !data || data.items.length === 0 ? (
+            ) : items.length === 0 ? (
               <div className="px-4 py-6">
                 <EmptyState icon={Bell} title="No notifications yet" />
               </div>
             ) : (
-              data.items.map((notification) => (
-                <NotificationRow
-                  key={notification.notificationId}
-                  notification={notification}
-                  onOpen={(id) => {
-                    markRead.mutate(id);
-                    setOpen(false);
-                  }}
-                />
-              ))
+              <>
+                {items.map((notification) => (
+                  <NotificationRow
+                    key={notification.notificationId}
+                    notification={notification}
+                    onOpen={(id) => {
+                      markRead.mutate(id);
+                      setOpen(false);
+                    }}
+                  />
+                ))}
+
+                {isFetchingNextPage && (
+                  <div className="flex justify-center py-3">
+                    <Loader2 size={16} className="text-text-secondary animate-spin" />
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

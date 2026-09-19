@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { InfiniteData } from "@tanstack/react-query";
 import { markAllNotificationsRead } from "../lib/service";
 import type { NotificationListData } from "../types/notification";
 
@@ -12,14 +13,17 @@ export function useMarkAllNotificationsRead() {
     mutationFn: markAllNotificationsRead,
     meta: { suppressToast: true },
     onSuccess: () => {
-      queryClient.setQueryData<NotificationListData | null | undefined>(
+      queryClient.setQueryData<InfiniteData<NotificationListData> | undefined>(
         ["notifications"],
         (previous) =>
           previous
             ? {
                 ...previous,
-                items: previous.items.map((item) => ({ ...item, isRead: true })),
-                unreadCount: 0,
+                pages: previous.pages.map((page) => ({
+                  ...page,
+                  items: page.items.map((item) => ({ ...item, isRead: true })),
+                  unreadCount: 0,
+                })),
               }
             : previous,
       );

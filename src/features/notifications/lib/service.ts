@@ -1,8 +1,13 @@
 import type { NotificationListResponse } from "../types/notification";
 
 // Cursor-paginated — no cursor passed fetches the first page.
-export async function getNotifications(): Promise<NotificationListResponse> {
-  const response = await fetch("/api/notifications?pageSize=20");
+export async function getNotifications(
+  cursor?: string,
+): Promise<NotificationListResponse> {
+  const params = new URLSearchParams({ pageSize: "20" });
+  if (cursor) params.set("cursor", cursor);
+
+  const response = await fetch(`/api/notifications?${params.toString()}`);
 
   const result = await response.json();
 
