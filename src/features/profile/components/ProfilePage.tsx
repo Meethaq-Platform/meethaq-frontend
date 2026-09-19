@@ -14,6 +14,11 @@ export default function ProfilePage() {
   const [isFormDirty, setIsFormDirty] = useState(false);
   const isSaving = useIsMutating({ mutationKey: ["update-profile"] }) > 0;
 
+  const handleStartEditing = () => {
+    setIsFormDirty(false);
+    setIsEditing(true);
+  };
+
   return (
     <div className="space-y-6 mx-auto h-full">
       <div className="flex justify-between items-center">
@@ -46,10 +51,7 @@ export default function ProfilePage() {
             <div key="viewing-actions">
               <Button
                 type="button"
-                onClick={() => {
-                  setIsFormDirty(false);
-                  setIsEditing(true);
-                }}
+                onClick={handleStartEditing}
                 className="flex items-center gap-1.5 h-9"
               >
                 <Pencil size={14} />
@@ -63,6 +65,7 @@ export default function ProfilePage() {
         isEditing={isEditing}
         onDone={() => setIsEditing(false)}
         onDirtyChange={setIsFormDirty}
+        onStartEditing={handleStartEditing}
       />
     </div>
   );
