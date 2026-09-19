@@ -17,7 +17,7 @@ export default function Tabs<T extends string>({
   options,
 }: TabsProps<T>) {
   return (
-    <div className="inline-flex bg-surface-muted p-1 rounded-xl">
+    <div className="inline-flex bg-surface p-1 rounded-xl">
       {options.map((option) => (
         <button
           key={option.value}
@@ -25,7 +25,7 @@ export default function Tabs<T extends string>({
           onClick={() => onChange(option.value)}
           className={`px-4 h-9 rounded-lg font-semibold text-sm transition ${
             value === option.value
-              ? "bg-surface text-text-primary shadow-sm"
+              ? "bg-primary text-white shadow-sm"
               : "text-text-secondary hover:text-text-primary"
           }`}
         >

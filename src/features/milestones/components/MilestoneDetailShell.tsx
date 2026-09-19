@@ -36,7 +36,7 @@ export function MilestoneDetailShell({
         {actions}
       </div>
 
-      <div className="bg-surface p-6 border border-border rounded-2xl">
+      <div className="bg-(--amber-bg) p-6 border border-border rounded-2xl">
         <div className="flex sm:flex-row flex-col justify-between items-start gap-4">
           <div className="flex-1">
             <h1 className="font-semibold text-text-primary text-lg">
@@ -60,7 +60,7 @@ export function MilestoneDetailShell({
           </div>
         </div>
 
-        <div className="gap-6 grid grid-cols-1 sm:grid-cols-2 mt-4 pt-4 border-border border-t">
+        <div className="gap-6 grid grid-cols-1 sm:grid-cols-2 mt-4 pt-4 border-black border-t">
           <div>
             <p className="mb-1 text-text-secondary text-xs uppercase tracking-wide">
               Agreed Deliverable

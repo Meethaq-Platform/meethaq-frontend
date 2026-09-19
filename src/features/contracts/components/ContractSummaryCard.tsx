@@ -53,7 +53,7 @@ export function ContractSummaryCard({ summary }: { summary: ContractSummary }) {
           <div
             className={`h-full rounded-full transition-all ${
               summary.isAllocationComplete
-                ? "bg-success"
+                ? "bg-primary"
                 : isOverAllocated
                   ? "bg-danger"
                   : "bg-accent-value"
@@ -75,9 +75,17 @@ export function ContractSummaryCard({ summary }: { summary: ContractSummary }) {
             <>
               <AlertTriangle
                 size={14}
-                className={isOverAllocated ? "text-danger" : "text-accent-value"}
+                className={
+                  isOverAllocated ? "text-danger" : "text-accent-value"
+                }
               />
-              <p className={isOverAllocated ? "text-danger text-xs" : "text-text-secondary text-xs"}>
+              <p
+                className={
+                  isOverAllocated
+                    ? "text-danger text-xs"
+                    : "text-text-secondary text-xs"
+                }
+              >
                 {isOverAllocated
                   ? `Over-allocated by ${formatCurrency(Math.abs(summary.remainingValue))} — reduce a milestone before submitting`
                   : `${summary.totalPercentage.toFixed(1)}% allocated across ${summary.milestoneCount} ${summary.milestoneCount === 1 ? "milestone" : "milestones"} — must total 100% before submitting`}
