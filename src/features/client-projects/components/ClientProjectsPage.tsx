@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { InvitationsSection } from "./InvitationsSection";
 import { ClientProjectsSection } from "./ClientProjectsSection";
+import Tabs from "@/src/shared/components/Tabs";
 
 type Tab = "invitations" | "projects";
 
@@ -17,22 +18,7 @@ export default function ClientProjectsPage() {
 
   return (
     <>
-      <div className="inline-flex bg-surface-muted p-1 rounded-xl">
-        {tabs.map((option) => (
-          <button
-            key={option.value}
-            type="button"
-            onClick={() => setTab(option.value)}
-            className={`px-4 h-9 rounded-lg font-semibold text-sm transition ${
-              tab === option.value
-                ? "bg-surface text-text-primary shadow-sm"
-                : "text-text-secondary hover:text-text-primary"
-            }`}
-          >
-            {option.label}
-          </button>
-        ))}
-      </div>
+      <Tabs value={tab} onChange={setTab} options={tabs} />
 
       {tab === "invitations" ? (
         <InvitationsSection />
