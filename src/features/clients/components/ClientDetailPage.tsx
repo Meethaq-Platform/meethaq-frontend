@@ -11,6 +11,7 @@ import { EditClientForm } from "./EditClientForm";
 import Button from "@/src/shared/components/Button";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
+import { formatDate } from "@/src/shared/lib/format";
 
 interface ClientDetailPageProps {
   clientId: string;
@@ -24,54 +25,13 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
 
   return (
     <div className="space-y-6 mx-auto h-full">
-      <div className="flex justify-between items-center">
-        <Link
-          href="/clients"
-          className="flex items-center gap-1.5 text-text-secondary hover:text-text-primary text-sm transition"
-        >
-          <ArrowLeft size={16} />
-          Back to Clients
-        </Link>
-
-        {data &&
-          (isEditing ? (
-            <div key="editing-actions" className="flex items-center gap-3">
-              <Button
-                type="button"
-                variant="amber"
-                onClick={() => setIsEditing(false)}
-                className="h-9"
-              >
-                Cancel
-              </Button>
-
-              <Button
-                type="submit"
-                form="client-edit-form"
-                disabled={!isFormDirty}
-                loading={isSaving}
-                loadingText="Saving..."
-                className="h-9"
-              >
-                Save Changes
-              </Button>
-            </div>
-          ) : (
-            <div key="viewing-actions">
-              <Button
-                type="button"
-                onClick={() => {
-                  setIsFormDirty(false);
-                  setIsEditing(true);
-                }}
-                className="flex items-center gap-1.5 h-9"
-              >
-                <Pencil size={14} />
-                Edit
-              </Button>
-            </div>
-          ))}
-      </div>
+      <Link
+        href="/clients"
+        className="flex items-center gap-1.5 text-text-secondary hover:text-text-primary text-sm transition"
+      >
+        <ArrowLeft size={16} />
+        Back to Clients
+      </Link>
 
       {isLoading ? (
         <div className="flex justify-center items-center py-16">
@@ -84,79 +44,119 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
         />
       ) : (
         <section className="space-y-6">
-          <div className="flex items-center gap-4 bg-surface p-6 border border-border rounded-2xl">
-            <ClientAvatar
-              fullName={data.clientFullName}
-              profileImage={data.clientProfileImage}
-            />
+          {/* Header: avatar + identity + contact metadata merged in one
+              place, actions alongside — mirrors ProjectDetailPage's header. */}
+          <div className="bg-(--amber-bg) p-6 border border-border rounded-2xl">
+            <div className="flex sm:flex-row flex-col justify-between items-start gap-4">
+              <div className="flex items-start gap-4 min-w-0">
+                <ClientAvatar
+                  fullName={data.clientFullName}
+                  profileImage={data.clientProfileImage}
+                />
 
-            <div>
-              <h1 className="font-semibold text-text-primary text-lg">
-                {data.clientFullName}
-              </h1>
-              <p className="text-text-secondary text-sm">{data.clientEmail}</p>
+                <div className="min-w-0">
+                  <h1 className="font-bold text-text-primary text-xl md:text-2xl truncate">
+                    {data.clientFullName}
+                  </h1>
+
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-text-secondary text-sm">
+                    <span>{data.clientEmail}</span>
+                    {data.clientPhoneNumber && (
+                      <>
+                        <span aria-hidden className="text-border">
+                          ·
+                        </span>
+                        <span>{data.clientPhoneNumber}</span>
+                      </>
+                    )}
+                    {data.clientCountry && (
+                      <>
+                        <span aria-hidden className="text-border">
+                          ·
+                        </span>
+                        <span>{data.clientCountry}</span>
+                      </>
+                    )}
+                  </div>
+
+                  <p className="mt-2 text-text-secondary text-xs">
+                    Added {formatDate(data.dateAdded)}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                {isEditing ? (
+                  <>
+                    <Button
+                      type="button"
+                      variant="amber"
+                      onClick={() => setIsEditing(false)}
+                      className="h-9"
+                    >
+                      Cancel
+                    </Button>
+
+                    <Button
+                      type="submit"
+                      form="client-edit-form"
+                      disabled={!isFormDirty}
+                      loading={isSaving}
+                      loadingText="Saving..."
+                      className="h-9"
+                    >
+                      Save Changes
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      setIsFormDirty(false);
+                      setIsEditing(true);
+                    }}
+                    className="flex items-center gap-1.5 h-9"
+                  >
+                    <Pencil size={14} />
+                    Edit
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
 
-          <div className="space-y-6 bg-surface p-6 border border-border rounded-2xl">
-            <div className="gap-x-6 gap-y-6 grid grid-cols-1 sm:grid-cols-3">
-              <div>
-                <p className="text-text-secondary text-xs uppercase tracking-wide">
-                  Phone
-                </p>
-                <p className="text-text-primary text-sm">
-                  {data.clientPhoneNumber ?? "—"}
-                </p>
-              </div>
+          <div className="bg-surface p-6 border border-border rounded-2xl">
+            <p className="mb-4 font-semibold text-text-secondary text-xs uppercase tracking-wide">
+              Details
+            </p>
 
-              <div>
-                <p className="text-text-secondary text-xs uppercase tracking-wide">
-                  Country
-                </p>
-                <p className="text-text-primary text-sm">
-                  {data.clientCountry ?? "—"}
-                </p>
-              </div>
-
-              <div>
-                <p className="text-text-secondary text-xs uppercase tracking-wide">
-                  Added
-                </p>
-                <p className="text-text-primary text-sm">
-                  {new Date(data.dateAdded).toLocaleDateString()}
-                </p>
-              </div>
-            </div>
-
-            <div className="pt-6 border-border border-t">
-              {isEditing ? (
-                <EditClientForm
-                  client={data}
-                  onSuccess={() => setIsEditing(false)}
-                  onDirtyChange={setIsFormDirty}
-                />
-              ) : (
-                <div className="gap-x-6 gap-y-6 grid grid-cols-1 sm:grid-cols-3">
-                  <div>
-                    <p className="text-text-secondary text-xs uppercase tracking-wide">
-                      Company
-                    </p>
-                    <p className="text-text-primary text-sm">
-                      {data.companyName ?? "—"}
-                    </p>
-                  </div>
-
-                  {data.notes && (
-                    <div className="sm:col-span-2">
-                      <p className="text-text-secondary text-xs uppercase tracking-wide">
-                        Notes
-                      </p>
-                      <p className="text-text-primary text-sm">{data.notes}</p>
-                    </div>
-                  )}
+            {isEditing ? (
+              <EditClientForm
+                client={data}
+                onSuccess={() => setIsEditing(false)}
+                onDirtyChange={setIsFormDirty}
+              />
+            ) : (
+              <div className="gap-x-6 gap-y-6 grid grid-cols-1 sm:grid-cols-3">
+                <div>
+                  <p className="text-text-secondary text-xs uppercase tracking-wide">
+                    Company
+                  </p>
+                  <p className="text-text-primary text-sm">
+                    {data.companyName ?? "—"}
+                  </p>
                 </div>
-              )}
-            </div>
+
+                {data.notes && (
+                  <div className="sm:col-span-2">
+                    <p className="text-text-secondary text-xs uppercase tracking-wide">
+                      Notes
+                    </p>
+                    <p className="text-text-primary text-sm">{data.notes}</p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </section>
       )}

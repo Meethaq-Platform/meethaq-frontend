@@ -9,6 +9,7 @@ import { useSidebar } from "../context/SidebarContext";
 import { getNavItems } from "../lib/nav-items";
 import { NavItem } from "./NavItem";
 import { NavLogoutButton } from "./NavLogoutButton";
+import Image from "next/image";
 
 export function Sidebar() {
   const { isMobileOpen, closeMobile } = useSidebar();
@@ -42,6 +43,14 @@ export function Sidebar() {
         {navItems.map((item) => (
           <NavItem key={item.href} item={item} />
         ))}
+
+        <Image
+          src="/illustrations/Agreement-bro.svg"
+          alt="Agreement illustration"
+          width={250}
+          height={250}
+          className="hidden lg:block mt-auto"
+        />
 
         <div className="mt-auto pt-3 border-border border-t">
           <NavLogoutButton />

@@ -5,9 +5,11 @@ import { ChevronDown, LogOut } from "lucide-react";
 
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { useLogout } from "../hooks/useLogout";
+import { useProfile } from "@/src/features/profile/hooks/useProfile";
 
 export default function UserMenu() {
   const { data: user, isLoading } = useCurrentUser();
+  const { data: profile } = useProfile();
   const handleLogout = useLogout();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -23,8 +25,17 @@ export default function UserMenu() {
         onClick={() => setIsOpen((prev) => !prev)}
         className="flex items-center gap-3 hover:bg-surface-muted px-3 py-2 rounded-xl transition"
       >
-        <div className="flex justify-center items-center bg-primary-muted rounded-full w-9 h-9 font-semibold text-primary">
-          {user.firstName.charAt(0).toUpperCase()}
+        <div className="flex justify-center items-center bg-primary-muted rounded-full w-9 h-9 overflow-hidden font-semibold text-primary">
+          {profile?.profileImage ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={profile.profileImage}
+              alt={user.fullName}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            user.firstName.charAt(0).toUpperCase()
+          )}
         </div>
 
         <div className="hidden sm:block text-left">
