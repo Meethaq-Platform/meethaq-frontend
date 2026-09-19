@@ -42,8 +42,10 @@ export function MilestonesSection({
 
   return (
     <div className="bg-surface border border-border rounded-2xl overflow-hidden">
-      <div className="flex justify-between items-center p-6 pb-4">
-        <h2 className="font-semibold text-text-primary text-base">Milestones</h2>
+      <div className="flex justify-between items-center bg-primary-muted p-6 pb-4">
+        <h2 className="font-semibold text-text-primary text-base">
+          Milestones
+        </h2>
 
         {editable && (
           <button

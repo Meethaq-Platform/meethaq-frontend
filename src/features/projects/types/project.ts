@@ -37,12 +37,18 @@ export interface Project {
   updatedAt: string | null;
 }
 
+// The backend's ProjectSummaryDto already includes totalValue/contractStatus/
+// contractAction (verified against the live swagger spec) — declared here so
+// the projects table can show them instead of silently dropping the fields.
 export interface ProjectSummary {
   id: number;
   title: string;
   status: ProjectStatus;
   clientId: number | null;
   clientName: string | null;
+  totalValue: number | null;
+  contractStatus: ProjectContractStatus;
+  contractAction: ProjectContractAction | null;
   createdAt: string;
   updatedAt: string | null;
 }
@@ -79,6 +85,7 @@ export interface CreateProjectRequest {
   title: string;
   description?: string;
   relationshipId?: number;
+  totalValue?: number | null;
 }
 
 export interface UpdateProjectRequest {

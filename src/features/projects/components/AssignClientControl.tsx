@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Search, X } from "lucide-react";
+import { Loader2, Search, X } from "lucide-react";
 
 import { useClients } from "@/src/features/clients/hooks/useClients";
 import { useDebouncedValue } from "@/src/features/clients/hooks/useDebouncedValue";
@@ -144,8 +144,9 @@ export function AssignClientControl({
           {isOpen && (
             <div className="top-full z-10 absolute bg-surface shadow-lg mt-1 border border-border rounded-xl w-full max-h-60 overflow-auto">
               {isLoadingClients ? (
-                <p className="px-3 py-2 text-text-secondary text-sm">
-                  Loading...
+                <p className="flex items-center gap-2 px-3 py-2 text-text-secondary text-sm">
+                  <Loader2 size={14} className="animate-spin" />
+                  Searching...
                 </p>
               ) : clients?.items.length ? (
                 clients.items.map((client) => (
@@ -155,7 +156,7 @@ export function AssignClientControl({
                     onClick={() =>
                       handleSelect(client.relationshipId, client.clientFullName)
                     }
-                    className="block hover:bg-surface-muted px-3 py-2 w-full text-text-primary text-sm text-left transition"
+                    className="block hover:bg-surface-muted focus-visible:bg-surface-muted px-3 py-2 outline-none w-full text-text-primary text-sm text-left transition"
                   >
                     {client.clientFullName}
                   </button>

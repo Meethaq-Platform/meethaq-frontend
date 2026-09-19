@@ -6,7 +6,18 @@ import { Ban } from "lucide-react";
 import { useCancelProject } from "../hooks/useCancelProject";
 import ConfirmModal from "@/src/shared/components/ConfirmModal";
 
-export function CancelProjectButton({ projectId }: { projectId: number }) {
+interface CancelProjectButtonProps {
+  projectId: number;
+  // Called when the trigger is clicked, before the confirm modal opens —
+  // lets the parent overflow menu close itself so the menu and the modal
+  // don't both sit open at once.
+  onTriggerClick?: () => void;
+}
+
+export function CancelProjectButton({
+  projectId,
+  onTriggerClick,
+}: CancelProjectButtonProps) {
   const [open, setOpen] = useState(false);
   const { mutate, isPending, isError, error } = useCancelProject(
     String(projectId),
@@ -16,10 +27,13 @@ export function CancelProjectButton({ projectId }: { projectId: number }) {
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
-        className="flex items-center gap-1.5 hover:bg-danger-muted px-4 rounded-xl h-9 font-semibold text-danger text-sm transition"
+        onClick={() => {
+          onTriggerClick?.();
+          setOpen(true);
+        }}
+        className="flex items-center gap-3 hover:bg-danger-muted px-4 w-full h-11 text-danger text-sm transition"
       >
-        <Ban size={14} />
+        <Ban size={16} />
         Cancel Project
       </button>
 

@@ -3,8 +3,11 @@ import { ArrowRight, Briefcase } from "lucide-react";
 
 import type { ProjectSummary } from "@/src/features/projects/types/project";
 import { ProjectStatusBadge } from "@/src/features/projects/components/ProjectStatusBadge";
+import { ContractStatusBadge } from "@/src/features/contracts/components/ContractStatusBadge";
 import Pagination from "@/src/shared/components/Pagination";
 import EmptyState from "@/src/shared/components/EmptyState";
+import RelativeTime from "@/src/shared/components/RelativeTime";
+import { formatCurrency } from "@/src/shared/lib/format";
 
 interface ClientProjectsTableProps {
   projects: ProjectSummary[];
@@ -35,15 +38,24 @@ export function ClientProjectsTable({
     <div className="bg-surface border border-border rounded-2xl overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead>
+          <thead className="bg-primary-muted">
             <tr className="border-border border-b">
-              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-left uppercase tracking-wide">
+              <th className="px-6 py-3.5 font-medium text-primary text-xs text-left uppercase tracking-wide">
                 Title
               </th>
-              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-left uppercase tracking-wide">
+              <th className="px-6 py-3.5 font-medium text-primary text-xs text-left uppercase tracking-wide">
                 Status
               </th>
-              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-right uppercase tracking-wide">
+              <th className="px-6 py-3.5 font-medium text-primary text-xs text-left uppercase tracking-wide">
+                Contract
+              </th>
+              <th className="hidden lg:table-cell px-6 py-3.5 font-medium text-primary text-xs text-right uppercase tracking-wide">
+                Value
+              </th>
+              <th className="hidden lg:table-cell px-6 py-3.5 font-medium text-primary text-xs text-left uppercase tracking-wide">
+                Updated
+              </th>
+              <th className="px-6 py-3.5 font-medium text-primary text-xs text-right uppercase tracking-wide">
                 <span className="sr-only">Actions</span>
               </th>
             </tr>
@@ -53,7 +65,7 @@ export function ClientProjectsTable({
             {projects.map((project) => (
               <tr
                 key={project.id}
-                className="hover:bg-surface-muted transition"
+                className="even:bg-surface-muted hover:bg-border/40 transition"
               >
                 <td className="px-6 py-4 font-medium text-text-primary">
                   {project.title}
@@ -61,6 +73,18 @@ export function ClientProjectsTable({
 
                 <td className="px-6 py-4">
                   <ProjectStatusBadge status={project.status} />
+                </td>
+
+                <td className="px-6 py-4">
+                  <ContractStatusBadge status={project.contractStatus} />
+                </td>
+
+                <td className="hidden lg:table-cell px-6 py-4 font-numbers text-text-primary text-right">
+                  {project.totalValue != null ? formatCurrency(project.totalValue) : "—"}
+                </td>
+
+                <td className="hidden lg:table-cell px-6 py-4 text-text-secondary">
+                  <RelativeTime value={project.updatedAt ?? project.createdAt} />
                 </td>
 
                 <td className="px-6 py-4 text-right">

@@ -85,7 +85,8 @@ export default function ContractWorkspacePage({
   }
 
   const currentProject = project.data;
-  const isEligible = Boolean(currentProject.clientId) && Boolean(currentProject.totalValue);
+  const isEligible =
+    Boolean(currentProject.clientId) && Boolean(currentProject.totalValue);
   // Derive the badge from the freshly-mutated contract when one exists, so it
   // never lags behind the rest of the page while the invalidated project
   // query is still refetching in the background.
@@ -124,7 +125,9 @@ export default function ContractWorkspacePage({
           ) : (
             <div className="flex items-center gap-3">
               {canDelete && <DeleteContractButton projectId={projectId} />}
-              {isPendingApproval && <WithdrawContractButton projectId={projectId} />}
+              {isPendingApproval && (
+                <WithdrawContractButton projectId={projectId} />
+              )}
 
               {canEdit && (
                 <Button
@@ -183,7 +186,7 @@ export default function ContractWorkspacePage({
         )
       ) : (
         <section className="space-y-6">
-          <div className="bg-surface p-6 border border-border rounded-2xl">
+          <div className="bg-(--amber-bg) p-6 border border-border rounded-2xl">
             {isEditing ? (
               <ContractForm
                 projectId={projectId}
@@ -226,8 +229,8 @@ export default function ContractWorkspacePage({
                 )}
 
                 {isApproved && contract.approvedAt && (
-                  <div className="mt-4 pt-4 border-border border-t">
-                    <p className="text-success text-sm">
+                  <div className="mt-4 pt-4 border-black border-t">
+                    <p className="text-primary text-sm">
                       Approved by {currentProject.clientName ?? "the client"} on{" "}
                       {formatDate(contract.approvedAt)} —{" "}
                       {formatCurrency(contract.summary.projectValue)} locked in.
@@ -248,8 +251,8 @@ export default function ContractWorkspacePage({
             <div className="bg-warning-muted p-4 border border-warning/20 rounded-2xl">
               <p className="text-warning text-sm">
                 This contract was submitted on{" "}
-                {contract.submittedAt ? formatDate(contract.submittedAt) : "—"} and
-                is awaiting your client&apos;s review.
+                {contract.submittedAt ? formatDate(contract.submittedAt) : "—"}{" "}
+                and is awaiting your client&apos;s review.
               </p>
             </div>
           )}
