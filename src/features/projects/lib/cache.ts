@@ -8,6 +8,9 @@ export function toProjectSummary(project: Project) {
     status: project.status,
     clientId: project.clientId,
     clientName: project.clientName,
+    totalValue: project.totalValue,
+    contractStatus: project.contractStatus,
+    contractAction: project.contractAction,
     createdAt: project.createdAt,
     updatedAt: project.updatedAt,
   };
