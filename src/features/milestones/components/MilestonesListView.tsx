@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ListChecks } from "lucide-react";
+import { ChevronRight, ListChecks } from "lucide-react";
 
 import type { MilestoneExecutionDetail } from "../types/milestone";
 import { MilestoneStatusBadge } from "./MilestoneStatusBadge";
@@ -56,10 +56,10 @@ export function MilestonesListView({
         <Link
           key={milestone.milestoneId}
           href={`/projects/${projectId}/milestones/${milestone.milestoneId}`}
-          className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-3 p-4 hover:bg-surface-muted border-border border-b last:border-b-0 transition"
+          className="group flex sm:flex-row flex-col justify-between items-start sm:items-center gap-3 hover:bg-surface-muted active:bg-border/40 p-4 border-border border-b last:border-b-0 transition"
         >
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-text-primary text-sm">
+            <h3 className="font-semibold text-text-primary group-hover:text-primary text-sm transition-colors">
               {milestone.title}
             </h3>
             <p className="mt-1 text-text-secondary text-xs">
@@ -77,6 +77,11 @@ export function MilestonesListView({
                 />
               )}
             <MilestoneStatusBadge status={milestone.executionStatus} />
+
+            <ChevronRight
+              size={16}
+              className="text-text-secondary group-hover:text-primary transition-transform group-hover:translate-x-0.5 shrink-0"
+            />
           </div>
         </Link>
       ))}
