@@ -1,7 +1,9 @@
 import type {
+  CompleteProjectPayload,
   CreateProjectRequest,
   GetProjectsParams,
   LinkClientRequest,
+  ProjectCompletionResponse,
   ProjectResponse,
   ProjectsListResponse,
   UpdateProjectRequest,
@@ -117,6 +119,34 @@ export async function cancelProject(id: string): Promise<ProjectResponse> {
 
   if (!response.ok) {
     throw new Error(result.message || "Failed to cancel project.");
+  }
+
+  return result;
+}
+
+// The backend explains an unmet completion condition via `errors` (a flat
+// string list, e.g. one entry per outstanding milestone/dispute/change
+// request) rather than a structured checklist field. `message` is just a
+// generic "validation failed" wrapper in that case — showing the specific
+// error(s) alone reads much better than message + errors concatenated.
+export async function completeProject(
+  id: string,
+  payload: CompleteProjectPayload,
+): Promise<ProjectCompletionResponse> {
+  const response = await fetch(`/api/projects/${id}/complete`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    const detail =
+      Array.isArray(result.errors) && result.errors.length > 0
+        ? result.errors.join(" ")
+        : result.message || "Failed to complete project.";
+    throw new Error(detail);
   }
 
   return result;
