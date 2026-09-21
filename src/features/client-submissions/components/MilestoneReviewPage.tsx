@@ -1,5 +1,8 @@
 "use client";
 
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+
 import { useClientMilestone } from "../hooks/useClientMilestone";
 import { useClientSubmissions } from "../hooks/useClientSubmissions";
 import { MilestoneDetailShell } from "@/src/features/milestones/components/MilestoneDetailShell";
@@ -93,6 +96,13 @@ export function MilestoneReviewPage({
             You&apos;ve accepted this milestone&apos;s deliverable. It&apos;s now
             eligible for payment processing.
           </p>
+          <Link
+            href={`/projects/${projectId}?tab=payments`}
+            className="inline-flex items-center gap-1.5 mt-2 font-semibold text-success text-sm underline underline-offset-2"
+          >
+            Go to Payment
+            <ArrowRight size={14} />
+          </Link>
         </div>
       )}
 
