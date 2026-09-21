@@ -10,7 +10,19 @@ interface ModalProps {
   onClose: () => void;
   title?: string;
   children: ReactNode;
+  // "sm" (default) preserves every existing call site's width unchanged.
+  // "md"/"lg" are for content that needs more room (grids, multi-column
+  // fields, longer lists) — still fully responsive since the backdrop's
+  // p-4 gutter + w-full on the dialog cap it below the viewport on narrow
+  // screens regardless of which max-width tier is picked.
+  size?: "sm" | "md" | "lg";
 }
+
+const sizeMaxWidth: Record<NonNullable<ModalProps["size"]>, string> = {
+  sm: "max-w-sm",
+  md: "max-w-xl",
+  lg: "max-w-2xl",
+};
 
 function subscribeNoop() {
   return () => {};
@@ -25,7 +37,7 @@ function useIsMounted() {
   );
 }
 
-export default function Modal({ open, onClose, title, children }: ModalProps) {
+export default function Modal({ open, onClose, title, children, size = "sm" }: ModalProps) {
   const mounted = useIsMounted();
 
   useEffect(() => {
@@ -50,10 +62,10 @@ export default function Modal({ open, onClose, title, children }: ModalProps) {
         role="dialog"
         aria-modal="true"
         onClick={(event) => event.stopPropagation()}
-        className="bg-surface shadow-xl border border-border rounded-2xl w-full max-w-sm overflow-hidden"
+        className={`flex flex-col bg-surface shadow-xl border border-border rounded-2xl w-full ${sizeMaxWidth[size]} max-h-[85vh] overflow-hidden`}
       >
         {title && (
-          <div className="flex justify-between items-center px-5 py-4 border-border border-b">
+          <div className="flex justify-between items-center px-5 py-4 border-border border-b shrink-0">
             <h2 className="font-semibold text-text-primary text-base">
               {title}
             </h2>
@@ -69,7 +81,12 @@ export default function Modal({ open, onClose, title, children }: ModalProps) {
           </div>
         )}
 
-        <div className="p-5">{children}</div>
+        {/* The one place a max-height + scroll is applied — every modal gets
+            the same 85vh cap and scrolls its body once content exceeds it,
+            with the header (if any) staying pinned, rather than each modal
+            hand-rolling its own (previously inconsistent: some had none,
+            others 70vh or 75vh on an inner div). */}
+        <div className="p-5 overflow-y-auto">{children}</div>
       </div>
     </div>,
     document.body,
