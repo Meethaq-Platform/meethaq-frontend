@@ -8,16 +8,9 @@ import ConfirmModal from "@/src/shared/components/ConfirmModal";
 
 interface CancelProjectButtonProps {
   projectId: number;
-  // Called when the trigger is clicked, before the confirm modal opens —
-  // lets the parent overflow menu close itself so the menu and the modal
-  // don't both sit open at once.
-  onTriggerClick?: () => void;
 }
 
-export function CancelProjectButton({
-  projectId,
-  onTriggerClick,
-}: CancelProjectButtonProps) {
+export function CancelProjectButton({ projectId }: CancelProjectButtonProps) {
   const [open, setOpen] = useState(false);
   const { mutate, isPending, isError, error } = useCancelProject(
     String(projectId),
@@ -27,13 +20,10 @@ export function CancelProjectButton({
     <>
       <button
         type="button"
-        onClick={() => {
-          onTriggerClick?.();
-          setOpen(true);
-        }}
-        className="flex items-center gap-3 hover:bg-danger-muted px-4 w-full h-11 text-danger text-sm transition"
+        onClick={() => setOpen(true)}
+        className="flex items-center gap-1.5 hover:bg-danger-muted px-4 rounded-xl h-9 font-semibold text-danger text-sm transition"
       >
-        <Ban size={16} />
+        <Ban size={14} />
         Cancel Project
       </button>
 
