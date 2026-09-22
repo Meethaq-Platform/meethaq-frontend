@@ -1,6 +1,7 @@
 import "server-only";
 
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 import { refreshAccessToken } from "./refreshAccessToken";
 
@@ -104,4 +105,110 @@ export async function serverApi<T>(
   }
 
   return data;
+}
+
+// Standard catch-block handler for every BFF route: an ApiError carries the
+// upstream status/message through as-is, anything else (network failure,
+// bad JSON, etc.) becomes a generic 500.
+export function errorResponse(error: unknown, action: string) {
+  if (error instanceof ApiError) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: error.status === 401 ? "Not authenticated." : error.message,
+        data: null,
+        errors: error.errors,
+      },
+      { status: error.status },
+    );
+  }
+
+  console.error(`${action} error:`, error);
+
+  return NextResponse.json(
+    {
+      success: false,
+      message: "Unable to connect to the server.",
+      data: null,
+      errors: null,
+    },
+    { status: 500 },
+  );
+}
+
+// Streaming auth proxy for a file behind the backend (evidence, receipts,
+// attachments, etc.). serverApi() isn't reused here since it parses the
+// response body as JSON; this needs the raw bytes/headers instead. Callers
+// build this BFF-relative path from IDs rather than exposing the backend's
+// own file URL, so a leaked link can't bypass auth.
+export async function proxyAuthenticatedFile(
+  upstreamPath: string,
+  logLabel: string,
+  options?: {
+    notFoundMessage?: string;
+    defaultContentType?: string;
+    defaultContentDisposition?: string;
+  },
+): Promise<Response> {
+  if (!API_URL) {
+    return NextResponse.json(
+      { success: false, message: "Server misconfiguration.", data: null, errors: null },
+      { status: 500 },
+    );
+  }
+
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("access_token")?.value;
+
+  if (!accessToken) {
+    return NextResponse.json(
+      { success: false, message: "Not authenticated.", data: null, errors: null },
+      { status: 401 },
+    );
+  }
+
+  try {
+    const upstream = await fetch(`${API_URL}${upstreamPath}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    if (!upstream.ok) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            upstream.status === 404
+              ? (options?.notFoundMessage ?? "File not found.")
+              : "Failed to load file.",
+          data: null,
+          errors: null,
+        },
+        { status: upstream.status },
+      );
+    }
+
+    return new NextResponse(upstream.body, {
+      status: 200,
+      headers: {
+        "Content-Type":
+          upstream.headers.get("Content-Type") ??
+          options?.defaultContentType ??
+          "application/octet-stream",
+        "Content-Disposition":
+          upstream.headers.get("Content-Disposition") ??
+          options?.defaultContentDisposition ??
+          "inline",
+        ...(upstream.headers.get("Content-Length")
+          ? { "Content-Length": upstream.headers.get("Content-Length")! }
+          : {}),
+      },
+    });
+  } catch (error) {
+    console.error(`${logLabel} error:`, error);
+
+    return NextResponse.json(
+      { success: false, message: "Unable to connect to the server.", data: null, errors: null },
+      { status: 500 },
+    );
+  }
 }
