@@ -5,8 +5,12 @@ import {
   CalendarClock,
   CheckCircle2,
   Clock,
+  CreditCard,
+  FileEdit,
   MessageSquare,
   MessageSquareWarning,
+  PartyPopper,
+  ShieldAlert,
   Upload,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -25,6 +29,20 @@ const eventIcons: Record<string, LucideIcon> = {
   MilestoneDeadlineApproaching: CalendarClock,
   ReviewDeadlineApproaching: Clock,
   ReviewOverdue: AlertTriangle,
+  PaymentEligible: CreditCard,
+  PaymentEvidenceSubmitted: CreditCard,
+  PaymentReceiptConfirmed: CheckCircle2,
+  PaymentIssueReported: AlertTriangle,
+  ChangeRequestSubmitted: FileEdit,
+  ChangeRequestApproved: FileEdit,
+  ChangeRequestRejected: FileEdit,
+  ChangeRequestWithdrawn: FileEdit,
+  ChangeRequestDecided: FileEdit,
+  DisputeOpened: ShieldAlert,
+  DisputeEvidenceAdded: ShieldAlert,
+  DisputeResolutionProposed: ShieldAlert,
+  DisputeResolved: ShieldAlert,
+  ProjectCompleted: PartyPopper,
 };
 
 interface NotificationRowProps {

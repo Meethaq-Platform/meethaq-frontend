@@ -95,10 +95,14 @@ export default function FileAttachmentInput({
       <button
         type="button"
         onClick={() => fileInputRef.current?.click()}
-        aria-label={label ?? "Attach files"}
-        className="flex justify-center items-center gap-1.5 hover:bg-surface-muted px-3 border border-border rounded-xl w-11 h-11 font-medium text-text-secondary text-sm transition"
+        aria-label={label ? undefined : "Attach files"}
+        className={
+          label
+            ? "flex items-center gap-2 hover:bg-surface-muted px-4 border border-border rounded-xl h-11 font-semibold text-text-secondary text-sm whitespace-nowrap transition"
+            : "flex justify-center items-center hover:bg-surface-muted border border-border rounded-xl w-11 h-11 text-text-secondary transition"
+        }
       >
-        <Paperclip size={14} />
+        <Paperclip size={14} className="shrink-0" />
         {label}
       </button>
 

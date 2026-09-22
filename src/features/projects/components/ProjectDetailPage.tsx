@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { ArrowLeft, Pencil } from "lucide-react";
 import { useIsMutating } from "@tanstack/react-query";
 
@@ -10,11 +11,17 @@ import { ProjectStatusBadge } from "./ProjectStatusBadge";
 import { EditProjectForm } from "./EditProjectForm";
 import { ClientCard } from "./ClientCard";
 import { ContractCard } from "./ContractCard";
-import { ProjectOverflowMenu } from "./ProjectOverflowMenu";
+import { CompleteProjectButton } from "./CompleteProjectButton";
+import { CancelProjectButton } from "./CancelProjectButton";
 import { ExecutionOverviewCard } from "@/src/features/milestones/components/ExecutionOverviewCard";
 import { MilestonesTab } from "@/src/features/milestones/components/MilestonesTab";
 import { ProjectChatTab } from "@/src/features/project-chat/components/ProjectChatTab";
 import { ActivityTab } from "@/src/features/activity-log/components/ActivityTab";
+import { LastActivitySummary } from "@/src/features/activity-log/components/LastActivitySummary";
+import { ProjectPaymentSummaryCard } from "@/src/features/payments/components/ProjectPaymentSummaryCard";
+import { PaymentsTab } from "@/src/features/payments/components/PaymentsTab";
+import { ChangeRequestsTab } from "@/src/features/change-requests/components/ChangeRequestsTab";
+import { DisputesTab } from "@/src/features/disputes/components/DisputesTab";
 import Button from "@/src/shared/components/Button";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
@@ -25,32 +32,57 @@ interface ProjectDetailPageProps {
   projectId: string;
 }
 
-type DetailTab = "overview" | "milestones" | "chat" | "activity";
+type DetailTab =
+  | "overview"
+  | "milestones"
+  | "payments"
+  | "changes"
+  | "disputes"
+  | "chat"
+  | "activity";
 
 const detailTabs: { value: DetailTab; label: string }[] = [
   { value: "overview", label: "Overview" },
   { value: "milestones", label: "Milestones" },
+  { value: "payments", label: "Payments" },
+  { value: "changes", label: "Change Requests" },
+  { value: "disputes", label: "Disputes" },
   { value: "chat", label: "Chat" },
   { value: "activity", label: "Activity" },
 ];
+
+const validTabs: readonly string[] = detailTabs.map((t) => t.value);
+
+// Lets other pages deep-link here with e.g. ?tab=payments (used by the
+// "View Payment" link shown once a milestone is accepted) — falls back to
+// "overview" for a missing/invalid value rather than an invalid tab state.
+function readInitialTab(searchParams: URLSearchParams): DetailTab {
+  const requested = searchParams.get("tab");
+  return validTabs.includes(requested ?? "")
+    ? (requested as DetailTab)
+    : "overview";
+}
 
 export default function ProjectDetailPage({
   projectId,
 }: ProjectDetailPageProps) {
   const { data, isLoading, isError, refetch } = useProject(projectId);
+  const searchParams = useSearchParams();
   const [isEditing, setIsEditing] = useState(false);
   const [isFormDirty, setIsFormDirty] = useState(false);
-  const [tab, setTab] = useState<DetailTab>("overview");
+  const [tab, setTab] = useState<DetailTab>(() => readInitialTab(searchParams));
   const isSaving = useIsMutating({ mutationKey: ["update-project"] }) > 0;
 
   const canEdit = data?.status === "Draft";
   const canCancel = data?.status === "Draft" || data?.status === "Active";
+  const canComplete =
+    data?.status === "Active" && data?.contractStatus === "Approved";
 
   return (
     <div className="space-y-6 mx-auto h-full">
       <Link
         href="/projects"
-        className="flex items-center gap-1.5 text-text-secondary hover:text-text-primary text-sm transition"
+        className="flex items-center gap-1.5 w-fit text-text-secondary hover:text-text-primary text-sm transition"
       >
         <ArrowLeft size={16} />
         Back to Projects
@@ -85,6 +117,9 @@ export default function ProjectDetailPage({
                         {data.title}
                       </h1>
                       <ProjectStatusBadge status={data.status} />
+                      {canComplete && (
+                        <CompleteProjectButton projectId={data.id} />
+                      )}
                     </div>
 
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-text-secondary text-sm">
@@ -110,48 +145,52 @@ export default function ProjectDetailPage({
                 )}
               </div>
 
-              <div className="flex items-center gap-2 shrink-0">
-                {isEditing ? (
-                  <>
-                    <Button
-                      type="button"
-                      variant="amber"
-                      onClick={() => setIsEditing(false)}
-                      className="h-9"
-                    >
-                      Cancel
-                    </Button>
-
-                    <Button
-                      type="submit"
-                      form="project-edit-form"
-                      disabled={!isFormDirty}
-                      loading={isSaving}
-                      loadingText="Saving..."
-                      className="h-9"
-                    >
-                      Save Changes
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    {canEdit && (
+              <div className="flex flex-col items-end gap-3 shrink-0">
+                <div className="flex flex-wrap items-center gap-2 shrink-0">
+                  {isEditing ? (
+                    <>
                       <Button
                         type="button"
-                        onClick={() => {
-                          setIsFormDirty(false);
-                          setIsEditing(true);
-                        }}
-                        className="flex items-center gap-1.5 h-9"
+                        variant="amber"
+                        onClick={() => setIsEditing(false)}
+                        className="h-9"
                       >
-                        <Pencil size={14} />
-                        Edit
+                        Cancel
                       </Button>
-                    )}
 
-                    {canCancel && <ProjectOverflowMenu projectId={data.id} />}
-                  </>
-                )}
+                      <Button
+                        type="submit"
+                        form="project-edit-form"
+                        disabled={!isFormDirty}
+                        loading={isSaving}
+                        loadingText="Saving..."
+                        className="h-9"
+                      >
+                        Save Changes
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      {canEdit && (
+                        <Button
+                          type="button"
+                          onClick={() => {
+                            setIsFormDirty(false);
+                            setIsEditing(true);
+                          }}
+                          className="flex items-center gap-1.5 h-9"
+                        >
+                          <Pencil size={14} />
+                          Edit
+                        </Button>
+                      )}
+
+                      {canCancel && <CancelProjectButton projectId={data.id} />}
+                    </>
+                  )}
+                </div>
+
+                {!isEditing && <LastActivitySummary projectId={projectId} />}
               </div>
             </div>
           </div>
@@ -166,12 +205,18 @@ export default function ProjectDetailPage({
               </div>
 
               {data.contractStatus === "Approved" && (
-                <ExecutionOverviewCard projectId={projectId} />
+                <>
+                  <ExecutionOverviewCard projectId={projectId} />
+                  <ProjectPaymentSummaryCard projectId={projectId} />
+                </>
               )}
             </div>
           )}
 
           {tab === "milestones" && <MilestonesTab projectId={projectId} />}
+          {tab === "payments" && <PaymentsTab projectId={projectId} />}
+          {tab === "changes" && <ChangeRequestsTab projectId={projectId} />}
+          {tab === "disputes" && <DisputesTab projectId={projectId} />}
           {tab === "chat" && <ProjectChatTab projectId={projectId} />}
           {tab === "activity" && <ActivityTab projectId={projectId} />}
         </section>
