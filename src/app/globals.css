@@ -190,7 +190,18 @@
    Base
    ========================================================= */
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--background);
   color: var(--text-primary);
+}
+
+/* The (protected) layout scrolls inside <main>, not the document — anchor
+   jumps (e.g. the dashboard's "Review what needs your attention" link) need
+   scroll-behavior on that actual scrolling box, not just html. */
+main {
+  scroll-behavior: smooth;
 }

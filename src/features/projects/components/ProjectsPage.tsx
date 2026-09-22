@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 import { useProjects } from "../hooks/useProjects";
 import { ProjectsToolbar } from "./ProjectsToolbar";
@@ -10,9 +11,18 @@ import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 
 const PAGE_SIZE = 10;
+const VALID_STATUSES: ProjectStatus[] = ["Draft", "Active", "Cancelled", "Completed"];
+
+// Dashboard summary cards deep-link here as /projects?status=Active — the
+// initial filter is read once from the URL so those links actually filter.
+function useInitialStatus(): ProjectStatus | "" {
+  const searchParams = useSearchParams();
+  const status = searchParams.get("status");
+  return VALID_STATUSES.includes(status as ProjectStatus) ? (status as ProjectStatus) : "";
+}
 
 export default function ProjectsPage() {
-  const [status, setStatus] = useState<ProjectStatus | "">("");
+  const [status, setStatus] = useState<ProjectStatus | "">(useInitialStatus());
   const [pageNumber, setPageNumber] = useState(1);
 
   const { data, isLoading, isError, refetch } = useProjects({
