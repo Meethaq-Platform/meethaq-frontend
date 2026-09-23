@@ -46,46 +46,53 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
         />
       ) : (
         <section className="space-y-6">
-          {/* Header: avatar + identity + contact metadata merged in one
-              place, actions alongside — mirrors ProjectDetailPage's header. */}
+          {/* Header: avatar + identity + contact metadata — mirrors
+              ProjectDetailPage's header. Edit lives on the Details card
+              below since that's the only content it actually edits. */}
           <div className="bg-(--amber-bg) p-6 border border-border rounded-2xl">
-            <div className="flex sm:flex-row flex-col justify-between items-start gap-4">
-              <div className="flex items-start gap-4 min-w-0">
-                <ClientAvatar
-                  fullName={data.clientFullName}
-                  profileImage={data.clientProfileImage}
-                />
+            <div className="flex items-start gap-4 min-w-0">
+              <ClientAvatar
+                fullName={data.clientFullName}
+                profileImage={data.clientProfileImage}
+              />
 
-                <div className="min-w-0">
-                  <h1 className="font-bold text-text-primary text-xl md:text-2xl truncate">
-                    {data.clientFullName}
-                  </h1>
+              <div className="min-w-0">
+                <h1 className="font-bold text-text-primary text-xl md:text-2xl truncate">
+                  {data.clientFullName}
+                </h1>
 
-                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-text-secondary text-sm">
-                    <span>{data.clientEmail}</span>
-                    {data.clientPhoneNumber && (
-                      <>
-                        <span aria-hidden className="text-border">
-                          ·
-                        </span>
-                        <span>{data.clientPhoneNumber}</span>
-                      </>
-                    )}
-                    {data.clientCountry && (
-                      <>
-                        <span aria-hidden className="text-border">
-                          ·
-                        </span>
-                        <span>{data.clientCountry}</span>
-                      </>
-                    )}
-                  </div>
-
-                  <p className="mt-2 text-text-secondary text-xs">
-                    Added {formatDate(data.dateAdded)}
-                  </p>
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-text-secondary text-sm">
+                  <span>{data.clientEmail}</span>
+                  {data.clientPhoneNumber && (
+                    <>
+                      <span aria-hidden className="text-border">
+                        ·
+                      </span>
+                      <span>{data.clientPhoneNumber}</span>
+                    </>
+                  )}
+                  {data.clientCountry && (
+                    <>
+                      <span aria-hidden className="text-border">
+                        ·
+                      </span>
+                      <span>{data.clientCountry}</span>
+                    </>
+                  )}
                 </div>
+
+                <p className="mt-2 text-text-secondary text-xs">
+                  Added {formatDate(data.dateAdded)}
+                </p>
               </div>
+            </div>
+          </div>
+
+          <div className="bg-surface p-6 border border-border rounded-2xl">
+            <div className="flex justify-between items-center mb-4">
+              <p className="font-semibold text-text-secondary text-xs uppercase tracking-wide">
+                Details
+              </p>
 
               <div className="flex items-center gap-2 shrink-0">
                 {isEditing ? (
@@ -94,7 +101,7 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
                       type="button"
                       variant="amber"
                       onClick={() => setIsEditing(false)}
-                      className="h-9"
+                      className="px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
                     >
                       Cancel
                     </Button>
@@ -105,7 +112,7 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
                       disabled={!isFormDirty}
                       loading={isSaving}
                       loadingText="Saving..."
-                      className="h-9"
+                      className="px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
                     >
                       Save Changes
                     </Button>
@@ -117,20 +124,14 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
                       setIsFormDirty(false);
                       setIsEditing(true);
                     }}
-                    className="flex items-center gap-1.5 h-9"
+                    className="flex items-center gap-1.5 px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
                   >
-                    <Pencil size={14} />
+                    <Pencil size={14} className="sm:size-4 size-3.5" />
                     Edit
                   </Button>
                 )}
               </div>
             </div>
-          </div>
-
-          <div className="bg-surface p-6 border border-border rounded-2xl">
-            <p className="mb-4 font-semibold text-text-secondary text-xs uppercase tracking-wide">
-              Details
-            </p>
 
             {isEditing ? (
               <EditClientForm
