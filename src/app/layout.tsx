@@ -26,6 +26,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${cairo.variable} ${plexArabic.variable} h-full antialiased`}
     >
       <body className="flex flex-col min-h-full">
