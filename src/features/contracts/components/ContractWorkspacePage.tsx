@@ -6,6 +6,7 @@ import { ArrowLeft, FileText, Pencil } from "lucide-react";
 
 import { useProject } from "@/src/features/projects/hooks/useProject";
 import { useContract } from "../hooks/useContract";
+import { usePageTitle } from "@/src/shared/hooks/usePageTitle";
 import { CONTRACT_STATUS_TO_PROJECT_STATUS } from "../types/contract";
 import { ContractStatusBadge } from "./ContractStatusBadge";
 import { ContractForm } from "./ContractForm";
@@ -30,6 +31,7 @@ export default function ContractWorkspacePage({
 }: ContractWorkspacePageProps) {
   const project = useProject(projectId);
   const contractQuery = useContract(projectId);
+  usePageTitle(project.data ? `Projects/${project.data.title}/Contract` : undefined);
   const [isEditing, setIsEditing] = useState(false);
   const [isFormDirty, setIsFormDirty] = useState(false);
   const [isSaving, setIsSaving] = useState(false);

@@ -6,6 +6,7 @@ import { ArrowLeft, Pencil } from "lucide-react";
 import { useIsMutating } from "@tanstack/react-query";
 
 import { useClient } from "../hooks/useClient";
+import { usePageTitle } from "@/src/shared/hooks/usePageTitle";
 import { ClientAvatar } from "./ClientAvatar";
 import { EditClientForm } from "./EditClientForm";
 import Button from "@/src/shared/components/Button";
@@ -19,6 +20,7 @@ interface ClientDetailPageProps {
 
 export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
   const { data, isLoading, isError, refetch } = useClient(clientId);
+  usePageTitle(data ? `Clients/${data.clientFullName}` : undefined);
   const [isEditing, setIsEditing] = useState(false);
   const [isFormDirty, setIsFormDirty] = useState(false);
   const isSaving = useIsMutating({ mutationKey: ["update-client"] }) > 0;

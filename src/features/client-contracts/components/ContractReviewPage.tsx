@@ -5,6 +5,7 @@ import { ArrowLeft, FileText } from "lucide-react";
 
 import { useClientProject } from "@/src/features/client-projects/hooks/useClientProject";
 import { useClientContract } from "../hooks/useClientContract";
+import { usePageTitle } from "@/src/shared/hooks/usePageTitle";
 import { ApproveContractButton } from "./ApproveContractButton";
 import { RequestChangesButton } from "./RequestChangesButton";
 import { ContractFeedbackHistory } from "./ContractFeedbackHistory";
@@ -24,6 +25,7 @@ interface ContractReviewPageProps {
 export default function ContractReviewPage({ projectId }: ContractReviewPageProps) {
   const project = useClientProject(projectId);
   const contractQuery = useClientContract(projectId);
+  usePageTitle(project.data ? `Projects/${project.data.title}/Contract` : undefined);
 
   const isLoading = project.isLoading || contractQuery.isLoading;
   const isError = project.isError || contractQuery.isError;

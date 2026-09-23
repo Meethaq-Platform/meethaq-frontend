@@ -7,6 +7,7 @@ import { ArrowLeft, Pencil } from "lucide-react";
 import { useIsMutating } from "@tanstack/react-query";
 
 import { useProject } from "../hooks/useProject";
+import { usePageTitle } from "@/src/shared/hooks/usePageTitle";
 import { ProjectStatusBadge } from "./ProjectStatusBadge";
 import { EditProjectForm } from "./EditProjectForm";
 import { ClientCard } from "./ClientCard";
@@ -67,6 +68,7 @@ export default function ProjectDetailPage({
   projectId,
 }: ProjectDetailPageProps) {
   const { data, isLoading, isError, refetch } = useProject(projectId);
+  usePageTitle(data ? `Projects/${data.title}` : undefined);
   const searchParams = useSearchParams();
   const [isEditing, setIsEditing] = useState(false);
   const [isFormDirty, setIsFormDirty] = useState(false);
