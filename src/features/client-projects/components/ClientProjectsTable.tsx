@@ -63,7 +63,7 @@ export function ClientProjectsTable({
               <th className="hidden lg:table-cell px-6 py-3.5 font-medium text-primary text-xs text-left uppercase tracking-wide">
                 Updated
               </th>
-              <th className="px-6 py-3.5 font-medium text-primary text-xs text-right uppercase tracking-wide">
+              <th className="relative px-6 py-3.5 font-medium text-primary text-xs text-right uppercase tracking-wide">
                 <span className="sr-only">Actions</span>
               </th>
             </tr>

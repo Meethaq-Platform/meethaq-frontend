@@ -46,7 +46,7 @@ export function InvitationsTable({
               <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-left uppercase tracking-wide">
                 Status
               </th>
-              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-right uppercase tracking-wide">
+              <th className="relative px-6 py-3.5 font-medium text-text-secondary text-xs text-right uppercase tracking-wide">
                 <span className="sr-only">Actions</span>
               </th>
             </tr>
