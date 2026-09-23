@@ -28,8 +28,8 @@ export function ClientsToolbar({
     <div className="flex sm:flex-row flex-col gap-3">
       <div className="relative flex-1 sm:max-w-md">
         <Search
-          size={18}
-          className="top-1/2 left-3 absolute text-text-secondary -translate-y-1/2"
+          size={16}
+          className="top-1/2 left-3 absolute sm:size-4.5 text-text-secondary -translate-y-1/2"
         />
 
         <input
@@ -37,22 +37,22 @@ export function ClientsToolbar({
           value={search}
           onChange={(event) => onSearchChange(event.target.value)}
           placeholder="Search by name, email, or company..."
-          className="bg-surface py-2 pr-4 pl-10 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full text-text-primary placeholder:text-text-secondary text-sm transition"
+          className="bg-surface py-1.5 sm:py-2 pr-4 pl-9 sm:pl-10 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full text-text-primary placeholder:text-text-secondary text-xs sm:text-sm transition"
         />
       </div>
 
-      <div className="flex gap-2 sm:ml-auto">
+      <div className="flex gap-1.5 sm:gap-2 sm:ml-auto">
         <button
           type="button"
           onClick={toggleDate}
           aria-pressed={isDateActive}
-          className={`flex items-center gap-1.5 px-4 h-9 rounded-lg font-medium text-sm transition ${
+          className={`flex items-center gap-1.5 px-3 sm:px-4 h-8 sm:h-9 rounded-lg font-medium text-xs sm:text-sm transition ${
             isDateActive
               ? "bg-primary text-white"
               : "bg-surface hover:bg-border/40 text-text-secondary hover:text-text-primary"
           }`}
         >
-          {sort === "oldest" ? <ArrowUp size={14} /> : <ArrowDown size={14} />}
+          {sort === "oldest" ? <ArrowUp size={13} /> : <ArrowDown size={13} />}
           {sort === "oldest" ? "Oldest" : "Newest"}
         </button>
 
@@ -60,16 +60,16 @@ export function ClientsToolbar({
           type="button"
           onClick={toggleName}
           aria-pressed={isNameActive}
-          className={`flex items-center gap-1.5 px-4 h-9 rounded-lg font-medium text-sm transition ${
+          className={`flex items-center gap-1.5 px-3 sm:px-4 h-8 sm:h-9 rounded-lg font-medium text-xs sm:text-sm transition ${
             isNameActive
               ? "bg-primary text-white"
               : "bg-surface hover:bg-border/40 text-text-secondary hover:text-text-primary"
           }`}
         >
           {sort === "name_desc" ? (
-            <ArrowDown size={14} />
+            <ArrowDown size={13} />
           ) : (
-            <ArrowUp size={14} />
+            <ArrowUp size={13} />
           )}
           {sort === "name_desc" ? "Name (Z–A)" : "Name (A–Z)"}
         </button>
