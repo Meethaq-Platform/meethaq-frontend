@@ -27,10 +27,6 @@ export function NavItem({ item }: { item: NavLinkItem }) {
       <Icon size={20} className="shrink-0" />
 
       <span className="md:hidden lg:inline">{item.label}</span>
-
-      <span className="left-full z-50 absolute bg-text-primary opacity-0 group-hover:opacity-100 shadow-lg ml-2 px-2 py-1 rounded-lg text-background text-xs whitespace-nowrap transition-opacity pointer-events-none hidden md:group-hover:block lg:hidden">
-        {item.label}
-      </span>
     </Link>
   );
 }
