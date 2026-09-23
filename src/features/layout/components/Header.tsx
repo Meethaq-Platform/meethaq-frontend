@@ -6,7 +6,7 @@ import UserMenu from "@/src/features/auth/components/UserMenu";
 
 import { useSidebar } from "../context/SidebarContext";
 import { NotificationButton } from "./NotificationButton";
-import { SearchField } from "./SearchField";
+import { GlobalSearch } from "./GlobalSearch";
 
 export function Header() {
   const { openMobile } = useSidebar();
@@ -22,7 +22,7 @@ export function Header() {
         <Menu size={22} />
       </button>
 
-      <SearchField className="flex-1 max-w-md" />
+      <GlobalSearch className="flex-1 max-w-md" />
 
       <div className="flex items-center gap-2 ml-auto">
         <NotificationButton />
