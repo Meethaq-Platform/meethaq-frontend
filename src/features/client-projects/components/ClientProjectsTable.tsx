@@ -11,6 +11,7 @@ import { formatCurrency } from "@/src/shared/lib/format";
 
 interface ClientProjectsTableProps {
   projects: ProjectSummary[];
+  isFiltering?: boolean;
   pageNumber: number;
   totalPages: number;
   totalCount: number;
@@ -19,13 +20,20 @@ interface ClientProjectsTableProps {
 
 export function ClientProjectsTable({
   projects,
+  isFiltering = false,
   pageNumber,
   totalPages,
   totalCount,
   onPageChange,
 }: ClientProjectsTableProps) {
   if (projects.length === 0) {
-    return (
+    return isFiltering ? (
+      <EmptyState
+        icon={Briefcase}
+        title="No projects found"
+        description="Try a different search or status filter."
+      />
+    ) : (
       <EmptyState
         icon={Briefcase}
         title="No active projects yet"

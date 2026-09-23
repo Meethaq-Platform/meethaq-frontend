@@ -31,7 +31,7 @@ export function ProjectsTable({
       <EmptyState
         icon={Briefcase}
         title="No projects found"
-        description="Try a different status filter."
+        description="Try a different search or status filter."
       />
     ) : (
       <EmptyState
