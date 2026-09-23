@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
@@ -26,7 +27,10 @@ export default function Button({
     <button
       {...props}
       disabled={disabled || loading}
-      className={`${variantBg[variant]} cursor-pointer hover:opacity-90 disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-white text-sm active:scale-[0.99] transition disabled:cursor-not-allowed ${className ?? ""}`}
+      className={twMerge(
+        `${variantBg[variant]} cursor-pointer hover:opacity-90 disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-white text-sm active:scale-[0.99] transition disabled:cursor-not-allowed`,
+        className
+      )}
     >
       {loading ? loadingText : children}
     </button>
