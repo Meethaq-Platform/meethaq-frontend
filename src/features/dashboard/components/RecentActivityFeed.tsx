@@ -66,18 +66,17 @@ export default function RecentActivityFeed({ items }: RecentActivityFeedProps) {
           </div>
         );
 
+        // The backend's navigationUrl doesn't reliably resolve to a page in
+        // this app, but every event carries the project it happened on —
+        // that always opens.
         return (
           <li key={item.eventId}>
-            {item.navigationUrl ? (
-              <Link
-                href={item.navigationUrl}
-                className="block hover:bg-surface-muted -mx-1 px-1 rounded-lg transition"
-              >
-                {row}
-              </Link>
-            ) : (
-              row
-            )}
+            <Link
+              href={`/projects/${item.projectId}`}
+              className="block hover:bg-surface-muted -mx-1 px-1 rounded-lg transition"
+            >
+              {row}
+            </Link>
           </li>
         );
       })}

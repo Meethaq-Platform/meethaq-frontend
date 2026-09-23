@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Info } from "lucide-react";
 import { useState } from "react";
 import { formatCurrency } from "@/src/shared/lib/format";
@@ -36,7 +35,12 @@ export default function FinancialMetricCardView({
 }: FinancialMetricCardViewProps) {
   const [showTooltip, setShowTooltip] = useState(false);
 
-  const body = (
+  // Not a link: the backend's drillDownNavigationUrl points at flat
+  // cross-project pages (/payments, /contracts, /milestones) that don't
+  // exist in this app — every route here is nested under /projects/[id].
+  // Rather than 404, these cards stay informational; the tooltip below
+  // still explains what the figure means.
+  return (
     <div
       className={`relative flex flex-col gap-1.5 p-4 rounded-xl h-full ${
         tone ? toneBackground[tone] : "bg-surface-muted"
@@ -75,14 +79,4 @@ export default function FinancialMetricCardView({
       )}
     </div>
   );
-
-  if (card.drillDownNavigationUrl) {
-    return (
-      <Link href={card.drillDownNavigationUrl} className="block hover:opacity-90 transition">
-        {body}
-      </Link>
-    );
-  }
-
-  return body;
 }

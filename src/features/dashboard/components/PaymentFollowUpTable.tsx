@@ -69,14 +69,15 @@ export default function PaymentFollowUpTable({ items, counterpartyLabel }: Payme
                   </div>
                 </td>
                 <td className="py-2.5 pr-3">
-                  {item.actionNavigationUrl && (
-                    <Link
-                      href={item.actionNavigationUrl}
-                      className="inline-flex items-center bg-surface-muted hover:bg-border/60 px-3 rounded-lg h-8 font-semibold text-text-primary text-xs whitespace-nowrap transition"
-                    >
-                      {item.actionLabel ?? "Open"}
-                    </Link>
-                  )}
+                  {/* actionNavigationUrl points at a flat /payments page
+                      that doesn't exist — payments live on the milestone
+                      page, so the link is built from ids instead. */}
+                  <Link
+                    href={`/projects/${item.projectId}/milestones/${item.milestoneId}`}
+                    className="inline-flex items-center bg-surface-muted hover:bg-border/60 px-3 rounded-lg h-8 font-semibold text-text-primary text-xs whitespace-nowrap transition"
+                  >
+                    {item.actionLabel ?? "Open"}
+                  </Link>
                 </td>
               </tr>
             );

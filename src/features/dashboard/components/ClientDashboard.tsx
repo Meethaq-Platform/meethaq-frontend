@@ -113,7 +113,6 @@ export default function ClientDashboard() {
           <SectionCard
             title="Needs Your Attention"
             section={data.actionCenter}
-            viewAllHref={data.actionCenter.data?.viewAllNavigationUrl}
             onRetry={refetch}
           >
             {(actionCenter) => (

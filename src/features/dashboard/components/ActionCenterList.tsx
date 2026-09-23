@@ -101,9 +101,12 @@ function ActionGroup({
               )}
             </div>
 
-            {item.actionNavigationUrl && item.actionButtonText && (
+            {item.actionButtonText && (
+              // The backend's actionNavigationUrl points at pages this app
+              // doesn't have (e.g. /action-center/{id}) — projectId always
+              // resolves to a real page, so every action opens there instead.
               <Link
-                href={item.actionNavigationUrl}
+                href={`/projects/${item.projectId}`}
                 className="flex items-center gap-1 bg-primary hover:opacity-90 px-3 rounded-lg h-9 font-semibold text-white text-xs whitespace-nowrap transition shrink-0"
               >
                 {item.actionButtonText}
