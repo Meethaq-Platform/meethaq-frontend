@@ -29,7 +29,7 @@ export function ClientsToolbar({
       <div className="relative flex-1 sm:max-w-md">
         <Search
           size={16}
-          className="top-1/2 left-3 absolute sm:size-4.5 text-text-secondary -translate-y-1/2"
+          className="top-1/2 inset-s-3 absolute sm:size-4.5 text-text-secondary -translate-y-1/2"
         />
 
         <input
@@ -37,11 +37,11 @@ export function ClientsToolbar({
           value={search}
           onChange={(event) => onSearchChange(event.target.value)}
           placeholder="Search by name, email, or company..."
-          className="bg-surface py-1.5 sm:py-2 pr-4 pl-9 sm:pl-10 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full text-text-primary placeholder:text-text-secondary text-xs sm:text-sm transition"
+          className="bg-surface py-1.5 sm:py-2 pe-4 ps-9 sm:ps-10 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full text-text-primary placeholder:text-text-secondary text-xs sm:text-sm transition"
         />
       </div>
 
-      <div className="flex gap-1.5 sm:gap-2 sm:ml-auto">
+      <div className="flex gap-1.5 sm:gap-2 sm:ms-auto">
         <button
           type="button"
           onClick={toggleDate}

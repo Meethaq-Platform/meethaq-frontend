@@ -17,7 +17,7 @@ export function NavLogoutButton() {
 
       <span className="md:hidden lg:inline">Logout</span>
 
-      <span className="hidden lg:hidden md:group-hover:block left-full z-50 absolute opacity-0 group-hover:opacity-100 shadow-lg ml-2 px-2 py-1 rounded-lg bg-text-primary text-background text-xs whitespace-nowrap transition-opacity pointer-events-none">
+      <span className="hidden lg:hidden md:group-hover:block inset-s-full z-50 absolute opacity-0 group-hover:opacity-100 shadow-lg ms-2 px-2 py-1 rounded-lg bg-text-primary text-background text-xs whitespace-nowrap transition-opacity pointer-events-none">
         Logout
       </span>
     </button>

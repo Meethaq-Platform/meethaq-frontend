@@ -68,7 +68,7 @@ export function MilestoneRow({
             {milestone.title}
           </h3>
 
-          <div className="text-right shrink-0">
+          <div className="text-end shrink-0">
             <p className="font-numbers font-semibold text-text-primary text-sm">
               {formatCurrency(milestone.calculatedAmount)}
             </p>

@@ -23,10 +23,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           ref={ref}
           id={inputId}
           {...props}
-          className={`bg-surface px-4 ${rightElement ? "pr-11" : ""} border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full h-11 text-text-primary placeholder:text-text-secondary text-sm transition ${className ?? ""}`}
+          className={`bg-surface px-4 ${rightElement ? "pe-11" : ""} border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full h-11 text-text-primary placeholder:text-text-secondary text-sm transition ${className ?? ""}`}
         />
         {rightElement && (
-          <div className="top-1/2 right-3 absolute -translate-y-1/2">
+          <div className="top-1/2 inset-e-3 absolute -translate-y-1/2">
             {rightElement}
           </div>
         )}

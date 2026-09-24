@@ -38,7 +38,7 @@ export default function UserMenu() {
           )}
         </div>
 
-        <div className="hidden sm:block text-left">
+        <div className="hidden sm:block text-start">
           <p className="font-semibold text-text-primary text-sm">
             {user.fullName}
           </p>
@@ -55,7 +55,7 @@ export default function UserMenu() {
       </button>
 
       {isOpen && (
-        <div className="right-0 z-50 absolute bg-surface shadow-lg mt-2 border border-border rounded-xl w-52 overflow-hidden">
+        <div className="inset-e-0 z-50 absolute bg-surface shadow-lg mt-2 border border-border rounded-xl w-52 overflow-hidden">
           <button
             type="button"
             onClick={handleLogout}

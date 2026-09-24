@@ -68,7 +68,7 @@ export function PaymentMilestoneRow({ projectId, item, isFreelancer }: PaymentMi
       <button
         type="button"
         onClick={() => setExpanded((prev) => !prev)}
-        className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-3 hover:bg-surface-muted p-4 w-full text-left transition"
+        className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-3 hover:bg-surface-muted p-4 w-full text-start transition"
       >
         <div className="flex flex-1 items-center gap-2 min-w-0">
           {expanded ? (

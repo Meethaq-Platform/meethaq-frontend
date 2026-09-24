@@ -51,7 +51,7 @@ export function ChangeRequestsTab({ projectId }: ChangeRequestsTabProps) {
               key={item.id}
               type="button"
               onClick={() => setSelectedId(item.id)}
-              className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-3 hover:bg-surface-muted p-4 border-border border-b last:border-b-0 w-full text-left transition"
+              className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-3 hover:bg-surface-muted p-4 border-border border-b last:border-b-0 w-full text-start transition"
             >
               <div className="min-w-0">
                 <h3 className="font-semibold text-text-primary text-sm truncate">

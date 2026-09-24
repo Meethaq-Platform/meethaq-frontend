@@ -122,7 +122,7 @@ export default function ContractReviewPage({ projectId }: ContractReviewPageProp
 
               <div className="flex flex-col items-end gap-2 w-fit shrink-0">
                 <ContractStatusBadge status={displayedContractStatus} />
-                <p className="text-text-secondary text-sm text-right">
+                <p className="text-text-secondary text-sm text-end">
                   {formatDate(contract.startDate)} –{" "}
                   {formatDate(contract.expectedEndDate)}
                 </p>

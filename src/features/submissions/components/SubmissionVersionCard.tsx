@@ -48,7 +48,7 @@ export function SubmissionVersionCard({
           <p className="font-semibold text-text-primary text-sm">
             Version {submission.versionNumber}
             {isLatestAwaitingReview && (
-              <span className="ml-2 font-medium text-primary text-xs">
+              <span className="ms-2 font-medium text-primary text-xs">
                 Awaiting review
               </span>
             )}

@@ -48,22 +48,22 @@ export function ClientProjectsTable({
         <table className="w-full text-sm">
           <thead className="bg-primary-muted">
             <tr className="border-border border-b">
-              <th className="px-6 py-3.5 font-medium text-primary text-xs text-left uppercase tracking-wide">
+              <th className="px-6 py-3.5 font-medium text-primary text-xs text-start uppercase tracking-wide">
                 Title
               </th>
-              <th className="px-6 py-3.5 font-medium text-primary text-xs text-left uppercase tracking-wide">
+              <th className="px-6 py-3.5 font-medium text-primary text-xs text-start uppercase tracking-wide">
                 Status
               </th>
-              <th className="px-6 py-3.5 font-medium text-primary text-xs text-left uppercase tracking-wide">
+              <th className="px-6 py-3.5 font-medium text-primary text-xs text-start uppercase tracking-wide">
                 Contract
               </th>
-              <th className="hidden lg:table-cell px-6 py-3.5 font-medium text-primary text-xs text-right uppercase tracking-wide">
+              <th className="hidden lg:table-cell px-6 py-3.5 font-medium text-primary text-xs text-end uppercase tracking-wide">
                 Value
               </th>
-              <th className="hidden lg:table-cell px-6 py-3.5 font-medium text-primary text-xs text-left uppercase tracking-wide">
+              <th className="hidden lg:table-cell px-6 py-3.5 font-medium text-primary text-xs text-start uppercase tracking-wide">
                 Updated
               </th>
-              <th className="relative px-6 py-3.5 font-medium text-primary text-xs text-right uppercase tracking-wide">
+              <th className="relative px-6 py-3.5 font-medium text-primary text-xs text-end uppercase tracking-wide">
                 <span className="sr-only">Actions</span>
               </th>
             </tr>
@@ -87,7 +87,7 @@ export function ClientProjectsTable({
                   <ContractStatusBadge status={project.contractStatus} />
                 </td>
 
-                <td className="hidden lg:table-cell px-6 py-4 font-numbers text-text-primary text-right">
+                <td className="hidden lg:table-cell px-6 py-4 font-numbers text-text-primary text-end">
                   {project.totalValue != null ? formatCurrency(project.totalValue) : "—"}
                 </td>
 
@@ -95,7 +95,7 @@ export function ClientProjectsTable({
                   <RelativeTime value={project.updatedAt ?? project.createdAt} />
                 </td>
 
-                <td className="px-6 py-4 text-right">
+                <td className="px-6 py-4 text-end">
                   <Link
                     href={`/projects/${project.id}`}
                     aria-label={`View ${project.title} details`}

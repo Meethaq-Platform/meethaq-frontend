@@ -13,7 +13,7 @@ interface AuthLayoutProps {
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <main className="relative flex justify-center items-center bg-[radial-gradient(circle_at_top_left,var(--teal-100),transparent_35%),radial-gradient(circle_at_bottom_right,var(--amber-50),transparent_30%)] dark:bg-[radial-gradient(circle_at_top_left,var(--primary-muted),transparent_35%),radial-gradient(circle_at_bottom_right,var(--accent-value-muted),transparent_30%)] bg-background px-4 py-8 min-h-screen">
-      <div className="top-4 right-4 absolute flex items-center gap-1">
+      <div className="top-4 inset-e-4 absolute flex items-center gap-1">
         <LanguageSwitcher />
         <ThemeToggle />
       </div>

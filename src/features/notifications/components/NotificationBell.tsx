@@ -64,7 +64,7 @@ export function NotificationBell() {
       >
         <Bell size={20} />
         {unreadCount > 0 && (
-          <span className="top-1.5 right-1.5 absolute bg-danger rounded-full w-2 h-2" />
+          <span className="top-1.5 inset-e-1.5 absolute bg-danger rounded-full w-2 h-2" />
         )}
       </button>
 
@@ -76,7 +76,7 @@ export function NotificationBell() {
         // pins it to the viewport itself instead of the bell on small
         // screens; `sm:` and up restores the original bell-anchored panel
         // where there's room for it.
-        <div className="inset-x-4 top-16 sm:top-full sm:right-0 sm:left-auto z-50 fixed sm:absolute bg-surface shadow-xl sm:mt-2 border border-border rounded-2xl sm:w-80 max-h-[28rem] overflow-hidden">
+        <div className="inset-x-4 top-16 sm:top-full sm:inset-e-0 sm:inset-s-auto z-50 fixed sm:absolute bg-surface shadow-xl sm:mt-2 border border-border rounded-2xl sm:w-80 max-h-[28rem] overflow-hidden">
           <div className="flex justify-between items-center px-4 py-3 border-border border-b">
             <h2 className="font-semibold text-text-primary text-sm">Notifications</h2>
             {unreadCount > 0 && (

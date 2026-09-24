@@ -37,16 +37,16 @@ export function InvitationsTable({
         <table className="w-full text-sm">
           <thead>
             <tr className="border-border border-b">
-              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-left uppercase tracking-wide">
+              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-start uppercase tracking-wide">
                 Title
               </th>
-              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-left uppercase tracking-wide">
+              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-start uppercase tracking-wide">
                 Freelancer
               </th>
-              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-left uppercase tracking-wide">
+              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-start uppercase tracking-wide">
                 Status
               </th>
-              <th className="relative px-6 py-3.5 font-medium text-text-secondary text-xs text-right uppercase tracking-wide">
+              <th className="relative px-6 py-3.5 font-medium text-text-secondary text-xs text-end uppercase tracking-wide">
                 <span className="sr-only">Actions</span>
               </th>
             </tr>
@@ -70,7 +70,7 @@ export function InvitationsTable({
                   <ProjectStatusBadge status={invitation.status} />
                 </td>
 
-                <td className="px-6 py-4 text-right">
+                <td className="px-6 py-4 text-end">
                   <Link
                     href={`/projects/invitations/${invitation.id}`}
                     aria-label={`View invitation for ${invitation.title}`}

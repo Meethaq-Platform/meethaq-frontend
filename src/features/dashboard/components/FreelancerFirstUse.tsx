@@ -35,7 +35,7 @@ export default function FreelancerFirstUse({ firstUse, userName }: FreelancerFir
         Complete these steps to get your first agreement moving.
       </p>
 
-      <ol className="flex flex-col gap-2 mx-auto mt-6 max-w-md text-left">
+      <ol className="flex flex-col gap-2 mx-auto mt-6 max-w-md text-start">
         {steps.map((step, index) => (
           <li key={step.title}>
             <Link

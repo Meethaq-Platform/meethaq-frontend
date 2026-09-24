@@ -73,7 +73,7 @@ export default function InvitationDetailPage({
 
             <div className="flex flex-col items-end gap-2 w-fit shrink-0">
               <ProjectStatusBadge status={data.status} />
-              <p className="text-text-secondary text-sm text-right">
+              <p className="text-text-secondary text-sm text-end">
                 Invited {new Date(data.createdAt).toLocaleDateString()}
               </p>
             </div>

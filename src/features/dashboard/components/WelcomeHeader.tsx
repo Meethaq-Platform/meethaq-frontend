@@ -107,7 +107,7 @@ export default function WelcomeHeader({
           alt=""
           width={200}
           height={200}
-          className="hidden lg:hidden md:block xl:block top-5 right-5 absolute shrink-0"
+          className="hidden lg:hidden md:block xl:block top-5 inset-e-5 absolute shrink-0"
         />
       </div>
 

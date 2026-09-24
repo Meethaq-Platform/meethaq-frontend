@@ -65,7 +65,7 @@ export default function IncomeTrendChart({
           <p className="text-text-secondary text-xs">{title}</p>
           <p className="font-semibold text-text-primary text-lg">
             {formatCurrency(trend.totalAmount, currency)}
-            <span className="ml-1.5 font-normal text-text-secondary text-xs">
+            <span className="ms-1.5 font-normal text-text-secondary text-xs">
               total over {trend.periodMonths} months
             </span>
           </p>
@@ -96,16 +96,16 @@ export default function IncomeTrendChart({
         <div id={tableId} className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-border border-b text-text-secondary text-xs text-left">
+              <tr className="border-border border-b text-text-secondary text-xs text-start">
                 <th className="py-2 font-medium">Month</th>
-                <th className="py-2 font-medium text-right">Confirmed Income</th>
+                <th className="py-2 font-medium text-end">Confirmed Income</th>
               </tr>
             </thead>
             <tbody>
               {points.map((point) => (
                 <tr key={point.periodLabel} className="border-border/60 border-b last:border-0">
                   <td className="py-2 text-text-primary">{point.periodLabel}</td>
-                  <td className="py-2 font-medium text-text-primary text-right tabular-nums">
+                  <td className="py-2 font-medium text-text-primary text-end tabular-nums">
                     {formatCurrency(point.confirmedAmount, point.currency ?? currency)}
                   </td>
                 </tr>

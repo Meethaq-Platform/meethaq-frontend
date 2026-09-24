@@ -25,12 +25,12 @@ export default function PaymentFollowUpTable({ items, counterpartyLabel }: Payme
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-border border-b text-text-secondary text-xs text-left">
-            <th className="py-2 pr-3 font-medium">Milestone</th>
-            <th className="py-2 pr-3 font-medium">{counterpartyLabel}</th>
-            <th className="py-2 pr-3 font-medium text-right">Amount</th>
-            <th className="py-2 pr-3 font-medium">Status</th>
-            <th className="py-2 pr-3 font-medium">Action</th>
+          <tr className="border-border border-b text-text-secondary text-xs text-start">
+            <th className="py-2 pe-3 font-medium">Milestone</th>
+            <th className="py-2 pe-3 font-medium">{counterpartyLabel}</th>
+            <th className="py-2 pe-3 font-medium text-end">Amount</th>
+            <th className="py-2 pe-3 font-medium">Status</th>
+            <th className="py-2 pe-3 font-medium">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -39,15 +39,15 @@ export default function PaymentFollowUpTable({ items, counterpartyLabel }: Payme
 
             return (
               <tr key={item.milestoneId} className="border-border/60 border-b last:border-0 align-top">
-                <td className="py-2.5 pr-3">
+                <td className="py-2.5 pe-3">
                   <p className="font-medium text-text-primary">{item.milestoneTitle}</p>
                   <p className="text-text-secondary text-xs">{item.projectName}</p>
                 </td>
-                <td className="py-2.5 pr-3 text-text-secondary">{item.counterpartyName}</td>
-                <td className="py-2.5 pr-3 font-medium text-text-primary text-right tabular-nums">
+                <td className="py-2.5 pe-3 text-text-secondary">{item.counterpartyName}</td>
+                <td className="py-2.5 pe-3 font-medium text-text-primary text-end tabular-nums">
                   {formatCurrency(item.amount, item.currency ?? "USD")}
                 </td>
-                <td className="py-2.5 pr-3">
+                <td className="py-2.5 pe-3">
                   <div className="flex flex-col gap-1">
                     {item.isDisputed && (
                       <span className="inline-flex items-center gap-1 text-danger text-xs">
@@ -68,7 +68,7 @@ export default function PaymentFollowUpTable({ items, counterpartyLabel }: Payme
                     </span>
                   </div>
                 </td>
-                <td className="py-2.5 pr-3">
+                <td className="py-2.5 pe-3">
                   {/* actionNavigationUrl points at a flat /payments page
                       that doesn't exist — payments live on the milestone
                       page, so the link is built from ids instead. */}

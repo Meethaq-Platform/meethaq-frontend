@@ -26,7 +26,7 @@ export function Header() {
 
       <GlobalSearch className="flex-1 max-w-md" />
 
-      <div className="flex items-center gap-2 ml-auto">
+      <div className="flex items-center gap-2 ms-auto">
         <LanguageSwitcher />
         <ThemeToggle />
         <NotificationButton />

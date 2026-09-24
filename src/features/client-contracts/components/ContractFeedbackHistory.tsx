@@ -14,7 +14,7 @@ export function ContractFeedbackHistory({ projectId }: { projectId: string }) {
 
       <div className="space-y-4">
         {data.items.map((item) => (
-          <div key={item.id} className="pl-4 border-border border-l-2">
+          <div key={item.id} className="ps-4 border-border border-s-2">
             <p className="text-text-primary text-sm whitespace-pre-wrap">
               {item.feedback}
             </p>

@@ -122,7 +122,7 @@ export function AssignClientControl({
         <div ref={containerRef} className="relative flex-1">
           <Search
             size={16}
-            className="top-1/2 left-3 absolute text-text-secondary -translate-y-1/2 pointer-events-none"
+            className="top-1/2 inset-s-3 absolute text-text-secondary -translate-y-1/2 pointer-events-none"
           />
 
           <input
@@ -138,7 +138,7 @@ export function AssignClientControl({
               if (event.key === "Escape") setIsOpen(false);
             }}
             placeholder="Search clients by name..."
-            className="bg-surface py-2 pr-4 pl-9 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full h-10 text-text-primary placeholder:text-text-secondary text-sm transition"
+            className="bg-surface py-2 pe-4 ps-9 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full h-10 text-text-primary placeholder:text-text-secondary text-sm transition"
           />
 
           {isOpen && (
@@ -156,7 +156,7 @@ export function AssignClientControl({
                     onClick={() =>
                       handleSelect(client.relationshipId, client.clientFullName)
                     }
-                    className="block hover:bg-surface-muted focus-visible:bg-surface-muted px-3 py-2 outline-none w-full text-text-primary text-sm text-left transition"
+                    className="block hover:bg-surface-muted focus-visible:bg-surface-muted px-3 py-2 outline-none w-full text-text-primary text-sm text-start transition"
                   >
                     {client.clientFullName}
                   </button>

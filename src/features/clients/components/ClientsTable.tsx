@@ -45,16 +45,16 @@ export function ClientsTable({
         <table className="w-full text-sm">
           <thead className="bg-primary-muted">
             <tr className="border-border border-b">
-              <th className="px-6 py-3.5 font-medium text-primary text-xs text-left uppercase tracking-wide">
+              <th className="px-6 py-3.5 font-medium text-primary text-xs text-start uppercase tracking-wide">
                 Client
               </th>
-              <th className="px-6 py-3.5 font-medium text-primary text-xs text-left uppercase tracking-wide">
+              <th className="px-6 py-3.5 font-medium text-primary text-xs text-start uppercase tracking-wide">
                 Email
               </th>
-              <th className="px-6 py-3.5 font-medium text-primary text-xs text-left uppercase tracking-wide">
+              <th className="px-6 py-3.5 font-medium text-primary text-xs text-start uppercase tracking-wide">
                 Company
               </th>
-              <th className="relative px-6 py-3.5 font-medium text-primary text-xs text-right uppercase tracking-wide">
+              <th className="relative px-6 py-3.5 font-medium text-primary text-xs text-end uppercase tracking-wide">
                 <span className="sr-only">Actions</span>
               </th>
             </tr>
@@ -86,7 +86,7 @@ export function ClientsTable({
                   {client.companyName ?? "—"}
                 </td>
 
-                <td className="px-6 py-4 text-right">
+                <td className="px-6 py-4 text-end">
                   <Link
                     href={`/clients/${client.relationshipId}`}
                     aria-label={`View ${client.clientFullName}'s details`}
