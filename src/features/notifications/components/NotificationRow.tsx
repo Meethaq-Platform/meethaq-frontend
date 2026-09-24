@@ -70,8 +70,9 @@ export function NotificationRow({ notification, onOpen }: NotificationRowProps) 
       </div>
 
       <div className="flex-1 min-w-0">
-        <p className="font-medium text-text-primary text-sm">{notification.title}</p>
-        <p className="text-text-secondary text-sm">{notification.message}</p>
+        {/* Title and message come from the API (English until it sends codes). */}
+        <p dir="auto" className="font-medium text-text-primary text-sm">{notification.title}</p>
+        <p dir="auto" className="text-text-secondary text-sm">{notification.message}</p>
         <p className="mt-0.5 text-text-secondary text-xs">
           <RelativeTime value={notification.createdAt} />
         </p>
