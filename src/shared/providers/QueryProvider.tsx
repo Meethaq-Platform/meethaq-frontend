@@ -1,7 +1,7 @@
 "use client";
 
 import { MutationCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
@@ -25,14 +25,15 @@ function hasMessage(data: unknown): data is { message: string } {
   );
 }
 
+// Fallback text for the global error toast. The QueryClient and its handlers
+// are created once, but the language can change afterwards (router.refresh
+// without a remount), so the provider keeps this up to date from an effect.
+let fallbackErrorMessage = "Something went wrong.";
+
 export function QueryProvider({ children }: { children: ReactNode }) {
   const t = useTranslations("common.states");
-  // The client is created once, but the language can change afterwards
-  // (router.refresh without a remount), so the handler reads the latest
-  // fallback text through a ref.
-  const fallbackErrorRef = useRef(t("somethingWentWrong"));
   useEffect(() => {
-    fallbackErrorRef.current = t("somethingWentWrong");
+    fallbackErrorMessage = t("somethingWentWrong");
   }, [t]);
 
   const [queryClient] = useState(
@@ -45,7 +46,7 @@ export function QueryProvider({ children }: { children: ReactNode }) {
           },
           onError: (error, _variables, _context, mutation) => {
             if (mutation.meta?.suppressToast) return;
-            toast.error(getErrorMessage(error, fallbackErrorRef.current));
+            toast.error(getErrorMessage(error, fallbackErrorMessage));
           },
         }),
       }),
