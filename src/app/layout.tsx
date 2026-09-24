@@ -3,6 +3,8 @@ import { Cairo, IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "../shared/providers/QueryProvider";
 import Toaster from "../shared/components/Toaster";
+import { ThemeSync } from "../shared/providers/ThemeSync";
+import { themeInitScript } from "../shared/lib/theme";
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -28,8 +30,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       data-scroll-behavior="smooth"
       className={`${cairo.variable} ${plexArabic.variable} h-full antialiased`}
+      // The theme init script adds `dark` to this element before hydration.
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className="flex flex-col min-h-full">
+        <ThemeSync />
         <QueryProvider>{children}</QueryProvider>
         <Toaster />
       </body>

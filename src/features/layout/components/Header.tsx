@@ -3,6 +3,7 @@
 import { Menu } from "lucide-react";
 
 import UserMenu from "@/src/features/auth/components/UserMenu";
+import ThemeToggle from "@/src/shared/components/ThemeToggle";
 
 import { useSidebar } from "../context/SidebarContext";
 import { NotificationButton } from "./NotificationButton";
@@ -25,6 +26,7 @@ export function Header() {
       <GlobalSearch className="flex-1 max-w-md" />
 
       <div className="flex items-center gap-2 ml-auto">
+        <ThemeToggle />
         <NotificationButton />
         <UserMenu />
       </div>

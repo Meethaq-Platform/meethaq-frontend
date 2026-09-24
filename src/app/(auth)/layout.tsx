@@ -1,6 +1,7 @@
 import { AuthIllustration } from "@/src/features/auth/components/AuthIllustration";
 import AuthTabs from "@/src/features/auth/components/AuthTabs";
 import Brand from "@/src/shared/components/Brand";
+import ThemeToggle from "@/src/shared/components/ThemeToggle";
 
 import { ReactNode } from "react";
 
@@ -10,7 +11,8 @@ interface AuthLayoutProps {
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <main className="flex justify-center items-center bg-[radial-gradient(circle_at_top_left,var(--teal-100),transparent_35%),radial-gradient(circle_at_bottom_right,var(--amber-50),transparent_30%)] bg-background px-4 py-8 min-h-screen">
+    <main className="relative flex justify-center items-center bg-[radial-gradient(circle_at_top_left,var(--teal-100),transparent_35%),radial-gradient(circle_at_bottom_right,var(--amber-50),transparent_30%)] dark:bg-[radial-gradient(circle_at_top_left,var(--primary-muted),transparent_35%),radial-gradient(circle_at_bottom_right,var(--accent-value-muted),transparent_30%)] bg-background px-4 py-8 min-h-screen">
+      <ThemeToggle className="top-4 right-4 absolute" />
       <div className="flex justify-center w-full max-w-6xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 bg-surface shadow-2xl p-0 border border-border rounded-3xl w-full sm:w-150 lg:w-full lg:h-150 overflow-hidden">
           <div className="flex flex-col justify-center p-8 md:p-10 lg:p-12">

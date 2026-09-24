@@ -2,6 +2,17 @@
 
 import { Toaster as SonnerToaster } from "sonner";
 
+import { useTheme } from "../hooks/useTheme";
+
 export default function Toaster() {
-  return <SonnerToaster position="bottom-right" richColors closeButton />;
+  const { theme } = useTheme();
+
+  return (
+    <SonnerToaster
+      theme={theme ?? "light"}
+      position="bottom-right"
+      richColors
+      closeButton
+    />
+  );
 }
