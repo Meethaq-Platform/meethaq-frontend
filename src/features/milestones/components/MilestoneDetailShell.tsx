@@ -1,10 +1,12 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useFormat } from "@/src/shared/hooks/useFormat";
 
 import type { MilestoneExecutionDetail } from "../types/milestone";
 import { MilestoneStatusBadge } from "./MilestoneStatusBadge";
-import { formatCurrency, formatDate } from "@/src/shared/lib/format";
+import { formatCurrency } from "@/src/shared/lib/format";
 
 interface MilestoneDetailShellProps {
   projectId: string;
@@ -22,6 +24,10 @@ export function MilestoneDetailShell({
   actions,
   children,
 }: MilestoneDetailShellProps) {
+  const t = useTranslations("milestones.detail");
+  const tContracts = useTranslations("contracts.workspace");
+  const format = useFormat();
+
   return (
     <div className="space-y-6 mx-auto h-full">
       <div className="flex justify-between items-center">
@@ -30,7 +36,7 @@ export function MilestoneDetailShell({
           className="flex items-center gap-1.5 text-text-secondary hover:text-text-primary text-sm transition"
         >
           <ArrowLeft size={16} className="rtl-flip" />
-          Back to Project
+          {tContracts("back")}
         </Link>
 
         {actions}
@@ -39,7 +45,7 @@ export function MilestoneDetailShell({
       <div className="bg-(--card-bg) p-6 border border-border rounded-2xl">
         <div className="flex sm:flex-row flex-col justify-between items-start gap-4">
           <div className="flex-1">
-            <h1 className="font-semibold text-text-primary text-lg">
+            <h1 dir="auto" className="font-semibold text-text-primary text-lg">
               {milestone.title}
             </h1>
             {milestone.description && (
@@ -55,7 +61,7 @@ export function MilestoneDetailShell({
               {formatCurrency(milestone.calculatedAmount)}
             </p>
             <p className="text-text-secondary text-xs">
-              Due {formatDate(milestone.dueDate)}
+              {t("due", { date: format.date(milestone.dueDate) })}
             </p>
           </div>
         </div>
@@ -63,17 +69,17 @@ export function MilestoneDetailShell({
         <div className="gap-6 grid grid-cols-1 sm:grid-cols-2 mt-4 pt-4 border-text-primary border-t">
           <div>
             <p className="mb-1 text-text-secondary text-xs uppercase tracking-wide">
-              Agreed Deliverable
+              {t("deliverable")}
             </p>
-            <p className="text-text-primary text-sm whitespace-pre-wrap">
+            <p dir="auto" className="text-text-primary text-sm whitespace-pre-wrap">
               {milestone.deliverable}
             </p>
           </div>
           <div>
             <p className="mb-1 text-text-secondary text-xs uppercase tracking-wide">
-              Acceptance Criteria
+              {t("criteria")}
             </p>
-            <p className="text-text-primary text-sm whitespace-pre-wrap">
+            <p dir="auto" className="text-text-primary text-sm whitespace-pre-wrap">
               {milestone.acceptanceCriteria}
             </p>
           </div>
