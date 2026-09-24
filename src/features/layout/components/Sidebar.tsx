@@ -1,6 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { useCurrentUser } from "@/src/features/auth/hooks/useCurrentUser";
 import Brand from "@/src/shared/components/Brand";
@@ -13,6 +14,7 @@ import Image from "next/image";
 
 export function Sidebar() {
   const { isMobileOpen, closeMobile } = useSidebar();
+  const t = useTranslations("layout");
   const { data: user } = useCurrentUser();
   const navItems = getNavItems(user?.roles[0]);
 
@@ -33,7 +35,7 @@ export function Sidebar() {
         <button
           type="button"
           onClick={closeMobile}
-          aria-label="Close menu"
+          aria-label={t("closeMenu")}
           className="md:hidden hover:bg-surface-muted p-1.5 rounded-lg text-text-secondary hover:text-text-primary transition"
         >
           <X size={20} />
@@ -47,7 +49,7 @@ export function Sidebar() {
 
         <Image
           src="/illustrations/Agreement-bro.svg"
-          alt="Agreement illustration"
+          alt={t("illustrationAlt")}
           width={250}
           height={250}
           className="hidden lg:block mt-auto"

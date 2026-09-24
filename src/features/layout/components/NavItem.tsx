@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 import { useSidebar } from "../context/SidebarContext";
 import type { NavLinkItem } from "../lib/nav-items";
@@ -9,6 +10,7 @@ import type { NavLinkItem } from "../lib/nav-items";
 export function NavItem({ item }: { item: NavLinkItem }) {
   const pathname = usePathname();
   const { closeMobile } = useSidebar();
+  const t = useTranslations("layout.nav");
   const Icon = item.icon;
 
   const isActive =
@@ -26,7 +28,7 @@ export function NavItem({ item }: { item: NavLinkItem }) {
     >
       <Icon size={20} className="shrink-0" />
 
-      <span className="md:hidden lg:inline">{item.label}</span>
+      <span className="md:hidden lg:inline">{t(item.labelKey)}</span>
     </Link>
   );
 }

@@ -4,31 +4,32 @@ import type { LucideIcon } from "lucide-react";
 import type { UserRole } from "../../auth/types/register";
 
 export interface NavLinkItem {
-  label: string;
+  // Key under layout.nav in the message catalogs.
+  labelKey: "dashboard" | "projects" | "clients" | "profile";
   href: string;
   icon: LucideIcon;
 }
 
 const dashboardItem: NavLinkItem = {
-  label: "Dashboard",
+  labelKey: "dashboard",
   href: "/dashboard",
   icon: LayoutDashboard,
 };
 
 const projectsItem: NavLinkItem = {
-  label: "Projects",
+  labelKey: "projects",
   href: "/projects",
   icon: Briefcase,
 };
 
 const clientsItem: NavLinkItem = {
-  label: "Clients",
+  labelKey: "clients",
   href: "/clients",
   icon: Users,
 };
 
 const profileItem: NavLinkItem = {
-  label: "Profile",
+  labelKey: "profile",
   href: "/profile",
   icon: User,
 };

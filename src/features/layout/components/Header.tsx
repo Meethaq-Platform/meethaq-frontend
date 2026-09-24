@@ -1,6 +1,7 @@
 "use client";
 
 import { Menu } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import UserMenu from "@/src/features/auth/components/UserMenu";
 import LanguageSwitcher from "@/src/shared/components/LanguageSwitcher";
@@ -12,13 +13,14 @@ import { GlobalSearch } from "./GlobalSearch";
 
 export function Header() {
   const { openMobile } = useSidebar();
+  const t = useTranslations("layout");
 
   return (
     <header className="flex items-center gap-3 bg-surface px-4 sm:px-6 py-3 border-border border-b">
       <button
         type="button"
         onClick={openMobile}
-        aria-label="Open menu"
+        aria-label={t("openMenu")}
         className="md:hidden hover:bg-surface-muted p-2 rounded-lg text-text-secondary hover:text-text-primary transition"
       >
         <Menu size={22} />

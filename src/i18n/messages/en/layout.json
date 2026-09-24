@@ -1,0 +1,24 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "clients": "Clients",
+    "profile": "Profile"
+  },
+  "logout": "Logout",
+  "openMenu": "Open menu",
+  "closeMenu": "Close menu",
+  "illustrationAlt": "Agreement illustration",
+  "search": {
+    "placeholder": "Search projects and clients...",
+    "fieldPlaceholder": "Search...",
+    "resultsLabel": "Search results",
+    "searching": "Searching...",
+    "failed": "Search failed. Try again.",
+    "noResults": "No projects or clients match “<q>{query}</q>”.",
+    "groups": {
+      "projects": "Projects",
+      "clients": "Clients"
+    }
+  }
+}
