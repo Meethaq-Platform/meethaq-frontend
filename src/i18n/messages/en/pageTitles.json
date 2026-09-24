@@ -6,5 +6,8 @@
   "project": "Projects/{title}",
   "projectContract": "Projects/{title}/Contract",
   "milestone": "Projects/{project}/{milestone}",
-  "client": "Clients/{name}"
+  "client": "Clients/{name}",
+  "login": "Meethaq - Login",
+  "register": "Meethaq - Register",
+  "home": "Meethaq - Track every step"
 }
