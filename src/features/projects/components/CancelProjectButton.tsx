@@ -21,9 +21,9 @@ export function CancelProjectButton({ projectId }: CancelProjectButtonProps) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex items-center gap-1.5 hover:bg-danger-muted px-4 rounded-xl h-9 font-semibold text-danger text-sm transition"
+        className="flex items-center gap-1.5 hover:bg-danger-muted px-3 sm:px-4 rounded-xl h-8 sm:h-9 font-semibold text-danger text-xs sm:text-sm transition"
       >
-        <Ban size={14} />
+        <Ban size={14} className="sm:size-4 size-3.5" />
         Cancel Project
       </button>
 
