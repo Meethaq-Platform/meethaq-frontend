@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { ProfileOverviewCard } from "./ProfileOverviewCard";
 import { PersonalInformationCard } from "./PersonalInformationCard";
 import { BioCard } from "./BioCard";
@@ -9,21 +10,20 @@ import { useProfile } from "../hooks/useProfile";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 
-function withFallback(value?: string | null) {
-  return value ? value : "__";
-}
-
 interface ProfileDataProps {
   isEditing: boolean;
   onDone: () => void;
   onDirtyChange?: (isDirty: boolean) => void;
+  onStartEditing?: () => void;
 }
 
 export default function ProfileData({
   isEditing,
   onDone,
   onDirtyChange,
+  onStartEditing,
 }: ProfileDataProps) {
+  const t = useTranslations("profile");
   const { data, isLoading, isError, refetch } = useProfile();
 
   if (isLoading) {
@@ -37,14 +37,16 @@ export default function ProfileData({
   if (isError || !data) {
     return (
       <ErrorState
-        message="Failed to load your profile."
+        message={t("loadFailed")}
         onRetry={() => refetch()}
       />
     );
   }
 
+  const isFreelancer = data.userRole?.toLowerCase() === "freelancer";
+
   if (isEditing) {
-    return data.userRole?.toLowerCase() === "freelancer" ? (
+    return isFreelancer ? (
       <EditFreelancerProfileForm
         profile={data}
         onSuccess={onDone}
@@ -59,30 +61,38 @@ export default function ProfileData({
     );
   }
 
-  const fullName = withFallback(data.fullName);
-  const email = withFallback(data.email);
-  const phoneNumber = withFallback(data.phoneNumber);
-  const userRole = withFallback(data.userRole);
-  const country = withFallback(data.country);
-  const professionalTitle = withFallback(data.professionalTitle);
-  const bio = withFallback(data.bio);
+  // Professional title / bio don't exist for clients yet — pass `undefined`
+  // so the display components omit the field instead of showing it empty.
+  const professionalTitle = isFreelancer
+    ? (data.professionalTitle ?? null)
+    : undefined;
 
   return (
     <>
       <ProfileOverviewCard
-        profile={{ fullName, userRole, country, profileImage: data.profileImage }}
+        profile={{
+          fullName: data.fullName,
+          userRole: data.userRole,
+          country: data.country,
+          professionalTitle,
+          profileImage: data.profileImage,
+          memberSince: data.createdAt,
+          onStartEditing,
+        }}
       />
       <PersonalInformationCard
         profile={{
-          fullName,
-          email,
-          phoneNumber,
-          userRole,
-          country,
+          fullName: data.fullName,
+          email: data.email,
+          phoneNumber: data.phoneNumber,
+          userRole: data.userRole,
+          country: data.country,
           professionalTitle,
         }}
       />
-      <BioCard bio={bio} />
+      {isFreelancer && (
+        <BioCard bio={data.bio ?? null} onStartEditing={onStartEditing} />
+      )}
     </>
   );
 }

@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import Button from "@/src/shared/components/Button";
 import { AddClientModal } from "./AddClientModal";
 
 export function AddClientButton() {
+  const t = useTranslations("clients.header");
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -14,10 +16,10 @@ export function AddClientButton() {
       <Button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-1.5 shrink-0"
+        className="flex items-center gap-1.5 shrink-0 h-9 sm:h-11 px-3 sm:px-4 text-xs sm:text-sm"
       >
-        <Plus size={16} />
-        Add Client
+        <Plus size={14} className="sm:size-4 size-3.5" />
+        {t("add")}
       </Button>
 
       <AddClientModal open={isOpen} onClose={() => setIsOpen(false)} />

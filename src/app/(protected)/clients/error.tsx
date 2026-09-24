@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 import ErrorState from "@/src/shared/components/ErrorState";
 
@@ -11,13 +12,15 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const t = useTranslations("common.states");
+
   useEffect(() => {
     console.error(error);
   }, [error]);
 
   return (
     <ErrorState
-      message="Something went wrong while loading this page."
+      message={t("loadPageFailed")}
       onRetry={reset}
     />
   );

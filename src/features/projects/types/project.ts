@@ -37,12 +37,18 @@ export interface Project {
   updatedAt: string | null;
 }
 
+// The backend's ProjectSummaryDto already includes totalValue/contractStatus/
+// contractAction (verified against the live swagger spec) — declared here so
+// the projects table can show them instead of silently dropping the fields.
 export interface ProjectSummary {
   id: number;
   title: string;
   status: ProjectStatus;
   clientId: number | null;
   clientName: string | null;
+  totalValue: number | null;
+  contractStatus: ProjectContractStatus;
+  contractAction: ProjectContractAction | null;
   createdAt: string;
   updatedAt: string | null;
 }
@@ -79,6 +85,7 @@ export interface CreateProjectRequest {
   title: string;
   description?: string;
   relationshipId?: number;
+  totalValue?: number | null;
 }
 
 export interface UpdateProjectRequest {
@@ -89,4 +96,41 @@ export interface UpdateProjectRequest {
 
 export interface LinkClientRequest {
   relationshipId: number;
+}
+
+// Mirrors ProjectReconciliationSummaryDto.
+export interface ProjectReconciliationSummary {
+  finalProjectValue: number;
+  totalPaidAmount: number;
+  currency: string;
+  totalMilestones: number;
+  acceptedMilestonesCount: number;
+  paidMilestonesCount: number;
+  unresolvedDisputesCount: number;
+  pendingChangeRequestsCount: number;
+}
+
+// Mirrors ProjectCompletionResultDto. `status` is deliberately omitted here —
+// swagger types it against the same ProjectStatus schema object used
+// elsewhere as a raw int (e.g. Contract.status), but Project.status itself
+// is confirmed to already serialize as the string ProjectStatus union above.
+// Rather than guess which convention this one response follows, callers
+// should invalidate/refetch the project query and read status from there.
+export interface ProjectCompletionResult {
+  projectId: number;
+  completedAt: string;
+  completedByUserId: string;
+  reconciliationSummary: ProjectReconciliationSummary;
+  completionNotes: string | null;
+}
+
+export interface ProjectCompletionResponse {
+  success: boolean;
+  message: string;
+  data: ProjectCompletionResult | null;
+  errors: string[] | null;
+}
+
+export interface CompleteProjectPayload {
+  completionNotes?: string;
 }

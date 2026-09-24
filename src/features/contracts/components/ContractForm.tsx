@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
-  contractFormSchema,
+  createContractFormSchema,
   type ContractFormValues,
 } from "../schemas/contract.schema";
 import { useCreateContract } from "../hooks/useCreateContract";
@@ -36,6 +37,10 @@ export function ContractForm({
   onDirtyChange,
   onPendingChange,
 }: ContractFormProps) {
+  const t = useTranslations("contracts.form");
+  const tValidation = useTranslations("contracts.validation");
+  const contractFormSchema = useMemo(() => createContractFormSchema(tValidation), [tValidation]);
+
   const {
     register,
     handleSubmit,
@@ -93,15 +98,15 @@ export function ContractForm({
   return (
     <form id={formId} onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
-        <Input label="Contract Title" {...register("title")} />
+        <Input label={t("title")} {...register("title")} />
         <InputError message={errors.title?.message} />
       </div>
 
       <div>
         <Textarea
-          label="Scope of Work"
+          label={t("scope")}
           rows={4}
-          placeholder="Describe the work to be delivered under this contract..."
+          placeholder={t("scopePlaceholder")}
           {...register("scopeOfWork")}
         />
         <InputError message={errors.scopeOfWork?.message} />
@@ -109,13 +114,13 @@ export function ContractForm({
 
       <div className="gap-4 grid grid-cols-1 sm:grid-cols-2">
         <div>
-          <Input label="Start Date" type="date" {...register("startDate")} />
+          <Input label={t("startDate")} type="date" {...register("startDate")} />
           <InputError message={errors.startDate?.message} />
         </div>
 
         <div>
           <Input
-            label="Expected End Date"
+            label={t("endDate")}
             type="date"
             {...register("expectedEndDate")}
           />
@@ -125,28 +130,28 @@ export function ContractForm({
 
       <div>
         <label className="block mb-2 font-medium text-text-primary text-sm">
-          Milestone Allocation Mode
+          {t("allocationMode")}
         </label>
         <select
           {...register("allocationMode", { valueAsNumber: true })}
           disabled={hasMilestones}
           className="bg-surface disabled:opacity-60 px-4 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full h-11 text-text-primary text-sm transition disabled:cursor-not-allowed"
         >
-          <option value={0}>Fixed amount ($ per milestone)</option>
-          <option value={1}>Percentage (% of project value)</option>
+          <option value={0}>{t("fixed")}</option>
+          <option value={1}>{t("percentage")}</option>
         </select>
         {hasMilestones && (
           <p className="mt-1.5 text-text-secondary text-xs">
-            Allocation mode can&apos;t change once milestones exist.
+            {t("allocationLocked")}
           </p>
         )}
       </div>
 
       <div>
         <Textarea
-          label="General Terms (optional)"
+          label={t("terms")}
           rows={3}
-          placeholder="Payment terms, ownership, termination clauses..."
+          placeholder={t("termsPlaceholder")}
           {...register("generalTerms")}
         />
         <InputError message={errors.generalTerms?.message} />
@@ -157,7 +162,7 @@ export function ContractForm({
           message={
             mutation.error instanceof Error
               ? mutation.error.message
-              : "Failed to save contract."
+              : t("saveFailed")
           }
         />
       )}

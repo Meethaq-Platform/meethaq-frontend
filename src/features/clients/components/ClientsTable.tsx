@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Users } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import type { Client } from "../types/client";
 import { ClientAvatar } from "./ClientAvatar";
@@ -23,18 +24,20 @@ export function ClientsTable({
   totalCount,
   onPageChange,
 }: ClientsTableProps) {
+  const t = useTranslations("clients.list");
+
   if (clients.length === 0) {
     return isFiltering ? (
       <EmptyState
         icon={Users}
-        title="No clients found"
-        description="Try adjusting your search or filters."
+        title={t("noResultsTitle")}
+        description={t("noResultsDescription")}
       />
     ) : (
       <EmptyState
         icon={Users}
-        title="No clients yet"
-        description="Add your first client to start tracking projects together."
+        title={t("emptyTitle")}
+        description={t("emptyDescription")}
       />
     );
   }
@@ -43,19 +46,19 @@ export function ClientsTable({
     <div className="bg-surface border border-border rounded-2xl overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead>
+          <thead className="bg-primary-muted">
             <tr className="border-border border-b">
-              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-left uppercase tracking-wide">
-                Client
+              <th className="px-6 py-3.5 font-medium text-primary text-xs text-start uppercase tracking-wide">
+                {t("columns.client")}
               </th>
-              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-left uppercase tracking-wide">
-                Email
+              <th className="px-6 py-3.5 font-medium text-primary text-xs text-start uppercase tracking-wide">
+                {t("columns.email")}
               </th>
-              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-left uppercase tracking-wide">
-                Company
+              <th className="px-6 py-3.5 font-medium text-primary text-xs text-start uppercase tracking-wide">
+                {t("columns.company")}
               </th>
-              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-right uppercase tracking-wide">
-                <span className="sr-only">Actions</span>
+              <th className="relative px-6 py-3.5 font-medium text-primary text-xs text-end uppercase tracking-wide">
+                <span className="sr-only">{t("columns.actions")}</span>
               </th>
             </tr>
           </thead>
@@ -64,7 +67,7 @@ export function ClientsTable({
             {clients.map((client) => (
               <tr
                 key={client.relationshipId}
-                className="hover:bg-surface-muted transition"
+                className="hover:bg-border/40 transition"
               >
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
@@ -72,27 +75,27 @@ export function ClientsTable({
                       fullName={client.clientFullName}
                       profileImage={client.clientProfileImage}
                     />
-                    <span className="font-medium text-text-primary">
+                    <span dir="auto" className="font-medium text-text-primary">
                       {client.clientFullName}
                     </span>
                   </div>
                 </td>
 
                 <td className="px-6 py-4 text-text-secondary">
-                  {client.clientEmail}
+                  <span dir="ltr">{client.clientEmail}</span>
                 </td>
 
-                <td className="px-6 py-4 text-text-secondary">
+                <td dir="auto" className="px-6 py-4 text-text-secondary">
                   {client.companyName ?? "—"}
                 </td>
 
-                <td className="px-6 py-4 text-right">
+                <td className="px-6 py-4 text-end">
                   <Link
                     href={`/clients/${client.relationshipId}`}
-                    aria-label={`View ${client.clientFullName}'s details`}
+                    aria-label={t("viewDetails", { name: client.clientFullName })}
                     className="inline-flex justify-center items-center hover:bg-surface p-2 rounded-lg text-text-secondary hover:text-primary transition"
                   >
-                    <ArrowRight size={16} />
+                    <ArrowRight size={16} className="rtl-flip" />
                   </Link>
                 </td>
               </tr>

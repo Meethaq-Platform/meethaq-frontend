@@ -1,4 +1,5 @@
-import { AlertCircle, RefreshCw } from "lucide-react";
+import { RefreshCw } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface ErrorStateProps {
   message?: string;
@@ -9,9 +10,16 @@ export default function ErrorState({
   message = "Something went wrong.",
   onRetry,
 }: ErrorStateProps) {
+  const t = useTranslations("common.states");
+
   return (
-    <div className="flex flex-col justify-center items-center gap-3 py-16 h-full text-center">
-      <AlertCircle size={32} className="text-danger" />
+    <div className="flex flex-col justify-center items-center gap-3 py-12 h-full text-center">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/illustrations/error.svg"
+        alt=""
+        className="w-40 h-40 object-contain"
+      />
 
       <p className="text-text-secondary text-sm">{message}</p>
 
@@ -19,10 +27,10 @@ export default function ErrorState({
         <button
           type="button"
           onClick={onRetry}
-          className="flex items-center gap-2 bg-primary hover:opacity-90 px-4 rounded-xl h-10 font-semibold text-white text-sm transition"
+          className="flex items-center gap-2 bg-primary hover:opacity-90 px-4 rounded-xl h-10 font-semibold text-on-primary text-sm transition"
         >
           <RefreshCw size={14} />
-          Try again
+          {t("tryAgain")}
         </button>
       )}
     </div>

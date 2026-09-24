@@ -1,0 +1,40 @@
+{
+  "review": {
+    "loadFailed": "Failed to load this milestone.",
+    "notStarted": "The freelancer hasn't started this milestone yet.",
+    "inProgress": "The freelancer is working on this milestone. You'll be notified once they submit a deliverable for review.",
+    "accepted": "You've accepted this milestone's deliverable. It's now eligible for payment processing.",
+    "goToPayment": "Go to Payment"
+  },
+  "accept": {
+    "button": "Accept Deliverable",
+    "title": "Accept this deliverable?",
+    "description": "Accepting records your approval of the delivered work and makes this milestone eligible for payment processing. Acceptance does not itself confirm that payment has been made — that happens separately.",
+    "note": "Acceptance Note (optional)",
+    "notePlaceholder": "Add any notes for the record...",
+    "failed": "Failed to accept deliverable.",
+    "confirm": "Yes, accept",
+    "confirming": "Accepting..."
+  },
+  "revision": {
+    "button": "Request Revision",
+    "title": "Request a revision",
+    "hint": "Revision requests address work within the approved scope and acceptance criteria. If you need to change scope, price, or the agreed deadline, use a Change Request instead — this won't alter the contract.",
+    "reason": "What's wrong with this submission?",
+    "reasonPlaceholder": "Explain the issue...",
+    "changes": "Required Changes",
+    "changesPlaceholder": "Describe exactly what needs to change...",
+    "files": "Attach Supporting Files (optional)",
+    "failed": "Failed to request revision.",
+    "sending": "Sending...",
+    "send": "Send Revision Request"
+  },
+  "validation": {
+    "noteTooLong": "Note is too long",
+    "reasonRequired": "Explain what's wrong with this submission",
+    "reasonTooLong": "Reason is too long",
+    "changesRequired": "Describe the required changes",
+    "changesTooLong": "Description is too long",
+    "tooManyFiles": "You can attach up to {max, number, plain} files"
+  }
+}

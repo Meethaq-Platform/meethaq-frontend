@@ -1,16 +1,16 @@
 import { Briefcase, LucideUser, type LucideIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import type { UserRole } from "../types/register";
 
 interface RoleOption {
   value: UserRole;
-  label: string;
   icon: LucideIcon;
 }
 
 const roleOptions: RoleOption[] = [
-  { value: "freelancer", label: "Freelancer", icon: Briefcase },
-  { value: "client", label: "Client", icon: LucideUser },
+  { value: "freelancer", icon: Briefcase },
+  { value: "client", icon: LucideUser },
 ];
 
 interface RoleSelectionProps {
@@ -24,9 +24,13 @@ export default function RoleSelection({
   onChange,
   error,
 }: RoleSelectionProps) {
+  const t = useTranslations("auth");
+
   return (
     <div className="space-y-3">
-      <p className="font-medium text-text-primary text-sm">Role</p>
+      <p className="font-medium text-text-primary text-sm">
+        {t("signup.roleLabel")}
+      </p>
 
       <div className="flex gap-3">
         {roleOptions.map((option) => {
@@ -46,7 +50,7 @@ export default function RoleSelection({
               }`}
             >
               <Icon size={20} className="w-5 h-5" />
-              <span>{option.label}</span>
+              <span>{t(`roles.${option.value}`)}</span>
             </button>
           );
         })}

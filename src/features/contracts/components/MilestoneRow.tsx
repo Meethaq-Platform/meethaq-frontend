@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { ArrowDown, ArrowUp, Pencil, Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useFormat } from "@/src/shared/hooks/useFormat";
 
 import { useDeleteMilestone } from "../hooks/useDeleteMilestone";
 import type { ContractAllocationMode, Milestone } from "../types/contract";
-import { formatCurrency, formatDate } from "@/src/shared/lib/format";
+import { formatCurrency } from "@/src/shared/lib/format";
 import ConfirmModal from "@/src/shared/components/ConfirmModal";
 
 interface MilestoneRowProps {
@@ -31,6 +33,8 @@ export function MilestoneRow({
   onMove,
   isReordering,
 }: MilestoneRowProps) {
+  const t = useTranslations("contracts.milestones");
+  const format = useFormat();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const deleteMilestone = useDeleteMilestone(projectId);
 
@@ -42,7 +46,7 @@ export function MilestoneRow({
             type="button"
             onClick={() => onMove("up")}
             disabled={isFirst || isReordering}
-            aria-label="Move up"
+            aria-label={t("moveUp")}
             className="hover:bg-surface-muted disabled:opacity-30 p-1.5 rounded-lg text-text-secondary transition disabled:cursor-not-allowed"
           >
             <ArrowUp size={14} />
@@ -54,7 +58,7 @@ export function MilestoneRow({
             type="button"
             onClick={() => onMove("down")}
             disabled={isLast || isReordering}
-            aria-label="Move down"
+            aria-label={t("moveDown")}
             className="hover:bg-surface-muted disabled:opacity-30 p-1.5 rounded-lg text-text-secondary transition disabled:cursor-not-allowed"
           >
             <ArrowDown size={14} />
@@ -64,42 +68,42 @@ export function MilestoneRow({
 
       <div className="flex-1 min-w-0">
         <div className="flex justify-between items-start gap-3">
-          <h3 className="font-semibold text-text-primary text-sm">
+          <h3 dir="auto" className="font-semibold text-text-primary text-sm">
             {milestone.title}
           </h3>
 
-          <div className="text-right shrink-0">
+          <div className="text-end shrink-0">
             <p className="font-numbers font-semibold text-text-primary text-sm">
               {formatCurrency(milestone.calculatedAmount)}
             </p>
             <p className="text-text-secondary text-xs">
               {allocationMode === 1
                 ? `${milestone.allocationValue}%`
-                : "fixed"}
+                : t("fixed")}
             </p>
           </div>
         </div>
 
         {milestone.description && (
-          <p className="mt-1 text-text-secondary text-sm whitespace-pre-wrap">
+          <p dir="auto" className="mt-1 text-text-secondary text-sm whitespace-pre-wrap">
             {milestone.description}
           </p>
         )}
 
         <div className="gap-x-6 gap-y-1 grid grid-cols-1 sm:grid-cols-2 mt-3 text-xs">
           <p className="text-text-secondary">
-            <span className="font-medium text-text-primary">Deliverable:</span>{" "}
-            {milestone.deliverable}
+            <span className="font-medium text-text-primary">{t("deliverable")}</span>{" "}
+            <bdi>{milestone.deliverable}</bdi>
           </p>
           <p className="text-text-secondary">
-            <span className="font-medium text-text-primary">Due:</span>{" "}
-            {formatDate(milestone.dueDate)}
+            <span className="font-medium text-text-primary">{t("due")}</span>{" "}
+            {format.date(milestone.dueDate)}
           </p>
           <p className="sm:col-span-2 text-text-secondary">
             <span className="font-medium text-text-primary">
-              Acceptance Criteria:
+              {t("criteria")}
             </span>{" "}
-            {milestone.acceptanceCriteria}
+            <bdi>{milestone.acceptanceCriteria}</bdi>
           </p>
         </div>
 
@@ -111,7 +115,7 @@ export function MilestoneRow({
               className="flex items-center gap-1.5 font-medium text-primary text-xs hover:underline"
             >
               <Pencil size={12} />
-              Edit
+              {t("edit")}
             </button>
             <button
               type="button"
@@ -119,7 +123,7 @@ export function MilestoneRow({
               className="flex items-center gap-1.5 font-medium text-danger text-xs hover:underline"
             >
               <Trash2 size={12} />
-              Delete
+              {t("delete")}
             </button>
           </div>
         )}
@@ -133,16 +137,19 @@ export function MilestoneRow({
             onSuccess: () => setIsDeleteOpen(false),
           })
         }
-        title="Delete this milestone?"
-        description={`"${milestone.title}" will be removed and remaining milestones will be re-indexed.`}
-        confirmLabel="Yes, delete"
-        confirmingLabel="Deleting..."
+        title={t("deleteTitle")}
+        description={t.rich("deleteDescription", {
+          title: milestone.title,
+          bdi: (chunks) => <bdi>{chunks}</bdi>,
+        })}
+        confirmLabel={t("deleteConfirm")}
+        confirmingLabel={t("deleting")}
         isConfirming={deleteMilestone.isPending}
         errorMessage={
           deleteMilestone.isError
             ? deleteMilestone.error instanceof Error
               ? deleteMilestone.error.message
-              : "Failed to delete milestone."
+              : t("deleteFailed")
             : undefined
         }
       />

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ListChecks, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { useReorderMilestones } from "../hooks/useReorderMilestones";
 import { MilestoneRow } from "./MilestoneRow";
@@ -20,6 +21,7 @@ export function MilestonesSection({
   contract,
   editable,
 }: MilestonesSectionProps) {
+  const t = useTranslations("contracts.milestones");
   const [formState, setFormState] = useState<
     { open: false } | { open: true; milestone?: Milestone }
   >({ open: false });
@@ -42,8 +44,10 @@ export function MilestonesSection({
 
   return (
     <div className="bg-surface border border-border rounded-2xl overflow-hidden">
-      <div className="flex justify-between items-center p-6 pb-4">
-        <h2 className="font-semibold text-text-primary text-base">Milestones</h2>
+      <div className="flex justify-between items-center bg-primary-muted p-6 pb-4">
+        <h2 className="font-semibold text-text-primary text-base">
+          {t("title")}
+        </h2>
 
         {editable && (
           <button
@@ -52,7 +56,7 @@ export function MilestonesSection({
             className="flex items-center gap-1.5 hover:bg-primary-muted px-3 rounded-lg h-8 font-semibold text-primary text-sm transition"
           >
             <Plus size={14} />
-            Add Milestone
+            {t("add")}
           </button>
         )}
       </div>
@@ -61,8 +65,8 @@ export function MilestonesSection({
         <div className="px-6 pb-6">
           <EmptyState
             icon={ListChecks}
-            title="No milestones yet"
-            description="Break this contract's scope into milestones that add up to the full project value."
+            title={t("emptyTitle")}
+            description={t("emptyDescription")}
           />
         </div>
       ) : (

@@ -1,0 +1,202 @@
+{
+  "loadFailed": "Failed to load your dashboard.",
+  "sections": {
+    "projectOverview": "Project Overview",
+    "financialOverview": "Financial Overview",
+    "needsAttention": "Needs Your Attention",
+    "upcomingMilestones": "Upcoming Milestones",
+    "recentActivity": "Recent Activity"
+  },
+  "allCaughtUp": "You're all caught up.",
+  "lastUpdated": "Last updated <time></time>",
+  "staleData": "Showing last known data — refresh failed.",
+  "refresh": "Refresh",
+  "viewAll": "View All",
+  "sectionFailed": "This section couldn't be loaded.",
+  "showMore": "Show more",
+  "showLess": "Show less",
+  "currency": "Currency",
+  "open": "Open",
+  "welcome": {
+    "greeting": "Welcome back, {name}",
+    "greetingNoName": "Welcome back, there",
+    "reviewAttention": "Review what needs your attention",
+    "quickActions": {
+      "openProjects": "Open Projects",
+      "openClients": "Open Clients"
+    },
+    "summary": "You have {total, number, integer} items requiring attention: {overdue, number, integer} overdue and {approaching, number, integer} approaching deadlines.",
+    "summaryNone": "Nothing needs your attention right now."
+  },
+  "actionCenter": {
+    "empty": "Nothing needs your attention right now.",
+    "yourAction": "Your Action Required",
+    "waiting": "Waiting for the Other Party",
+    "due": "Due <time></time>",
+    "waitingSince": "Waiting since <time></time>"
+  },
+  "firstUse": {
+    "freelancerTitle": "Welcome, {name} — let's start your first Project",
+    "freelancerTitleNoName": "Welcome, there — let's start your first Project",
+    "freelancerSubtitle": "Complete these steps to get your first agreement moving.",
+    "steps": {
+      "addClient": "Add a Client",
+      "createProject": "Create a Project",
+      "prepareContract": "Prepare the Contract",
+      "sendForApproval": "Send for Client Approval"
+    },
+    "clientTitle": "Welcome, {name}",
+    "clientTitleNoName": "Welcome, there",
+    "clientGuidance": "Your Projects will appear here when a Freelancer shares access with you.",
+    "reviewInvitations": "Review {count, number, plain} Pending {count, plural, one {Invitation} other {Invitations}}"
+  },
+  "metric": {
+    "help": "What does \"{title}\" mean?",
+    "periods": {
+      "AllTime": "All Time",
+      "CurrentOutstanding": "Current Outstanding",
+      "ThisMonth": "This Month"
+    },
+    "titles": {
+      "totalIncomeReceived": "Total Income Received",
+      "incomeReceivedThisMonth": "Income Received This Month",
+      "approvedProjectValue": "Approved Project Value",
+      "acceptedWorkValue": "Accepted Work Value",
+      "totalUnpaidValue": "Total Unpaid Value",
+      "readyForClientPayment": "Ready for Client Payment",
+      "awaitingReceiptConfirmation": "Awaiting Receipt Confirmation",
+      "paymentIssues": "Payment Issues",
+      "onDisputeHold": "On Dispute Hold",
+      "notYetEligible": "Not Yet Eligible",
+      "totalConfirmedPayments": "Total Confirmed Payments",
+      "confirmedPaymentsThisMonth": "Confirmed Payments This Month",
+      "readyForPayment": "Ready for Payment",
+      "awaitingFreelancerConfirmation": "Awaiting Freelancer Confirmation",
+      "futureMilestoneValue": "Future Milestone Value"
+    },
+    "tooltips": {
+      "totalIncomeReceived": "All payments you've confirmed receiving, since the start.",
+      "incomeReceivedThisMonth": "Payments confirmed this month; part of Total Income Received.",
+      "approvedProjectValue": "The total value of approved contracts, including approved amendments.",
+      "acceptedWorkValue": "The value of milestones whose deliverables the client accepted.",
+      "totalUnpaidValue": "Approved value that hasn't been confirmed as paid yet.",
+      "readyForClientPayment": "Accepted milestones eligible for payment that the client hasn't recorded yet.",
+      "awaitingReceiptConfirmation": "Payments the client recorded that are waiting for your confirmation.",
+      "paymentIssues": "Payments with a reported issue, waiting for corrected evidence.",
+      "onDisputeHold": "The value of milestones with an open dispute.",
+      "notYetEligible": "The value of milestones whose deliverables haven't been accepted yet.",
+      "totalConfirmedPayments": "All payments the freelancer confirmed receiving, since the start.",
+      "confirmedPaymentsThisMonth": "Payments confirmed this month; part of Total Confirmed Payments.",
+      "readyForPayment": "Accepted milestones eligible for payment that haven't been recorded yet.",
+      "awaitingFreelancerConfirmation": "Recorded payments waiting for the freelancer to confirm receipt.",
+      "futureMilestoneValue": "The value of milestones not accepted yet."
+    }
+  },
+  "financial": {
+    "freelancer": {
+      "trendFailed": "Failed to load income trend.",
+      "trendTitle": "Income Trend",
+      "followUpTitle": "Payment Follow-Up",
+      "followUpFailed": "Failed to load payment follow-up.",
+      "counterparty": "Client"
+    },
+    "client": {
+      "trendFailed": "Failed to load payment trend.",
+      "trendTitle": "Confirmed Payments by Month",
+      "followUpTitle": "Payment Action List",
+      "followUpFailed": "Failed to load the payment action list.",
+      "counterparty": "Freelancer"
+    }
+  },
+  "projectOverview": {
+    "total": "Projects",
+    "draft": "Draft",
+    "active": "Active",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "other": "Other"
+  },
+  "trend": {
+    "totalOver": "total over {months, number, plain} months",
+    "months6": "6 Months",
+    "months12": "12 Months",
+    "viewTable": "View as table",
+    "viewChart": "View chart",
+    "month": "Month",
+    "confirmedIncome": "Confirmed Income"
+  },
+  "upcoming": {
+    "next7": "Next 7 Days",
+    "next30": "Next 30 Days",
+    "overdue": "Overdue",
+    "empty": "No milestones in this range.",
+    "overdueWasDue": "Overdue — was due <time></time>",
+    "due": "Due <time></time>"
+  },
+  "followUp": {
+    "empty": "No payments need follow-up.",
+    "milestone": "Milestone",
+    "amount": "Amount",
+    "status": "Status",
+    "action": "Action",
+    "disputeHold": "On dispute hold",
+    "overdueDue": "Overdue — due <time></time>",
+    "due": "Due <time></time>",
+    "accepted": "Accepted <time></time>"
+  },
+  "recentActivity": {
+    "empty": "No recent activity."
+  },
+  "apiText": {
+    "approaching_deadline": "Approaching Deadline",
+    "overdue": "Overdue",
+    "waiting_for_client": "Waiting for Client",
+    "waiting_for_freelancer": "Waiting for Freelancer",
+    "confirmation_required": "Confirmation Required",
+    "action_required": "Action Required",
+    "review_required": "Review Required",
+    "awaiting_review": "Awaiting Review",
+    "awaiting_payment": "Awaiting Payment",
+    "awaiting_confirmation": "Awaiting Confirmation",
+    "payment_due": "Payment Due",
+    "payment_issue": "Payment Issue",
+    "disputed": "Disputed",
+    "due_soon": "Due Soon",
+    "urgent": "Urgent",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low",
+    "pending": "Pending",
+    "revision_requested": "Revision Requested",
+    "in_progress": "In Progress",
+    "not_started": "Not Started",
+    "submit_work": "Submit Work",
+    "view_submission": "View Submission",
+    "confirm_receipt": "Confirm Receipt",
+    "send_payment_reminder": "Send Payment Reminder",
+    "review_submission": "Review Submission",
+    "review_work": "Review Work",
+    "review_deliverable": "Review Deliverable",
+    "record_payment": "Record Payment",
+    "start_milestone": "Start Milestone",
+    "review_contract": "Review Contract",
+    "view_contract": "View Contract",
+    "view_project": "View Project",
+    "view_milestone": "View Milestone",
+    "view_dispute": "View Dispute",
+    "respond_to_dispute": "Respond to Dispute",
+    "review_change_request": "Review Change Request",
+    "view_change_request": "View Change Request",
+    "submit_corrected_evidence": "Submit Corrected Evidence",
+    "report_issue": "Report Issue",
+    "accept_invitation": "Accept Invitation",
+    "view_invitation": "View Invitation",
+    "view_payment": "View Payment",
+    "resubmit_work": "Resubmit Work",
+    "remind_client": "Remind Client",
+    "continue_work": "Continue Work",
+    "view_details": "View Details",
+    "view": "View",
+    "open": "Open"
+  }
+}

@@ -1,0 +1,138 @@
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import { useApiText } from "../hooks/useApiText";
+import RelativeTime from "@/src/shared/components/RelativeTime";
+import EmptyState from "@/src/shared/components/EmptyState";
+import { CheckCircle2 } from "lucide-react";
+import StatusPill from "./StatusPill";
+import type { ActionCenterItem } from "../types/dashboard";
+
+const urgencyTone: Record<number, "neutral" | "info" | "warning" | "danger"> = {
+  1: "neutral",
+  2: "info",
+  3: "warning",
+  4: "danger",
+};
+
+interface ActionCenterListProps {
+  items: ActionCenterItem[];
+  emptyMessage: string;
+}
+
+// Feature 3 / 4: "Needs Your Attention" for both roles — the same DTO shape
+// drives both since ownership/urgency/action metadata is fully backend-
+// computed. Ownership is split by which timestamp is populated
+// (deadlineUtc = the current user owes an action; waitingSinceUtc = the
+// counterparty does) rather than the raw, undocumented ownershipType ordinal
+// — see types/dashboard.ts for why. This also directly satisfies the sprint
+// rule that an overdue *client* review must never be presented as the
+// freelancer's own submission task: that item arrives with waitingSinceUtc
+// set (someone else is late), not deadlineUtc, so it always lands in
+// "Waiting" regardless of raw enum plumbing.
+export default function ActionCenterList({ items, emptyMessage }: ActionCenterListProps) {
+  const t = useTranslations("dashboard.actionCenter");
+  if (items.length === 0) {
+    return (
+      <EmptyState icon={CheckCircle2} title={emptyMessage} description={t("empty")} />
+    );
+  }
+
+  const yourAction = items.filter((item) => item.deadlineUtc || !item.waitingSinceUtc);
+  const waiting = items.filter((item) => item.waitingSinceUtc && !item.deadlineUtc);
+
+  return (
+    <div className="flex flex-col gap-5">
+      {yourAction.length > 0 && (
+        <ActionGroup title={t("yourAction")} items={yourAction} />
+      )}
+      {waiting.length > 0 && (
+        <ActionGroup title={t("waiting")} items={waiting} muted />
+      )}
+    </div>
+  );
+}
+
+function ActionGroup({
+  title,
+  items,
+  muted = false,
+}: {
+  title: string;
+  items: ActionCenterItem[];
+  muted?: boolean;
+}) {
+  const t = useTranslations("dashboard.actionCenter");
+  const apiText = useApiText();
+  const locale = useLocale();
+  return (
+    <div>
+      <h3 className="mb-2 font-medium text-text-secondary text-xs uppercase tracking-wide">
+        {title}
+      </h3>
+      <ul className="flex flex-col gap-2">
+        {items.map((item) => (
+          <li
+            key={item.actionId ?? `${item.relatedEntityType}-${item.relatedEntityId}`}
+            className={`flex flex-wrap items-center gap-3 p-3 border border-border rounded-xl ${muted ? "opacity-80" : ""}`}
+          >
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-wrap items-center gap-2 mb-1">
+                {item.priorityBadge && (
+                  <StatusPill text={apiText(item.priorityBadge)} tone={urgencyTone[item.urgencyLevel] ?? "neutral"} />
+                )}
+                <span dir="auto" className="font-medium text-text-primary text-sm truncate">
+                  {item.relatedRecordTitle ?? item.actionType}
+                </span>
+              </div>
+
+              <p className="text-text-secondary text-xs">
+                <bdi>{item.projectName}</bdi>
+                {item.counterpartyName ? (
+                  <>
+                    {" · "}
+                    <bdi>{item.counterpartyName}</bdi>
+                  </>
+                ) : null}
+                {item.amount != null && item.currency ? (
+                  <>
+                    {" · "}
+                    <bdi>
+                      {`${item.currency} ${
+                        // Arabic keeps Western digits and the "USD 1,500" shape.
+                        locale === "ar" ? item.amount.toLocaleString("en-US") : item.amount.toLocaleString()
+                      }`}
+                    </bdi>
+                  </>
+                ) : null}
+              </p>
+
+              {(item.deadlineUtc || item.waitingSinceUtc) && (
+                <p className="mt-1 text-text-secondary text-xs">
+                  {item.deadlineUtc ? (
+                    t.rich("due", { time: () => <RelativeTime value={item.deadlineUtc!} /> })
+                  ) : (
+                    t.rich("waitingSince", { time: () => <RelativeTime value={item.waitingSinceUtc!} /> })
+                  )}
+                </p>
+              )}
+            </div>
+
+            {item.actionButtonText && (
+              // The backend's actionNavigationUrl points at pages this app
+              // doesn't have (e.g. /action-center/{id}) — projectId always
+              // resolves to a real page, so every action opens there instead.
+              <Link
+                href={`/projects/${item.projectId}`}
+                className="flex items-center gap-1 bg-primary hover:opacity-90 px-3 rounded-lg h-9 font-semibold text-on-primary text-xs whitespace-nowrap transition shrink-0"
+              >
+                {apiText(item.actionButtonText)}
+                <ArrowRight size={13} className="rtl-flip" />
+              </Link>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}

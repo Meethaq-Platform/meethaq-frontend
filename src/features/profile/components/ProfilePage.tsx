@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Pencil } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useIsMutating } from "@tanstack/react-query";
 
 import { useProfile } from "../hooks/useProfile";
@@ -9,26 +10,35 @@ import ProfileData from "./ProfileData";
 import Button from "@/src/shared/components/Button";
 
 export default function ProfilePage() {
+  const t = useTranslations("profile");
+  const tActions = useTranslations("common.actions");
   const { data } = useProfile();
   const [isEditing, setIsEditing] = useState(false);
   const [isFormDirty, setIsFormDirty] = useState(false);
   const isSaving = useIsMutating({ mutationKey: ["update-profile"] }) > 0;
 
+  const handleStartEditing = () => {
+    setIsFormDirty(false);
+    setIsEditing(true);
+  };
+
   return (
     <div className="space-y-6 mx-auto h-full">
-      <div className="flex justify-between items-center">
-        <h1 className="font-bold text-text-primary text-2xl">My Profile</h1>
+      <div className="flex justify-between items-center gap-3">
+        <h1 className="font-bold text-text-primary text-xl sm:text-2xl">
+          {t("title")}
+        </h1>
 
         {data &&
           (isEditing ? (
-            <div key="editing-actions" className="flex items-center gap-3">
+            <div key="editing-actions" className="flex items-center gap-2 sm:gap-3">
               <Button
                 type="button"
                 variant="amber"
                 onClick={() => setIsEditing(false)}
-                className="h-9"
+                className="px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
               >
-                Cancel
+                {tActions("cancel")}
               </Button>
 
               <Button
@@ -36,24 +46,21 @@ export default function ProfilePage() {
                 form="profile-edit-form"
                 disabled={!isFormDirty}
                 loading={isSaving}
-                loadingText="Saving..."
-                className="h-9"
+                loadingText={tActions("saving")}
+                className="px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
               >
-                Save Changes
+                {tActions("saveChanges")}
               </Button>
             </div>
           ) : (
             <div key="viewing-actions">
               <Button
                 type="button"
-                onClick={() => {
-                  setIsFormDirty(false);
-                  setIsEditing(true);
-                }}
-                className="flex items-center gap-1.5 h-9"
+                onClick={handleStartEditing}
+                className="flex items-center gap-1.5 px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
               >
-                <Pencil size={14} />
-                Edit
+                <Pencil size={14} className="sm:size-4 size-3.5" />
+                {tActions("edit")}
               </Button>
             </div>
           ))}
@@ -63,6 +70,7 @@ export default function ProfilePage() {
         isEditing={isEditing}
         onDone={() => setIsEditing(false)}
         onDirtyChange={setIsFormDirty}
+        onStartEditing={handleStartEditing}
       />
     </div>
   );

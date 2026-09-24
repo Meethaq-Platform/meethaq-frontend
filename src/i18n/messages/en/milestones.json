@@ -1,0 +1,36 @@
+{
+  "overview": {
+    "title": "Execution Overview",
+    "total": "Total Milestones",
+    "accepted": "Accepted",
+    "awaitingReview": "Awaiting Review",
+    "revisionRequested": "Requiring Revision",
+    "overdue": "Overdue",
+    "allAccepted": "All Deliverables Accepted"
+  },
+  "list": {
+    "loadFailed": "Failed to load milestones.",
+    "emptyTitle": "No milestones yet",
+    "emptyDescription": "Milestones from the approved contract will appear here once execution begins.",
+    "due": "Due {date}"
+  },
+  "detail": {
+    "due": "Due {date}",
+    "deliverable": "Agreed Deliverable",
+    "criteria": "Acceptance Criteria"
+  },
+  "workspace": {
+    "loadFailed": "Failed to load this milestone.",
+    "revisionRequested": "The client requested revisions to your latest submission. Review their feedback below and submit a new version.",
+    "submitTitle": "Submit Deliverable",
+    "awaitingReview": "Your latest submission is awaiting the client's review. You can't replace it while it's pending — check back after they respond."
+  },
+  "start": {
+    "button": "Start Milestone",
+    "title": "Start this milestone?",
+    "description": "This marks the milestone as In Progress so you can begin work and submit deliverables for client review.",
+    "confirm": "Yes, start",
+    "confirming": "Starting...",
+    "failed": "Failed to start milestone."
+  }
+}

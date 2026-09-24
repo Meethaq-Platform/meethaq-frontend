@@ -1,0 +1,74 @@
+{
+  "tab": {
+    "title": "Change Requests",
+    "loadFailed": "Failed to load change requests.",
+    "emptyTitle": "No change requests yet",
+    "emptyDescription": "Either party can propose a change to scope, timeline, or cost once the contract is approved.",
+    "submitted": "Submitted {date}"
+  },
+  "amendments": {
+    "title": "Amendment History",
+    "item": "Amendment #{number, number, integer} — {title}",
+    "effective": "Effective {date}"
+  },
+  "create": {
+    "button": "New Change Request",
+    "title": "Propose a change request",
+    "titleLabel": "Title",
+    "reason": "Reason",
+    "reasonPlaceholder": "Why is this change needed?",
+    "scope": "Proposed Scope Change",
+    "scopePlaceholder": "Summarize what's changing, e.g. \"Add two additional website pages to the design\"",
+    "milestones": "Affected Milestones",
+    "selectMilestone": "Select a milestone to propose changes for...",
+    "milestonesRequired": "Add at least one affected milestone",
+    "resultingValue": "Resulting Project Value",
+    "resultingHintPercent": "The new total contract value once this change is approved (not the difference) — percentages above are recalculated against this total.",
+    "resultingHintFixed": "The new total contract value once this change is approved — automatically calculated as the sum of every milestone's amount, including the changes above.",
+    "attach": "Attach Files",
+    "failed": "Failed to submit change request.",
+    "submitting": "Submitting...",
+    "submit": "Submit Change Request"
+  },
+  "delta": {
+    "remove": "Remove {title} from this change request",
+    "title": "Title",
+    "description": "Description",
+    "deliverable": "Deliverable",
+    "criteria": "Acceptance Criteria",
+    "percentage": "Allocation (%)",
+    "amount": "Amount",
+    "dueDate": "Due Date"
+  },
+  "detail": {
+    "title": "Change Request",
+    "scope": "Proposed Scope Change",
+    "currentValue": "Current Value",
+    "resultingValue": "Resulting Value",
+    "milestoneTerms": "Proposed Milestone Terms",
+    "due": "Due {date}",
+    "attachments": "Attachments",
+    "rejected": "Rejected: {reason}",
+    "failed": "Action failed.",
+    "reject": "Reject",
+    "approving": "Approving...",
+    "approve": "Approve",
+    "rejectionReason": "Rejection reason",
+    "back": "Back",
+    "rejecting": "Rejecting...",
+    "confirmReject": "Confirm Reject",
+    "withdrawing": "Withdrawing...",
+    "withdraw": "Withdraw Request",
+    "readOnly": "This request is pending the other party's decision and is read-only until then."
+  },
+  "validation": {
+    "titleRequired": "Title is required",
+    "titleTooLong": "Title is too long",
+    "reasonRequired": "Reason is required",
+    "reasonTooLong": "Reason is too long",
+    "scopeMin": "Describe the scope change in at least {min, number, plain} characters",
+    "scopeTooLong": "Description is too long",
+    "valuePositive": "Resulting value must be greater than zero",
+    "tooManyFiles": "You can attach up to {max, number, plain} files"
+  }
+}

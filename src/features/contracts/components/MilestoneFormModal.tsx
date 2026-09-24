@@ -1,10 +1,12 @@
 "use client";
 
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
-  milestoneFormSchema,
+  createMilestoneFormSchema,
   type MilestoneFormInput,
   type MilestoneFormValues,
 } from "../schemas/milestone.schema";
@@ -36,6 +38,11 @@ export function MilestoneFormModal({
   allocationMode,
   milestone,
 }: MilestoneFormModalProps) {
+  const t = useTranslations("contracts.milestoneForm");
+  const tActions = useTranslations("common.actions");
+  const tValidation = useTranslations("contracts.milestoneValidation");
+  const milestoneFormSchema = useMemo(() => createMilestoneFormSchema(tValidation), [tValidation]);
+
   const {
     register,
     handleSubmit,
@@ -95,17 +102,17 @@ export function MilestoneFormModal({
     <Modal
       open={open}
       onClose={handleClose}
-      title={milestone ? "Edit Milestone" : "Add Milestone"}
+      title={milestone ? t("editTitle") : t("addTitle")}
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <Input label="Title" {...register("title")} />
+          <Input label={t("title")} {...register("title")} />
           <InputError message={errors.title?.message} />
         </div>
 
         <div>
           <Textarea
-            label="Description (optional)"
+            label={t("description")}
             rows={2}
             {...register("description")}
           />
@@ -113,13 +120,13 @@ export function MilestoneFormModal({
         </div>
 
         <div>
-          <Textarea label="Deliverable" rows={2} {...register("deliverable")} />
+          <Textarea label={t("deliverable")} rows={2} {...register("deliverable")} />
           <InputError message={errors.deliverable?.message} />
         </div>
 
         <div>
           <Textarea
-            label="Acceptance Criteria"
+            label={t("criteria")}
             rows={2}
             {...register("acceptanceCriteria")}
           />
@@ -128,13 +135,13 @@ export function MilestoneFormModal({
 
         <div className="gap-4 grid grid-cols-2">
           <div>
-            <Input label="Due Date" type="date" {...register("dueDate")} />
+            <Input label={t("dueDate")} type="date" {...register("dueDate")} />
             <InputError message={errors.dueDate?.message} />
           </div>
 
           <div>
             <Input
-              label={allocationMode === 1 ? "Allocation (%)" : "Allocation ($)"}
+              label={allocationMode === 1 ? t("allocationPercent") : t("allocationFixed")}
               type="number"
               step="0.01"
               min="0.01"
@@ -149,7 +156,7 @@ export function MilestoneFormModal({
             message={
               mutation.error instanceof Error
                 ? mutation.error.message
-                : "Failed to save milestone."
+                : t("saveFailed")
             }
           />
         )}
@@ -161,11 +168,11 @@ export function MilestoneFormModal({
             disabled={mutation.isPending}
             className="hover:bg-surface-muted disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-text-secondary text-sm transition disabled:cursor-not-allowed"
           >
-            Cancel
+            {tActions("cancel")}
           </button>
 
-          <Button type="submit" loading={mutation.isPending} loadingText="Saving...">
-            {milestone ? "Save Changes" : "Add Milestone"}
+          <Button type="submit" loading={mutation.isPending} loadingText={tActions("saving")}>
+            {milestone ? tActions("saveChanges") : t("add")}
           </Button>
         </div>
       </form>

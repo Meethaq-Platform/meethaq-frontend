@@ -1,22 +1,24 @@
 import { AlertTriangle, CheckCircle2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import type { ContractSummary } from "../types/contract";
 import { formatCurrency } from "@/src/shared/lib/format";
 
 export function ContractSummaryCard({ summary }: { summary: ContractSummary }) {
+  const t = useTranslations("contracts.summary");
   const isOverAllocated = summary.remainingValue < 0;
   const percentage = Math.min(summary.totalPercentage, 100);
 
   return (
     <div className="bg-surface p-6 border border-border rounded-2xl">
       <h2 className="mb-4 font-semibold text-text-primary text-base">
-        Value Breakdown
+        {t("title")}
       </h2>
 
       <div className="gap-4 grid grid-cols-2 sm:grid-cols-3">
         <div>
           <p className="text-text-secondary text-xs uppercase tracking-wide">
-            Project Value
+            {t("projectValue")}
           </p>
           <p className="font-numbers font-semibold text-text-primary text-lg">
             {formatCurrency(summary.projectValue)}
@@ -25,7 +27,7 @@ export function ContractSummaryCard({ summary }: { summary: ContractSummary }) {
 
         <div>
           <p className="text-text-secondary text-xs uppercase tracking-wide">
-            Allocated
+            {t("allocated")}
           </p>
           <p className="font-numbers font-semibold text-text-primary text-lg">
             {formatCurrency(summary.allocatedValue)}
@@ -34,16 +36,19 @@ export function ContractSummaryCard({ summary }: { summary: ContractSummary }) {
 
         <div>
           <p className="text-text-secondary text-xs uppercase tracking-wide">
-            Remaining
+            {t("remaining")}
           </p>
           <p
             className={`font-numbers font-semibold text-lg ${
               isOverAllocated ? "text-danger" : "text-text-primary"
             }`}
           >
-            {isOverAllocated
-              ? `−${formatCurrency(Math.abs(summary.remainingValue))}`
-              : formatCurrency(summary.remainingValue)}
+            {/* ltr keeps the minus sign in front of the amount in Arabic */}
+            <span dir="ltr">
+              {isOverAllocated
+                ? `−${formatCurrency(Math.abs(summary.remainingValue))}`
+                : formatCurrency(summary.remainingValue)}
+            </span>
           </p>
         </div>
       </div>
@@ -53,7 +58,7 @@ export function ContractSummaryCard({ summary }: { summary: ContractSummary }) {
           <div
             className={`h-full rounded-full transition-all ${
               summary.isAllocationComplete
-                ? "bg-success"
+                ? "bg-primary"
                 : isOverAllocated
                   ? "bg-danger"
                   : "bg-accent-value"
@@ -67,20 +72,33 @@ export function ContractSummaryCard({ summary }: { summary: ContractSummary }) {
             <>
               <CheckCircle2 size={14} className="text-success" />
               <p className="text-success text-xs">
-                Fully allocated across {summary.milestoneCount}{" "}
-                {summary.milestoneCount === 1 ? "milestone" : "milestones"}
+                {t("fullyAllocated", { count: summary.milestoneCount })}
               </p>
             </>
           ) : (
             <>
               <AlertTriangle
                 size={14}
-                className={isOverAllocated ? "text-danger" : "text-accent-value"}
+                className={
+                  isOverAllocated ? "text-danger" : "text-accent-value"
+                }
               />
-              <p className={isOverAllocated ? "text-danger text-xs" : "text-text-secondary text-xs"}>
+              <p
+                className={
+                  isOverAllocated
+                    ? "text-danger text-xs"
+                    : "text-text-secondary text-xs"
+                }
+              >
                 {isOverAllocated
-                  ? `Over-allocated by ${formatCurrency(Math.abs(summary.remainingValue))} — reduce a milestone before submitting`
-                  : `${summary.totalPercentage.toFixed(1)}% allocated across ${summary.milestoneCount} ${summary.milestoneCount === 1 ? "milestone" : "milestones"} — must total 100% before submitting`}
+                  ? t.rich("overAllocated", {
+                      amount: formatCurrency(Math.abs(summary.remainingValue)),
+                      bdi: (chunks) => <bdi>{chunks}</bdi>,
+                    })
+                  : t("partial", {
+                      percent: summary.totalPercentage.toFixed(1),
+                      count: summary.milestoneCount,
+                    })}
               </p>
             </>
           )}

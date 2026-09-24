@@ -3,6 +3,7 @@
 import { Eye, EyeOff } from "lucide-react";
 import type { InputHTMLAttributes } from "react";
 import { forwardRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import Input from "./Input";
 
@@ -14,6 +15,7 @@ interface PasswordInputProps
 const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
   function PasswordInput({ label, ...props }, ref) {
     const [isVisible, setIsVisible] = useState(false);
+    const t = useTranslations("common.password");
 
     return (
       <Input
@@ -25,7 +27,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
           <button
             type="button"
             onClick={() => setIsVisible((prev) => !prev)}
-            aria-label={isVisible ? "Hide password" : "Show password"}
+            aria-label={isVisible ? t("hide") : t("show")}
             className="text-text-secondary hover:text-text-primary transition"
           >
             {isVisible ? <EyeOff size={18} /> : <Eye size={18} />}

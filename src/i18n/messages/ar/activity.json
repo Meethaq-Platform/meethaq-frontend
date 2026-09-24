@@ -1,0 +1,7 @@
+{
+  "loadFailed": "تعذّر تحميل سجل النشاط.",
+  "emptyTitle": "لا يوجد نشاط بعد",
+  "emptyDescription": "ستظهر هنا أحداث المراحل والتسليمات الخاصة بهذا المشروع.",
+  "showMore": "عرض {count, plural, one {عنصر آخر} two {عنصرين آخرين} few {{count, number, plain} عناصر أخرى} many {{count, number, plain} عنصرًا آخر} other {{count, number, plain} عنصر آخر}}",
+  "lastActivity": "آخر نشاط"
+}

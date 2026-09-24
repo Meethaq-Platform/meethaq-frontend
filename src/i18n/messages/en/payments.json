@@ -1,0 +1,103 @@
+{
+  "tab": {
+    "loadFailed": "Failed to load payments.",
+    "emptyTitle": "No milestones yet",
+    "emptyDescription": "Payment tracking for this project's milestones will appear here once the contract is approved."
+  },
+  "summary": {
+    "title": "Payment Summary",
+    "approvedValue": "Approved Value",
+    "totalPaid": "Total Paid",
+    "totalUnpaid": "Total Unpaid",
+    "eligible": "Eligible",
+    "awaitingConfirmation": "Awaiting Confirmation",
+    "issues": "Payment Issues",
+    "disputeHold": "Dispute Hold"
+  },
+  "row": {
+    "disputed": "Disputed",
+    "disputedNotice": "This milestone has an open dispute — payment confirmation is on hold until it's resolved.",
+    "notEligibleFreelancer": "This milestone isn't eligible for payment yet — it becomes eligible once the client accepts your delivered work.",
+    "notEligibleClient": "This milestone isn't eligible for payment yet — accept the delivered work to make it eligible.",
+    "eligibleFreelancer": "This milestone is eligible for payment. Waiting for the client to record payment.",
+    "awaitingClient": "Payment recorded — waiting for the freelancer to confirm receipt.",
+    "issueFreelancer": "An issue was reported with this payment. Waiting for the client to submit corrected evidence."
+  },
+  "detail": {
+    "method": "Method",
+    "amount": "Amount",
+    "paymentDate": "Payment Date",
+    "reference": "Reference",
+    "notes": "Notes",
+    "evidence": "Evidence",
+    "confirmed": "Confirmed {date}",
+    "corrections": "Correction History",
+    "submitted": "Submitted {date}",
+    "ref": "Ref: {reference}"
+  },
+  "methodNames": {
+    "BankTransfer": "BankTransfer",
+    "WireTransfer": "WireTransfer",
+    "PayPal": "PayPal",
+    "Cash": "Cash",
+    "Other": "Other"
+  },
+  "methods": {
+    "0": "Bank Transfer",
+    "1": "Wire Transfer",
+    "2": "PayPal",
+    "3": "Cash",
+    "4": "Other"
+  },
+  "record": {
+    "button": "Record Payment",
+    "title": "Record milestone payment",
+    "method": "Payment Method",
+    "date": "Payment Date",
+    "amount": "Amount ({currency})",
+    "reference": "Transaction Reference",
+    "referencePlaceholder": "e.g. wire confirmation number",
+    "notes": "Payment Notes (optional)",
+    "attach": "Attach Receipt",
+    "failed": "Failed to record payment.",
+    "recording": "Recording..."
+  },
+  "confirm": {
+    "button": "Confirm Receipt",
+    "title": "Confirm you received this payment?",
+    "description": "This records your confirmation and marks the milestone as Paid. A confirmed payment cannot be reversed or edited afterward.",
+    "confirm": "Yes, I received it",
+    "confirming": "Confirming...",
+    "failed": "Failed to confirm receipt."
+  },
+  "report": {
+    "button": "Report Issue",
+    "title": "Report a payment issue",
+    "description": "This flags the recorded payment as disputed evidence. The client can review and submit corrected details.",
+    "reason": "What's wrong?",
+    "reasonPlaceholder": "Describe the issue with this payment...",
+    "failed": "Failed to report issue.",
+    "reporting": "Reporting..."
+  },
+  "corrected": {
+    "button": "Submit Corrected Evidence",
+    "title": "Submit corrected payment evidence",
+    "reference": "Updated Transaction Reference",
+    "notes": "Updated Notes (optional)",
+    "attach": "Attach Corrected Evidence",
+    "failed": "Failed to submit corrected evidence.",
+    "submitting": "Submitting...",
+    "submit": "Submit"
+  },
+  "validation": {
+    "notesTooLong": "Notes are too long",
+    "referenceTooLong": "Reference is too long",
+    "tooManyFiles": "You can attach up to {max, number, plain} files",
+    "correctedRequired": "Add an updated reference or attach corrected evidence",
+    "dateRequired": "Payment date is required",
+    "amountPositive": "Amount must be greater than zero",
+    "evidenceRequired": "Add a transaction reference or attach payment evidence",
+    "reasonRequired": "A reason is required",
+    "reasonTooLong": "Reason is too long"
+  }
+}

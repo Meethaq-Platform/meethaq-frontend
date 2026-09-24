@@ -1,4 +1,5 @@
 import type { ProjectContractStatus } from "@/src/features/projects/types/project";
+import { useStatusLabel } from "@/src/shared/hooks/useStatusLabel";
 
 const statusStyles: Record<ProjectContractStatus, string> = {
   None: "bg-surface-muted text-text-secondary",
@@ -8,20 +9,14 @@ const statusStyles: Record<ProjectContractStatus, string> = {
   Approved: "bg-success-muted text-success",
 };
 
-const statusLabels: Record<ProjectContractStatus, string> = {
-  None: "No Contract",
-  Draft: "Draft",
-  PendingApproval: "Pending Approval",
-  ChangesRequested: "Changes Requested",
-  Approved: "Approved",
-};
-
 export function ContractStatusBadge({ status }: { status: ProjectContractStatus }) {
+  const label = useStatusLabel("projectContract");
+
   return (
     <span
       className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${statusStyles[status] ?? statusStyles.None}`}
     >
-      {statusLabels[status] ?? status}
+      {label(status)}
     </span>
   );
 }

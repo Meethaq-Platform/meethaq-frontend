@@ -1,0 +1,74 @@
+{
+  "tab": {
+    "title": "طلبات التغيير",
+    "loadFailed": "تعذّر تحميل طلبات التغيير.",
+    "emptyTitle": "لا توجد طلبات تغيير بعد",
+    "emptyDescription": "يمكن لأي من الطرفين اقتراح تغيير في النطاق أو الجدول الزمني أو التكلفة بعد اعتماد العقد.",
+    "submitted": "تاريخ الإرسال {date}"
+  },
+  "amendments": {
+    "title": "سجل التعديلات",
+    "item": "التعديل رقم {number, number, integer} — <bdi>{title}</bdi>",
+    "effective": "ساري من {date}"
+  },
+  "create": {
+    "button": "طلب تغيير جديد",
+    "title": "اقتراح طلب تغيير",
+    "titleLabel": "العنوان",
+    "reason": "السبب",
+    "reasonPlaceholder": "لماذا يلزم هذا التغيير؟",
+    "scope": "التغيير المقترح في النطاق",
+    "scopePlaceholder": "تلخيص ما سيتغير، مثل «إضافة صفحتين إضافيتين إلى تصميم الموقع»",
+    "milestones": "المراحل المتأثرة",
+    "selectMilestone": "اختيار مرحلة لاقتراح تغييرات عليها...",
+    "milestonesRequired": "يُرجى إضافة مرحلة متأثرة واحدة على الأقل",
+    "resultingValue": "قيمة المشروع الناتجة",
+    "resultingHintPercent": "القيمة الإجمالية الجديدة للعقد بعد اعتماد هذا التغيير (وليس الفرق) — يُعاد حساب النسب أعلاه وفق هذا الإجمالي.",
+    "resultingHintFixed": "القيمة الإجمالية الجديدة للعقد بعد اعتماد هذا التغيير — تُحسب تلقائيًا كمجموع مبالغ جميع المراحل، بما فيها التغييرات أعلاه.",
+    "attach": "إرفاق ملفات",
+    "failed": "تعذّر إرسال طلب التغيير.",
+    "submitting": "جارٍ الإرسال...",
+    "submit": "إرسال طلب التغيير"
+  },
+  "delta": {
+    "remove": "إزالة {title} من طلب التغيير هذا",
+    "title": "العنوان",
+    "description": "الوصف",
+    "deliverable": "المُخرَج",
+    "criteria": "معايير القبول",
+    "percentage": "قيمة التوزيع (%)",
+    "amount": "المبلغ",
+    "dueDate": "تاريخ الاستحقاق"
+  },
+  "detail": {
+    "title": "طلب تغيير",
+    "scope": "التغيير المقترح في النطاق",
+    "currentValue": "القيمة الحالية",
+    "resultingValue": "القيمة الناتجة",
+    "milestoneTerms": "شروط المراحل المقترحة",
+    "due": "الاستحقاق {date}",
+    "attachments": "المرفقات",
+    "rejected": "سبب الرفض: <bdi>{reason}</bdi>",
+    "failed": "تعذّر تنفيذ الإجراء.",
+    "reject": "رفض",
+    "approving": "جارٍ الموافقة...",
+    "approve": "موافقة",
+    "rejectionReason": "سبب الرفض",
+    "back": "رجوع",
+    "rejecting": "جارٍ الرفض...",
+    "confirmReject": "تأكيد الرفض",
+    "withdrawing": "جارٍ السحب...",
+    "withdraw": "سحب الطلب",
+    "readOnly": "هذا الطلب بانتظار قرار الطرف الآخر، ولا يمكن تعديله حتى ذلك الحين."
+  },
+  "validation": {
+    "titleRequired": "العنوان مطلوب",
+    "titleTooLong": "العنوان طويل جدًا",
+    "reasonRequired": "السبب مطلوب",
+    "reasonTooLong": "السبب طويل جدًا",
+    "scopeMin": "يجب ألا يقل وصف التغيير في النطاق عن {min, plural, one {حرف واحد} two {حرفين} few {{min, number, plain} أحرف} many {{min, number, plain} حرفًا} other {{min, number, plain} حرف}}",
+    "scopeTooLong": "الوصف طويل جدًا",
+    "valuePositive": "يجب أن تكون القيمة الناتجة أكبر من صفر",
+    "tooManyFiles": "يمكن إرفاق {max, plural, one {ملف واحد} two {ملفين} few {{max, number, plain} ملفات} many {{max, number, plain} ملفًا} other {{max, number, plain} ملف}} كحد أقصى"
+  }
+}

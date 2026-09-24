@@ -1,38 +1,68 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronDown, LogOut } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { useLogout } from "../hooks/useLogout";
+import { useRoleLabel } from "../hooks/useRoleLabel";
+import { useProfile } from "@/src/features/profile/hooks/useProfile";
 
 export default function UserMenu() {
   const { data: user, isLoading } = useCurrentUser();
+  const { data: profile } = useProfile();
   const handleLogout = useLogout();
+  const t = useTranslations("auth");
 
   const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const roleLabel = useRoleLabel();
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
 
   if (isLoading || !user) {
     return null;
   }
 
   return (
-    <div className="relative">
+    <div ref={containerRef} className="relative">
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
         className="flex items-center gap-3 hover:bg-surface-muted px-3 py-2 rounded-xl transition"
       >
-        <div className="flex justify-center items-center bg-primary-muted rounded-full w-9 h-9 font-semibold text-primary">
-          {user.firstName.charAt(0).toUpperCase()}
+        <div className="flex justify-center items-center bg-primary-muted rounded-full w-9 h-9 overflow-hidden font-semibold text-primary">
+          {profile?.profileImage ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={profile.profileImage}
+              alt={user.fullName}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            user.firstName.charAt(0).toUpperCase()
+          )}
         </div>
 
-        <div className="hidden sm:block text-left">
+        <div className="hidden sm:block text-start">
           <p className="font-semibold text-text-primary text-sm">
             {user.fullName}
           </p>
 
-          <p className="text-text-secondary text-xs">{user.roles[0]}</p>
+          <p className="text-text-secondary text-xs">{roleLabel(user.roles[0])}</p>
         </div>
 
         <ChevronDown
@@ -44,14 +74,14 @@ export default function UserMenu() {
       </button>
 
       {isOpen && (
-        <div className="right-0 z-50 absolute bg-surface shadow-lg mt-2 border border-border rounded-xl w-52 overflow-hidden">
+        <div className="inset-e-0 z-50 absolute bg-surface shadow-lg mt-2 border border-border rounded-xl w-52 overflow-hidden">
           <button
             type="button"
             onClick={handleLogout}
             className="flex items-center gap-3 hover:bg-danger-muted px-4 w-full h-11 text-danger text-sm transition"
           >
-            <LogOut size={16} />
-            <span>Sign out</span>
+            <LogOut size={16} className="rtl-flip" />
+            <span>{t("userMenu.signOut")}</span>
           </button>
         </div>
       )}

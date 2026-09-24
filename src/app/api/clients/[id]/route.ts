@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import {
-  ApiError,
+  errorResponse,
   serverApi,
   toAbsoluteUrl,
 } from "@/src/features/auth/lib/server-api";
@@ -16,32 +16,6 @@ function mapClientResponse(data: ClientResponse): ClientResponse {
         }
       : data.data,
   };
-}
-
-function errorResponse(error: unknown, action: string) {
-  if (error instanceof ApiError) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: error.status === 401 ? "Not authenticated." : error.message,
-        data: null,
-        errors: error.errors,
-      },
-      { status: error.status },
-    );
-  }
-
-  console.error(`${action} error:`, error);
-
-  return NextResponse.json(
-    {
-      success: false,
-      message: "Unable to connect to the server.",
-      data: null,
-      errors: null,
-    },
-    { status: 500 },
-  );
 }
 
 export async function GET(

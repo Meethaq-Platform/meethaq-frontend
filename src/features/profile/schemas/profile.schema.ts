@@ -1,24 +1,36 @@
 import { z } from "zod";
 
-const sharedProfileShape = {
-  fullName: z
-    .string()
-    .min(2, "Full name must be at least 2 characters")
-    .max(100, "Full name is too long"),
-  phoneNumber: z.string().min(1, "Phone number is required"),
-  country: z.string(),
-};
+import type { Translator } from "@/src/i18n/types";
 
-export const clientProfileSchema = z.object(sharedProfileShape);
+type ValidationT = Translator<"profile.validation">;
 
-export type ClientProfileFormValues = z.infer<typeof clientProfileSchema>;
+const FULL_NAME_MIN = 2;
+const BIO_MAX = 1000;
 
-export const freelancerProfileSchema = z.object({
-  ...sharedProfileShape,
-  professionalTitle: z.string().min(1, "Professional title is required"),
-  bio: z.string().max(1000, "Bio must be under 1000 characters"),
-});
+function sharedProfileShape(t: ValidationT) {
+  return {
+    fullName: z
+      .string()
+      .min(FULL_NAME_MIN, t("fullNameMin", { min: FULL_NAME_MIN }))
+      .max(100, t("fullNameTooLong")),
+    phoneNumber: z.string().min(1, t("phoneRequired")),
+    country: z.string(),
+  };
+}
 
-export type FreelancerProfileFormValues = z.infer<
-  typeof freelancerProfileSchema
->;
+// Factories, so validation messages follow the active language.
+export function createClientProfileSchema(t: ValidationT) {
+  return z.object(sharedProfileShape(t));
+}
+
+export type ClientProfileFormValues = z.infer<ReturnType<typeof createClientProfileSchema>>;
+
+export function createFreelancerProfileSchema(t: ValidationT) {
+  return z.object({
+    ...sharedProfileShape(t),
+    professionalTitle: z.string().min(1, t("titleRequired")),
+    bio: z.string().max(BIO_MAX, t("bioTooLong", { max: BIO_MAX })),
+  });
+}
+
+export type FreelancerProfileFormValues = z.infer<ReturnType<typeof createFreelancerProfileSchema>>;
