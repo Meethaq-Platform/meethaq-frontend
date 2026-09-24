@@ -13,18 +13,18 @@ export default function AuthTabs() {
         href="/login"
         className={` font-semibold text-sm text-center transition ${
           activeTab === "login"
-            ? "text-teal-700 font-extrabold"
+            ? "text-primary font-extrabold"
             : "text-text-secondary hover:text-text-primary"
         }`}
       >
         Sign in
       </Link>
-      <div className="bg-gray-500 w-[1px] h-5"></div>
+      <div className="bg-border w-[1px] h-5"></div>
       <Link
         href="/register"
         className={` font-medium text-sm text-center transition ${
           activeTab === "register"
-            ? "text-teal-700 font-extrabold"
+            ? "text-primary font-extrabold"
             : "text-text-secondary hover:text-text-primary"
         }`}
       >

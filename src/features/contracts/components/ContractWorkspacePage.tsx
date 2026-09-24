@@ -231,7 +231,7 @@ export default function ContractWorkspacePage({
                 )}
 
                 {isApproved && contract.approvedAt && (
-                  <div className="mt-4 pt-4 border-black border-t">
+                  <div className="mt-4 pt-4 border-text-primary border-t">
                     <p className="text-primary text-sm">
                       Approved by {currentProject.clientName ?? "the client"} on{" "}
                       {formatDate(contract.approvedAt)} —{" "}

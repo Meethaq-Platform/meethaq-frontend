@@ -60,7 +60,7 @@ export function MilestoneDetailShell({
           </div>
         </div>
 
-        <div className="gap-6 grid grid-cols-1 sm:grid-cols-2 mt-4 pt-4 border-black border-t">
+        <div className="gap-6 grid grid-cols-1 sm:grid-cols-2 mt-4 pt-4 border-text-primary border-t">
           <div>
             <p className="mb-1 text-text-secondary text-xs uppercase tracking-wide">
               Agreed Deliverable
