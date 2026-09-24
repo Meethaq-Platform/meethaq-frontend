@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { Camera, Pencil } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useRoleLabel } from "@/src/features/auth/hooks/useRoleLabel";
+import { useFormat } from "@/src/shared/hooks/useFormat";
 
 import { EditProfilePictureModal } from "./EditProfilePictureModal";
-import { formatDate } from "@/src/shared/lib/format";
 
 interface ProfileOverviewCardProps {
   fullName: string;
@@ -33,6 +35,9 @@ export function ProfileOverviewCard({
   } = profile;
   const initial = fullName.charAt(0).toUpperCase();
   const [isPictureModalOpen, setIsPictureModalOpen] = useState(false);
+  const t = useTranslations("profile.overview");
+  const roleLabel = useRoleLabel();
+  const format = useFormat();
 
   return (
     <section className="flex sm:flex-row flex-col justify-between items-start gap-6 bg-(--card-bg) p-6 border border-border rounded-2xl">
@@ -53,7 +58,7 @@ export function ProfileOverviewCard({
 
           <button
             type="button"
-            aria-label="Change profile photo"
+            aria-label={t("changePhoto")}
             onClick={() => setIsPictureModalOpen(true)}
             className="inset-e-0 bottom-0 absolute flex justify-center items-center bg-primary hover:opacity-90 border-2 border-surface dark:border-(--card-bg) rounded-full w-7 h-7 text-on-primary transition"
           >
@@ -62,14 +67,14 @@ export function ProfileOverviewCard({
         </div>
 
         <div className="min-w-0">
-          <h1 className="font-semibold text-primary text-lg truncate">
+          <h1 dir="auto" className="font-semibold text-primary text-lg truncate">
             {fullName}
           </h1>
-          <p className="text-text-secondary text-sm">{userRole}</p>
+          <p className="text-text-secondary text-sm">{roleLabel(userRole)}</p>
 
           {professionalTitle !== undefined &&
             (professionalTitle ? (
-              <p className="mt-1 text-text-primary text-sm">
+              <p dir="auto" className="mt-1 text-text-primary text-sm">
                 {professionalTitle}
               </p>
             ) : (
@@ -79,11 +84,11 @@ export function ProfileOverviewCard({
                 className="flex items-center gap-1 mt-1 text-text-secondary hover:text-primary text-sm italic transition"
               >
                 <Pencil size={12} />
-                Add a tagline
+                {t("addTagline")}
               </button>
             ))}
 
-          <p className="mt-1 text-text-secondary text-sm">
+          <p dir="auto" className="mt-1 text-text-secondary text-sm">
             {country ?? <span className="italic"></span>}
           </p>
         </div>
@@ -91,10 +96,10 @@ export function ProfileOverviewCard({
 
       <div className="bg-surface-muted px-3 py-1.5 rounded-lg text-center shrink-0">
         <p className="text-[11px] text-text-secondary uppercase tracking-wide">
-          Member Since
+          {t("memberSince")}
         </p>
         <p className="font-semibold text-text-primary text-sm">
-          {formatDate(memberSince)}
+          {format.date(memberSince)}
         </p>
       </div>
 

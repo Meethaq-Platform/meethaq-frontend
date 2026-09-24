@@ -3,6 +3,7 @@
 import type { ChangeEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Loader2, Upload } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { useDeleteProfilePicture } from "../hooks/useDeleteProfilePicture";
 import { useUploadProfilePicture } from "../hooks/useUploadProfilePicture";
@@ -25,6 +26,8 @@ export function EditProfilePictureModal({
   fullName,
   profileImage,
 }: EditProfilePictureModalProps) {
+  const t = useTranslations("profile.photo");
+  const tActions = useTranslations("common.actions");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
   const [pendingFile, setPendingFile] = useState<File | null>(null);
@@ -61,12 +64,12 @@ export function EditProfilePictureModal({
     if (!file) return;
 
     if (!ACCEPTED_TYPES.includes(file.type)) {
-      setValidationError("Please choose a JPEG, PNG, GIF, or WEBP image.");
+      setValidationError(t("invalidType"));
       return;
     }
 
     if (file.size > MAX_SIZE_BYTES) {
-      setValidationError("Image must be under 5 MB.");
+      setValidationError(t("tooLarge"));
       return;
     }
 
@@ -98,7 +101,7 @@ export function EditProfilePictureModal({
     (remove.error instanceof Error ? remove.error.message : null);
 
   return (
-    <Modal open={open} onClose={handleClose} title="Profile photo">
+    <Modal open={open} onClose={handleClose} title={t("title")}>
       <div className="flex flex-col items-center gap-4">
         <div className="flex justify-center items-center bg-primary-muted rounded-full w-32 h-32 overflow-hidden font-semibold text-primary text-3xl">
           {displayedImage ? (
@@ -131,16 +134,16 @@ export function EditProfilePictureModal({
               disabled={upload.isPending}
               className="hover:bg-surface-muted disabled:opacity-60 px-4 rounded-xl h-10 font-semibold text-text-secondary text-sm transition"
             >
-              Cancel
+              {tActions("cancel")}
             </button>
 
             <Button
               type="button"
               onClick={handleSave}
               loading={upload.isPending}
-              loadingText="Saving..."
+              loadingText={tActions("saving")}
             >
-              Save Photo
+              {t("save")}
             </Button>
           </div>
         ) : (
@@ -152,7 +155,7 @@ export function EditProfilePictureModal({
               className="flex items-center gap-1.5 bg-primary hover:opacity-90 disabled:opacity-60 px-4 rounded-xl h-10 font-semibold text-on-primary text-sm transition"
             >
               <Upload size={14} />
-              Upload Photo
+              {t("upload")}
             </button>
 
             {profileImage && (
@@ -163,7 +166,7 @@ export function EditProfilePictureModal({
                 className="flex items-center gap-1.5 hover:bg-danger-muted disabled:opacity-60 px-4 rounded-xl h-10 font-semibold text-danger text-sm transition"
               >
                 {remove.isPending && <Loader2 size={14} className="animate-spin" />}
-                Delete Photo
+                {t("delete")}
               </button>
             )}
           </div>

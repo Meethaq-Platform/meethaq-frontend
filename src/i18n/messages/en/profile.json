@@ -1,0 +1,43 @@
+{
+  "title": "My Profile",
+  "loadFailed": "Failed to load your profile.",
+  "updateFailed": "Failed to update profile.",
+  "overview": {
+    "changePhoto": "Change profile photo",
+    "addTagline": "Add a tagline",
+    "memberSince": "Member Since"
+  },
+  "fields": {
+    "personalInformation": "Personal Information",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "role": "User Role",
+    "country": "Country",
+    "professionalTitle": "Professional Title",
+    "bio": "Bio",
+    "notSet": "Not set",
+    "copy": "Copy {label}",
+    "copied": "Copied"
+  },
+  "bio": {
+    "collapse": "Collapse bio",
+    "expand": "Expand bio",
+    "empty": "Add a short bio to tell people about yourself."
+  },
+  "photo": {
+    "title": "Profile photo",
+    "invalidType": "Please choose a JPEG, PNG, GIF, or WEBP image.",
+    "tooLarge": "Image must be under 5 MB.",
+    "save": "Save Photo",
+    "upload": "Upload Photo",
+    "delete": "Delete Photo"
+  },
+  "validation": {
+    "fullNameMin": "Full name must be at least {min, number, plain} characters",
+    "fullNameTooLong": "Full name is too long",
+    "phoneRequired": "Phone number is required",
+    "titleRequired": "Professional title is required",
+    "bioTooLong": "Bio must be under {max, number, plain} characters"
+  }
+}

@@ -1,4 +1,6 @@
 import { Mail, Phone, User } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useRoleLabel } from "@/src/features/auth/hooks/useRoleLabel";
 
 import { ProfileField } from "./ProfileField";
 import { ProfileSectionCard } from "./ProfileSectionCard";
@@ -18,33 +20,35 @@ export function PersonalInformationCard({
 }: {
   profile: PersonalInformationCardProps;
 }) {
+  const t = useTranslations("profile.fields");
+  const roleLabel = useRoleLabel();
   const { fullName, email, phoneNumber, userRole, country, professionalTitle } =
     profile;
 
   return (
-    <ProfileSectionCard title="Personal Information" icon={User}>
+    <ProfileSectionCard title={t("personalInformation")} icon={User}>
       <div className="gap-x-6 gap-y-8 grid grid-cols-1 sm:grid-cols-3">
-        <ProfileField label="Full Name" value={fullName} />
+        <ProfileField label={t("fullName")} value={fullName} />
         <ProfileField
-          label="Email Address"
+          label={t("email")}
           value={email}
           dir="ltr"
           icon={Mail}
           copyable
         />
         <ProfileField
-          label="Phone Number"
+          label={t("phone")}
           value={phoneNumber}
           dir="ltr"
           icon={Phone}
           copyable
         />
 
-        <ProfileField label="User Role" value={userRole} />
-        <ProfileField label="Country" value={country} />
+        <ProfileField label={t("role")} value={roleLabel(userRole) ?? null} />
+        <ProfileField label={t("country")} value={country} />
 
         {professionalTitle !== undefined && (
-          <ProfileField label="Professional Title" value={professionalTitle} />
+          <ProfileField label={t("professionalTitle")} value={professionalTitle} />
         )}
       </div>
     </ProfileSectionCard>

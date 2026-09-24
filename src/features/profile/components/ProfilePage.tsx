@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Pencil } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useIsMutating } from "@tanstack/react-query";
 
 import { useProfile } from "../hooks/useProfile";
@@ -9,6 +10,8 @@ import ProfileData from "./ProfileData";
 import Button from "@/src/shared/components/Button";
 
 export default function ProfilePage() {
+  const t = useTranslations("profile");
+  const tActions = useTranslations("common.actions");
   const { data } = useProfile();
   const [isEditing, setIsEditing] = useState(false);
   const [isFormDirty, setIsFormDirty] = useState(false);
@@ -23,7 +26,7 @@ export default function ProfilePage() {
     <div className="space-y-6 mx-auto h-full">
       <div className="flex justify-between items-center gap-3">
         <h1 className="font-bold text-text-primary text-xl sm:text-2xl">
-          My Profile
+          {t("title")}
         </h1>
 
         {data &&
@@ -35,7 +38,7 @@ export default function ProfilePage() {
                 onClick={() => setIsEditing(false)}
                 className="px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
               >
-                Cancel
+                {tActions("cancel")}
               </Button>
 
               <Button
@@ -43,10 +46,10 @@ export default function ProfilePage() {
                 form="profile-edit-form"
                 disabled={!isFormDirty}
                 loading={isSaving}
-                loadingText="Saving..."
+                loadingText={tActions("saving")}
                 className="px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
               >
-                Save Changes
+                {tActions("saveChanges")}
               </Button>
             </div>
           ) : (
@@ -57,7 +60,7 @@ export default function ProfilePage() {
                 className="flex items-center gap-1.5 px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
               >
                 <Pencil size={14} className="sm:size-4 size-3.5" />
-                Edit
+                {tActions("edit")}
               </Button>
             </div>
           ))}

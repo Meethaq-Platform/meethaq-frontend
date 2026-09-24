@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
-  freelancerProfileSchema,
+  createFreelancerProfileSchema,
   type FreelancerProfileFormValues,
 } from "../schemas/profile.schema";
 import { useUpdateFreelancerProfile } from "../hooks/useUpdateFreelancerProfile";
@@ -28,6 +29,10 @@ export function EditFreelancerProfileForm({
   onSuccess,
   onDirtyChange,
 }: EditFreelancerProfileFormProps) {
+  const t = useTranslations("profile");
+  const tValidation = useTranslations("profile.validation");
+  const freelancerProfileSchema = useMemo(() => createFreelancerProfileSchema(tValidation), [tValidation]);
+
   const {
     register,
     handleSubmit,
@@ -74,13 +79,13 @@ export function EditFreelancerProfileForm({
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-6"
     >
-      <ProfileSectionCard title="Personal Information">
+      <ProfileSectionCard title={t("fields.personalInformation")}>
         <div className="space-y-4">
           <SharedProfileFields register={register} errors={errors} />
 
           <div>
             <Input
-              label="Professional Title"
+              label={t("fields.professionalTitle")}
               {...register("professionalTitle")}
             />
             <InputError message={errors.professionalTitle?.message} />
@@ -88,7 +93,7 @@ export function EditFreelancerProfileForm({
         </div>
       </ProfileSectionCard>
 
-      <ProfileSectionCard title="Bio">
+      <ProfileSectionCard title={t("fields.bio")}>
         <div>
           <Textarea rows={4} {...register("bio")} />
           <InputError message={errors.bio?.message} />
@@ -98,7 +103,7 @@ export function EditFreelancerProfileForm({
       {isError && (
         <InputError
           message={
-            error instanceof Error ? error.message : "Failed to update profile."
+            error instanceof Error ? error.message : t("updateFailed")
           }
         />
       )}

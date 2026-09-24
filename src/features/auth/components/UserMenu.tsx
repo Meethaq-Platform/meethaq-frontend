@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { useLogout } from "../hooks/useLogout";
+import { useRoleLabel } from "../hooks/useRoleLabel";
 import { useProfile } from "@/src/features/profile/hooks/useProfile";
 
 export default function UserMenu() {
@@ -16,14 +17,7 @@ export default function UserMenu() {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  // The API sends roles as English names; show known ones translated and
-  // anything unexpected as-is.
-  const roleLabel = (role: string | undefined) => {
-    const key = role?.toLowerCase();
-    return key === "freelancer" || key === "client" || key === "admin"
-      ? t(`roles.${key}`)
-      : role;
-  };
+  const roleLabel = useRoleLabel();
 
   if (isLoading || !user) {
     return null;
