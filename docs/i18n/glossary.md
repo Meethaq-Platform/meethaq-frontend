@@ -1,40 +1,41 @@
-# Arabic glossary (proposed — for review)
+# Arabic glossary
 
 This file is the reference for Meethaq's Arabic UI copy. Every translated string uses these terms. If a term changes here, it changes everywhere.
 
-**Status: DRAFT, awaiting review.** Mark changes inline or in the PR. No strings get translated until this is approved.
+**Status: APPROVED (2026-09-24).** Propose changes in a PR that updates this file first.
 
 - **Language:** Modern Standard Arabic (فصحى), in a clear, neutral business tone. No dialect.
 - **Digits:** always Western (0123), per the decision in phase 1.
 
 ---
 
-## 1. Style decisions needed
+## 1. Style rules
 
-These choices affect every string, so they come first.
+These apply to every string.
 
-| # | Question | Proposal | Alternative |
-|---|---|---|---|
-| S1 | **Addressing the user.** Arabic imperatives and "you" are gendered (أدخِل / أدخِلي). | Gender-neutral: prefer verbal nouns and passive forms, e.g. button «إرسال» not «أرسِل», hint «إدخال البريد الإلكتروني». Where a direct "you" is unavoidable, use the unvocalized form (عودتك), which reads for both. | Masculine default, which is common in Arabic apps but excludes half the users. |
-| S2 | **Buttons and actions** | Verbal noun (مصدر): «حفظ»، «إلغاء»، «تسليم العمل». | Imperative verb: «احفظ»، «ألغِ». |
-| S3 | **Status words agree in gender with their noun.** A milestone (مرحلة) is feminine; a project (مشروع) or contract (عقد) is masculine. | Use gender-free phrasing where possible («قيد التنفيذ»، «بانتظار المراجعة»، «تم القبول»). Otherwise give each entity its own agreeing form (see §4). | Masculine forms everywhere, which will read as wrong on milestones. |
-| S4 | **Month names** | Egyptian/Gulf set: يناير، فبراير، مارس… (what `Intl` produces for `ar`). | Levantine set: كانون الثاني، شباط، آذار… (more natural in Jordan, Syria, Lebanon). |
-| S5 | **Calendar** | Gregorian only. Note: `ar-SA` defaults to the Hijri calendar in `Intl`, so we use the plain `ar` locale. | Show Hijri alongside Gregorian. |
-| S6 | **Currency format** | Keep the app's existing format, `$1,500.00`, with Western digits. | Arabic `Intl` style: `1,500.00 US$` (symbol after the number). |
-| S7 | **Brand name** | Keep «Meethaq» in Latin script in the logo. In running Arabic text write «ميثاق». | Latin script everywhere. |
+| # | Rule | Example |
+|---|---|---|
+| S1 | **Gender-neutral address.** Use verbal nouns and passive phrasing. Never use slash forms like «أدخل/ي». If neutral wording reads awkwardly, rephrase the whole sentence. Never fall back to the masculine. | «إدخال البريد الإلكتروني» rather than «أدخل بريدك»; «تم حفظ التغييرات» rather than «حفظتَ التغييرات». |
+| S2 | **Buttons and actions use verbal nouns (مصدر).** | «حفظ»، «إلغاء»، «إرسال»، «تسليم العمل». |
+| S3 | **Status words agree with their noun.** Use gender-free phrasing where possible; otherwise use the per-entity forms in §4 (milestone is feminine; project, contract and dispute are masculine). | «قيد التنفيذ»، «بانتظار المراجعة»؛ مرحلة «مدفوعة» / مشروع «مكتمل». |
+| S4 | **Month names:** the Egyptian/Gulf set. Dates use the plain `ar` locale with `numberingSystem: "latn"`. | يناير، فبراير، مارس… |
+| S5 | **Calendar:** Gregorian only. Every date format sets `calendar: "gregory"` explicitly, so it never depends on the locale (`ar-SA` would default to Hijri). | |
+| S6 | **Currency:** `$1,500.00` in both languages, always Western digits. Inside Arabic sentences, wrap amounts in `<bdi>` or an LTR isolate (U+2066 … U+2069) so the `$` stays in place. | «إجمالي <bdi>$1,500.00</bdi> خلال 6 أشهر» |
+| S7 | **Brand:** «Meethaq» (Latin) in the logo; «ميثاق» in Arabic sentences. | |
+| S8 | **«مرحلة» means milestone only.** Steps anywhere else (onboarding, forms, wizards) are «خطوة». | «الخطوة 2 من 4»، never «المرحلة 2 من 4». |
 
 ---
 
 ## 2. Core entities
 
-| English | Proposed Arabic | Plural | Alternatives | Notes |
+| English | Arabic | Plural | Alternatives | Notes |
 |---|---|---|---|---|
 | Project | مشروع | مشاريع | — | |
 | Client | عميل | عملاء | — | |
 | Freelancer | مستقل | مستقلون | عامل مستقل، فريلانسر | «مستقل» is the established term on Arabic freelance platforms. |
 | Contract | عقد | عقود | — | |
 | Agreement | اتفاقية | اتفاقيات | — | Dashboard "Agreements" section. |
-| Milestone | مرحلة | مراحل | مرحلة تسليم، دفعة مرحلية | Feminine noun (see S3). |
+| Milestone | مرحلة | مراحل | — | Feminine noun (S3). Reserved for milestones only (S8). |
 | Deliverable | مُخرَج | مُخرَجات | تسليم | The work product itself. |
 | Submission | تسليم | تسليمات | — | The act or record of handing in work. "Version 2" → «الإصدار 2». |
 | Revision (of a submission) | تعديلات | — | مراجعة | "Request Revision" → «طلب تعديلات». |
@@ -67,7 +68,7 @@ These choices affect every string, so they come first.
 
 ## 3. Money and time
 
-| English | Proposed Arabic | Notes |
+| English | Arabic | Notes |
 |---|---|---|
 | Amount | المبلغ | |
 | Budget | الميزانية | |
@@ -79,6 +80,7 @@ These choices affect every string, so they come first.
 | Deadline | الموعد النهائي | |
 | Start date / End date | تاريخ البدء / تاريخ الانتهاء | |
 | Overdue | متأخر / متأخرة | Agrees with the noun (S3). |
+| Step (onboarding, forms, wizards) | خطوة / خطوات | Never «مرحلة» (S8). |
 | Next 7 / 30 days | خلال الأيام السبعة القادمة / خلال 30 يومًا القادمة | Plural forms are handled by ICU messages. |
 | 6 / 12 months | 6 أشهر / 12 شهرًا | Arabic counts take different noun forms (3–10 plural, 11+ singular accusative). ICU `plural` covers this. |
 
