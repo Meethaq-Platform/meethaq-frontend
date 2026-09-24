@@ -55,9 +55,20 @@ export function useEventText() {
       return text;
     },
 
-    notificationTitle(eventType: string, fallback: string): string {
+    notificationTitle(eventType: string, fallback: string): ReactNode {
       const key = `notificationTitles.${eventType}`;
-      return has(key) ? t(key as "notificationTitles.ProjectCompleted") : fallback;
+      if (has(key)) return t(key as "notificationTitles.ProjectCompleted");
+
+      // Chat notifications: the title is "New message from {sender}" and the
+      // message is the chat text itself, which stays as written.
+      const sender = translates ? fallback.match(/^New message from (.+)$/)?.[1] : null;
+      if (sender) {
+        return t.rich("newMessageFrom", {
+          name: sender,
+          bdi: (chunks) => <bdi>{chunks}</bdi>,
+        });
+      }
+      return fallback;
     },
 
     // Whether the English notification message should be kept as a detail

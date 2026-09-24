@@ -66,5 +66,6 @@
     "ContractAmendmentCreated": "تعديل على العقد"
   },
   "withVersion": "{text} (النسخة {version, number, integer})",
-  "withMilestone": "{text} — <bdi>{milestone}</bdi>"
+  "withMilestone": "{text} — <bdi>{milestone}</bdi>",
+  "newMessageFrom": "رسالة جديدة من <bdi>{name}</bdi>"
 }

@@ -66,5 +66,6 @@
     "ContractAmendmentCreated": "Contract amended"
   },
   "withVersion": "{text} (version {version, number, integer})",
-  "withMilestone": "{text} — <bdi>{milestone}</bdi>"
+  "withMilestone": "{text} — <bdi>{milestone}</bdi>",
+  "newMessageFrom": "New message from {name}"
 }
