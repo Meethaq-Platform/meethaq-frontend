@@ -228,6 +228,22 @@ body {
   color: var(--text-primary);
 }
 
+/* Text that keeps its own direction (a name, a note or a URL marked
+   dir="auto"/"ltr") still lines up with the page: an English name sits on
+   the right in Arabic, like the labels around it. Form fields keep their
+   own alignment; in a layer so alignment utilities still win. */
+@layer base {
+  :where(:dir(rtl))
+    > :where([dir="auto"]:not(input, textarea, select), p[dir="ltr"], a[dir="ltr"], td[dir="ltr"]) {
+    text-align: right;
+  }
+
+  :where(:dir(ltr))
+    > :where([dir="auto"]:not(input, textarea, select), p[dir="ltr"], a[dir="ltr"], td[dir="ltr"]) {
+    text-align: left;
+  }
+}
+
 /* Theme switch crossfade (see setTheme in shared/lib/theme.ts). */
 ::view-transition-old(root),
 ::view-transition-new(root) {
