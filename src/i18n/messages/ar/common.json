@@ -11,7 +11,9 @@
   },
   "toasts": {
     "regionLabel": "الإشعارات",
-    "closeLabel": "إغلاق الإشعار"
+    "closeLabel": "إغلاق الإشعار",
+    "successGeneric": "تمت العملية بنجاح.",
+    "errorGeneric": "تعذّر إكمال العملية."
   },
   "states": {
     "loading": "جارٍ التحميل...",

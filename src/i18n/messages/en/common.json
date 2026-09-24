@@ -11,7 +11,9 @@
   },
   "toasts": {
     "regionLabel": "Notifications",
-    "closeLabel": "Close toast"
+    "closeLabel": "Close toast",
+    "successGeneric": "Done.",
+    "errorGeneric": "Something went wrong."
   },
   "states": {
     "loading": "Loading...",
