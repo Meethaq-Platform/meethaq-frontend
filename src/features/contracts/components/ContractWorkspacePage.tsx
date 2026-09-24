@@ -188,7 +188,7 @@ export default function ContractWorkspacePage({
         )
       ) : (
         <section className="space-y-6">
-          <div className="bg-(--amber-bg) p-6 border border-border rounded-2xl">
+          <div className="bg-(--card-bg) p-6 border border-border rounded-2xl">
             {isEditing ? (
               <ContractForm
                 projectId={projectId}

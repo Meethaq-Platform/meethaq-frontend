@@ -35,7 +35,7 @@ export function ProfileOverviewCard({
   const [isPictureModalOpen, setIsPictureModalOpen] = useState(false);
 
   return (
-    <section className="flex sm:flex-row flex-col justify-between items-start gap-6 bg-surface p-6 border border-border rounded-2xl">
+    <section className="flex sm:flex-row flex-col justify-between items-start gap-6 bg-(--card-bg) p-6 border border-border rounded-2xl">
       <div className="flex items-center gap-4 min-w-0">
         <div className="relative shrink-0">
           <div className="flex justify-center items-center bg-primary-muted rounded-full w-20 h-20 overflow-hidden font-semibold text-primary text-2xl">
@@ -55,7 +55,7 @@ export function ProfileOverviewCard({
             type="button"
             aria-label="Change profile photo"
             onClick={() => setIsPictureModalOpen(true)}
-            className="right-0 bottom-0 absolute flex justify-center items-center bg-primary hover:opacity-90 border-2 border-surface rounded-full w-7 h-7 text-on-primary transition"
+            className="right-0 bottom-0 absolute flex justify-center items-center bg-primary hover:opacity-90 border-2 border-surface dark:border-(--card-bg) rounded-full w-7 h-7 text-on-primary transition"
           >
             <Camera size={14} />
           </button>

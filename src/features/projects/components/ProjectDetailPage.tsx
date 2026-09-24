@@ -103,7 +103,7 @@ export default function ProjectDetailPage({
         <section className="space-y-6">
           {/* Header: title + status + metadata merged in one place, actions
               alongside — replaces the old near-empty "Dashboard" card. */}
-          <div className="bg-(--amber-bg) p-4 sm:p-6 border border-border rounded-2xl">
+          <div className="bg-(--card-bg) p-4 sm:p-6 border border-border rounded-2xl">
             <div className="flex flex-row justify-between items-start gap-3 sm:gap-4">
               <div className="flex-1 min-w-0">
                 {isEditing ? (

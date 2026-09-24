@@ -85,7 +85,7 @@ export default function ClientProjectDetailPage({
         />
       ) : (
         <section className="space-y-6">
-          <div className="bg-(--amber-bg) p-6 border border-border rounded-2xl">
+          <div className="bg-(--card-bg) p-6 border border-border rounded-2xl">
             <div className="flex sm:flex-row flex-col justify-between items-start gap-4">
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-center gap-3">

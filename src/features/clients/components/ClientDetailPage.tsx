@@ -49,7 +49,7 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
           {/* Header: avatar + identity + contact metadata — mirrors
               ProjectDetailPage's header. Edit lives on the Details card
               below since that's the only content it actually edits. */}
-          <div className="bg-(--amber-bg) p-6 border border-border rounded-2xl">
+          <div className="bg-(--card-bg) p-6 border border-border rounded-2xl">
             <div className="flex items-start gap-4 min-w-0">
               <ClientAvatar
                 fullName={data.clientFullName}

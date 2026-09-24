@@ -36,7 +36,7 @@ export function MilestoneDetailShell({
         {actions}
       </div>
 
-      <div className="bg-(--amber-bg) p-6 border border-border rounded-2xl">
+      <div className="bg-(--card-bg) p-6 border border-border rounded-2xl">
         <div className="flex sm:flex-row flex-col justify-between items-start gap-4">
           <div className="flex-1">
             <h1 className="font-semibold text-text-primary text-lg">
