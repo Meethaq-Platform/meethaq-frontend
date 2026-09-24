@@ -66,7 +66,7 @@ export default function InvitationDetailPage({
               <h1 className="font-semibold text-text-primary text-lg">
                 {data.title}
               </h1>
-              <p className="mt-2 text-text-primary text-sm whitespace-pre-wrap">
+              <p dir={data.description ? "auto" : undefined} className="mt-2 text-text-primary text-sm whitespace-pre-wrap">
                 {data.description ?? "—"}
               </p>
             </div>

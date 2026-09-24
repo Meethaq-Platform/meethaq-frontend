@@ -81,7 +81,7 @@ export function MilestoneRow({
         </div>
 
         {milestone.description && (
-          <p className="mt-1 text-text-secondary text-sm whitespace-pre-wrap">
+          <p dir="auto" className="mt-1 text-text-secondary text-sm whitespace-pre-wrap">
             {milestone.description}
           </p>
         )}

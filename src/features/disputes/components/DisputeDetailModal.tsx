@@ -163,7 +163,7 @@ export function DisputeDetailModal({
 
           <div>
             <p className="mb-1 text-text-secondary text-xs">Description</p>
-            <p className="text-text-primary text-sm whitespace-pre-wrap">
+            <p dir="auto" className="text-text-primary text-sm whitespace-pre-wrap">
               {dispute.description}
             </p>
           </div>
@@ -267,7 +267,7 @@ export function DisputeDetailModal({
                   className="flex justify-between items-center gap-3 bg-surface-muted px-3 py-2 rounded-lg text-sm"
                 >
                   <div className="min-w-0">
-                    <p className="text-text-primary truncate">
+                    <p dir="auto" className="text-text-primary truncate">
                       {item.description || item.fileName || item.externalUrl || "Evidence"}
                     </p>
                     <p className="text-text-secondary text-xs">

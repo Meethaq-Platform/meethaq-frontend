@@ -87,7 +87,7 @@ export function MessageList({ projectId }: MessageListProps) {
                 </p>
               )}
               {message.content && (
-                <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                <p dir="auto" className="text-sm whitespace-pre-wrap">{message.content}</p>
               )}
               {attachments.length > 0 && (
                 <div className={message.content ? "mt-2" : ""}>

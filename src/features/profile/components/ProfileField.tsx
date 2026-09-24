@@ -11,6 +11,8 @@ interface ProfileFieldProps {
   icon?: LucideIcon;
   copyable?: boolean;
   emptyLabel?: string;
+  // "ltr" for emails/phone numbers; everything else is user-written text.
+  dir?: "ltr" | "auto";
 }
 
 export function ProfileField({
@@ -19,6 +21,7 @@ export function ProfileField({
   icon: Icon,
   copyable = false,
   emptyLabel = "Not set",
+  dir = "auto",
 }: ProfileFieldProps) {
   const { copy, copiedText } = useCopyToClipboard();
   const isCopied = value != null && copiedText === value;
@@ -32,7 +35,9 @@ export function ProfileField({
 
       <div className="flex items-center gap-1.5">
         {value ? (
-          <p className="font-semibold text-text-primary text-sm">{value}</p>
+          <p dir={dir} className="font-semibold text-text-primary text-sm">
+            {value}
+          </p>
         ) : (
           <p className="text-text-secondary text-sm italic">{emptyLabel}</p>
         )}

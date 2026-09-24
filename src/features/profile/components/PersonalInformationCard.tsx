@@ -28,12 +28,14 @@ export function PersonalInformationCard({
         <ProfileField
           label="Email Address"
           value={email}
+          dir="ltr"
           icon={Mail}
           copyable
         />
         <ProfileField
           label="Phone Number"
           value={phoneNumber}
+          dir="ltr"
           icon={Phone}
           copyable
         />

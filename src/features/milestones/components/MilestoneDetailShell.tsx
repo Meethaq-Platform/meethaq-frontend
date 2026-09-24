@@ -43,7 +43,7 @@ export function MilestoneDetailShell({
               {milestone.title}
             </h1>
             {milestone.description && (
-              <p className="mt-2 text-text-primary text-sm whitespace-pre-wrap">
+              <p dir="auto" className="mt-2 text-text-primary text-sm whitespace-pre-wrap">
                 {milestone.description}
               </p>
             )}

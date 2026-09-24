@@ -45,6 +45,7 @@ export default function LinkInput({
             <Input
               label={index === 0 ? "Delivery Link" : `Delivery Link ${index + 1}`}
               placeholder="https://..."
+              dir="ltr"
               value={link.url}
               onChange={(event) => handleUpdate(index, { url: event.target.value })}
             />

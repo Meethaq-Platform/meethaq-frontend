@@ -106,7 +106,7 @@ export function ChangeRequestDetailModal({
             <ChangeRequestStatusBadge status={cr.status} />
           </div>
 
-          <p className="text-text-secondary text-sm whitespace-pre-wrap">{cr.reason}</p>
+          <p dir="auto" className="text-text-secondary text-sm whitespace-pre-wrap">{cr.reason}</p>
 
           {cr.proposedScopeChange && (
             <div>

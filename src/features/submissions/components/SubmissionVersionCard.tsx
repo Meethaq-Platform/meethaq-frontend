@@ -88,6 +88,8 @@ export function SubmissionVersionCard({
             <a
               key={link.linkId}
               href={link.url}
+              // A bare URL stays LTR; a user-given title follows its own script.
+              dir={link.title ? "auto" : "ltr"}
               target="_blank"
               rel="noopener noreferrer"
               className="block bg-surface-muted hover:bg-border/40 px-3 py-2 rounded-lg font-medium text-primary text-sm truncate transition"
@@ -112,7 +114,7 @@ export function SubmissionVersionCard({
           ) : (
             <>
               {feedback.reason && (
-                <p className="mt-1 text-text-primary text-sm whitespace-pre-wrap">
+                <p dir="auto" className="mt-1 text-text-primary text-sm whitespace-pre-wrap">
                   {feedback.reason}
                 </p>
               )}

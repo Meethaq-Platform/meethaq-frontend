@@ -32,7 +32,7 @@ export function BioCard({ bio, onStartEditing }: BioCardProps) {
     >
       {isOpen &&
         (bio ? (
-          <p className="text-text-primary text-sm leading-relaxed">{bio}</p>
+          <p dir="auto" className="text-text-primary text-sm leading-relaxed">{bio}</p>
         ) : (
           <button
             type="button"

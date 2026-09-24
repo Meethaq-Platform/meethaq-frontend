@@ -7,18 +7,22 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  { label, id, className, rightElement, ...props },
+  { label, id, className, rightElement, dir, ...props },
   ref,
 ) {
   const generatedId = useId();
   const inputId = id ?? generatedId;
+  // Emails, URLs and phone numbers read left-to-right even in RTL. Set on the
+  // wrapper so the right-element slot and its padding mirror together.
+  const direction =
+    dir ?? (props.type === "email" || props.type === "url" || props.type === "tel" ? "ltr" : undefined);
 
   return (
     <div className="space-y-2">
       <label htmlFor={inputId} className="font-medium text-text-primary text-sm">
         {label}
       </label>
-      <div className="relative">
+      <div className="relative" dir={direction}>
         <input
           ref={ref}
           id={inputId}

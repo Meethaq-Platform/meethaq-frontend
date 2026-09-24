@@ -110,7 +110,7 @@ export default function ClientProjectDetailPage({
                 </div>
 
                 {data.description && (
-                  <p className="mt-3 text-text-primary text-sm whitespace-pre-wrap">
+                  <p dir="auto" className="mt-3 text-text-primary text-sm whitespace-pre-wrap">
                     {data.description}
                   </p>
                 )}

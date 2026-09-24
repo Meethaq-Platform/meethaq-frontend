@@ -26,7 +26,7 @@ export function SharedProfileFields<T extends SharedProfileFieldValues>({
       </div>
 
       <div>
-        <Input label="Phone Number" {...register("phoneNumber" as Path<T>)} />
+        <Input label="Phone Number" dir="ltr" {...register("phoneNumber" as Path<T>)} />
         <InputError message={errors.phoneNumber?.message as string} />
       </div>
 

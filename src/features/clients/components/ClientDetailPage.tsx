@@ -62,13 +62,13 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
                 </h1>
 
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-text-secondary text-sm">
-                  <span>{data.clientEmail}</span>
+                  <span dir="ltr">{data.clientEmail}</span>
                   {data.clientPhoneNumber && (
                     <>
                       <span aria-hidden className="text-border">
                         ·
                       </span>
-                      <span>{data.clientPhoneNumber}</span>
+                      <span dir="ltr">{data.clientPhoneNumber}</span>
                     </>
                   )}
                   {data.clientCountry && (
@@ -155,7 +155,7 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
                     <p className="text-text-secondary text-xs uppercase tracking-wide">
                       Notes
                     </p>
-                    <p className="text-text-primary text-sm">{data.notes}</p>
+                    <p dir="auto" className="text-text-primary text-sm">{data.notes}</p>
                   </div>
                 )}
               </div>

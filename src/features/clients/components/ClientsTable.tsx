@@ -79,7 +79,7 @@ export function ClientsTable({
                 </td>
 
                 <td className="px-6 py-4 text-text-secondary">
-                  {client.clientEmail}
+                  <span dir="ltr">{client.clientEmail}</span>
                 </td>
 
                 <td className="px-6 py-4 text-text-secondary">
