@@ -6,5 +6,8 @@
   "project": "المشاريع/{title}",
   "projectContract": "المشاريع/{title}/العقد",
   "milestone": "المشاريع/{project}/{milestone}",
-  "client": "العملاء/{name}"
+  "client": "العملاء/{name}",
+  "login": "ميثاق - تسجيل الدخول",
+  "register": "ميثاق - إنشاء حساب",
+  "home": "ميثاق - وثّق كل خطوة"
 }
