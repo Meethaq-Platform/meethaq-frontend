@@ -28,8 +28,8 @@ export default function Button({
       {...props}
       disabled={disabled || loading}
       className={twMerge(
-        `${variantBg[variant]} cursor-pointer hover:opacity-90 disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-sm active:scale-[0.99] transition disabled:cursor-not-allowed`,
-        className
+        `${variantBg[variant]} cursor-pointer hover:opacity-90 disabled:opacity-60 px-4 rounded-lg h-11 font-semibold text-sm active:scale-[0.99] transition disabled:cursor-not-allowed`,
+        className,
       )}
     >
       {loading ? loadingText : children}
