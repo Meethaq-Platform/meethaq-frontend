@@ -1,6 +1,7 @@
 "use client";
 
 import { History } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useActivity } from "../hooks/useActivity";
 import RelativeTime from "@/src/shared/components/RelativeTime";
 
@@ -9,6 +10,7 @@ interface LastActivitySummaryProps {
 }
 
 export function LastActivitySummary({ projectId }: LastActivitySummaryProps) {
+  const t = useTranslations("activity");
   const { data: entries, isLoading } = useActivity(projectId);
 
   if (isLoading || !entries || entries.length === 0) {
@@ -26,9 +28,9 @@ export function LastActivitySummary({ projectId }: LastActivitySummaryProps) {
       </div>
       <div className="min-w-0">
         <p className="font-semibold text-text-secondary text-xs uppercase tracking-wide">
-          Last Activity
+          {t("lastActivity")}
         </p>
-        <p className="mt-0.5 text-text-primary text-xs sm:text-sm">
+        <p dir="auto" className="mt-0.5 text-text-primary text-xs sm:text-sm">
           {latest.description}
         </p>
         <p className="mt-1 text-text-secondary text-xs">
