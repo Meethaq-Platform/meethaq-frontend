@@ -6,15 +6,12 @@ import { useLocale } from "next-intl";
 import { Languages } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 
-import { isArabicEnabled } from "@/src/i18n/config";
 import { saveLocale } from "@/src/i18n/locale";
 
 export default function LanguageSwitcher({ className }: { className?: string }) {
   const locale = useLocale();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-
-  if (!isArabicEnabled) return null;
 
   const next = locale === "ar" ? "en" : "ar";
   // Each language is named in its own script, as switchers conventionally do.

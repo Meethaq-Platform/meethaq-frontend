@@ -3,7 +3,6 @@ import { getRequestConfig } from "next-intl/server";
 
 import {
   defaultLocale,
-  isArabicEnabled,
   isLocale,
   LOCALE_COOKIE,
   type Locale,
@@ -27,10 +26,6 @@ export default getRequestConfig(async () => {
 });
 
 async function resolveLocale(): Promise<Locale> {
-  // Skip reading the request entirely while Arabic is gated off, so pages
-  // that don't otherwise need dynamic rendering stay static.
-  if (!isArabicEnabled) return defaultLocale;
-
   const saved = (await cookies()).get(LOCALE_COOKIE)?.value;
   if (isLocale(saved)) return saved;
 
