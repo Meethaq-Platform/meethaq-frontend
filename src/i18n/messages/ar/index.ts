@@ -10,9 +10,10 @@ import projects from "./projects.json";
 import clients from "./clients.json";
 import profile from "./profile.json";
 import clientProjects from "./clientProjects.json";
+import contracts from "./contracts.json";
 
 // One file per feature keeps translation diffs reviewable. Keep this list in
 // the same order as the other locale's index.
-const messages = { auth, common, layout, notifications, activity, chat, dashboard, status, projects, clients, profile, clientProjects };
+const messages = { auth, common, layout, notifications, activity, chat, dashboard, status, projects, clients, profile, clientProjects, contracts };
 
 export default messages;

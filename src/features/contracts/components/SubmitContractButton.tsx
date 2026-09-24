@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Send } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { useValidateContract } from "../hooks/useValidateContract";
 import { useSubmitContract } from "../hooks/useSubmitContract";
@@ -11,6 +12,8 @@ import Button from "@/src/shared/components/Button";
 import InputError from "@/src/shared/components/InputError";
 
 export function SubmitContractButton({ projectId }: { projectId: string }) {
+  const t = useTranslations("contracts.submit");
+  const tActions = useTranslations("common.actions");
   const [open, setOpen] = useState(false);
   const [validationErrors, setValidationErrors] = useState<
     ContractValidationErrorItem[] | null
@@ -44,18 +47,18 @@ export function SubmitContractButton({ projectId }: { projectId: string }) {
         className="flex items-center gap-1.5 h-9"
       >
         <Send size={14} className="rtl-flip" />
-        Submit for Approval
+        {t("button")}
       </Button>
 
       <Modal
         open={open}
         onClose={() => setOpen(false)}
-        title="Submit contract for approval"
+        title={t("title")}
       >
         <div className="space-y-4">
           {isChecking && (
             <p className="text-text-secondary text-sm">
-              Checking the contract against submission rules...
+              {t("checking")}
             </p>
           )}
 
@@ -64,7 +67,7 @@ export function SubmitContractButton({ projectId }: { projectId: string }) {
               message={
                 validateContract.error instanceof Error
                   ? validateContract.error.message
-                  : "Failed to validate contract."
+                  : t("validateFailed")
               }
             />
           )}
@@ -72,12 +75,12 @@ export function SubmitContractButton({ projectId }: { projectId: string }) {
           {!isChecking && validationErrors && validationErrors.length > 0 && (
             <div className="space-y-2">
               <p className="text-text-primary text-sm">
-                This contract isn&apos;t ready to submit yet:
+                {t("notReady")}
               </p>
               <ul className="space-y-1.5">
                 {validationErrors.map((error, index) => (
                   <li key={index}>
-                    <InputError message={error.message ?? "Invalid contract."} />
+                    <InputError message={error.message ?? t("invalid")} />
                   </li>
                 ))}
               </ul>
@@ -86,9 +89,7 @@ export function SubmitContractButton({ projectId }: { projectId: string }) {
 
           {isReady && (
             <p className="text-text-secondary text-sm">
-              Your client will be notified and asked to review and approve this
-              contract. You can withdraw it back to draft any time before they
-              respond.
+              {t("ready")}
             </p>
           )}
 
@@ -97,7 +98,7 @@ export function SubmitContractButton({ projectId }: { projectId: string }) {
               message={
                 submitContract.error instanceof Error
                   ? submitContract.error.message
-                  : "Failed to submit contract."
+                  : t("failed")
               }
             />
           )}
@@ -109,7 +110,7 @@ export function SubmitContractButton({ projectId }: { projectId: string }) {
               disabled={submitContract.isPending}
               className="hover:bg-surface-muted disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-text-secondary text-sm transition disabled:cursor-not-allowed"
             >
-              Cancel
+              {tActions("cancel")}
             </button>
 
             <Button
@@ -117,9 +118,9 @@ export function SubmitContractButton({ projectId }: { projectId: string }) {
               onClick={handleSubmit}
               disabled={!isReady}
               loading={submitContract.isPending}
-              loadingText="Submitting..."
+              loadingText={t("confirming")}
             >
-              Yes, submit
+              {t("confirm")}
             </Button>
           </div>
         </div>
