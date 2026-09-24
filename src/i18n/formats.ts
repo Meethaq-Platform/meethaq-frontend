@@ -22,6 +22,8 @@ export const GREGORIAN = { calendar: "gregory" } as const;
 export const formats = {
   number: {
     integer: { ...LATIN_DIGITS, maximumFractionDigits: 0 },
+    // No thousands separator, for counts that were printed raw before i18n.
+    plain: { ...LATIN_DIGITS, maximumFractionDigits: 0, useGrouping: false },
     decimal: { ...LATIN_DIGITS, maximumFractionDigits: 2 },
     compact: { ...LATIN_DIGITS, notation: "compact" },
     percent: { ...LATIN_DIGITS, style: "percent" },

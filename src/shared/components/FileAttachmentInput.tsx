@@ -3,6 +3,9 @@
 import type { ChangeEvent } from "react";
 import { useRef, useState } from "react";
 import { Paperclip, X } from "lucide-react";
+import { useTranslations } from "next-intl";
+
+import { bidiIsolate } from "../lib/format";
 
 interface FileAttachmentInputProps {
   files: File[];
@@ -48,6 +51,7 @@ export default function FileAttachmentInput({
 }: FileAttachmentInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
+  const t = useTranslations("common.files");
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selected = Array.from(event.target.files ?? []);
@@ -56,18 +60,18 @@ export default function FileAttachmentInput({
     if (selected.length === 0) return;
 
     if (files.length + selected.length > maxFiles) {
-      setValidationError(`You can attach up to ${maxFiles} files.`);
+      setValidationError(t("tooMany", { max: maxFiles }));
       return;
     }
 
     for (const file of selected) {
       if (!accept.includes(file.type)) {
-        setValidationError(`"${file.name}" is not a supported file type.`);
+        setValidationError(t("unsupported", { name: bidiIsolate(file.name) }));
         return;
       }
       if (file.size > maxSizeBytes) {
         setValidationError(
-          `"${file.name}" is too large. Max size is ${formatFileSize(maxSizeBytes)}.`,
+          t("tooLarge", { name: bidiIsolate(file.name), size: formatFileSize(maxSizeBytes) }),
         );
         return;
       }
@@ -95,7 +99,7 @@ export default function FileAttachmentInput({
       <button
         type="button"
         onClick={() => fileInputRef.current?.click()}
-        aria-label={label ? undefined : "Attach files"}
+        aria-label={label ? undefined : t("attach")}
         className={
           label
             ? "flex items-center gap-2 hover:bg-surface-muted px-4 border border-border rounded-xl h-11 font-semibold text-text-secondary text-sm whitespace-nowrap transition"
@@ -126,7 +130,7 @@ export default function FileAttachmentInput({
               <button
                 type="button"
                 onClick={() => handleRemove(index)}
-                aria-label={`Remove ${file.name}`}
+                aria-label={t("remove", { name: file.name })}
                 className="text-text-secondary hover:text-danger transition shrink-0"
               >
                 <X size={14} />

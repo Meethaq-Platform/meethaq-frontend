@@ -11,5 +11,39 @@
   },
   "toasts": {
     "regionLabel": "Notifications"
+  },
+  "states": {
+    "loading": "Loading...",
+    "tryAgain": "Try again",
+    "close": "Close",
+    "somethingWentWrong": "Something went wrong."
+  },
+  "time": {
+    "due": "Due {relative}",
+    "overdueWasDue": "Overdue — was due {relative}"
+  },
+  "pagination": {
+    "summary": "Page {page, number, plain} of {total, number, plain} · {items}",
+    "previous": "Previous page",
+    "next": "Next page",
+    "items": {
+      "item": "{count, plural, one {{count, number, plain} item} other {{count, number, plain} items}}",
+      "project": "{count, plural, one {{count, number, plain} project} other {{count, number, plain} projects}}",
+      "invitation": "{count, plural, one {{count, number, plain} invitation} other {{count, number, plain} invitations}}",
+      "client": "{count, plural, one {{count, number, plain} client} other {{count, number, plain} clients}}"
+    }
+  },
+  "files": {
+    "attach": "Attach files",
+    "remove": "Remove {name}",
+    "tooMany": "You can attach up to {max, number, plain} files.",
+    "unsupported": "\"{name}\" is not a supported file type.",
+    "tooLarge": "\"{name}\" is too large. Max size is {size}."
+  },
+  "links": {
+    "deliveryLink": "Delivery Link",
+    "deliveryLinkNumbered": "Delivery Link {number, number, plain}",
+    "remove": "Remove link",
+    "add": "Add Link"
   }
 }

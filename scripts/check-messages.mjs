@@ -11,7 +11,7 @@ import { join } from "node:path";
 const root = new URL("../src/i18n/messages/", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1");
 const source = "en";
 const locales = readdirSync(root, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name);
-const allowedNumberStyles = new Set(["integer", "decimal", "compact", "percent"]);
+const allowedNumberStyles = new Set(["integer", "plain", "decimal", "compact", "percent"]);
 const problems = [];
 
 function flatten(obj, prefix = "") {

@@ -11,5 +11,39 @@
   },
   "toasts": {
     "regionLabel": "الإشعارات"
+  },
+  "states": {
+    "loading": "جارٍ التحميل...",
+    "tryAgain": "إعادة المحاولة",
+    "close": "إغلاق",
+    "somethingWentWrong": "حدث خطأ ما."
+  },
+  "time": {
+    "due": "الاستحقاق {relative}",
+    "overdueWasDue": "تجاوز الموعد — كان الاستحقاق {relative}"
+  },
+  "pagination": {
+    "summary": "الصفحة {page, number, plain} من {total, number, plain} · {items}",
+    "previous": "الصفحة السابقة",
+    "next": "الصفحة التالية",
+    "items": {
+      "item": "{count, plural, zero {{count, number, plain} عنصر} one {عنصر واحد} two {عنصران} few {{count, number, plain} عناصر} many {{count, number, plain} عنصرًا} other {{count, number, plain} عنصر}}",
+      "project": "{count, plural, zero {{count, number, plain} مشروع} one {مشروع واحد} two {مشروعان} few {{count, number, plain} مشاريع} many {{count, number, plain} مشروعًا} other {{count, number, plain} مشروع}}",
+      "invitation": "{count, plural, zero {{count, number, plain} دعوة} one {دعوة واحدة} two {دعوتان} few {{count, number, plain} دعوات} many {{count, number, plain} دعوة} other {{count, number, plain} دعوة}}",
+      "client": "{count, plural, zero {{count, number, plain} عميل} one {عميل واحد} two {عميلان} few {{count, number, plain} عملاء} many {{count, number, plain} عميلًا} other {{count, number, plain} عميل}}"
+    }
+  },
+  "files": {
+    "attach": "إرفاق ملفات",
+    "remove": "إزالة {name}",
+    "tooMany": "يمكن إرفاق {max, plural, one {ملف واحد} two {ملفين} few {{max, number, plain} ملفات} many {{max, number, plain} ملفًا} other {{max, number, plain} ملف}} كحد أقصى.",
+    "unsupported": "نوع الملف «{name}» غير مدعوم.",
+    "tooLarge": "الملف «{name}» كبير جدًا. الحد الأقصى للحجم {size}."
+  },
+  "links": {
+    "deliveryLink": "رابط التسليم",
+    "deliveryLinkNumbered": "رابط التسليم {number, number, plain}",
+    "remove": "إزالة الرابط",
+    "add": "إضافة رابط"
   }
 }

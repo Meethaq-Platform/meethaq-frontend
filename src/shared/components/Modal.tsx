@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { useEffect, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface ModalProps {
   open: boolean;
@@ -38,6 +39,7 @@ function useIsMounted() {
 }
 
 export default function Modal({ open, onClose, title, children, size = "sm" }: ModalProps) {
+  const t = useTranslations("common.states");
   const mounted = useIsMounted();
 
   useEffect(() => {
@@ -72,7 +74,7 @@ export default function Modal({ open, onClose, title, children, size = "sm" }: M
 
             <button
               type="button"
-              aria-label="Close"
+              aria-label={t("close")}
               onClick={onClose}
               className="hover:bg-surface-muted p-1 rounded-lg text-text-secondary hover:text-text-primary transition"
             >
