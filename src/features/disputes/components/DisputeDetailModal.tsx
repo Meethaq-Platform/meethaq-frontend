@@ -21,7 +21,8 @@ import { useWithdrawDispute } from "../hooks/useWithdrawDispute";
 import { getExportUrl } from "../lib/service";
 import { DisputeStatusBadge } from "./DisputeStatusBadge";
 import { DisputeCategoryBadge } from "./DisputeCategoryBadge";
-import { DISPUTE_EVIDENCE_SOURCE_LABEL } from "../types/dispute";
+import { useTranslations } from "next-intl";
+import { useStatusLabel } from "@/src/shared/hooks/useStatusLabel";
 import { useCurrentUser } from "@/src/features/auth/hooks/useCurrentUser";
 import Modal from "@/src/shared/components/Modal";
 import Button from "@/src/shared/components/Button";
@@ -45,6 +46,8 @@ export function DisputeDetailModal({
   disputeId,
   onClose,
 }: DisputeDetailModalProps) {
+  const evidenceSourceLabel = useStatusLabel("evidenceSource");
+  const tStatus = useTranslations("status");
   const [showEvidenceForm, setShowEvidenceForm] = useState(false);
   const [showProposeForm, setShowProposeForm] = useState(false);
   const [rejectingProposalId, setRejectingProposalId] = useState<number | null>(null);
@@ -271,7 +274,7 @@ export function DisputeDetailModal({
                       {item.description || item.fileName || item.externalUrl || "Evidence"}
                     </p>
                     <p className="text-text-secondary text-xs">
-                      {DISPUTE_EVIDENCE_SOURCE_LABEL[item.sourceType] ?? "Evidence"} ·{" "}
+                      {evidenceSourceLabel(item.sourceType, tStatus("evidenceSourceUnknown"))} ·{" "}
                       {formatDateTime(item.addedAt)}
                     </p>
                   </div>

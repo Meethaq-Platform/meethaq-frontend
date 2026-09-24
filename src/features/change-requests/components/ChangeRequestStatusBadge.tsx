@@ -1,7 +1,7 @@
-import {
-  CHANGE_REQUEST_STATUS_LABEL,
-  type ChangeRequestStatus,
-} from "../types/change-request";
+import { useTranslations } from "next-intl";
+
+import type { ChangeRequestStatus } from "../types/change-request";
+import { useStatusLabel } from "@/src/shared/hooks/useStatusLabel";
 
 const statusStyles: Record<ChangeRequestStatus, string> = {
   0: "bg-surface-muted text-text-secondary",
@@ -12,13 +12,16 @@ const statusStyles: Record<ChangeRequestStatus, string> = {
 };
 
 export function ChangeRequestStatusBadge({ status }: { status: ChangeRequestStatus }) {
+  const label = useStatusLabel("changeRequest");
+  const t = useTranslations("status");
+
   return (
     <span
       className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${
         statusStyles[status] ?? statusStyles[0]
       }`}
     >
-      {CHANGE_REQUEST_STATUS_LABEL[status] ?? `Status ${status}`}
+      {label(status, t("unknown", { value: status }))}
     </span>
   );
 }

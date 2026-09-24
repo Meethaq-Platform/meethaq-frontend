@@ -11,7 +11,8 @@ import {
   type OpenDisputeFormValues,
 } from "../schemas/dispute.schema";
 import { useOpenDispute } from "../hooks/useOpenDispute";
-import { DISPUTE_CATEGORY_OPTIONS } from "../types/dispute";
+import { DISPUTE_CATEGORIES } from "../types/dispute";
+import { useStatusLabel } from "@/src/shared/hooks/useStatusLabel";
 import { useCurrentUser } from "@/src/features/auth/hooks/useCurrentUser";
 import { useContract } from "@/src/features/contracts/hooks/useContract";
 import { useClientContract } from "@/src/features/client-contracts/hooks/useClientContract";
@@ -30,6 +31,7 @@ interface OpenDisputeModalProps {
 }
 
 export function OpenDisputeModal({ projectId, milestoneId: fixedMilestoneId }: OpenDisputeModalProps) {
+  const categoryLabel = useStatusLabel("disputeCategory");
   const [open, setOpen] = useState(false);
   const [milestoneId, setMilestoneId] = useState(fixedMilestoneId ?? "");
 
@@ -125,9 +127,9 @@ export function OpenDisputeModal({ projectId, milestoneId: fixedMilestoneId }: O
               {...register("category", { valueAsNumber: true })}
               className="bg-surface px-4 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full h-11 text-text-primary text-sm transition"
             >
-              {DISPUTE_CATEGORY_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
+              {DISPUTE_CATEGORIES.map((category) => (
+                <option key={category} value={category}>
+                  {categoryLabel(category)}
                 </option>
               ))}
             </select>

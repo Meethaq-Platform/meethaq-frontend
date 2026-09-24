@@ -13,17 +13,6 @@ export type MilestoneExecutionStatus =
   | "RevisionRequested"
   | "Accepted";
 
-export const MILESTONE_EXECUTION_STATUS_LABEL: Record<
-  MilestoneExecutionStatus,
-  string
-> = {
-  NotStarted: "Not Started",
-  InProgress: "In Progress",
-  Submitted: "Submitted",
-  RevisionRequested: "Revision Requested",
-  Accepted: "Accepted",
-};
-
 // Mirrors MilestoneExecutionDetailDto exactly (field names included) — this
 // is a distinct shape from contracts/types/contract.ts's Milestone (the
 // drafting-time DTO, no execution fields), matching how the backend itself

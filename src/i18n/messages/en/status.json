@@ -1,0 +1,63 @@
+{
+  "unknown": "Status {value}",
+  "unknownCategory": "Category {value}",
+  "project": {
+    "Draft": "Draft",
+    "Active": "Active",
+    "Cancelled": "Cancelled",
+    "Completed": "Completed"
+  },
+  "projectContract": {
+    "None": "No Contract",
+    "Draft": "Draft",
+    "PendingApproval": "Pending Approval",
+    "ChangesRequested": "Changes Requested",
+    "Approved": "Approved"
+  },
+  "milestoneExecution": {
+    "NotStarted": "Not Started",
+    "InProgress": "In Progress",
+    "Submitted": "Submitted",
+    "RevisionRequested": "Revision Requested",
+    "Accepted": "Accepted"
+  },
+  "milestonePayment": {
+    "NotEligible": "Not Eligible",
+    "Eligible": "Eligible",
+    "AwaitingConfirmation": "Awaiting Confirmation",
+    "Paid": "Paid",
+    "IssueReported": "Issue Reported"
+  },
+  "dispute": {
+    "0": "Open",
+    "1": "Resolution Proposed",
+    "2": "Resolved",
+    "3": "Withdrawn"
+  },
+  "disputeCategory": {
+    "0": "Deliverable Quality",
+    "1": "Scope Disagreement",
+    "2": "Missed Deadline",
+    "3": "Acceptance Disagreement",
+    "4": "Payment Issue",
+    "5": "Other"
+  },
+  "changeRequest": {
+    "0": "Draft",
+    "1": "Pending Approval",
+    "2": "Approved",
+    "3": "Rejected",
+    "4": "Withdrawn"
+  },
+  "evidenceSource": {
+    "0": "Contract",
+    "1": "Amendment",
+    "2": "Milestone Terms",
+    "3": "Submission",
+    "4": "Client Feedback",
+    "5": "Message",
+    "6": "Payment Record",
+    "7": "User Upload"
+  },
+  "evidenceSourceUnknown": "Evidence"
+}

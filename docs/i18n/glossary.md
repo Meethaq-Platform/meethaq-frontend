@@ -135,10 +135,18 @@ Gender-free phrasing is used where possible. Where a status must agree, the form
 | English | Arabic |
 |---|---|
 | Open | مفتوح |
-| Pending | قيد الانتظار |
-| Accepted | مقبول |
-| Rejected | مرفوض |
+| Resolution Proposed | تم اقتراح تسوية |
 | Resolved | تمت التسوية |
+| Withdrawn | تم السحب |
+
+**Dispute proposal and change request** (gender-free, S3)
+
+| English | Arabic |
+|---|---|
+| Draft | مسودة |
+| Pending / Pending Approval | قيد الانتظار / بانتظار الموافقة |
+| Accepted / Approved | تم القبول / تمت الموافقة |
+| Rejected | تم الرفض |
 | Withdrawn | تم السحب |
 
 **Dispute categories**

@@ -31,14 +31,6 @@ export type MilestonePaymentStatus =
   | "Paid"
   | "IssueReported";
 
-export const PAYMENT_STATUS_LABEL: Record<MilestonePaymentStatus, string> = {
-  NotEligible: "Not Eligible",
-  Eligible: "Eligible",
-  AwaitingConfirmation: "Awaiting Confirmation",
-  Paid: "Paid",
-  IssueReported: "Issue Reported",
-};
-
 export interface PaymentEvidenceFile {
   id: number;
   fileName: string;
