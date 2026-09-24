@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Check } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/src/shared/lib/format";
 
 import { useInvitation } from "../hooks/useInvitation";
 import { usePageTitle } from "@/src/shared/hooks/usePageTitle";
@@ -21,6 +23,9 @@ interface InvitationDetailPageProps {
 export default function InvitationDetailPage({
   invitationId,
 }: InvitationDetailPageProps) {
+  const t = useTranslations("clientProjects.invitation");
+  const tProjects = useTranslations("projects.detail");
+  const locale = useLocale();
   const router = useRouter();
   const { data, isLoading, isError, refetch } = useInvitation(invitationId);
   usePageTitle(data ? `Projects/${data.title}` : undefined);
@@ -35,7 +40,7 @@ export default function InvitationDetailPage({
           className="flex items-center gap-1.5 text-text-secondary hover:text-text-primary text-sm transition"
         >
           <ArrowLeft size={16} className="rtl-flip" />
-          Back to Projects
+          {tProjects("back")}
         </Link>
 
         {data && (
@@ -45,7 +50,7 @@ export default function InvitationDetailPage({
             className="flex items-center gap-1.5 h-9"
           >
             <Check size={14} />
-            Accept Invitation
+            {t("accept")}
           </Button>
         )}
       </div>
@@ -56,14 +61,14 @@ export default function InvitationDetailPage({
         </div>
       ) : isError || !data ? (
         <ErrorState
-          message="Failed to load this invitation."
+          message={t("loadFailed")}
           onRetry={() => refetch()}
         />
       ) : (
         <section className="space-y-6">
           <div className="flex sm:flex-row flex-col justify-between items-start gap-4 bg-surface p-6 border border-border rounded-2xl">
             <div className="flex-1">
-              <h1 className="font-semibold text-text-primary text-lg">
+              <h1 dir="auto" className="font-semibold text-text-primary text-lg">
                 {data.title}
               </h1>
               <p dir={data.description ? "auto" : undefined} className="mt-2 text-text-primary text-sm whitespace-pre-wrap">
@@ -74,16 +79,22 @@ export default function InvitationDetailPage({
             <div className="flex flex-col items-end gap-2 w-fit shrink-0">
               <ProjectStatusBadge status={data.status} />
               <p className="text-text-secondary text-sm text-end">
-                Invited {new Date(data.createdAt).toLocaleDateString()}
+                {t("invited", {
+                  // English keeps the browser-default date format it always had.
+                  date:
+                    locale === "ar"
+                      ? formatDate(data.createdAt, locale)
+                      : new Date(data.createdAt).toLocaleDateString(),
+                })}
               </p>
             </div>
           </div>
 
           <div className="bg-surface p-6 border border-border rounded-2xl">
             <p className="mb-2 text-text-secondary text-xs uppercase tracking-wide">
-              Freelancer
+              {t("freelancer")}
             </p>
-            <p className="text-text-primary text-sm">{data.freelancerName}</p>
+            <p dir="auto" className="text-text-primary text-sm">{data.freelancerName}</p>
           </div>
         </section>
       )}
@@ -97,17 +108,21 @@ export default function InvitationDetailPage({
               onSuccess: () => router.push(`/projects/${data.id}`),
             })
           }
-          title="Accept this invitation?"
-          description={`This will start "${data.title}" with ${data.freelancerName}.`}
-          confirmLabel="Yes, accept"
-          confirmingLabel="Accepting..."
+          title={t("confirmTitle")}
+          description={t.rich("confirmDescription", {
+            title: data.title,
+            name: data.freelancerName,
+            bdi: (chunks) => <bdi>{chunks}</bdi>,
+          })}
+          confirmLabel={t("confirm")}
+          confirmingLabel={t("confirming")}
           variant="primary"
           isConfirming={acceptInvitation.isPending}
           errorMessage={
             acceptInvitation.isError
               ? acceptInvitation.error instanceof Error
                 ? acceptInvitation.error.message
-                : "Failed to accept invitation."
+                : t("failed")
               : undefined
           }
         />

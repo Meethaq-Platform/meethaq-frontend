@@ -1,0 +1,49 @@
+{
+  "header": {
+    "title": "Projects",
+    "subtitle": "Review invitations and track the projects you've accepted."
+  },
+  "tabs": {
+    "projects": "My Projects",
+    "invitations": "Invitations"
+  },
+  "list": {
+    "loadFailed": "Failed to load your projects.",
+    "emptyTitle": "No active projects yet",
+    "emptyDescription": "Projects you accept from freelancers will show up here."
+  },
+  "invitations": {
+    "loadFailed": "Failed to load your invitations.",
+    "emptyTitle": "No pending invitations",
+    "emptyDescription": "Project invitations from freelancers will show up here.",
+    "freelancerColumn": "Freelancer",
+    "view": "View invitation for {title}"
+  },
+  "invitation": {
+    "accept": "Accept Invitation",
+    "loadFailed": "Failed to load this invitation.",
+    "invited": "Invited {date}",
+    "freelancer": "Freelancer",
+    "confirmTitle": "Accept this invitation?",
+    "confirmDescription": "This will start \"{title}\" with {name}.",
+    "confirm": "Yes, accept",
+    "confirming": "Accepting...",
+    "failed": "Failed to accept invitation."
+  },
+  "contractCard": {
+    "title": "Contract",
+    "emptyTitle": "Nothing to review yet",
+    "emptyDescription": "The freelancer hasn't submitted a contract for review yet.",
+    "summary": {
+      "PendingApproval": "Awaiting your approval.",
+      "ChangesRequested": "You requested changes — waiting for updates.",
+      "Approved": "Approved and locked in."
+    },
+    "summaryFallback": "Manage this contract.",
+    "view": "View Contract",
+    "review": "Review Contract"
+  },
+  "freelancerCard": {
+    "title": "Freelancer"
+  }
+}
