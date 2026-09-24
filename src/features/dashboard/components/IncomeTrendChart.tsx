@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import Tabs from "@/src/shared/components/Tabs";
 import { formatCurrency } from "@/src/shared/lib/format";
+import { useDirection } from "@/src/i18n/useDirection";
 import type { FinancialTrend } from "../types/dashboard";
 import type { TrendPeriod } from "../types/dashboard";
 
@@ -54,6 +55,7 @@ export default function IncomeTrendChart({
   title,
 }: IncomeTrendChartProps) {
   const [showTable, setShowTable] = useState(false);
+  const isRtl = useDirection() === "rtl";
   const tableId = useId();
   const currency = trend.currency ?? "USD";
   const points = trend.points ?? [];
@@ -116,15 +118,21 @@ export default function IncomeTrendChart({
       ) : (
         <div id={tableId} className="h-64">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={points} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
+            <BarChart
+              data={points}
+              // Months run right-to-left in RTL, with the value axis on the right.
+              margin={isRtl ? { top: 4, right: 0, left: 4, bottom: 0 } : { top: 4, right: 4, left: 0, bottom: 0 }}
+            >
               <CartesianGrid vertical={false} stroke="var(--color-border)" />
               <XAxis
                 dataKey="periodLabel"
+                reversed={isRtl}
                 tickLine={false}
                 axisLine={false}
                 tick={{ fill: "var(--color-text-secondary)", fontSize: 12 }}
               />
               <YAxis
+                orientation={isRtl ? "right" : "left"}
                 tickLine={false}
                 axisLine={false}
                 width={48}
