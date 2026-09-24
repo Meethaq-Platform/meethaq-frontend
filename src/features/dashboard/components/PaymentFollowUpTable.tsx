@@ -25,12 +25,12 @@ export default function PaymentFollowUpTable({ items, counterpartyLabel }: Payme
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-border border-b text-text-secondary text-xs text-start">
-            <th className="py-2 pe-3 font-medium">Milestone</th>
-            <th className="py-2 pe-3 font-medium">{counterpartyLabel}</th>
+          <tr className="border-border border-b text-text-secondary text-xs">
+            <th className="py-2 pe-3 font-medium text-start">Milestone</th>
+            <th className="py-2 pe-3 font-medium text-start">{counterpartyLabel}</th>
             <th className="py-2 pe-3 font-medium text-end">Amount</th>
-            <th className="py-2 pe-3 font-medium">Status</th>
-            <th className="py-2 pe-3 font-medium">Action</th>
+            <th className="py-2 pe-3 font-medium text-start">Status</th>
+            <th className="py-2 pe-3 font-medium text-start">Action</th>
           </tr>
         </thead>
         <tbody>

@@ -96,8 +96,8 @@ export default function IncomeTrendChart({
         <div id={tableId} className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-border border-b text-text-secondary text-xs text-start">
-                <th className="py-2 font-medium">Month</th>
+              <tr className="border-border border-b text-text-secondary text-xs">
+                <th className="py-2 font-medium text-start">Month</th>
                 <th className="py-2 font-medium text-end">Confirmed Income</th>
               </tr>
             </thead>
