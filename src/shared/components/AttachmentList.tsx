@@ -50,7 +50,7 @@ export default function AttachmentList({ attachments }: AttachmentListProps) {
               <span className="flex-1 min-w-0 font-medium text-text-primary truncate">
                 {attachment.fileName}
               </span>
-              <span className="shrink-0 text-text-secondary text-xs">
+              <span dir="ltr" className="shrink-0 text-text-secondary text-xs">
                 {formatFileSize(attachment.fileSizeBytes)}
               </span>
             </a>

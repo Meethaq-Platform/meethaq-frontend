@@ -124,7 +124,7 @@ export default function FileAttachmentInput({
               <span className="flex-1 min-w-0 text-text-primary truncate">
                 {file.name}
               </span>
-              <span className="text-text-secondary text-xs shrink-0">
+              <span dir="ltr" className="text-text-secondary text-xs shrink-0">
                 {formatFileSize(file.size)}
               </span>
               <button
