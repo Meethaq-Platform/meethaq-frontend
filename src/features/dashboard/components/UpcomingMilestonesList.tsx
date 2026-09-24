@@ -68,14 +68,16 @@ export default function UpcomingMilestonesList({ items }: UpcomingMilestonesList
                 </p>
               </div>
 
-              {item.actionNavigationUrl && (
-                <Link
-                  href={item.actionNavigationUrl}
-                  className="bg-surface-muted hover:bg-border/60 px-3 rounded-lg h-9 font-semibold text-text-primary text-xs whitespace-nowrap leading-9 transition shrink-0"
-                >
-                  {item.actionLabel ?? "Open"}
-                </Link>
-              )}
+              {/* The backend's actionNavigationUrl points at a flat
+                  /milestones page that doesn't exist here — the real page is
+                  nested under the project, so it's built from the ids we
+                  already have instead of trusting that field. */}
+              <Link
+                href={`/projects/${item.projectId}/milestones/${item.milestoneId}`}
+                className="bg-surface-muted hover:bg-border/60 px-3 rounded-lg h-9 font-semibold text-text-primary text-xs whitespace-nowrap leading-9 transition shrink-0"
+              >
+                {item.actionLabel ?? "Open"}
+              </Link>
             </li>
           ))}
         </ul>

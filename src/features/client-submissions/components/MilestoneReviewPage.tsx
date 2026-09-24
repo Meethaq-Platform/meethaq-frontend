@@ -8,6 +8,7 @@ import { useClientSubmissions } from "../hooks/useClientSubmissions";
 import { MilestoneDetailShell } from "@/src/features/milestones/components/MilestoneDetailShell";
 import { SubmissionHistoryList } from "@/src/features/submissions/components/SubmissionHistoryList";
 import { useClientProject } from "@/src/features/client-projects/hooks/useClientProject";
+import { usePageTitle } from "@/src/shared/hooks/usePageTitle";
 import { AcceptDeliverableButton } from "./AcceptDeliverableButton";
 import { RequestRevisionModal } from "./RequestRevisionModal";
 import Spinner from "@/src/shared/components/Spinner";
@@ -30,6 +31,9 @@ export function MilestoneReviewPage({
     milestoneId,
   );
   const { data: project } = useClientProject(projectId);
+  usePageTitle(
+    project && milestone ? `Projects/${project.title}/${milestone.title}` : undefined,
+  );
   const submissionsQuery = useClientSubmissions(projectId, milestoneId);
 
   if (isLoading) {

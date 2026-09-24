@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Check } from "lucide-react";
 
 import { useInvitation } from "../hooks/useInvitation";
+import { usePageTitle } from "@/src/shared/hooks/usePageTitle";
 import { useAcceptInvitation } from "../hooks/useAcceptInvitation";
 import { ProjectStatusBadge } from "@/src/features/projects/components/ProjectStatusBadge";
 import Button from "@/src/shared/components/Button";
@@ -22,6 +23,7 @@ export default function InvitationDetailPage({
 }: InvitationDetailPageProps) {
   const router = useRouter();
   const { data, isLoading, isError, refetch } = useInvitation(invitationId);
+  usePageTitle(data ? `Projects/${data.title}` : undefined);
   const [isAcceptOpen, setIsAcceptOpen] = useState(false);
   const acceptInvitation = useAcceptInvitation(invitationId);
 

@@ -69,7 +69,14 @@ export function NotificationBell() {
       </button>
 
       {open && (
-        <div className="right-0 z-50 absolute bg-surface shadow-xl mt-2 border border-border rounded-2xl w-80 max-h-[28rem] overflow-hidden">
+        // Below `sm`, the bell sits well inside the header (the user menu
+        // and header padding take up space to its right), so a 320px panel
+        // anchored to the bell's own edge (the original `absolute right-0`)
+        // ran off the left side of narrow viewports. `fixed` + `inset-x-4`
+        // pins it to the viewport itself instead of the bell on small
+        // screens; `sm:` and up restores the original bell-anchored panel
+        // where there's room for it.
+        <div className="inset-x-4 top-16 sm:top-full sm:right-0 sm:left-auto z-50 fixed sm:absolute bg-surface shadow-xl sm:mt-2 border border-border rounded-2xl sm:w-80 max-h-[28rem] overflow-hidden">
           <div className="flex justify-between items-center px-4 py-3 border-border border-b">
             <h2 className="font-semibold text-text-primary text-sm">Notifications</h2>
             {unreadCount > 0 && (

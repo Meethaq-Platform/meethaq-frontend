@@ -14,6 +14,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 import EmptyState from "@/src/shared/components/EmptyState";
 import RelativeTime from "@/src/shared/components/RelativeTime";
+import { eventToneClasses, getEventTone } from "@/src/shared/lib/eventTone";
 import type { RecentActivityItem } from "../types/dashboard";
 
 // eventType is a plain backend string (no enum values in swagger) — same
@@ -48,10 +49,13 @@ export default function RecentActivityFeed({ items }: RecentActivityFeedProps) {
     <ul className="flex flex-col gap-1">
       {items.map((item) => {
         const Icon = (item.eventType && eventIcons[item.eventType]) || Bell;
+        const tone = getEventTone(item.eventType);
 
         const row = (
           <div className="flex items-start gap-3 py-2.5">
-            <div className="flex justify-center items-center bg-surface-muted mt-0.5 rounded-full w-8 h-8 text-text-secondary shrink-0">
+            <div
+              className={`flex justify-center items-center mt-0.5 rounded-full w-8 h-8 shrink-0 ${eventToneClasses[tone]}`}
+            >
               <Icon size={14} />
             </div>
             <div className="flex-1 min-w-0">
@@ -66,18 +70,17 @@ export default function RecentActivityFeed({ items }: RecentActivityFeedProps) {
           </div>
         );
 
+        // The backend's navigationUrl doesn't reliably resolve to a page in
+        // this app, but every event carries the project it happened on —
+        // that always opens.
         return (
           <li key={item.eventId}>
-            {item.navigationUrl ? (
-              <Link
-                href={item.navigationUrl}
-                className="block hover:bg-surface-muted -mx-1 px-1 rounded-lg transition"
-              >
-                {row}
-              </Link>
-            ) : (
-              row
-            )}
+            <Link
+              href={`/projects/${item.projectId}`}
+              className="block hover:bg-surface-muted -mx-1 px-1 rounded-lg transition"
+            >
+              {row}
+            </Link>
           </li>
         );
       })}

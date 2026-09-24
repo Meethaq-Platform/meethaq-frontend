@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 import { useClientProject } from "../hooks/useClientProject";
+import { usePageTitle } from "@/src/shared/hooks/usePageTitle";
 import { FreelancerInfoCard } from "./FreelancerInfoCard";
 import { ClientContractCard } from "./ClientContractCard";
 import { ProjectStatusBadge } from "@/src/features/projects/components/ProjectStatusBadge";
@@ -59,6 +60,7 @@ export default function ClientProjectDetailPage({
   projectId,
 }: ClientProjectDetailPageProps) {
   const { data, isLoading, isError, refetch } = useClientProject(projectId);
+  usePageTitle(data ? `Projects/${data.title}` : undefined);
   const searchParams = useSearchParams();
   const [tab, setTab] = useState<DetailTab>(() => readInitialTab(searchParams));
 

@@ -38,10 +38,11 @@ export function CompleteProjectButton({
       <Button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex items-center gap-1 h-5"
+        className="flex items-center gap-1 px-2.5 sm:px-3 h-6 sm:h-7 text-xs"
       >
-        <PartyPopper size={14} />
-        Mark Project as Complete
+        <PartyPopper size={13} />
+        <span className="hidden sm:inline">Mark Project as Complete</span>
+        <span className="sm:hidden">Complete</span>
       </Button>
 
       <Modal open={open} onClose={handleClose} title="Complete this project?">

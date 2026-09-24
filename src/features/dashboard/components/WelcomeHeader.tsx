@@ -82,7 +82,8 @@ export default function WelcomeHeader({
         <div>
           <p className="text-text-secondary text-sm">{today}</p>
           <h1 className="mt-1 font-bold text-text-primary text-xl sm:text-2xl">
-            Welcome back, {welcome.userName ?? "there"}
+            Welcome back, {welcome.userName?.split(" ")[0] ?? "there"}{" "}
+            <span className="md:hidden">👋</span>
           </h1>
           {welcome.summaryText && (
             <p className="mt-2 max-w-2xl text-sm text-accent-value">
@@ -113,22 +114,26 @@ export default function WelcomeHeader({
       {welcome.quickActions && welcome.quickActions.length > 0 && (
         <div className="flex flex-wrap gap-2 mt-4">
           {welcome.quickActions
-            .filter((action) => VISIBLE_QUICK_ACTION_LABELS.has((action.label ?? "").trim().toLowerCase()))
+            .filter((action) =>
+              VISIBLE_QUICK_ACTION_LABELS.has(
+                (action.label ?? "").trim().toLowerCase(),
+              ),
+            )
             .map((action) => {
-            if (!action.navigationUrl) return null;
-            const Icon = resolveIcon(action.label, action.icon);
+              if (!action.navigationUrl) return null;
+              const Icon = resolveIcon(action.label, action.icon);
 
-            return (
-              <Link
-                key={action.key ?? action.label}
-                href={action.navigationUrl}
-                className="flex items-center gap-2 hover:opacity-90 px-4 rounded-xl h-10 font-semibold text-white text-sm transition bg-accent-value"
-              >
-                <Icon size={15} />
-                {action.label}
-              </Link>
-            );
-          })}
+              return (
+                <Link
+                  key={action.key ?? action.label}
+                  href={action.navigationUrl}
+                  className="flex items-center gap-2 hover:opacity-90 px-4 rounded-xl h-10 font-semibold text-white text-sm transition bg-accent-value"
+                >
+                  <Icon size={15} />
+                  {action.label}
+                </Link>
+              );
+            })}
         </div>
       )}
     </section>

@@ -7,6 +7,7 @@ import { ArrowLeft, Pencil } from "lucide-react";
 import { useIsMutating } from "@tanstack/react-query";
 
 import { useProject } from "../hooks/useProject";
+import { usePageTitle } from "@/src/shared/hooks/usePageTitle";
 import { ProjectStatusBadge } from "./ProjectStatusBadge";
 import { EditProjectForm } from "./EditProjectForm";
 import { ClientCard } from "./ClientCard";
@@ -67,6 +68,7 @@ export default function ProjectDetailPage({
   projectId,
 }: ProjectDetailPageProps) {
   const { data, isLoading, isError, refetch } = useProject(projectId);
+  usePageTitle(data ? `Projects/${data.title}` : undefined);
   const searchParams = useSearchParams();
   const [isEditing, setIsEditing] = useState(false);
   const [isFormDirty, setIsFormDirty] = useState(false);
@@ -101,8 +103,8 @@ export default function ProjectDetailPage({
         <section className="space-y-6">
           {/* Header: title + status + metadata merged in one place, actions
               alongside — replaces the old near-empty "Dashboard" card. */}
-          <div className="bg-(--amber-bg) p-6 border border-border rounded-2xl">
-            <div className="flex sm:flex-row flex-col justify-between items-start gap-4">
+          <div className="bg-(--amber-bg) p-4 sm:p-6 border border-border rounded-2xl">
+            <div className="flex flex-row justify-between items-start gap-3 sm:gap-4">
               <div className="flex-1 min-w-0">
                 {isEditing ? (
                   <EditProjectForm
@@ -112,8 +114,8 @@ export default function ProjectDetailPage({
                   />
                 ) : (
                   <>
-                    <div className="flex flex-wrap items-center gap-3">
-                      <h1 className="font-bold text-text-primary text-xl md:text-2xl truncate">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                      <h1 className="font-bold text-text-primary text-lg sm:text-xl md:text-2xl wrap-break-word">
                         {data.title}
                       </h1>
                       <ProjectStatusBadge status={data.status} />
@@ -122,7 +124,7 @@ export default function ProjectDetailPage({
                       )}
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-text-secondary text-sm">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-text-secondary text-xs sm:text-sm">
                       <span>Created {formatDate(data.createdAt)}</span>
                       {data.totalValue != null && (
                         <>
@@ -137,7 +139,7 @@ export default function ProjectDetailPage({
                     </div>
 
                     {data.description && (
-                      <p className="mt-3 text-text-primary text-sm whitespace-pre-wrap">
+                      <p className="mt-3 text-text-primary text-xs sm:text-sm whitespace-pre-wrap">
                         {data.description}
                       </p>
                     )}
@@ -145,54 +147,56 @@ export default function ProjectDetailPage({
                 )}
               </div>
 
-              <div className="flex flex-col items-end gap-3 shrink-0">
-                <div className="flex flex-wrap items-center gap-2 shrink-0">
-                  {isEditing ? (
-                    <>
+              <div className="flex flex-wrap justify-end items-center gap-1.5 sm:gap-2 shrink-0">
+                {isEditing ? (
+                  <>
+                    <Button
+                      type="button"
+                      variant="amber"
+                      onClick={() => setIsEditing(false)}
+                      className="px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
+                    >
+                      Cancel
+                    </Button>
+
+                    <Button
+                      type="submit"
+                      form="project-edit-form"
+                      disabled={!isFormDirty}
+                      loading={isSaving}
+                      loadingText="Saving..."
+                      className="px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
+                    >
+                      Save Changes
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    {canEdit && (
                       <Button
                         type="button"
-                        variant="amber"
-                        onClick={() => setIsEditing(false)}
-                        className="h-9"
+                        onClick={() => {
+                          setIsFormDirty(false);
+                          setIsEditing(true);
+                        }}
+                        className="flex items-center gap-1.5 px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
                       >
-                        Cancel
+                        <Pencil size={14} className="sm:size-4 size-3.5" />
+                        Edit
                       </Button>
+                    )}
 
-                      <Button
-                        type="submit"
-                        form="project-edit-form"
-                        disabled={!isFormDirty}
-                        loading={isSaving}
-                        loadingText="Saving..."
-                        className="h-9"
-                      >
-                        Save Changes
-                      </Button>
-                    </>
-                  ) : (
-                    <>
-                      {canEdit && (
-                        <Button
-                          type="button"
-                          onClick={() => {
-                            setIsFormDirty(false);
-                            setIsEditing(true);
-                          }}
-                          className="flex items-center gap-1.5 h-9"
-                        >
-                          <Pencil size={14} />
-                          Edit
-                        </Button>
-                      )}
-
-                      {canCancel && <CancelProjectButton projectId={data.id} />}
-                    </>
-                  )}
-                </div>
-
-                {!isEditing && <LastActivitySummary projectId={projectId} />}
+                    {canCancel && <CancelProjectButton projectId={data.id} />}
+                  </>
+                )}
               </div>
             </div>
+
+            {!isEditing && (
+              <div className="flex sm:justify-end mt-4">
+                <LastActivitySummary projectId={projectId} />
+              </div>
+            )}
           </div>
 
           <Tabs value={tab} onChange={setTab} options={detailTabs} />

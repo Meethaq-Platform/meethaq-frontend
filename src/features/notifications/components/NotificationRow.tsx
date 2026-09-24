@@ -17,6 +17,7 @@ import type { LucideIcon } from "lucide-react";
 
 import type { Notification } from "../types/notification";
 import RelativeTime from "@/src/shared/components/RelativeTime";
+import { eventToneClasses, getEventTone } from "@/src/shared/lib/eventTone";
 
 // eventType is a plain string on the backend (no enum values listed in
 // swagger) — this map is a best-effort guess at casing; any unrecognized
@@ -52,6 +53,7 @@ interface NotificationRowProps {
 
 export function NotificationRow({ notification, onOpen }: NotificationRowProps) {
   const Icon = eventIcons[notification.eventType] ?? Bell;
+  const tone = getEventTone(notification.eventType);
 
   return (
     <Link
@@ -61,7 +63,9 @@ export function NotificationRow({ notification, onOpen }: NotificationRowProps) 
         notification.isRead ? "" : "bg-primary-muted/40"
       }`}
     >
-      <div className="flex justify-center items-center bg-surface-muted mt-0.5 rounded-full w-8 h-8 text-text-secondary shrink-0">
+      <div
+        className={`flex justify-center items-center mt-0.5 rounded-full w-8 h-8 shrink-0 ${eventToneClasses[tone]}`}
+      >
         <Icon size={14} />
       </div>
 

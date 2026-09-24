@@ -21,17 +21,19 @@ export default function ProfilePage() {
 
   return (
     <div className="space-y-6 mx-auto h-full">
-      <div className="flex justify-between items-center">
-        <h1 className="font-bold text-text-primary text-2xl">My Profile</h1>
+      <div className="flex justify-between items-center gap-3">
+        <h1 className="font-bold text-text-primary text-xl sm:text-2xl">
+          My Profile
+        </h1>
 
         {data &&
           (isEditing ? (
-            <div key="editing-actions" className="flex items-center gap-3">
+            <div key="editing-actions" className="flex items-center gap-2 sm:gap-3">
               <Button
                 type="button"
                 variant="amber"
                 onClick={() => setIsEditing(false)}
-                className="h-9"
+                className="px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
               >
                 Cancel
               </Button>
@@ -42,7 +44,7 @@ export default function ProfilePage() {
                 disabled={!isFormDirty}
                 loading={isSaving}
                 loadingText="Saving..."
-                className="h-9"
+                className="px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
               >
                 Save Changes
               </Button>
@@ -52,9 +54,9 @@ export default function ProfilePage() {
               <Button
                 type="button"
                 onClick={handleStartEditing}
-                className="flex items-center gap-1.5 h-9"
+                className="flex items-center gap-1.5 px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
               >
-                <Pencil size={14} />
+                <Pencil size={14} className="sm:size-4 size-3.5" />
                 Edit
               </Button>
             </div>

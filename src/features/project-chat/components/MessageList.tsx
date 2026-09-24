@@ -26,7 +26,7 @@ export function MessageList({ projectId }: MessageListProps) {
 
   if (isLoading) {
     return (
-      <div className="flex flex-1 justify-center items-center py-16">
+      <div className="flex flex-1 justify-center items-center py-16 overflow-y-auto">
         <Spinner size={28} />
       </div>
     );
@@ -34,7 +34,7 @@ export function MessageList({ projectId }: MessageListProps) {
 
   if (isError) {
     return (
-      <div className="flex-1 py-16">
+      <div className="flex-1 py-16 overflow-y-auto">
         <ErrorState message="Failed to load messages." onRetry={() => refetch()} />
       </div>
     );
@@ -42,7 +42,7 @@ export function MessageList({ projectId }: MessageListProps) {
 
   if (!messages || messages.length === 0) {
     return (
-      <div className="flex-1 py-16">
+      <div className="flex-1 py-16 overflow-y-auto">
         <EmptyState
           icon={MessageSquare}
           title="No messages yet"

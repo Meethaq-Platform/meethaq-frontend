@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
 import ProjectsEntry from "@/src/features/projects/components/ProjectsEntry";
+
+export const metadata: Metadata = { title: "Projects" };
 
 export default function Projects() {
   return (

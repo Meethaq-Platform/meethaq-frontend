@@ -17,13 +17,13 @@ export default function Tabs<T extends string>({
   options,
 }: TabsProps<T>) {
   return (
-    <div className="inline-flex bg-surface p-1 rounded-xl">
+    <div className="flex flex-wrap gap-1 bg-surface p-1 rounded-xl">
       {options.map((option) => (
         <button
           key={option.value}
           type="button"
           onClick={() => onChange(option.value)}
-          className={`px-4 h-9 rounded-lg font-semibold text-sm transition ${
+          className={`px-3 sm:px-4 h-8 sm:h-9 rounded-lg font-semibold text-xs sm:text-sm whitespace-nowrap transition ${
             value === option.value
               ? "bg-primary text-white shadow-sm"
               : "text-text-secondary hover:text-text-primary"

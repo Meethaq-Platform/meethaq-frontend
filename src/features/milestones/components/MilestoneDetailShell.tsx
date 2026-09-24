@@ -49,7 +49,7 @@ export function MilestoneDetailShell({
             )}
           </div>
 
-          <div className="flex flex-col items-end gap-2 w-fit shrink-0">
+          <div className="flex flex-row sm:flex-col flex-wrap items-center sm:items-end gap-x-3 gap-y-1 sm:gap-2 w-full sm:w-fit shrink-0">
             <MilestoneStatusBadge status={milestone.executionStatus} />
             <p className="font-numbers font-semibold text-text-primary text-sm">
               {formatCurrency(milestone.calculatedAmount)}

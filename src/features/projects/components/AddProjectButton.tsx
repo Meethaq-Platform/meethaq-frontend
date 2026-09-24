@@ -14,9 +14,9 @@ export function AddProjectButton() {
       <Button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-1.5 shrink-0"
+        className="flex items-center gap-1.5 shrink-0 h-9 sm:h-11 px-3 sm:px-4 text-xs sm:text-sm"
       >
-        <Plus size={16} />
+        <Plus size={14} className="sm:size-4 size-3.5" />
         New Project
       </Button>
 
