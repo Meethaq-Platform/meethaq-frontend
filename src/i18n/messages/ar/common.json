@@ -10,7 +10,8 @@
     "light": "الوضع الفاتح"
   },
   "toasts": {
-    "regionLabel": "الإشعارات"
+    "regionLabel": "الإشعارات",
+    "closeLabel": "إغلاق الإشعار"
   },
   "states": {
     "loading": "جارٍ التحميل...",

@@ -18,6 +18,7 @@ export default function Toaster() {
       dir={dir}
       position={dir === "rtl" ? "bottom-left" : "bottom-right"}
       containerAriaLabel={t("regionLabel")}
+      toastOptions={{ closeButtonAriaLabel: t("closeLabel") }}
       richColors
       closeButton
     />

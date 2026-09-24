@@ -10,7 +10,8 @@
     "light": "Light mode"
   },
   "toasts": {
-    "regionLabel": "Notifications"
+    "regionLabel": "Notifications",
+    "closeLabel": "Close toast"
   },
   "states": {
     "loading": "Loading...",
