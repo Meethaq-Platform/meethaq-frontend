@@ -73,7 +73,8 @@ export default function ProjectDetailPage({
   const tActions = useTranslations("common.actions");
   const format = useFormat();
   const { data, isLoading, isError, refetch } = useProject(projectId);
-  usePageTitle(data ? `Projects/${data.title}` : undefined);
+  const tPageTitles = useTranslations("pageTitles");
+  usePageTitle(data ? tPageTitles("project", { title: data.title }) : undefined);
   const searchParams = useSearchParams();
   const [isEditing, setIsEditing] = useState(false);
   const [isFormDirty, setIsFormDirty] = useState(false);

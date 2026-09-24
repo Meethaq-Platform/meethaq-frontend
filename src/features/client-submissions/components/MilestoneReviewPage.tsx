@@ -33,8 +33,11 @@ export function MilestoneReviewPage({
     milestoneId,
   );
   const { data: project } = useClientProject(projectId);
+  const tPageTitles = useTranslations("pageTitles");
   usePageTitle(
-    project && milestone ? `Projects/${project.title}/${milestone.title}` : undefined,
+    project && milestone
+      ? tPageTitles("milestone", { project: project.title, milestone: milestone.title })
+      : undefined,
   );
   const submissionsQuery = useClientSubmissions(projectId, milestoneId);
 

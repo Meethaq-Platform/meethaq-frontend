@@ -28,7 +28,8 @@ export default function InvitationDetailPage({
   const locale = useLocale();
   const router = useRouter();
   const { data, isLoading, isError, refetch } = useInvitation(invitationId);
-  usePageTitle(data ? `Projects/${data.title}` : undefined);
+  const tPageTitles = useTranslations("pageTitles");
+  usePageTitle(data ? tPageTitles("project", { title: data.title }) : undefined);
   const [isAcceptOpen, setIsAcceptOpen] = useState(false);
   const acceptInvitation = useAcceptInvitation(invitationId);
 

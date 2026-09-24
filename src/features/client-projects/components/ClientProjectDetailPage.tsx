@@ -64,7 +64,8 @@ export default function ClientProjectDetailPage({
   const t = useTranslations("projects.detail");
   const format = useFormat();
   const { data, isLoading, isError, refetch } = useClientProject(projectId);
-  usePageTitle(data ? `Projects/${data.title}` : undefined);
+  const tPageTitles = useTranslations("pageTitles");
+  usePageTitle(data ? tPageTitles("project", { title: data.title }) : undefined);
   const searchParams = useSearchParams();
   const [tab, setTab] = useState<DetailTab>(() => readInitialTab(searchParams));
 

@@ -1,0 +1,10 @@
+{
+  "dashboard": "Dashboard",
+  "projects": "Projects",
+  "clients": "Clients",
+  "profile": "Profile",
+  "project": "Projects/{title}",
+  "projectContract": "Projects/{title}/Contract",
+  "milestone": "Projects/{project}/{milestone}",
+  "client": "Clients/{name}"
+}

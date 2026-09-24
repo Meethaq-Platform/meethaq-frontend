@@ -36,7 +36,10 @@ export default function ContractWorkspacePage({
   const format = useFormat();
   const project = useProject(projectId);
   const contractQuery = useContract(projectId);
-  usePageTitle(project.data ? `Projects/${project.data.title}/Contract` : undefined);
+  const tPageTitles = useTranslations("pageTitles");
+  usePageTitle(
+    project.data ? tPageTitles("projectContract", { title: project.data.title }) : undefined,
+  );
   const [isEditing, setIsEditing] = useState(false);
   const [isFormDirty, setIsFormDirty] = useState(false);
   const [isSaving, setIsSaving] = useState(false);

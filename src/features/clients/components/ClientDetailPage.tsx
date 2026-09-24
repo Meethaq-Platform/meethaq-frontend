@@ -24,7 +24,8 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
   const tActions = useTranslations("common.actions");
   const format = useFormat();
   const { data, isLoading, isError, refetch } = useClient(clientId);
-  usePageTitle(data ? `Clients/${data.clientFullName}` : undefined);
+  const tPageTitles = useTranslations("pageTitles");
+  usePageTitle(data ? tPageTitles("client", { name: data.clientFullName }) : undefined);
   const [isEditing, setIsEditing] = useState(false);
   const [isFormDirty, setIsFormDirty] = useState(false);
   const isSaving = useIsMutating({ mutationKey: ["update-client"] }) > 0;

@@ -33,8 +33,11 @@ export function MilestoneWorkspacePage({
     milestoneId,
   );
   const { data: project } = useProject(projectId);
+  const tPageTitles = useTranslations("pageTitles");
   usePageTitle(
-    project && milestone ? `Projects/${project.title}/${milestone.title}` : undefined,
+    project && milestone
+      ? tPageTitles("milestone", { project: project.title, milestone: milestone.title })
+      : undefined,
   );
   const submissionsQuery = useSubmissions(projectId, milestoneId);
 

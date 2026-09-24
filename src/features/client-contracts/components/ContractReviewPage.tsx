@@ -30,7 +30,10 @@ export default function ContractReviewPage({ projectId }: ContractReviewPageProp
   const format = useFormat();
   const project = useClientProject(projectId);
   const contractQuery = useClientContract(projectId);
-  usePageTitle(project.data ? `Projects/${project.data.title}/Contract` : undefined);
+  const tPageTitles = useTranslations("pageTitles");
+  usePageTitle(
+    project.data ? tPageTitles("projectContract", { title: project.data.title }) : undefined,
+  );
 
   const isLoading = project.isLoading || contractQuery.isLoading;
   const isError = project.isError || contractQuery.isError;
