@@ -26,7 +26,17 @@ export function applyTheme(theme: Theme) {
 }
 
 export function setTheme(theme: Theme) {
-  applyTheme(theme);
+  // Crossfade the whole page via the View Transitions API; browsers without
+  // it (or users who prefer reduced motion) get an instant switch.
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+  if (document.startViewTransition && !reduceMotion) {
+    document.startViewTransition(() => applyTheme(theme));
+  } else {
+    applyTheme(theme);
+  }
+
   try {
     localStorage.setItem(THEME_STORAGE_KEY, theme);
   } catch {

@@ -217,6 +217,13 @@ body {
   color: var(--text-primary);
 }
 
+/* Theme switch crossfade (see setTheme in shared/lib/theme.ts). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 350ms;
+  animation-timing-function: ease-in-out;
+}
+
 /* The (protected) layout scrolls inside <main>, not the document — anchor
    jumps (e.g. the dashboard's "Review what needs your attention" link) need
    scroll-behavior on that actual scrolling box, not just html. */
