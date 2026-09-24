@@ -45,7 +45,7 @@ export function MessageComposer({ projectId }: MessageComposerProps) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-3 p-4 border-border border-t"
+      className="space-y-3 shrink-0 p-4 border-border border-t"
     >
       <div className="flex items-center gap-2">
         <div className="flex-1">
