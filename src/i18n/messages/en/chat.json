@@ -1,0 +1,13 @@
+{
+  "placeholder": "Write a message...",
+  "send": "Send message",
+  "sendFailed": "Failed to send message.",
+  "loadFailed": "Failed to load messages.",
+  "emptyTitle": "No messages yet",
+  "emptyDescription": "Start the conversation with your project partner.",
+  "validation": {
+    "tooLong": "Message is too long",
+    "tooManyFiles": "You can attach up to {max, number, plain} files",
+    "empty": "Write a message or attach a file"
+  }
+}
