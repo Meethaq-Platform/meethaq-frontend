@@ -55,7 +55,7 @@ export function ProfileOverviewCard({
             type="button"
             aria-label="Change profile photo"
             onClick={() => setIsPictureModalOpen(true)}
-            className="right-0 bottom-0 absolute flex justify-center items-center bg-primary hover:opacity-90 border-2 border-surface rounded-full w-7 h-7 text-white transition"
+            className="right-0 bottom-0 absolute flex justify-center items-center bg-primary hover:opacity-90 border-2 border-surface rounded-full w-7 h-7 text-on-primary transition"
           >
             <Camera size={14} />
           </button>

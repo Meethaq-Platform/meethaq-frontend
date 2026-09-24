@@ -9,9 +9,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantBg: Record<NonNullable<ButtonProps["variant"]>, string> = {
-  primary: "bg-primary",
-  amber: "bg-accent-value",
-  danger: "bg-danger",
+  primary: "bg-primary text-on-primary",
+  amber: "bg-accent-value text-on-accent-value",
+  danger: "bg-danger text-white",
 };
 
 export default function Button({
@@ -28,7 +28,7 @@ export default function Button({
       {...props}
       disabled={disabled || loading}
       className={twMerge(
-        `${variantBg[variant]} cursor-pointer hover:opacity-90 disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-white text-sm active:scale-[0.99] transition disabled:cursor-not-allowed`,
+        `${variantBg[variant]} cursor-pointer hover:opacity-90 disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-sm active:scale-[0.99] transition disabled:cursor-not-allowed`,
         className
       )}
     >

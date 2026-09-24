@@ -67,7 +67,7 @@ export function MessageComposer({ projectId }: MessageComposerProps) {
           type="submit"
           disabled={sendMessage.isPending}
           aria-label="Send message"
-          className="flex justify-center items-center bg-primary hover:opacity-90 disabled:opacity-60 rounded-xl w-11 h-11 text-white transition disabled:cursor-not-allowed"
+          className="flex justify-center items-center bg-primary hover:opacity-90 disabled:opacity-60 rounded-xl w-11 h-11 text-on-primary transition disabled:cursor-not-allowed"
         >
           <Send size={16} />
         </button>

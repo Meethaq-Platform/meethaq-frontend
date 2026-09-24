@@ -77,7 +77,7 @@ export function MessageList({ projectId }: MessageListProps) {
             <div
               className={`max-w-[80%] rounded-2xl px-4 py-2.5 ${
                 isOwnMessage
-                  ? "bg-primary text-white"
+                  ? "bg-primary text-on-primary"
                   : "bg-surface-muted text-text-primary"
               }`}
             >

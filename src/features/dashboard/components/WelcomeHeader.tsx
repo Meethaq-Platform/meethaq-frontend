@@ -127,7 +127,7 @@ export default function WelcomeHeader({
                 <Link
                   key={action.key ?? action.label}
                   href={action.navigationUrl}
-                  className="flex items-center gap-2 hover:opacity-90 px-4 rounded-xl h-10 font-semibold text-white text-sm transition bg-accent-value"
+                  className="flex items-center gap-2 hover:opacity-90 px-4 rounded-xl h-10 font-semibold text-on-accent-value text-sm transition bg-accent-value"
                 >
                   <Icon size={15} />
                   {action.label}

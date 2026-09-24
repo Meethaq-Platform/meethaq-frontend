@@ -48,7 +48,7 @@ export function ClientsToolbar({
           aria-pressed={isDateActive}
           className={`flex items-center gap-1.5 px-3 sm:px-4 h-8 sm:h-9 rounded-lg font-medium text-xs sm:text-sm transition ${
             isDateActive
-              ? "bg-primary text-white"
+              ? "bg-primary text-on-primary"
               : "bg-surface hover:bg-border/40 text-text-secondary hover:text-text-primary"
           }`}
         >
@@ -62,7 +62,7 @@ export function ClientsToolbar({
           aria-pressed={isNameActive}
           className={`flex items-center gap-1.5 px-3 sm:px-4 h-8 sm:h-9 rounded-lg font-medium text-xs sm:text-sm transition ${
             isNameActive
-              ? "bg-primary text-white"
+              ? "bg-primary text-on-primary"
               : "bg-surface hover:bg-border/40 text-text-secondary hover:text-text-primary"
           }`}
         >

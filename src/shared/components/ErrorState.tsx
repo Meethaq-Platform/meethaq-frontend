@@ -24,7 +24,7 @@ export default function ErrorState({
         <button
           type="button"
           onClick={onRetry}
-          className="flex items-center gap-2 bg-primary hover:opacity-90 px-4 rounded-xl h-10 font-semibold text-white text-sm transition"
+          className="flex items-center gap-2 bg-primary hover:opacity-90 px-4 rounded-xl h-10 font-semibold text-on-primary text-sm transition"
         >
           <RefreshCw size={14} />
           Try again

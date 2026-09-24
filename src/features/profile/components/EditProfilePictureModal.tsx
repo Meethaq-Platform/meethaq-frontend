@@ -149,7 +149,7 @@ export function EditProfilePictureModal({
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={isBusy}
-              className="flex items-center gap-1.5 bg-primary hover:opacity-90 disabled:opacity-60 px-4 rounded-xl h-10 font-semibold text-white text-sm transition"
+              className="flex items-center gap-1.5 bg-primary hover:opacity-90 disabled:opacity-60 px-4 rounded-xl h-10 font-semibold text-on-primary text-sm transition"
             >
               <Upload size={14} />
               Upload Photo

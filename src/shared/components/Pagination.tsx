@@ -32,7 +32,7 @@ export default function Pagination({
           disabled={pageNumber <= 1}
           onClick={() => onPageChange(pageNumber - 1)}
           aria-label="Previous page"
-          className="inline-flex justify-center items-center bg-primary hover:bg-primary-muted hover:bg-teal-400 disabled:opacity-40 p-2 rounded-lg text-white transition disabled:cursor-not-allowed"
+          className="inline-flex justify-center items-center bg-primary hover:bg-primary-muted hover:bg-teal-400 disabled:opacity-40 p-2 rounded-lg text-on-primary transition disabled:cursor-not-allowed"
         >
           <ChevronLeft size={16} />
         </button>
@@ -42,7 +42,7 @@ export default function Pagination({
           disabled={pageNumber >= totalPages}
           onClick={() => onPageChange(pageNumber + 1)}
           aria-label="Next page"
-          className="inline-flex justify-center items-center bg-primary hover:bg-teal-400 disabled:opacity-40 p-2 rounded-lg text-white transition disabled:cursor-not-allowed"
+          className="inline-flex justify-center items-center bg-primary hover:bg-teal-400 disabled:opacity-40 p-2 rounded-lg text-on-primary transition disabled:cursor-not-allowed"
         >
           <ChevronRight size={16} />
         </button>

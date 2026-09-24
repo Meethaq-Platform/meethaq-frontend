@@ -50,7 +50,7 @@ export function ProjectsToolbar({
             aria-pressed={status === option.value}
             className={`px-3 sm:px-4 h-8 sm:h-9 rounded-lg font-medium text-xs sm:text-sm transition ${
               status === option.value
-                ? "bg-primary text-white"
+                ? "bg-primary text-on-primary"
                 : "bg-surface hover:bg-border/40 text-text-secondary hover:text-text-primary"
             }`}
           >

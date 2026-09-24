@@ -18,9 +18,9 @@ interface ConfirmModalProps {
 }
 
 const variantBg: Record<NonNullable<ConfirmModalProps["variant"]>, string> = {
-  danger: "bg-danger",
-  amber: "bg-accent-value",
-  primary: "bg-primary",
+  danger: "bg-danger text-white",
+  amber: "bg-accent-value text-on-accent-value",
+  primary: "bg-primary text-on-primary",
 };
 
 export default function ConfirmModal({
@@ -59,7 +59,7 @@ export default function ConfirmModal({
             type="button"
             onClick={onConfirm}
             disabled={isConfirming}
-            className={`${variantBg[variant]} hover:opacity-90 disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-white text-sm transition disabled:cursor-not-allowed`}
+            className={`${variantBg[variant]} hover:opacity-90 disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-sm transition disabled:cursor-not-allowed`}
           >
             {isConfirming ? confirmingLabel : confirmLabel}
           </button>

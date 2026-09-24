@@ -25,7 +25,7 @@ export default function ClientFirstUse({ firstUse, userName }: ClientFirstUsePro
       {firstUse.pendingInvitationsCount > 0 && (
         <Link
           href="/projects"
-          className="inline-flex items-center gap-2 bg-primary hover:opacity-90 mt-5 px-4 rounded-xl h-10 font-semibold text-white text-sm transition"
+          className="inline-flex items-center gap-2 bg-primary hover:opacity-90 mt-5 px-4 rounded-xl h-10 font-semibold text-on-primary text-sm transition"
         >
           <Mail size={15} />
           Review {firstUse.pendingInvitationsCount} Pending{" "}
