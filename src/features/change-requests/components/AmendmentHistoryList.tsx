@@ -2,7 +2,9 @@
 
 import { useAmendments } from "../hooks/useAmendments";
 import Spinner from "@/src/shared/components/Spinner";
-import { formatCurrency, formatDateTime } from "@/src/shared/lib/format";
+import { formatCurrency } from "@/src/shared/lib/format";
+import { useFormat } from "@/src/shared/hooks/useFormat";
+import { useTranslations } from "next-intl";
 
 interface AmendmentHistoryListProps {
   projectId: string;
@@ -14,6 +16,8 @@ interface AmendmentHistoryListProps {
 // previous/new terms JSON is available via useAmendment(id) if a detail view
 // is opened later.
 export function AmendmentHistoryList({ projectId }: AmendmentHistoryListProps) {
+  const t = useTranslations("changeRequests.amendments");
+  const format = useFormat();
   const { data: amendments, isLoading } = useAmendments(projectId);
 
   if (isLoading) {
@@ -30,7 +34,7 @@ export function AmendmentHistoryList({ projectId }: AmendmentHistoryListProps) {
 
   return (
     <div>
-      <h3 className="mb-2 font-semibold text-text-primary text-sm">Amendment History</h3>
+      <h3 className="mb-2 font-semibold text-text-primary text-sm">{t("title")}</h3>
       <div className="bg-surface border border-border rounded-2xl overflow-hidden">
         {amendments.map((amendment) => (
           <div
@@ -39,10 +43,14 @@ export function AmendmentHistoryList({ projectId }: AmendmentHistoryListProps) {
           >
             <div>
               <p className="font-medium text-text-primary text-sm">
-                Amendment #{amendment.amendmentNumber} — {amendment.changeRequestTitle}
+                {t.rich("item", {
+                  number: amendment.amendmentNumber,
+                  title: amendment.changeRequestTitle,
+                  bdi: (chunks) => <bdi>{chunks}</bdi>,
+                })}
               </p>
               <p className="mt-0.5 text-text-secondary text-xs">
-                Effective {formatDateTime(amendment.effectiveDate)}
+                {t("effective", { date: format.dateTime(amendment.effectiveDate) })}
               </p>
             </div>
             <p className="font-numbers font-semibold text-text-primary text-sm">

@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
-  decideChangeRequestSchema,
+  createDecideChangeRequestSchema,
   type DecideChangeRequestFormValues,
 } from "../schemas/change-request.schema";
 import { useChangeRequest } from "../hooks/useChangeRequest";
@@ -19,7 +20,8 @@ import Textarea from "@/src/shared/components/Textarea";
 import InputError from "@/src/shared/components/InputError";
 import Spinner from "@/src/shared/components/Spinner";
 import AttachmentList from "@/src/shared/components/AttachmentList";
-import { formatCurrency, formatDateTime } from "@/src/shared/lib/format";
+import { formatCurrency } from "@/src/shared/lib/format";
+import { useFormat } from "@/src/shared/hooks/useFormat";
 import { getErrorMessage } from "@/src/shared/lib/getErrorMessage";
 
 interface ChangeRequestDetailModalProps {
@@ -37,6 +39,13 @@ export function ChangeRequestDetailModal({
   changeRequestId,
   onClose,
 }: ChangeRequestDetailModalProps) {
+  const t = useTranslations("changeRequests.detail");
+  const tValidation = useTranslations("changeRequests.validation");
+  const decideChangeRequestSchema = useMemo(
+    () => createDecideChangeRequestSchema(tValidation),
+    [tValidation],
+  );
+  const format = useFormat();
   const [showReject, setShowReject] = useState(false);
   const { data: user } = useCurrentUser();
   const { data: cr, isLoading } = useChangeRequest(
@@ -92,7 +101,7 @@ export function ChangeRequestDetailModal({
     <Modal
       open={Boolean(changeRequestId)}
       onClose={handleClose}
-      title="Change Request"
+      title={t("title")}
       size="lg"
     >
       {isLoading || !cr ? (
@@ -102,7 +111,7 @@ export function ChangeRequestDetailModal({
       ) : (
         <div className="space-y-4">
           <div className="flex justify-between items-start gap-3">
-            <h3 className="font-semibold text-text-primary text-base">{cr.title}</h3>
+            <h3 dir="auto" className="font-semibold text-text-primary text-base">{cr.title}</h3>
             <ChangeRequestStatusBadge status={cr.status} />
           </div>
 
@@ -110,8 +119,8 @@ export function ChangeRequestDetailModal({
 
           {cr.proposedScopeChange && (
             <div>
-              <p className="mb-1 text-text-secondary text-xs">Proposed Scope Change</p>
-              <p className="text-text-primary text-sm whitespace-pre-wrap">
+              <p className="mb-1 text-text-secondary text-xs">{t("scope")}</p>
+              <p dir="auto" className="text-text-primary text-sm whitespace-pre-wrap">
                 {cr.proposedScopeChange}
               </p>
             </div>
@@ -119,13 +128,13 @@ export function ChangeRequestDetailModal({
 
           <div className="gap-3 grid grid-cols-2 bg-surface-muted p-3 rounded-xl text-sm">
             <div>
-              <p className="text-text-secondary text-xs">Current Value</p>
+              <p className="text-text-secondary text-xs">{t("currentValue")}</p>
               <p className="font-numbers text-text-primary">
                 {formatCurrency(cr.currentProjectValue)}
               </p>
             </div>
             <div>
-              <p className="text-text-secondary text-xs">Resulting Value</p>
+              <p className="text-text-secondary text-xs">{t("resultingValue")}</p>
               <p className="font-numbers text-text-primary">
                 {formatCurrency(cr.resultingProjectValue)}
               </p>
@@ -134,21 +143,23 @@ export function ChangeRequestDetailModal({
 
           {cr.milestoneDeltas.length > 0 && (
             <div>
-              <p className="mb-1.5 text-text-secondary text-xs">Proposed Milestone Terms</p>
+              <p className="mb-1.5 text-text-secondary text-xs">{t("milestoneTerms")}</p>
               <div className="space-y-2">
                 {cr.milestoneDeltas.map((delta) => (
                   <div
                     key={delta.id}
                     className="bg-surface-muted p-3 rounded-lg text-sm"
                   >
-                    <p className="font-medium text-text-primary">{delta.title}</p>
+                    <p dir="auto" className="font-medium text-text-primary">{delta.title}</p>
                     <p className="mt-1 text-text-secondary text-xs">
-                      Due {delta.dueDate ? formatDateTime(delta.dueDate) : "—"} ·{" "}
-                      {delta.percentage != null
-                        ? `${delta.percentage}%`
-                        : delta.amount != null
-                          ? formatCurrency(delta.amount)
-                          : "—"}
+                      {t("due", { date: delta.dueDate ? format.dateTime(delta.dueDate) : "—" })} ·{" "}
+                      <bdi>
+                        {delta.percentage != null
+                          ? `${delta.percentage}%`
+                          : delta.amount != null
+                            ? formatCurrency(delta.amount)
+                            : "—"}
+                      </bdi>
                     </p>
                   </div>
                 ))}
@@ -158,20 +169,23 @@ export function ChangeRequestDetailModal({
 
           {attachments.length > 0 && (
             <div>
-              <p className="mb-1.5 text-text-secondary text-xs">Attachments</p>
+              <p className="mb-1.5 text-text-secondary text-xs">{t("attachments")}</p>
               <AttachmentList attachments={attachments} />
             </div>
           )}
 
           {cr.status === 3 && cr.rejectionReason && (
             <div className="bg-danger-muted p-3 rounded-lg text-danger text-sm">
-              Rejected: {cr.rejectionReason}
+              {t.rich("rejected", {
+                reason: cr.rejectionReason,
+                bdi: (chunks) => <bdi>{chunks}</bdi>,
+              })}
             </div>
           )}
 
           {(decide.isError || withdraw.isError) && (
             <InputError
-              message={getErrorMessage(decide.error ?? withdraw.error, "Action failed.")}
+              message={getErrorMessage(decide.error ?? withdraw.error, t("failed"))}
             />
           )}
 
@@ -183,15 +197,15 @@ export function ChangeRequestDetailModal({
                 disabled={decide.isPending}
                 className="hover:bg-surface-muted disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-danger text-sm transition disabled:cursor-not-allowed"
               >
-                Reject
+                {t("reject")}
               </button>
               <Button
                 type="button"
                 loading={decide.isPending}
-                loadingText="Approving..."
+                loadingText={t("approving")}
                 onClick={() => decide.mutate({ approved: true }, { onSuccess: handleClose })}
               >
-                Approve
+                {t("approve")}
               </Button>
             </div>
           )}
@@ -199,7 +213,7 @@ export function ChangeRequestDetailModal({
           {canDecide && showReject && (
             <form onSubmit={handleSubmit(onReject)} className="space-y-3 pt-2">
               <Textarea
-                label="Rejection reason"
+                label={t("rejectionReason")}
                 rows={3}
                 {...register("rejectionReason")}
               />
@@ -211,15 +225,15 @@ export function ChangeRequestDetailModal({
                   disabled={decide.isPending}
                   className="hover:bg-surface-muted px-4 rounded-xl h-11 font-semibold text-text-secondary text-sm transition"
                 >
-                  Back
+                  {t("back")}
                 </button>
                 <Button
                   type="submit"
                   variant="amber"
                   loading={decide.isPending}
-                  loadingText="Rejecting..."
+                  loadingText={t("rejecting")}
                 >
-                  Confirm Reject
+                  {t("confirmReject")}
                 </Button>
               </div>
             </form>
@@ -233,14 +247,14 @@ export function ChangeRequestDetailModal({
                 disabled={withdraw.isPending}
                 className="hover:bg-surface-muted disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-text-secondary text-sm transition disabled:cursor-not-allowed"
               >
-                {withdraw.isPending ? "Withdrawing..." : "Withdraw Request"}
+                {withdraw.isPending ? t("withdrawing") : t("withdraw")}
               </button>
             </div>
           )}
 
           {isPending && isRequester && (
             <p className="text-text-secondary text-xs">
-              This request is pending the other party&apos;s decision and is read-only until then.
+              {t("readOnly")}
             </p>
           )}
         </div>

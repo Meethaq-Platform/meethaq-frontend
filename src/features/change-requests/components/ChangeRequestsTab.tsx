@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { FileEdit } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useFormat } from "@/src/shared/hooks/useFormat";
 
 import { useChangeRequests } from "../hooks/useChangeRequests";
 import { ChangeRequestStatusBadge } from "./ChangeRequestStatusBadge";
@@ -11,13 +13,15 @@ import { AmendmentHistoryList } from "./AmendmentHistoryList";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 import EmptyState from "@/src/shared/components/EmptyState";
-import { formatCurrency, formatDate } from "@/src/shared/lib/format";
+import { formatCurrency } from "@/src/shared/lib/format";
 
 interface ChangeRequestsTabProps {
   projectId: string;
 }
 
 export function ChangeRequestsTab({ projectId }: ChangeRequestsTabProps) {
+  const t = useTranslations("changeRequests.tab");
+  const format = useFormat();
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const { data, isLoading, isError, refetch } = useChangeRequests(projectId);
 
@@ -28,7 +32,7 @@ export function ChangeRequestsTab({ projectId }: ChangeRequestsTabProps) {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="font-semibold text-text-primary text-base">Change Requests</h2>
+        <h2 className="font-semibold text-text-primary text-base">{t("title")}</h2>
         {!hasPending && <CreateChangeRequestModal projectId={projectId} />}
       </div>
 
@@ -37,12 +41,12 @@ export function ChangeRequestsTab({ projectId }: ChangeRequestsTabProps) {
           <Spinner size={28} />
         </div>
       ) : isError ? (
-        <ErrorState message="Failed to load change requests." onRetry={() => refetch()} />
+        <ErrorState message={t("loadFailed")} onRetry={() => refetch()} />
       ) : items.length === 0 ? (
         <EmptyState
           icon={FileEdit}
-          title="No change requests yet"
-          description="Either party can propose a change to scope, timeline, or cost once the contract is approved."
+          title={t("emptyTitle")}
+          description={t("emptyDescription")}
         />
       ) : (
         <div className="bg-surface border border-border rounded-2xl overflow-hidden">
@@ -54,12 +58,12 @@ export function ChangeRequestsTab({ projectId }: ChangeRequestsTabProps) {
               className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-3 hover:bg-surface-muted p-4 border-border border-b last:border-b-0 w-full text-start transition"
             >
               <div className="min-w-0">
-                <h3 className="font-semibold text-text-primary text-sm truncate">
+                <h3 dir="auto" className="font-semibold text-text-primary text-sm truncate">
                   {item.title}
                 </h3>
                 <p className="mt-1 text-text-secondary text-xs">
-                  Submitted {formatDate(item.submittedAt)} ·{" "}
-                  {formatCurrency(item.resultingProjectValue)}
+                  {t("submitted", { date: format.date(item.submittedAt) })} ·{" "}
+                  <bdi>{formatCurrency(item.resultingProjectValue)}</bdi>
                 </p>
               </div>
               <ChangeRequestStatusBadge status={item.status} />
