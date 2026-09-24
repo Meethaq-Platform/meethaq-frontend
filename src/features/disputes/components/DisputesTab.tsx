@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { ShieldAlert } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useFormat } from "@/src/shared/hooks/useFormat";
 
 import { useDisputes } from "../hooks/useDisputes";
 import { DisputeStatusBadge } from "./DisputeStatusBadge";
@@ -11,13 +13,14 @@ import { DisputeDetailModal } from "./DisputeDetailModal";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 import EmptyState from "@/src/shared/components/EmptyState";
-import { formatDateTime } from "@/src/shared/lib/format";
 
 interface DisputesTabProps {
   projectId: string;
 }
 
 export function DisputesTab({ projectId }: DisputesTabProps) {
+  const t = useTranslations("disputes.tab");
+  const format = useFormat();
   const [selected, setSelected] = useState<{ milestoneId: string; disputeId: number } | null>(
     null,
   );
@@ -28,7 +31,7 @@ export function DisputesTab({ projectId }: DisputesTabProps) {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="font-semibold text-text-primary text-base">Disputes</h2>
+        <h2 className="font-semibold text-text-primary text-base">{t("title")}</h2>
         <OpenDisputeModal projectId={projectId} />
       </div>
 
@@ -37,12 +40,12 @@ export function DisputesTab({ projectId }: DisputesTabProps) {
           <Spinner size={28} />
         </div>
       ) : isError ? (
-        <ErrorState message="Failed to load disputes." onRetry={() => refetch()} />
+        <ErrorState message={t("loadFailed")} onRetry={() => refetch()} />
       ) : items.length === 0 ? (
         <EmptyState
           icon={ShieldAlert}
-          title="No disputes"
-          description="If a disagreement comes up on a milestone, either party can open a dispute here."
+          title={t("emptyTitle")}
+          description={t("emptyDescription")}
         />
       ) : (
         <div className="bg-surface border border-border rounded-2xl overflow-hidden">
@@ -56,13 +59,13 @@ export function DisputesTab({ projectId }: DisputesTabProps) {
               className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-3 hover:bg-surface-muted p-4 border-border border-b last:border-b-0 w-full text-start transition"
             >
               <div className="min-w-0">
-                <h3 className="font-semibold text-text-primary text-sm truncate">
+                <h3 dir="auto" className="font-semibold text-text-primary text-sm truncate">
                   {item.milestoneTitle}
                 </h3>
                 <div className="flex items-center gap-2 mt-1">
                   <DisputeCategoryBadge category={item.category} />
                   <span className="text-text-secondary text-xs">
-                    Opened {formatDateTime(item.openedAt)}
+                    {t("opened", { date: format.dateTime(item.openedAt) })}
                   </span>
                 </div>
               </div>
