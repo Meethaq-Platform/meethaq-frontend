@@ -1,0 +1,24 @@
+{
+  "nav": {
+    "dashboard": "لوحة التحكم",
+    "projects": "المشاريع",
+    "clients": "العملاء",
+    "profile": "الملف الشخصي"
+  },
+  "logout": "تسجيل الخروج",
+  "openMenu": "فتح القائمة",
+  "closeMenu": "إغلاق القائمة",
+  "illustrationAlt": "رسم توضيحي لاتفاقية",
+  "search": {
+    "placeholder": "البحث في المشاريع والعملاء...",
+    "fieldPlaceholder": "بحث...",
+    "resultsLabel": "نتائج البحث",
+    "searching": "جارٍ البحث...",
+    "failed": "تعذّر البحث. يُرجى المحاولة مرة أخرى.",
+    "noResults": "لا توجد مشاريع أو عملاء تطابق «<q>{query}</q>».",
+    "groups": {
+      "projects": "المشاريع",
+      "clients": "العملاء"
+    }
+  }
+}

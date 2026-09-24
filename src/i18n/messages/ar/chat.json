@@ -1,0 +1,13 @@
+{
+  "placeholder": "كتابة رسالة...",
+  "send": "إرسال الرسالة",
+  "sendFailed": "تعذّر إرسال الرسالة.",
+  "loadFailed": "تعذّر تحميل الرسائل.",
+  "emptyTitle": "لا توجد رسائل بعد",
+  "emptyDescription": "يمكن بدء المحادثة مع الطرف الآخر في المشروع.",
+  "validation": {
+    "tooLong": "الرسالة طويلة جدًا",
+    "tooManyFiles": "يمكن إرفاق {max, plural, one {ملف واحد} two {ملفين} few {{max, number, plain} ملفات} many {{max, number, plain} ملفًا} other {{max, number, plain} ملف}} كحد أقصى",
+    "empty": "يجب كتابة رسالة أو إرفاق ملف"
+  }
+}

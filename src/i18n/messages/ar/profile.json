@@ -1,0 +1,43 @@
+{
+  "title": "الملف الشخصي",
+  "loadFailed": "تعذّر تحميل الملف الشخصي.",
+  "updateFailed": "تعذّر تحديث الملف الشخصي.",
+  "overview": {
+    "changePhoto": "تغيير الصورة الشخصية",
+    "addTagline": "إضافة مسمى مهني",
+    "memberSince": "عضو منذ"
+  },
+  "fields": {
+    "personalInformation": "المعلومات الشخصية",
+    "fullName": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "role": "نوع الحساب",
+    "country": "الدولة",
+    "professionalTitle": "المسمى المهني",
+    "bio": "نبذة",
+    "notSet": "غير محدد",
+    "copy": "نسخ {label}",
+    "copied": "تم النسخ"
+  },
+  "bio": {
+    "collapse": "طي النبذة",
+    "expand": "توسيع النبذة",
+    "empty": "يمكن إضافة نبذة قصيرة للتعريف."
+  },
+  "photo": {
+    "title": "الصورة الشخصية",
+    "invalidType": "يُرجى اختيار صورة بصيغة JPEG أو PNG أو GIF أو WEBP.",
+    "tooLarge": "يجب أن يقل حجم الصورة عن 5 ميغابايت.",
+    "save": "حفظ الصورة",
+    "upload": "رفع صورة",
+    "delete": "حذف الصورة"
+  },
+  "validation": {
+    "fullNameMin": "يجب ألا يقل الاسم الكامل عن {min, plural, one {حرف واحد} two {حرفين} few {{min, number, plain} أحرف} many {{min, number, plain} حرفًا} other {{min, number, plain} حرف}}",
+    "fullNameTooLong": "الاسم الكامل طويل جدًا",
+    "phoneRequired": "رقم الهاتف مطلوب",
+    "titleRequired": "المسمى المهني مطلوب",
+    "bioTooLong": "يجب أن تقل النبذة عن {max, plural, one {حرف واحد} two {حرفين} few {{max, number, plain} أحرف} many {{max, number, plain} حرفًا} other {{max, number, plain} حرف}}"
+  }
+}

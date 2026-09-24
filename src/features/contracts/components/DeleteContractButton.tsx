@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { useDeleteContract } from "../hooks/useDeleteContract";
 import ConfirmModal from "@/src/shared/components/ConfirmModal";
 
 export function DeleteContractButton({ projectId }: { projectId: string }) {
+  const t = useTranslations("contracts.delete");
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const { mutate, isPending, isError, error } = useDeleteContract(projectId);
@@ -20,7 +22,7 @@ export function DeleteContractButton({ projectId }: { projectId: string }) {
         className="flex items-center gap-1.5 hover:bg-danger-muted px-4 rounded-xl h-9 font-semibold text-danger text-sm transition"
       >
         <Trash2 size={14} />
-        Delete Draft
+        {t("button")}
       </button>
 
       <ConfirmModal
@@ -34,16 +36,16 @@ export function DeleteContractButton({ projectId }: { projectId: string }) {
             },
           })
         }
-        title="Delete this draft contract?"
-        description="This permanently deletes the contract and all of its milestones. This can't be undone."
-        confirmLabel="Yes, delete"
-        confirmingLabel="Deleting..."
+        title={t("title")}
+        description={t("description")}
+        confirmLabel={t("confirm")}
+        confirmingLabel={t("confirming")}
         isConfirming={isPending}
         errorMessage={
           isError
             ? error instanceof Error
               ? error.message
-              : "Failed to delete contract."
+              : t("failed")
             : undefined
         }
       />

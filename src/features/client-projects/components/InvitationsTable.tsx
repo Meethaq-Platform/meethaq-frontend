@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Mail } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import type { ProjectInvitation } from "../types/client-project";
 import { ProjectStatusBadge } from "@/src/features/projects/components/ProjectStatusBadge";
@@ -21,12 +22,15 @@ export function InvitationsTable({
   totalCount,
   onPageChange,
 }: InvitationsTableProps) {
+  const t = useTranslations("clientProjects.invitations");
+  const tProjects = useTranslations("projects.list");
+
   if (invitations.length === 0) {
     return (
       <EmptyState
         icon={Mail}
-        title="No pending invitations"
-        description="Project invitations from freelancers will show up here."
+        title={t("emptyTitle")}
+        description={t("emptyDescription")}
       />
     );
   }
@@ -37,17 +41,17 @@ export function InvitationsTable({
         <table className="w-full text-sm">
           <thead>
             <tr className="border-border border-b">
-              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-left uppercase tracking-wide">
-                Title
+              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-start uppercase tracking-wide">
+                {tProjects("columns.title")}
               </th>
-              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-left uppercase tracking-wide">
-                Freelancer
+              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-start uppercase tracking-wide">
+                {t("freelancerColumn")}
               </th>
-              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-left uppercase tracking-wide">
-                Status
+              <th className="px-6 py-3.5 font-medium text-text-secondary text-xs text-start uppercase tracking-wide">
+                {tProjects("columns.status")}
               </th>
-              <th className="relative px-6 py-3.5 font-medium text-text-secondary text-xs text-right uppercase tracking-wide">
-                <span className="sr-only">Actions</span>
+              <th className="relative px-6 py-3.5 font-medium text-text-secondary text-xs text-end uppercase tracking-wide">
+                <span className="sr-only">{tProjects("columns.actions")}</span>
               </th>
             </tr>
           </thead>
@@ -58,11 +62,11 @@ export function InvitationsTable({
                 key={invitation.id}
                 className="hover:bg-surface-muted transition"
               >
-                <td className="px-6 py-4 font-medium text-text-primary">
+                <td dir="auto" className="px-6 py-4 font-medium text-text-primary">
                   {invitation.title}
                 </td>
 
-                <td className="px-6 py-4 text-text-secondary">
+                <td dir="auto" className="px-6 py-4 text-text-secondary">
                   {invitation.freelancerName}
                 </td>
 
@@ -70,13 +74,13 @@ export function InvitationsTable({
                   <ProjectStatusBadge status={invitation.status} />
                 </td>
 
-                <td className="px-6 py-4 text-right">
+                <td className="px-6 py-4 text-end">
                   <Link
                     href={`/projects/invitations/${invitation.id}`}
-                    aria-label={`View invitation for ${invitation.title}`}
+                    aria-label={t("view", { title: invitation.title })}
                     className="inline-flex justify-center items-center hover:bg-surface p-2 rounded-lg text-text-secondary hover:text-primary transition"
                   >
-                    <ArrowRight size={16} />
+                    <ArrowRight size={16} className="rtl-flip" />
                   </Link>
                 </td>
               </tr>

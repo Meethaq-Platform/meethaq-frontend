@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { useApproveContract } from "../hooks/useApproveContract";
 import Button from "@/src/shared/components/Button";
@@ -16,6 +17,7 @@ export function ApproveContractButton({
   projectId,
   concurrencyToken,
 }: ApproveContractButtonProps) {
+  const t = useTranslations("clientContracts.approve");
   const [open, setOpen] = useState(false);
   const { mutate, isPending, isError, error } = useApproveContract(projectId);
 
@@ -27,7 +29,7 @@ export function ApproveContractButton({
         className="flex items-center gap-1.5 h-9"
       >
         <Check size={14} />
-        Approve Contract
+        {t("button")}
       </Button>
 
       <ConfirmModal
@@ -40,17 +42,17 @@ export function ApproveContractButton({
             { onSuccess: () => setOpen(false) },
           );
         }}
-        title="Approve this contract?"
-        description="This permanently locks in the agreement details. You won't be able to request changes after approving."
-        confirmLabel="Yes, approve"
-        confirmingLabel="Approving..."
+        title={t("title")}
+        description={t("description")}
+        confirmLabel={t("confirm")}
+        confirmingLabel={t("confirming")}
         variant="primary"
         isConfirming={isPending}
         errorMessage={
           isError
             ? error instanceof Error
               ? error.message
-              : "Failed to approve contract."
+              : t("failed")
             : undefined
         }
       />

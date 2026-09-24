@@ -1,0 +1,125 @@
+{
+  "workspace": {
+    "back": "Back to Project",
+    "loadFailed": "Failed to load this contract.",
+    "notReadyTitle": "Not ready for a contract yet",
+    "notReadyDescription": "Assign a client and set a project value on the project page before creating a contract.",
+    "goToProject": "Go to Project",
+    "createTitle": "Create Your Contract",
+    "creating": "Creating...",
+    "createDraft": "Create Draft Contract",
+    "generalTerms": "General Terms",
+    "approvedBy": "Approved by {name} on {date} — {amount} locked in.",
+    "approvedByNoName": "Approved by the client on {date} — {amount} locked in.",
+    "submittedOn": "This contract was submitted on {date} and is awaiting your client's review."
+  },
+  "form": {
+    "title": "Contract Title",
+    "scope": "Scope of Work",
+    "scopePlaceholder": "Describe the work to be delivered under this contract...",
+    "startDate": "Start Date",
+    "endDate": "Expected End Date",
+    "allocationMode": "Milestone Allocation Mode",
+    "fixed": "Fixed amount ($ per milestone)",
+    "percentage": "Percentage (% of project value)",
+    "allocationLocked": "Allocation mode can't change once milestones exist.",
+    "terms": "General Terms (optional)",
+    "termsPlaceholder": "Payment terms, ownership, termination clauses...",
+    "saveFailed": "Failed to save contract."
+  },
+  "validation": {
+    "titleRequired": "Title is required",
+    "titleTooLong": "Title is too long",
+    "scopeRequired": "Scope of work is required",
+    "scopeTooLong": "Scope of work is too long",
+    "startRequired": "Start date is required",
+    "endRequired": "Expected end date is required",
+    "termsTooLong": "General terms are too long",
+    "endBeforeStart": "Expected end date must be on or after the start date"
+  },
+  "milestoneValidation": {
+    "titleRequired": "Title is required",
+    "titleTooLong": "Title is too long",
+    "descriptionTooLong": "Description is too long",
+    "deliverableRequired": "Deliverable is required",
+    "deliverableTooLong": "Deliverable is too long",
+    "criteriaRequired": "Acceptance criteria is required",
+    "criteriaTooLong": "Acceptance criteria is too long",
+    "dueRequired": "Due date is required",
+    "amountInvalid": "Enter a valid amount",
+    "amountPositive": "Must be greater than 0",
+    "amountTooLarge": "Value is too large"
+  },
+  "feedback": {
+    "title": "Your client requested changes"
+  },
+  "summary": {
+    "title": "Value Breakdown",
+    "projectValue": "Project Value",
+    "allocated": "Allocated",
+    "remaining": "Remaining",
+    "fullyAllocated": "Fully allocated across {count, number, plain} {count, plural, one {milestone} other {milestones}}",
+    "overAllocated": "Over-allocated by {amount} — reduce a milestone before submitting",
+    "partial": "{percent}% allocated across {count, number, plain} {count, plural, one {milestone} other {milestones}} — must total 100% before submitting"
+  },
+  "delete": {
+    "button": "Delete Draft",
+    "title": "Delete this draft contract?",
+    "description": "This permanently deletes the contract and all of its milestones. This can't be undone.",
+    "confirm": "Yes, delete",
+    "confirming": "Deleting...",
+    "failed": "Failed to delete contract."
+  },
+  "submit": {
+    "button": "Submit for Approval",
+    "title": "Submit contract for approval",
+    "checking": "Checking the contract against submission rules...",
+    "validateFailed": "Failed to validate contract.",
+    "notReady": "This contract isn't ready to submit yet:",
+    "invalid": "Invalid contract.",
+    "ready": "Your client will be notified and asked to review and approve this contract. You can withdraw it back to draft any time before they respond.",
+    "failed": "Failed to submit contract.",
+    "confirm": "Yes, submit",
+    "confirming": "Submitting..."
+  },
+  "withdraw": {
+    "button": "Withdraw",
+    "title": "Withdraw this contract?",
+    "description": "The contract will return to Draft so you can make changes. Your client will no longer see it as pending their approval.",
+    "confirm": "Yes, withdraw",
+    "confirming": "Withdrawing...",
+    "failed": "Failed to withdraw contract."
+  },
+  "milestones": {
+    "title": "Milestones",
+    "add": "Add Milestone",
+    "emptyTitle": "No milestones yet",
+    "emptyDescription": "Break this contract's scope into milestones that add up to the full project value.",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "fixed": "fixed",
+    "deliverable": "Deliverable:",
+    "due": "Due:",
+    "criteria": "Acceptance Criteria:",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteTitle": "Delete this milestone?",
+    "deleteDescription": "\"{title}\" will be removed and remaining milestones will be re-indexed.",
+    "deleteConfirm": "Yes, delete",
+    "deleting": "Deleting...",
+    "deleteFailed": "Failed to delete milestone."
+  },
+  "milestoneForm": {
+    "addTitle": "Add Milestone",
+    "editTitle": "Edit Milestone",
+    "title": "Title",
+    "description": "Description (optional)",
+    "deliverable": "Deliverable",
+    "criteria": "Acceptance Criteria",
+    "dueDate": "Due Date",
+    "allocationPercent": "Allocation (%)",
+    "allocationFixed": "Allocation ($)",
+    "saveFailed": "Failed to save milestone.",
+    "add": "Add Milestone"
+  }
+}

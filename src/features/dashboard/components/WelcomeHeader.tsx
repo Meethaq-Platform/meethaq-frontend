@@ -14,6 +14,8 @@ import {
 import * as Icons from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { WelcomeSummary } from "../types/dashboard";
+import { useLocale, useTranslations } from "next-intl";
+import { useFormat } from "@/src/shared/hooks/useFormat";
 
 // Shared with FreelancerDashboard/ClientDashboard, which set this id on the
 // "Needs Your Attention" section so the summary line below can jump to it.
@@ -22,6 +24,8 @@ export const NEEDS_ATTENTION_ANCHOR_ID = "needs-your-attention";
 interface WelcomeHeaderProps {
   welcome: WelcomeSummary;
   pendingActionsCount?: number;
+  overdueCount?: number;
+  approachingCount?: number;
 }
 
 // The backend's QuickActionShortcutDto.icon string doesn't line up with any
@@ -68,13 +72,35 @@ function resolveIcon(
 export default function WelcomeHeader({
   welcome,
   pendingActionsCount = 0,
+  overdueCount = 0,
+  approachingCount = 0,
 }: WelcomeHeaderProps) {
-  const today = new Date(welcome.currentDateUtc).toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const t = useTranslations("dashboard.welcome");
+  const locale = useLocale();
+  // The API's summary sentence is English; other languages build the same
+  // sentence from the action-center counts.
+  const summary =
+    locale === "en" || !welcome.summaryText
+      ? welcome.summaryText
+      : pendingActionsCount > 0
+        ? t("summary", {
+            total: pendingActionsCount,
+            overdue: overdueCount,
+            approaching: approachingCount,
+          })
+        : t("summaryNone");
+  const format = useFormat();
+  const today = format.longDate(welcome.currentDateUtc);
+  const firstName = welcome.userName?.split(" ")[0];
+
+  // Quick-action labels come from the API; the two shown here are known, so
+  // they're translated, and anything else is shown as sent.
+  const quickActionLabel = (label: string | null) => {
+    const key = (label ?? "").trim().toLowerCase();
+    if (key === "open projects") return t("quickActions.openProjects");
+    if (key === "open clients") return t("quickActions.openClients");
+    return label;
+  };
 
   return (
     <section className="relative flex flex-col justify-between bg-surface p-5 sm:p-6 border border-border rounded-2xl h-full">
@@ -82,12 +108,12 @@ export default function WelcomeHeader({
         <div>
           <p className="text-text-secondary text-sm">{today}</p>
           <h1 className="mt-1 font-bold text-text-primary text-xl sm:text-2xl">
-            Welcome back, {welcome.userName?.split(" ")[0] ?? "there"}{" "}
+            {firstName ? t("greeting", { name: firstName }) : t("greetingNoName")}{" "}
             <span className="md:hidden">👋</span>
           </h1>
-          {welcome.summaryText && (
-            <p className="mt-2 max-w-2xl text-sm text-accent-value">
-              {welcome.summaryText}
+          {summary && (
+            <p dir="auto" className="mt-2 max-w-2xl text-sm text-accent-value">
+              {summary}
             </p>
           )}
 
@@ -96,8 +122,8 @@ export default function WelcomeHeader({
               href={`#${NEEDS_ATTENTION_ANCHOR_ID}`}
               className="inline-flex items-center gap-1 mt-2 font-semibold text-primary text-sm hover:underline"
             >
-              Review what needs your attention
-              <ArrowRight size={13} />
+              {t("reviewAttention")}
+              <ArrowRight size={13} className="rtl-flip" />
             </Link>
           )}
         </div>
@@ -107,7 +133,7 @@ export default function WelcomeHeader({
           alt=""
           width={200}
           height={200}
-          className="hidden lg:hidden md:block xl:block top-5 right-5 absolute shrink-0"
+          className="hidden lg:hidden md:block xl:block top-5 inset-e-5 absolute shrink-0"
         />
       </div>
 
@@ -127,10 +153,10 @@ export default function WelcomeHeader({
                 <Link
                   key={action.key ?? action.label}
                   href={action.navigationUrl}
-                  className="flex items-center gap-2 hover:opacity-90 px-4 rounded-xl h-10 font-semibold text-white text-sm transition bg-accent-value"
+                  className="flex items-center gap-2 hover:opacity-90 px-4 rounded-xl h-10 font-semibold text-on-accent-value text-sm transition bg-accent-value"
                 >
                   <Icon size={15} />
-                  {action.label}
+                  {quickActionLabel(action.label)}
                 </Link>
               );
             })}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { useInvitations } from "../hooks/useInvitations";
@@ -10,6 +11,7 @@ import ErrorState from "@/src/shared/components/ErrorState";
 const PAGE_SIZE = 10;
 
 export function InvitationsSection() {
+  const t = useTranslations("clientProjects.invitations");
   const [pageNumber, setPageNumber] = useState(1);
 
   const { data, isLoading, isError, refetch } = useInvitations({
@@ -28,7 +30,7 @@ export function InvitationsSection() {
   if (isError || !data) {
     return (
       <ErrorState
-        message="Failed to load your invitations."
+        message={t("loadFailed")}
         onRetry={() => refetch()}
       />
     );

@@ -1,6 +1,7 @@
 "use client";
 
 import { CreditCard } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { useCurrentUser } from "@/src/features/auth/hooks/useCurrentUser";
 import { usePaymentsSummary } from "../hooks/usePaymentsSummary";
@@ -14,6 +15,7 @@ interface PaymentsTabProps {
 }
 
 export function PaymentsTab({ projectId }: PaymentsTabProps) {
+  const t = useTranslations("payments.tab");
   const { data: user, isLoading: isUserLoading } = useCurrentUser();
   const { data: summary, isLoading, isError, refetch } = usePaymentsSummary(projectId);
 
@@ -26,15 +28,15 @@ export function PaymentsTab({ projectId }: PaymentsTabProps) {
   }
 
   if (isError || !summary) {
-    return <ErrorState message="Failed to load payments." onRetry={() => refetch()} />;
+    return <ErrorState message={t("loadFailed")} onRetry={() => refetch()} />;
   }
 
   if (summary.milestones.length === 0) {
     return (
       <EmptyState
         icon={CreditCard}
-        title="No milestones yet"
-        description="Payment tracking for this project's milestones will appear here once the contract is approved."
+        title={t("emptyTitle")}
+        description={t("emptyDescription")}
       />
     );
   }

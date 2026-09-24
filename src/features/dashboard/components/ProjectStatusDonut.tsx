@@ -106,7 +106,7 @@ export default function ProjectStatusDonut({
                 style={{ backgroundColor: segment.color }}
               />
               <span className="text-text-secondary text-xs truncate">{segment.label}</span>
-              <span className="ml-auto font-semibold text-text-primary text-xs">{segment.value}</span>
+              <span className="ms-auto font-semibold text-text-primary text-xs">{segment.value}</span>
             </span>
           );
 

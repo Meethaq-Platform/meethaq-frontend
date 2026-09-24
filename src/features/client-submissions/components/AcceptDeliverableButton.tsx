@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check } from "lucide-react";
 
 import {
-  acceptDeliverableFormSchema,
+  createAcceptDeliverableFormSchema,
   type AcceptDeliverableFormValues,
 } from "../schemas/accept-deliverable.schema";
 import { useAcceptDeliverable } from "../hooks/useAcceptDeliverable";
@@ -27,6 +28,10 @@ export function AcceptDeliverableButton({
   milestoneId,
   submissionId,
 }: AcceptDeliverableButtonProps) {
+  const t = useTranslations("clientSubmissions.accept");
+  const tActions = useTranslations("common.actions");
+  const tValidation = useTranslations("clientSubmissions.validation");
+  const acceptDeliverableFormSchema = useMemo(() => createAcceptDeliverableFormSchema(tValidation), [tValidation]);
   const [open, setOpen] = useState(false);
   const {
     register,
@@ -59,28 +64,26 @@ export function AcceptDeliverableButton({
         className="flex items-center gap-1.5 h-9"
       >
         <Check size={14} />
-        Accept Deliverable
+        {t("button")}
       </Button>
 
-      <Modal open={open} onClose={handleClose} title="Accept this deliverable?">
+      <Modal open={open} onClose={handleClose} title={t("title")}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <p className="text-text-secondary text-sm">
-            Accepting records your approval of the delivered work and makes this
-            milestone eligible for payment processing. Acceptance does not itself
-            confirm that payment has been made — that happens separately.
+            {t("description")}
           </p>
 
           <div>
             <Textarea
-              label="Acceptance Note (optional)"
+              label={t("note")}
               rows={3}
-              placeholder="Add any notes for the record..."
+              placeholder={t("notePlaceholder")}
               {...register("note")}
             />
           </div>
 
           {isError && (
-            <InputError message={getErrorMessage(error, "Failed to accept deliverable.")} />
+            <InputError message={getErrorMessage(error, t("failed"))} />
           )}
 
           <div className="flex justify-end gap-3 pt-2">
@@ -90,11 +93,11 @@ export function AcceptDeliverableButton({
               disabled={isPending}
               className="hover:bg-surface-muted disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-text-secondary text-sm transition disabled:cursor-not-allowed"
             >
-              Cancel
+              {tActions("cancel")}
             </button>
 
-            <Button type="submit" loading={isPending} loadingText="Accepting...">
-              Yes, accept
+            <Button type="submit" loading={isPending} loadingText={t("confirming")}>
+              {t("confirm")}
             </Button>
           </div>
         </form>

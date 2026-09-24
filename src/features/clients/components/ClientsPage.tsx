@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { useClients } from "../hooks/useClients";
@@ -12,6 +13,7 @@ import ErrorState from "@/src/shared/components/ErrorState";
 const PAGE_SIZE = 10;
 
 export default function ClientsPage() {
+  const t = useTranslations("clients.list");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("name_asc");
   const [pageNumber, setPageNumber] = useState(1);
@@ -50,7 +52,7 @@ export default function ClientsPage() {
         </div>
       ) : isError || !data ? (
         <ErrorState
-          message="Failed to load your clients."
+          message={t("loadFailed")}
           onRetry={() => refetch()}
         />
       ) : (

@@ -27,6 +27,8 @@ const eventTones: Record<string, EventTone> = {
   PaymentEligible: "success",
   PaymentEvidenceSubmitted: "info",
   PaymentRecorded: "info",
+  PaymentEvidenceUpdated: "info",
+  ContractAmendmentCreated: "success",
   PaymentReceiptConfirmed: "success",
   PaymentConfirmed: "success",
   PaymentIssueReported: "danger",

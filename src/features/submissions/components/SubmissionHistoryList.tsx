@@ -1,4 +1,5 @@
 import { FileStack } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import type { WorkSubmission } from "../types/submission";
 import { SubmissionVersionCard } from "./SubmissionVersionCard";
@@ -27,6 +28,8 @@ export function SubmissionHistoryList({
   onRetry,
   submitterName,
 }: SubmissionHistoryListProps) {
+  const t = useTranslations("submissions.history");
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-10">
@@ -37,7 +40,7 @@ export function SubmissionHistoryList({
 
   if (isError) {
     return (
-      <ErrorState message="Failed to load submission history." onRetry={onRetry} />
+      <ErrorState message={t("loadFailed")} onRetry={onRetry} />
     );
   }
 
@@ -45,8 +48,8 @@ export function SubmissionHistoryList({
     return (
       <EmptyState
         icon={FileStack}
-        title="No submissions yet"
-        description="Submitted work and its version history will appear here."
+        title={t("emptyTitle")}
+        description={t("emptyDescription")}
       />
     );
   }
@@ -56,7 +59,7 @@ export function SubmissionHistoryList({
 
   return (
     <div className="space-y-3">
-      <h2 className="font-semibold text-text-primary text-base">Submission History</h2>
+      <h2 className="font-semibold text-text-primary text-base">{t("title")}</h2>
       {sorted.map((submission) => (
         <SubmissionVersionCard
           key={submission.submissionId}

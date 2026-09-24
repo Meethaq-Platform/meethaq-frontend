@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
 
 import {
-  createChangeRequestSchema,
+  createCreateChangeRequestSchema,
   type CreateChangeRequestFormInput,
   type CreateChangeRequestFormValues,
 } from "../schemas/change-request.schema";
@@ -43,6 +44,13 @@ function toDelta(milestone: Milestone, isPercentage: boolean): MilestoneDeltaInp
 }
 
 export function CreateChangeRequestModal({ projectId }: CreateChangeRequestModalProps) {
+  const t = useTranslations("changeRequests.create");
+  const tActions = useTranslations("common.actions");
+  const tValidation = useTranslations("changeRequests.validation");
+  const createChangeRequestSchema = useMemo(
+    () => createCreateChangeRequestSchema(tValidation),
+    [tValidation],
+  );
   const [open, setOpen] = useState(false);
   const [deltas, setDeltas] = useState<MilestoneDeltaInput[]>([]);
   const [deltasError, setDeltasError] = useState<string | null>(null);
@@ -116,7 +124,7 @@ export function CreateChangeRequestModal({ projectId }: CreateChangeRequestModal
 
   const onSubmit = (values: CreateChangeRequestFormValues) => {
     if (deltas.length === 0) {
-      setDeltasError("Add at least one affected milestone");
+      setDeltasError(t("milestonesRequired"));
       return;
     }
 
@@ -141,21 +149,21 @@ export function CreateChangeRequestModal({ projectId }: CreateChangeRequestModal
         className="flex items-center gap-1.5 h-9"
       >
         <Plus size={14} />
-        New Change Request
+        {t("button")}
       </Button>
 
-      <Modal open={open} onClose={handleClose} title="Propose a change request" size="lg">
+      <Modal open={open} onClose={handleClose} title={t("title")} size="lg">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <Input label="Title" {...register("title")} />
+            <Input label={t("titleLabel")} {...register("title")} />
             <InputError message={errors.title?.message} />
           </div>
 
           <div>
             <Textarea
-              label="Reason"
+              label={t("reason")}
               rows={3}
-              placeholder="Why is this change needed?"
+              placeholder={t("reasonPlaceholder")}
               {...register("reason")}
             />
             <InputError message={errors.reason?.message} />
@@ -163,9 +171,9 @@ export function CreateChangeRequestModal({ projectId }: CreateChangeRequestModal
 
           <div>
             <Textarea
-              label="Proposed Scope Change"
+              label={t("scope")}
               rows={3}
-              placeholder="Summarize what's changing, e.g. &quot;Add two additional website pages to the design&quot;"
+              placeholder={t("scopePlaceholder")}
               {...register("proposedScopeChange")}
             />
             <InputError message={errors.proposedScopeChange?.message} />
@@ -173,7 +181,7 @@ export function CreateChangeRequestModal({ projectId }: CreateChangeRequestModal
 
           <div>
             <label className="block mb-2 font-medium text-text-primary text-sm">
-              Affected Milestones
+              {t("milestones")}
             </label>
 
             {availableMilestones.length > 0 && (
@@ -183,7 +191,7 @@ export function CreateChangeRequestModal({ projectId }: CreateChangeRequestModal
                 className="bg-surface mb-3 px-4 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full h-11 text-text-primary text-sm transition"
               >
                 <option value="" disabled>
-                  Select a milestone to propose changes for...
+                  {t("selectMilestone")}
                 </option>
                 {availableMilestones.map((m) => (
                   <option key={m.id} value={m.id}>
@@ -224,15 +232,15 @@ export function CreateChangeRequestModal({ projectId }: CreateChangeRequestModal
             <Input
               type="number"
               step="0.01"
-              label="Resulting Project Value"
+              label={t("resultingValue")}
               disabled={!isPercentage}
               className="disabled:opacity-60 disabled:cursor-not-allowed"
               {...register("resultingProjectValue")}
             />
             <p className="mt-1.5 text-text-secondary text-xs">
               {isPercentage
-                ? "The new total contract value once this change is approved (not the difference) — percentages above are recalculated against this total."
-                : "The new total contract value once this change is approved — automatically calculated as the sum of every milestone's amount, including the changes above."}
+                ? t("resultingHintPercent")
+                : t("resultingHintFixed")}
             </p>
             <InputError message={errors.resultingProjectValue?.message} />
           </div>
@@ -241,12 +249,12 @@ export function CreateChangeRequestModal({ projectId }: CreateChangeRequestModal
             <FileAttachmentInput
               files={attachments}
               onChange={(next) => setValue("attachments", next, { shouldValidate: true })}
-              label="Attach Files"
+              label={t("attach")}
             />
           </div>
 
           {isError && (
-            <InputError message={getErrorMessage(error, "Failed to submit change request.")} />
+            <InputError message={getErrorMessage(error, t("failed"))} />
           )}
 
           <div className="flex justify-end gap-3 pt-2">
@@ -256,11 +264,11 @@ export function CreateChangeRequestModal({ projectId }: CreateChangeRequestModal
               disabled={isPending}
               className="hover:bg-surface-muted disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-text-secondary text-sm transition disabled:cursor-not-allowed"
             >
-              Cancel
+              {tActions("cancel")}
             </button>
 
-            <Button type="submit" loading={isPending} loadingText="Submitting...">
-              Submit Change Request
+            <Button type="submit" loading={isPending} loadingText={t("submitting")}>
+              {t("submit")}
             </Button>
           </div>
         </form>

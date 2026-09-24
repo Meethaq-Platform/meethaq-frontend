@@ -3,12 +3,15 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ChevronDown, History } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { useActivity } from "../hooks/useActivity";
+import { useEventText } from "@/src/shared/hooks/useEventText";
+import { useMilestoneTitles } from "../hooks/useMilestoneTitles";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 import EmptyState from "@/src/shared/components/EmptyState";
-import { formatDateTime } from "@/src/shared/lib/format";
+import { useFormat } from "@/src/shared/hooks/useFormat";
 
 interface ActivityTabProps {
   projectId: string;
@@ -18,7 +21,11 @@ const COLLAPSED_COUNT = 5;
 
 // Read-only for both participants — no edit/delete, matches Module 6's rule.
 export function ActivityTab({ projectId }: ActivityTabProps) {
+  const t = useTranslations("activity");
+  const format = useFormat();
   const { data: entries, isLoading, isError, refetch } = useActivity(projectId);
+  const eventText = useEventText();
+  const milestoneTitles = useMilestoneTitles(projectId, eventText.translates);
   const [showAll, setShowAll] = useState(false);
 
   if (isLoading) {
@@ -31,7 +38,7 @@ export function ActivityTab({ projectId }: ActivityTabProps) {
 
   if (isError) {
     return (
-      <ErrorState message="Failed to load activity history." onRetry={() => refetch()} />
+      <ErrorState message={t("loadFailed")} onRetry={() => refetch()} />
     );
   }
 
@@ -39,8 +46,8 @@ export function ActivityTab({ projectId }: ActivityTabProps) {
     return (
       <EmptyState
         icon={History}
-        title="No activity yet"
-        description="Milestone and submission events for this project will appear here."
+        title={t("emptyTitle")}
+        description={t("emptyDescription")}
       />
     );
   }
@@ -63,13 +70,20 @@ export function ActivityTab({ projectId }: ActivityTabProps) {
         const content = (
           <div className="flex justify-between items-start gap-3 p-4 border-border border-b last:border-b-0">
             <div>
-              <p className="font-medium text-text-primary text-sm">{entry.description}</p>
+              {/* The API's description is English; other languages build it from eventType. */}
+              <p dir="auto" className="font-medium text-text-primary text-sm">
+                {eventText.sentence(entry.eventType, entry.description, {
+                  milestone: entry.milestoneId ? milestoneTitles.get(entry.milestoneId) : null,
+                  version: entry.submissionVersion,
+                })}
+              </p>
               <p className="mt-0.5 text-text-secondary text-xs">
-                {entry.performedByName} · {formatDateTime(entry.createdAt)}
+                <bdi>{entry.performedByName}</bdi> · {format.dateTime(entry.createdAt)}
               </p>
               {entry.fromStatus && entry.toStatus && (
                 <p className="mt-1 text-text-secondary text-xs">
-                  {entry.fromStatus} → {entry.toStatus}
+                  {eventText.status(entry.fromStatus)} <span className="rtl-flip inline-block">→</span>{" "}
+                  {eventText.status(entry.toStatus)}
                 </p>
               )}
             </div>
@@ -91,7 +105,7 @@ export function ActivityTab({ projectId }: ActivityTabProps) {
           onClick={() => setShowAll(true)}
           className="flex justify-center items-center gap-1.5 hover:bg-surface-muted py-3 border-border border-t w-full font-medium text-primary text-sm transition"
         >
-          Show {remaining} More
+          {t("showMore", { count: remaining })}
           <ChevronDown size={14} />
         </button>
       )}

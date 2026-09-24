@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { MessageSquare } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { useMessages } from "../hooks/useMessages";
 import { useCurrentUser } from "@/src/features/auth/hooks/useCurrentUser";
@@ -16,6 +17,7 @@ interface MessageListProps {
 }
 
 export function MessageList({ projectId }: MessageListProps) {
+  const t = useTranslations("chat");
   const { data: messages, isLoading, isError, refetch } = useMessages(projectId);
   const { data: currentUser } = useCurrentUser();
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -35,7 +37,7 @@ export function MessageList({ projectId }: MessageListProps) {
   if (isError) {
     return (
       <div className="flex-1 py-16 overflow-y-auto">
-        <ErrorState message="Failed to load messages." onRetry={() => refetch()} />
+        <ErrorState message={t("loadFailed")} onRetry={() => refetch()} />
       </div>
     );
   }
@@ -45,8 +47,8 @@ export function MessageList({ projectId }: MessageListProps) {
       <div className="flex-1 py-16 overflow-y-auto">
         <EmptyState
           icon={MessageSquare}
-          title="No messages yet"
-          description="Start the conversation with your project partner."
+          title={t("emptyTitle")}
+          description={t("emptyDescription")}
         />
       </div>
     );
@@ -77,7 +79,7 @@ export function MessageList({ projectId }: MessageListProps) {
             <div
               className={`max-w-[80%] rounded-2xl px-4 py-2.5 ${
                 isOwnMessage
-                  ? "bg-primary text-white"
+                  ? "bg-primary text-on-primary"
                   : "bg-surface-muted text-text-primary"
               }`}
             >
@@ -87,7 +89,7 @@ export function MessageList({ projectId }: MessageListProps) {
                 </p>
               )}
               {message.content && (
-                <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                <p dir="auto" className="text-sm whitespace-pre-wrap">{message.content}</p>
               )}
               {attachments.length > 0 && (
                 <div className={message.content ? "mt-2" : ""}>

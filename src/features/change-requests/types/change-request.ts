@@ -5,14 +5,6 @@
 // not a data bug — verify against live data and fix here if wrong.
 export type ChangeRequestStatus = 0 | 1 | 2 | 3 | 4;
 
-export const CHANGE_REQUEST_STATUS_LABEL: Record<ChangeRequestStatus, string> = {
-  0: "Draft",
-  1: "Pending Approval",
-  2: "Approved",
-  3: "Rejected",
-  4: "Withdrawn",
-};
-
 export interface ChangeRequestMilestoneDelta {
   id: number;
   milestoneId: number;

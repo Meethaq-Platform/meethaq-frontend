@@ -12,6 +12,9 @@ import {
 } from "recharts";
 import Tabs from "@/src/shared/components/Tabs";
 import { formatCurrency } from "@/src/shared/lib/format";
+import { useFormat } from "@/src/shared/hooks/useFormat";
+import { useLocale, useTranslations } from "next-intl";
+import { useDirection } from "@/src/i18n/useDirection";
 import type { FinancialTrend } from "../types/dashboard";
 import type { TrendPeriod } from "../types/dashboard";
 
@@ -54,9 +57,21 @@ export default function IncomeTrendChart({
   title,
 }: IncomeTrendChartProps) {
   const [showTable, setShowTable] = useState(false);
+  const isRtl = useDirection() === "rtl";
   const tableId = useId();
   const currency = trend.currency ?? "USD";
-  const points = trend.points ?? [];
+  const t = useTranslations("dashboard.trend");
+  const locale = useLocale();
+  const format = useFormat();
+  // The API's periodLabel is English ("Apr 2026"); Arabic builds its own from
+  // the numeric year/month so month names and digits follow the language.
+  const points =
+    locale === "ar"
+      ? (trend.points ?? []).map((point) => ({
+          ...point,
+          periodLabel: format.monthYear(point.year, point.month),
+        }))
+      : (trend.points ?? []);
 
   return (
     <div>
@@ -65,8 +80,8 @@ export default function IncomeTrendChart({
           <p className="text-text-secondary text-xs">{title}</p>
           <p className="font-semibold text-text-primary text-lg">
             {formatCurrency(trend.totalAmount, currency)}
-            <span className="ml-1.5 font-normal text-text-secondary text-xs">
-              total over {trend.periodMonths} months
+            <span className="ms-1.5 font-normal text-text-secondary text-xs">
+              {t("totalOver", { months: trend.periodMonths })}
             </span>
           </p>
         </div>
@@ -76,8 +91,8 @@ export default function IncomeTrendChart({
             value={String(period) as "6" | "12"}
             onChange={(value) => onPeriodChange(Number(value) as TrendPeriod)}
             options={[
-              { value: "6", label: "6 Months" },
-              { value: "12", label: "12 Months" },
+              { value: "6", label: t("months6") },
+              { value: "12", label: t("months12") },
             ]}
           />
           <button
@@ -87,7 +102,7 @@ export default function IncomeTrendChart({
             aria-controls={tableId}
             className="hover:bg-surface-muted px-3 border border-border rounded-lg h-9 font-medium text-text-secondary text-xs transition"
           >
-            {showTable ? "View chart" : "View as table"}
+            {showTable ? t("viewChart") : t("viewTable")}
           </button>
         </div>
       </div>
@@ -96,16 +111,16 @@ export default function IncomeTrendChart({
         <div id={tableId} className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-border border-b text-text-secondary text-xs text-left">
-                <th className="py-2 font-medium">Month</th>
-                <th className="py-2 font-medium text-right">Confirmed Income</th>
+              <tr className="border-border border-b text-text-secondary text-xs">
+                <th className="py-2 font-medium text-start">{t("month")}</th>
+                <th className="py-2 font-medium text-end">{t("confirmedIncome")}</th>
               </tr>
             </thead>
             <tbody>
               {points.map((point) => (
                 <tr key={point.periodLabel} className="border-border/60 border-b last:border-0">
                   <td className="py-2 text-text-primary">{point.periodLabel}</td>
-                  <td className="py-2 font-medium text-text-primary text-right tabular-nums">
+                  <td className="py-2 font-medium text-text-primary text-end tabular-nums">
                     {formatCurrency(point.confirmedAmount, point.currency ?? currency)}
                   </td>
                 </tr>
@@ -116,22 +131,26 @@ export default function IncomeTrendChart({
       ) : (
         <div id={tableId} className="h-64">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={points} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
+            <BarChart
+              data={points}
+              // Months run right-to-left in RTL, with the value axis on the right.
+              margin={isRtl ? { top: 4, right: 0, left: 4, bottom: 0 } : { top: 4, right: 4, left: 0, bottom: 0 }}
+            >
               <CartesianGrid vertical={false} stroke="var(--color-border)" />
               <XAxis
                 dataKey="periodLabel"
+                reversed={isRtl}
                 tickLine={false}
                 axisLine={false}
                 tick={{ fill: "var(--color-text-secondary)", fontSize: 12 }}
               />
               <YAxis
+                orientation={isRtl ? "right" : "left"}
                 tickLine={false}
                 axisLine={false}
                 width={48}
                 tick={{ fill: "var(--color-text-secondary)", fontSize: 12 }}
-                tickFormatter={(value: number) =>
-                  new Intl.NumberFormat("en-US", { notation: "compact" }).format(value)
-                }
+                tickFormatter={(value: number) => format.compact(value)}
               />
               <Tooltip
                 cursor={{ fill: "var(--color-surface-muted)" }}

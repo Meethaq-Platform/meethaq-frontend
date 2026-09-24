@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, FileText, Pencil } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useFormat } from "@/src/shared/hooks/useFormat";
 
 import { useProject } from "@/src/features/projects/hooks/useProject";
 import { useContract } from "../hooks/useContract";
@@ -20,7 +22,7 @@ import Button from "@/src/shared/components/Button";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 import EmptyState from "@/src/shared/components/EmptyState";
-import { formatCurrency, formatDate } from "@/src/shared/lib/format";
+import { formatCurrency } from "@/src/shared/lib/format";
 
 interface ContractWorkspacePageProps {
   projectId: string;
@@ -29,9 +31,15 @@ interface ContractWorkspacePageProps {
 export default function ContractWorkspacePage({
   projectId,
 }: ContractWorkspacePageProps) {
+  const t = useTranslations("contracts.workspace");
+  const tActions = useTranslations("common.actions");
+  const format = useFormat();
   const project = useProject(projectId);
   const contractQuery = useContract(projectId);
-  usePageTitle(project.data ? `Projects/${project.data.title}/Contract` : undefined);
+  const tPageTitles = useTranslations("pageTitles");
+  usePageTitle(
+    project.data ? tPageTitles("projectContract", { title: project.data.title }) : undefined,
+  );
   const [isEditing, setIsEditing] = useState(false);
   const [isFormDirty, setIsFormDirty] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -55,8 +63,8 @@ export default function ContractWorkspacePage({
       href={`/projects/${projectId}`}
       className="flex items-center gap-1.5 text-text-secondary hover:text-text-primary text-sm transition"
     >
-      <ArrowLeft size={16} />
-      Back to Project
+      <ArrowLeft size={16} className="rtl-flip" />
+      {t("back")}
     </Link>
   );
 
@@ -76,7 +84,7 @@ export default function ContractWorkspacePage({
       <div className="space-y-6 mx-auto h-full">
         {backLink}
         <ErrorState
-          message="Failed to load this contract."
+          message={t("loadFailed")}
           onRetry={() => {
             project.refetch();
             contractQuery.refetch();
@@ -110,7 +118,7 @@ export default function ContractWorkspacePage({
                 onClick={() => setIsEditing(false)}
                 className="h-9"
               >
-                Cancel
+                {tActions("cancel")}
               </Button>
 
               <Button
@@ -118,10 +126,10 @@ export default function ContractWorkspacePage({
                 form="contract-edit-form"
                 disabled={!isFormDirty}
                 loading={isSaving}
-                loadingText="Saving..."
+                loadingText={tActions("saving")}
                 className="h-9"
               >
-                Save Changes
+                {tActions("saveChanges")}
               </Button>
             </div>
           ) : (
@@ -142,7 +150,7 @@ export default function ContractWorkspacePage({
                   className="flex items-center gap-1.5 h-9"
                 >
                   <Pencil size={14} />
-                  Edit
+                  {tActions("edit")}
                 </Button>
               )}
 
@@ -155,18 +163,18 @@ export default function ContractWorkspacePage({
         !isEligible ? (
           <EmptyState
             icon={FileText}
-            title="Not ready for a contract yet"
-            description="Assign a client and set a project value on the project page before creating a contract."
+            title={t("notReadyTitle")}
+            description={t("notReadyDescription")}
             action={
               <Link href={`/projects/${projectId}`}>
-                <Button type="button">Go to Project</Button>
+                <Button type="button">{t("goToProject")}</Button>
               </Link>
             }
           />
         ) : (
           <div className="bg-surface p-6 border border-border rounded-2xl">
             <h1 className="mb-4 font-semibold text-text-primary text-lg">
-              Create Your Contract
+              {t("createTitle")}
             </h1>
             <ContractForm
               projectId={projectId}
@@ -179,16 +187,16 @@ export default function ContractWorkspacePage({
                 type="submit"
                 form="contract-create-form"
                 loading={isSaving}
-                loadingText="Creating..."
+                loadingText={t("creating")}
               >
-                Create Draft Contract
+                {t("createDraft")}
               </Button>
             </div>
           </div>
         )
       ) : (
         <section className="space-y-6">
-          <div className="bg-(--amber-bg) p-6 border border-border rounded-2xl">
+          <div className="bg-(--card-bg) p-6 border border-border rounded-2xl">
             {isEditing ? (
               <ContractForm
                 projectId={projectId}
@@ -202,19 +210,19 @@ export default function ContractWorkspacePage({
               <div>
                 <div className="flex sm:flex-row flex-col justify-between items-start gap-4">
                   <div className="flex-1">
-                    <h1 className="font-semibold text-text-primary text-lg">
+                    <h1 dir="auto" className="font-semibold text-text-primary text-lg">
                       {contract.title}
                     </h1>
-                    <p className="mt-2 text-text-primary text-sm whitespace-pre-wrap">
+                    <p dir="auto" className="mt-2 text-text-primary text-sm whitespace-pre-wrap">
                       {contract.scopeOfWork}
                     </p>
                   </div>
 
                   <div className="flex flex-col items-end gap-2 w-fit shrink-0">
                     <ContractStatusBadge status={displayedContractStatus} />
-                    <p className="text-text-secondary text-sm text-right">
-                      {formatDate(contract.startDate)} –{" "}
-                      {formatDate(contract.expectedEndDate)}
+                    <p className="text-text-secondary text-sm text-end">
+                      {format.date(contract.startDate)} –{" "}
+                      {format.date(contract.expectedEndDate)}
                     </p>
                   </div>
                 </div>
@@ -222,20 +230,23 @@ export default function ContractWorkspacePage({
                 {contract.generalTerms && (
                   <div className="mt-4 pt-4 border-border border-t">
                     <p className="mb-1 text-text-secondary text-xs uppercase tracking-wide">
-                      General Terms
+                      {t("generalTerms")}
                     </p>
-                    <p className="text-text-primary text-sm whitespace-pre-wrap">
+                    <p dir="auto" className="text-text-primary text-sm whitespace-pre-wrap">
                       {contract.generalTerms}
                     </p>
                   </div>
                 )}
 
                 {isApproved && contract.approvedAt && (
-                  <div className="mt-4 pt-4 border-black border-t">
+                  <div className="mt-4 pt-4 border-text-primary border-t">
                     <p className="text-primary text-sm">
-                      Approved by {currentProject.clientName ?? "the client"} on{" "}
-                      {formatDate(contract.approvedAt)} —{" "}
-                      {formatCurrency(contract.summary.projectValue)} locked in.
+                      {t.rich(currentProject.clientName ? "approvedBy" : "approvedByNoName", {
+                        name: currentProject.clientName ?? "",
+                        date: format.date(contract.approvedAt),
+                        amount: formatCurrency(contract.summary.projectValue),
+                        bdi: (chunks) => <bdi>{chunks}</bdi>,
+                      })}
                     </p>
                   </div>
                 )}
@@ -252,9 +263,9 @@ export default function ContractWorkspacePage({
           {isPendingApproval && (
             <div className="bg-warning-muted p-4 border border-warning/20 rounded-2xl">
               <p className="text-warning text-sm">
-                This contract was submitted on{" "}
-                {contract.submittedAt ? formatDate(contract.submittedAt) : "—"}{" "}
-                and is awaiting your client&apos;s review.
+                {t("submittedOn", {
+                  date: contract.submittedAt ? format.date(contract.submittedAt) : "—",
+                })}
               </p>
             </div>
           )}

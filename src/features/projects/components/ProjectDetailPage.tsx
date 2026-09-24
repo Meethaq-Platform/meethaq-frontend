@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ArrowLeft, Pencil } from "lucide-react";
 import { useIsMutating } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
+import { useFormat } from "@/src/shared/hooks/useFormat";
 
 import { useProject } from "../hooks/useProject";
 import { usePageTitle } from "@/src/shared/hooks/usePageTitle";
@@ -27,7 +29,7 @@ import Button from "@/src/shared/components/Button";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 import Tabs from "@/src/shared/components/Tabs";
-import { formatCurrency, formatDate } from "@/src/shared/lib/format";
+import { formatCurrency } from "@/src/shared/lib/format";
 
 interface ProjectDetailPageProps {
   projectId: string;
@@ -42,17 +44,17 @@ type DetailTab =
   | "chat"
   | "activity";
 
-const detailTabs: { value: DetailTab; label: string }[] = [
-  { value: "overview", label: "Overview" },
-  { value: "milestones", label: "Milestones" },
-  { value: "payments", label: "Payments" },
-  { value: "changes", label: "Change Requests" },
-  { value: "disputes", label: "Disputes" },
-  { value: "chat", label: "Chat" },
-  { value: "activity", label: "Activity" },
+const detailTabs: DetailTab[] = [
+  "overview",
+  "milestones",
+  "payments",
+  "changes",
+  "disputes",
+  "chat",
+  "activity",
 ];
 
-const validTabs: readonly string[] = detailTabs.map((t) => t.value);
+const validTabs: readonly string[] = detailTabs;
 
 // Lets other pages deep-link here with e.g. ?tab=payments (used by the
 // "View Payment" link shown once a milestone is accepted) — falls back to
@@ -67,8 +69,12 @@ function readInitialTab(searchParams: URLSearchParams): DetailTab {
 export default function ProjectDetailPage({
   projectId,
 }: ProjectDetailPageProps) {
+  const t = useTranslations("projects.detail");
+  const tActions = useTranslations("common.actions");
+  const format = useFormat();
   const { data, isLoading, isError, refetch } = useProject(projectId);
-  usePageTitle(data ? `Projects/${data.title}` : undefined);
+  const tPageTitles = useTranslations("pageTitles");
+  usePageTitle(data ? tPageTitles("project", { title: data.title }) : undefined);
   const searchParams = useSearchParams();
   const [isEditing, setIsEditing] = useState(false);
   const [isFormDirty, setIsFormDirty] = useState(false);
@@ -86,8 +92,8 @@ export default function ProjectDetailPage({
         href="/projects"
         className="flex items-center gap-1.5 w-fit text-text-secondary hover:text-text-primary text-sm transition"
       >
-        <ArrowLeft size={16} />
-        Back to Projects
+        <ArrowLeft size={16} className="rtl-flip" />
+        {t("back")}
       </Link>
 
       {isLoading ? (
@@ -96,14 +102,14 @@ export default function ProjectDetailPage({
         </div>
       ) : isError || !data ? (
         <ErrorState
-          message="Failed to load this project."
+          message={t("loadFailed")}
           onRetry={() => refetch()}
         />
       ) : (
         <section className="space-y-6">
           {/* Header: title + status + metadata merged in one place, actions
               alongside — replaces the old near-empty "Dashboard" card. */}
-          <div className="bg-(--amber-bg) p-4 sm:p-6 border border-border rounded-2xl">
+          <div className="bg-(--card-bg) p-4 sm:p-6 border border-border rounded-2xl">
             <div className="flex flex-row justify-between items-start gap-3 sm:gap-4">
               <div className="flex-1 min-w-0">
                 {isEditing ? (
@@ -115,7 +121,7 @@ export default function ProjectDetailPage({
                 ) : (
                   <>
                     <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                      <h1 className="font-bold text-text-primary text-lg sm:text-xl md:text-2xl wrap-break-word">
+                      <h1 dir="auto" className="font-bold text-text-primary text-lg sm:text-xl md:text-2xl wrap-break-word">
                         {data.title}
                       </h1>
                       <ProjectStatusBadge status={data.status} />
@@ -125,7 +131,7 @@ export default function ProjectDetailPage({
                     </div>
 
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-text-secondary text-xs sm:text-sm">
-                      <span>Created {formatDate(data.createdAt)}</span>
+                      <span>{t("created", { date: format.date(data.createdAt) })}</span>
                       {data.totalValue != null && (
                         <>
                           <span aria-hidden className="text-border">
@@ -139,7 +145,7 @@ export default function ProjectDetailPage({
                     </div>
 
                     {data.description && (
-                      <p className="mt-3 text-text-primary text-xs sm:text-sm whitespace-pre-wrap">
+                      <p dir="auto" className="mt-3 text-text-primary text-xs sm:text-sm whitespace-pre-wrap">
                         {data.description}
                       </p>
                     )}
@@ -156,7 +162,7 @@ export default function ProjectDetailPage({
                       onClick={() => setIsEditing(false)}
                       className="px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
                     >
-                      Cancel
+                      {tActions("cancel")}
                     </Button>
 
                     <Button
@@ -164,10 +170,10 @@ export default function ProjectDetailPage({
                       form="project-edit-form"
                       disabled={!isFormDirty}
                       loading={isSaving}
-                      loadingText="Saving..."
+                      loadingText={tActions("saving")}
                       className="px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
                     >
-                      Save Changes
+                      {tActions("saveChanges")}
                     </Button>
                   </>
                 ) : (
@@ -182,7 +188,7 @@ export default function ProjectDetailPage({
                         className="flex items-center gap-1.5 px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
                       >
                         <Pencil size={14} className="sm:size-4 size-3.5" />
-                        Edit
+                        {tActions("edit")}
                       </Button>
                     )}
 
@@ -199,7 +205,11 @@ export default function ProjectDetailPage({
             )}
           </div>
 
-          <Tabs value={tab} onChange={setTab} options={detailTabs} />
+          <Tabs
+            value={tab}
+            onChange={setTab}
+            options={detailTabs.map((value) => ({ value, label: t(`tabs.${value}`) }))}
+          />
 
           {tab === "overview" && (
             <div className="space-y-6">

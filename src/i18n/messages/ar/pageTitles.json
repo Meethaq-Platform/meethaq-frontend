@@ -1,0 +1,10 @@
+{
+  "dashboard": "لوحة التحكم",
+  "projects": "المشاريع",
+  "clients": "العملاء",
+  "profile": "الملف الشخصي",
+  "project": "المشاريع/{title}",
+  "projectContract": "المشاريع/{title}/العقد",
+  "milestone": "المشاريع/{project}/{milestone}",
+  "client": "العملاء/{name}"
+}

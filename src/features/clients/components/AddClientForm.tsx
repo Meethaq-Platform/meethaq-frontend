@@ -1,10 +1,12 @@
 "use client";
 
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
-  addClientSchema,
+  createAddClientSchema,
   type AddClientFormValues,
 } from "../schemas/client.schema";
 import { useCreateClient } from "../hooks/useCreateClient";
@@ -19,6 +21,11 @@ interface AddClientFormProps {
 }
 
 export function AddClientForm({ onSuccess, onCancel }: AddClientFormProps) {
+  const t = useTranslations("clients.form");
+  const tActions = useTranslations("common.actions");
+  const tValidation = useTranslations("clients.validation");
+  const addClientSchema = useMemo(() => createAddClientSchema(tValidation), [tValidation]);
+
   const {
     register,
     handleSubmit,
@@ -44,29 +51,28 @@ export function AddClientForm({ onSuccess, onCancel }: AddClientFormProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <p className="text-text-secondary text-sm">
-        The client must already have a Meethaq account — we&apos;ll look them
-        up by email.
+        {t("lookupHint")}
       </p>
 
       <div>
-        <Input label="Email Address" type="email" {...register("email")} />
+        <Input label={t("email")} type="email" {...register("email")} />
         <InputError message={errors.email?.message} />
       </div>
 
       <div>
-        <Input label="Company Name" {...register("companyName")} />
+        <Input label={t("company")} {...register("companyName")} />
         <InputError message={errors.companyName?.message} />
       </div>
 
       <div>
-        <Textarea label="Notes" rows={3} {...register("notes")} />
+        <Textarea label={t("notes")} rows={3} {...register("notes")} />
         <InputError message={errors.notes?.message} />
       </div>
 
       {isError && (
         <InputError
           message={
-            error instanceof Error ? error.message : "Failed to add client."
+            error instanceof Error ? error.message : t("addFailed")
           }
         />
       )}
@@ -77,11 +83,11 @@ export function AddClientForm({ onSuccess, onCancel }: AddClientFormProps) {
           onClick={onCancel}
           className="hover:bg-surface-muted px-4 rounded-xl h-11 font-semibold text-text-secondary text-sm transition"
         >
-          Cancel
+          {tActions("cancel")}
         </button>
 
-        <Button type="submit" loading={isPending} loadingText="Adding...">
-          Add Client
+        <Button type="submit" loading={isPending} loadingText={t("adding")}>
+          {t("add")}
         </Button>
       </div>
     </form>

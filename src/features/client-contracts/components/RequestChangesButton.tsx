@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MessageSquareWarning } from "lucide-react";
 
 import {
-  changeRequestSchema,
+  createChangeRequestSchema,
   type ChangeRequestFormValues,
 } from "../schemas/change-request.schema";
 import { useRequestContractChanges } from "../hooks/useRequestContractChanges";
@@ -24,6 +25,10 @@ export function RequestChangesButton({
   projectId,
   concurrencyToken,
 }: RequestChangesButtonProps) {
+  const t = useTranslations("clientContracts.requestChanges");
+  const tActions = useTranslations("common.actions");
+  const tValidation = useTranslations("clientContracts.validation");
+  const changeRequestSchema = useMemo(() => createChangeRequestSchema(tValidation), [tValidation]);
   const [open, setOpen] = useState(false);
   const {
     register,
@@ -58,16 +63,16 @@ export function RequestChangesButton({
         className="flex items-center gap-1.5 hover:bg-surface-muted px-4 rounded-xl h-9 font-semibold text-text-secondary text-sm transition"
       >
         <MessageSquareWarning size={14} />
-        Request Changes
+        {t("button")}
       </button>
 
-      <Modal open={open} onClose={handleClose} title="Request changes to this contract">
+      <Modal open={open} onClose={handleClose} title={t("title")}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <Textarea
-              label="What needs to change?"
+              label={t("label")}
               rows={4}
-              placeholder="Describe what you'd like the freelancer to update..."
+              placeholder={t("placeholder")}
               {...register("feedback")}
             />
             <InputError message={errors.feedback?.message} />
@@ -78,7 +83,7 @@ export function RequestChangesButton({
               message={
                 error instanceof Error
                   ? error.message
-                  : "Failed to request changes."
+                  : t("failed")
               }
             />
           )}
@@ -90,11 +95,11 @@ export function RequestChangesButton({
               disabled={isPending}
               className="hover:bg-surface-muted disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-text-secondary text-sm transition disabled:cursor-not-allowed"
             >
-              Cancel
+              {tActions("cancel")}
             </button>
 
-            <Button type="submit" loading={isPending} loadingText="Sending...">
-              Send Feedback
+            <Button type="submit" loading={isPending} loadingText={t("sending")}>
+              {t("send")}
             </Button>
           </div>
         </form>

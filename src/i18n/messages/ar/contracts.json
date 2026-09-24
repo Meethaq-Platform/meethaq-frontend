@@ -1,0 +1,125 @@
+{
+  "workspace": {
+    "back": "العودة إلى المشروع",
+    "loadFailed": "تعذّر تحميل هذا العقد.",
+    "notReadyTitle": "المشروع غير جاهز لإنشاء عقد بعد",
+    "notReadyDescription": "يلزم إسناد عميل وتحديد قيمة المشروع من صفحة المشروع قبل إنشاء العقد.",
+    "goToProject": "الانتقال إلى المشروع",
+    "createTitle": "إنشاء العقد",
+    "creating": "جارٍ الإنشاء...",
+    "createDraft": "إنشاء مسودة العقد",
+    "generalTerms": "الشروط العامة",
+    "approvedBy": "تم الاعتماد من قِبل <bdi>{name}</bdi> بتاريخ {date} — وتثبيت قيمة <bdi>{amount}</bdi>.",
+    "approvedByNoName": "تم الاعتماد من قِبل العميل بتاريخ {date} — وتثبيت قيمة <bdi>{amount}</bdi>.",
+    "submittedOn": "تم إرسال هذا العقد بتاريخ {date} وهو بانتظار مراجعة العميل."
+  },
+  "form": {
+    "title": "عنوان العقد",
+    "scope": "نطاق العمل",
+    "scopePlaceholder": "وصف العمل المطلوب تسليمه بموجب هذا العقد...",
+    "startDate": "تاريخ البدء",
+    "endDate": "تاريخ الانتهاء المتوقع",
+    "allocationMode": "طريقة توزيع المراحل",
+    "fixed": "مبلغ ثابت ($ لكل مرحلة)",
+    "percentage": "نسبة مئوية (% من قيمة المشروع)",
+    "allocationLocked": "لا يمكن تغيير طريقة التوزيع بعد إضافة مراحل.",
+    "terms": "الشروط العامة (اختياري)",
+    "termsPlaceholder": "شروط الدفع، والملكية، وبنود الإنهاء...",
+    "saveFailed": "تعذّر حفظ العقد."
+  },
+  "validation": {
+    "titleRequired": "العنوان مطلوب",
+    "titleTooLong": "العنوان طويل جدًا",
+    "scopeRequired": "نطاق العمل مطلوب",
+    "scopeTooLong": "نطاق العمل طويل جدًا",
+    "startRequired": "تاريخ البدء مطلوب",
+    "endRequired": "تاريخ الانتهاء المتوقع مطلوب",
+    "termsTooLong": "الشروط العامة طويلة جدًا",
+    "endBeforeStart": "يجب أن يكون تاريخ الانتهاء المتوقع في يوم البدء أو بعده"
+  },
+  "milestoneValidation": {
+    "titleRequired": "العنوان مطلوب",
+    "titleTooLong": "العنوان طويل جدًا",
+    "descriptionTooLong": "الوصف طويل جدًا",
+    "deliverableRequired": "المُخرَج مطلوب",
+    "deliverableTooLong": "المُخرَج طويل جدًا",
+    "criteriaRequired": "معايير القبول مطلوبة",
+    "criteriaTooLong": "معايير القبول طويلة جدًا",
+    "dueRequired": "تاريخ الاستحقاق مطلوب",
+    "amountInvalid": "يُرجى إدخال مبلغ صحيح",
+    "amountPositive": "يجب أن تكون القيمة أكبر من 0",
+    "amountTooLarge": "القيمة كبيرة جدًا"
+  },
+  "feedback": {
+    "title": "طلب العميل تعديلات"
+  },
+  "summary": {
+    "title": "تفصيل القيمة",
+    "projectValue": "قيمة المشروع",
+    "allocated": "الموزّع",
+    "remaining": "المتبقي",
+    "fullyAllocated": "تم توزيع القيمة بالكامل على {count, plural, one {مرحلة واحدة} two {مرحلتين} few {{count, number, plain} مراحل} many {{count, number, plain} مرحلة} other {{count, number, plain} مرحلة}}",
+    "overAllocated": "تجاوز التوزيع القيمة بمقدار <bdi>{amount}</bdi> — يلزم تخفيض إحدى المراحل قبل الإرسال",
+    "partial": "تم توزيع {percent}% على {count, plural, one {مرحلة واحدة} two {مرحلتين} few {{count, number, plain} مراحل} many {{count, number, plain} مرحلة} other {{count, number, plain} مرحلة}} — يجب أن يبلغ المجموع 100% قبل الإرسال"
+  },
+  "delete": {
+    "button": "حذف المسودة",
+    "title": "حذف مسودة العقد هذه؟",
+    "description": "سيتم حذف العقد وجميع مراحله نهائيًا. لا يمكن التراجع عن ذلك.",
+    "confirm": "نعم، حذف",
+    "confirming": "جارٍ الحذف...",
+    "failed": "تعذّر حذف العقد."
+  },
+  "submit": {
+    "button": "الإرسال للموافقة",
+    "title": "إرسال العقد للموافقة",
+    "checking": "جارٍ التحقق من العقد وفق قواعد الإرسال...",
+    "validateFailed": "تعذّر التحقق من العقد.",
+    "notReady": "هذا العقد غير جاهز للإرسال بعد:",
+    "invalid": "العقد غير صالح.",
+    "ready": "سيتلقى العميل إشعارًا بمراجعة هذا العقد واعتماده. يمكن سحب العقد وإعادته إلى مسودة في أي وقت قبل الرد.",
+    "failed": "تعذّر إرسال العقد.",
+    "confirm": "نعم، إرسال",
+    "confirming": "جارٍ الإرسال..."
+  },
+  "withdraw": {
+    "button": "سحب",
+    "title": "سحب هذا العقد؟",
+    "description": "سيعود العقد إلى حالة المسودة لإجراء التعديلات، ولن يظهر للعميل على أنه بانتظار موافقته.",
+    "confirm": "نعم، سحب",
+    "confirming": "جارٍ السحب...",
+    "failed": "تعذّر سحب العقد."
+  },
+  "milestones": {
+    "title": "المراحل",
+    "add": "إضافة مرحلة",
+    "emptyTitle": "لا توجد مراحل بعد",
+    "emptyDescription": "يمكن تقسيم نطاق هذا العقد إلى مراحل يبلغ مجموعها القيمة الكاملة للمشروع.",
+    "moveUp": "نقل للأعلى",
+    "moveDown": "نقل للأسفل",
+    "fixed": "ثابت",
+    "deliverable": "المُخرَج:",
+    "due": "الاستحقاق:",
+    "criteria": "معايير القبول:",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "deleteTitle": "حذف هذه المرحلة؟",
+    "deleteDescription": "ستتم إزالة «<bdi>{title}</bdi>» وإعادة ترقيم المراحل المتبقية.",
+    "deleteConfirm": "نعم، حذف",
+    "deleting": "جارٍ الحذف...",
+    "deleteFailed": "تعذّر حذف المرحلة."
+  },
+  "milestoneForm": {
+    "addTitle": "إضافة مرحلة",
+    "editTitle": "تعديل المرحلة",
+    "title": "العنوان",
+    "description": "الوصف (اختياري)",
+    "deliverable": "المُخرَج",
+    "criteria": "معايير القبول",
+    "dueDate": "تاريخ الاستحقاق",
+    "allocationPercent": "قيمة التوزيع (%)",
+    "allocationFixed": "قيمة التوزيع ($)",
+    "saveFailed": "تعذّر حفظ المرحلة.",
+    "add": "إضافة المرحلة"
+  }
+}

@@ -1,17 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ShieldAlert } from "lucide-react";
 
 import {
-  openDisputeSchema,
+  createOpenDisputeSchema,
   type OpenDisputeFormInput,
   type OpenDisputeFormValues,
 } from "../schemas/dispute.schema";
 import { useOpenDispute } from "../hooks/useOpenDispute";
-import { DISPUTE_CATEGORY_OPTIONS } from "../types/dispute";
+import { DISPUTE_CATEGORIES } from "../types/dispute";
+import { useStatusLabel } from "@/src/shared/hooks/useStatusLabel";
 import { useCurrentUser } from "@/src/features/auth/hooks/useCurrentUser";
 import { useContract } from "@/src/features/contracts/hooks/useContract";
 import { useClientContract } from "@/src/features/client-contracts/hooks/useClientContract";
@@ -30,6 +32,11 @@ interface OpenDisputeModalProps {
 }
 
 export function OpenDisputeModal({ projectId, milestoneId: fixedMilestoneId }: OpenDisputeModalProps) {
+  const t = useTranslations("disputes.open");
+  const tActions = useTranslations("common.actions");
+  const tValidation = useTranslations("disputes.validation");
+  const openDisputeSchema = useMemo(() => createOpenDisputeSchema(tValidation), [tValidation]);
+  const categoryLabel = useStatusLabel("disputeCategory");
   const [open, setOpen] = useState(false);
   const [milestoneId, setMilestoneId] = useState(fixedMilestoneId ?? "");
 
@@ -87,15 +94,15 @@ export function OpenDisputeModal({ projectId, milestoneId: fixedMilestoneId }: O
         className="flex items-center gap-1.5 h-9"
       >
         <ShieldAlert size={14} />
-        Open Dispute
+        {t("button")}
       </Button>
 
-      <Modal open={open} onClose={handleClose} title="Open a dispute" size="md">
+      <Modal open={open} onClose={handleClose} title={t("title")} size="md">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {!fixedMilestoneId && (
             <div>
               <label className="block mb-2 font-medium text-text-primary text-sm">
-                Milestone
+                {t("milestone")}
               </label>
               <select
                 value={milestoneId}
@@ -103,7 +110,7 @@ export function OpenDisputeModal({ projectId, milestoneId: fixedMilestoneId }: O
                 className="bg-surface px-4 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full h-11 text-text-primary text-sm transition"
               >
                 <option value="" disabled>
-                  Select the affected milestone...
+                  {t("selectMilestone")}
                 </option>
                 {milestones.map((m) => (
                   <option key={m.id} value={m.id}>
@@ -113,21 +120,21 @@ export function OpenDisputeModal({ projectId, milestoneId: fixedMilestoneId }: O
               </select>
               {!milestoneId && (
                 <p className="mt-1 text-text-secondary text-xs">
-                  Choose which milestone this dispute concerns.
+                  {t("milestoneHint")}
                 </p>
               )}
             </div>
           )}
 
           <div>
-            <label className="block mb-2 font-medium text-text-primary text-sm">Category</label>
+            <label className="block mb-2 font-medium text-text-primary text-sm">{t("category")}</label>
             <select
               {...register("category", { valueAsNumber: true })}
               className="bg-surface px-4 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full h-11 text-text-primary text-sm transition"
             >
-              {DISPUTE_CATEGORY_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
+              {DISPUTE_CATEGORIES.map((category) => (
+                <option key={category} value={category}>
+                  {categoryLabel(category)}
                 </option>
               ))}
             </select>
@@ -135,9 +142,9 @@ export function OpenDisputeModal({ projectId, milestoneId: fixedMilestoneId }: O
 
           <div>
             <Textarea
-              label="Description"
+              label={t("description")}
               rows={4}
-              placeholder="What went wrong?"
+              placeholder={t("descriptionPlaceholder")}
               {...register("description")}
             />
             <InputError message={errors.description?.message} />
@@ -145,9 +152,9 @@ export function OpenDisputeModal({ projectId, milestoneId: fixedMilestoneId }: O
 
           <div>
             <Textarea
-              label="Requested Resolution"
+              label={t("resolution")}
               rows={3}
-              placeholder="What outcome are you asking for?"
+              placeholder={t("resolutionPlaceholder")}
               {...register("requestedResolution")}
             />
             <InputError message={errors.requestedResolution?.message} />
@@ -157,12 +164,12 @@ export function OpenDisputeModal({ projectId, milestoneId: fixedMilestoneId }: O
             <FileAttachmentInput
               files={evidenceFiles}
               onChange={(next) => setValue("evidenceFiles", next, { shouldValidate: true })}
-              label="Attach Evidence"
+              label={t("attach")}
             />
           </div>
 
           {isError && (
-            <InputError message={getErrorMessage(error, "Failed to open dispute.")} />
+            <InputError message={getErrorMessage(error, t("failed"))} />
           )}
 
           <div className="flex justify-end gap-3 pt-2">
@@ -172,7 +179,7 @@ export function OpenDisputeModal({ projectId, milestoneId: fixedMilestoneId }: O
               disabled={isPending}
               className="hover:bg-surface-muted disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-text-secondary text-sm transition disabled:cursor-not-allowed"
             >
-              Cancel
+              {tActions("cancel")}
             </button>
 
             <Button
@@ -180,9 +187,9 @@ export function OpenDisputeModal({ projectId, milestoneId: fixedMilestoneId }: O
               variant="danger"
               disabled={!milestoneId}
               loading={isPending}
-              loadingText="Opening..."
+              loadingText={t("opening")}
             >
-              Open Dispute
+              {t("button")}
             </Button>
           </div>
         </form>

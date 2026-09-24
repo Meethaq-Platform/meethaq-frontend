@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useMilestone } from "../hooks/useMilestone";
 import { MilestoneDetailShell } from "./MilestoneDetailShell";
 import { StartMilestoneButton } from "./StartMilestoneButton";
@@ -26,13 +27,17 @@ export function MilestoneWorkspacePage({
   projectId,
   milestoneId,
 }: MilestoneWorkspacePageProps) {
+  const t = useTranslations("milestones.workspace");
   const { data: milestone, isLoading, isError, refetch } = useMilestone(
     projectId,
     milestoneId,
   );
   const { data: project } = useProject(projectId);
+  const tPageTitles = useTranslations("pageTitles");
   usePageTitle(
-    project && milestone ? `Projects/${project.title}/${milestone.title}` : undefined,
+    project && milestone
+      ? tPageTitles("milestone", { project: project.title, milestone: milestone.title })
+      : undefined,
   );
   const submissionsQuery = useSubmissions(projectId, milestoneId);
 
@@ -46,7 +51,7 @@ export function MilestoneWorkspacePage({
 
   if (isError || !milestone) {
     return (
-      <ErrorState message="Failed to load this milestone." onRetry={() => refetch()} />
+      <ErrorState message={t("loadFailed")} onRetry={() => refetch()} />
     );
   }
 
@@ -82,8 +87,7 @@ export function MilestoneWorkspacePage({
       {milestone.executionStatus === "RevisionRequested" && (
         <div className="bg-danger-muted p-4 border border-danger/20 rounded-2xl">
           <p className="text-danger text-sm">
-            The client requested revisions to your latest submission. Review their
-            feedback below and submit a new version.
+            {t("revisionRequested")}
           </p>
         </div>
       )}
@@ -91,7 +95,7 @@ export function MilestoneWorkspacePage({
       {canSubmit && (
         <div className="bg-surface p-6 border border-border rounded-2xl">
           <h2 className="mb-4 font-semibold text-text-primary text-base">
-            Submit Deliverable
+            {t("submitTitle")}
           </h2>
           <SubmitWorkForm projectId={projectId} milestoneId={milestoneId} />
         </div>
@@ -100,8 +104,7 @@ export function MilestoneWorkspacePage({
       {isAwaitingReview && (
         <div className="bg-warning-muted p-4 border border-warning/20 rounded-2xl">
           <p className="text-warning text-sm">
-            Your latest submission is awaiting the client&apos;s review. You can&apos;t
-            replace it while it&apos;s pending — check back after they respond.
+            {t("awaitingReview")}
           </p>
         </div>
       )}

@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RefreshCw } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import {
-  correctedEvidenceFormSchema,
+  createCorrectedEvidenceFormSchema,
   type CorrectedEvidenceFormInput,
   type CorrectedEvidenceFormValues,
 } from "../schemas/corrected-evidence.schema";
@@ -29,6 +30,10 @@ interface CorrectedEvidenceModalProps {
 // original evidence stays available (backend appends, never overwrites); no
 // need to show it here since PaymentDetailCard already lists all versions.
 export function CorrectedEvidenceModal({ projectId, milestoneId }: CorrectedEvidenceModalProps) {
+  const t = useTranslations("payments.corrected");
+  const tActions = useTranslations("common.actions");
+  const tValidation = useTranslations("payments.validation");
+  const correctedEvidenceFormSchema = useMemo(() => createCorrectedEvidenceFormSchema(tValidation), [tValidation]);
   const [open, setOpen] = useState(false);
   const {
     register,
@@ -77,21 +82,21 @@ export function CorrectedEvidenceModal({ projectId, milestoneId }: CorrectedEvid
         className="flex items-center gap-1.5 h-9"
       >
         <RefreshCw size={14} />
-        Submit Corrected Evidence
+        {t("button")}
       </Button>
 
-      <Modal open={open} onClose={handleClose} title="Submit corrected payment evidence" size="md">
+      <Modal open={open} onClose={handleClose} title={t("title")} size="md">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <Input
-              label="Updated Transaction Reference"
+              label={t("reference")}
               {...register("updatedTransactionReference")}
             />
             <InputError message={errors.updatedTransactionReference?.message} />
           </div>
 
           <div>
-            <Textarea label="Updated Notes (optional)" rows={3} {...register("updatedNotes")} />
+            <Textarea label={t("notes")} rows={3} {...register("updatedNotes")} />
           </div>
 
           <div>
@@ -100,13 +105,13 @@ export function CorrectedEvidenceModal({ projectId, milestoneId }: CorrectedEvid
               onChange={(next) =>
                 setValue("correctedReceiptFiles", next, { shouldValidate: true })
               }
-              label="Attach Corrected Evidence"
+              label={t("attach")}
             />
           </div>
 
           {isError && (
             <InputError
-              message={getErrorMessage(error, "Failed to submit corrected evidence.")}
+              message={getErrorMessage(error, t("failed"))}
             />
           )}
 
@@ -117,11 +122,11 @@ export function CorrectedEvidenceModal({ projectId, milestoneId }: CorrectedEvid
               disabled={isPending}
               className="hover:bg-surface-muted disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-text-secondary text-sm transition disabled:cursor-not-allowed"
             >
-              Cancel
+              {tActions("cancel")}
             </button>
 
-            <Button type="submit" loading={isPending} loadingText="Submitting...">
-              Submit
+            <Button type="submit" loading={isPending} loadingText={t("submitting")}>
+              {t("submit")}
             </Button>
           </div>
         </form>

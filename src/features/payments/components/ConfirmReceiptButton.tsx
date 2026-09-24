@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CheckCircle2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { useConfirmReceipt } from "../hooks/useConfirmReceipt";
 import Button from "@/src/shared/components/Button";
@@ -18,6 +19,7 @@ interface ConfirmReceiptButtonProps {
 // only ever renders on that role's own views, but the backend is the real
 // gate against a duplicate/spoofed confirmation either way.
 export function ConfirmReceiptButton({ projectId, milestoneId }: ConfirmReceiptButtonProps) {
+  const t = useTranslations("payments.confirm");
   const [open, setOpen] = useState(false);
   const { mutate, isPending, isError, error } = useConfirmReceipt(projectId, milestoneId);
 
@@ -29,20 +31,20 @@ export function ConfirmReceiptButton({ projectId, milestoneId }: ConfirmReceiptB
         className="flex items-center gap-1.5 h-9"
       >
         <CheckCircle2 size={14} />
-        Confirm Receipt
+        {t("button")}
       </Button>
 
       <ConfirmModal
         open={open}
         onClose={() => setOpen(false)}
         onConfirm={() => mutate(undefined, { onSuccess: () => setOpen(false) })}
-        title="Confirm you received this payment?"
-        description="This records your confirmation and marks the milestone as Paid. A confirmed payment cannot be reversed or edited afterward."
-        confirmLabel="Yes, I received it"
-        confirmingLabel="Confirming..."
+        title={t("title")}
+        description={t("description")}
+        confirmLabel={t("confirm")}
+        confirmingLabel={t("confirming")}
         isConfirming={isPending}
         variant="primary"
-        errorMessage={isError ? getErrorMessage(error, "Failed to confirm receipt.") : undefined}
+        errorMessage={isError ? getErrorMessage(error, t("failed")) : undefined}
       />
     </>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { CheckCircle2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useExecutionOverview } from "../hooks/useExecutionOverview";
 import Spinner from "@/src/shared/components/Spinner";
 
@@ -11,6 +12,7 @@ interface ExecutionOverviewCardProps {
 // Module 7's summary card — served directly by GET /projects/{id}/overview,
 // a single shared endpoint (both roles), so no client-side computation.
 export function ExecutionOverviewCard({ projectId }: ExecutionOverviewCardProps) {
+  const t = useTranslations("milestones.overview");
   const { data: overview, isLoading } = useExecutionOverview(projectId);
 
   if (isLoading) {
@@ -26,17 +28,17 @@ export function ExecutionOverviewCard({ projectId }: ExecutionOverviewCardProps)
   }
 
   const stats = [
-    { label: "Total Milestones", value: overview.totalMilestones },
-    { label: "Accepted", value: overview.acceptedMilestones },
-    { label: "Awaiting Review", value: overview.awaitingReviewMilestones },
-    { label: "Requiring Revision", value: overview.revisionRequestedMilestones },
-    { label: "Overdue", value: overview.overdueMilestones },
+    { label: t("total"), value: overview.totalMilestones },
+    { label: t("accepted"), value: overview.acceptedMilestones },
+    { label: t("awaitingReview"), value: overview.awaitingReviewMilestones },
+    { label: t("revisionRequested"), value: overview.revisionRequestedMilestones },
+    { label: t("overdue"), value: overview.overdueMilestones },
   ];
 
   return (
     <div className="bg-surface p-6 border border-border rounded-2xl">
       <h2 className="mb-4 font-semibold text-text-primary text-base">
-        Execution Overview
+        {t("title")}
       </h2>
 
       <div className="gap-4 grid grid-cols-2 sm:grid-cols-5">
@@ -53,7 +55,7 @@ export function ExecutionOverviewCard({ projectId }: ExecutionOverviewCardProps)
       {overview.allDeliverablesAccepted && (
         <div className="flex items-center gap-2 bg-success-muted mt-4 p-3 rounded-xl text-success text-sm">
           <CheckCircle2 size={16} />
-          All Deliverables Accepted
+          {t("allAccepted")}
         </div>
       )}
     </div>

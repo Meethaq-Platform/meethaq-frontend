@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowDown, ArrowUp, Search } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface ClientsToolbarProps {
   search: string;
@@ -15,6 +16,7 @@ export function ClientsToolbar({
   sort,
   onSortChange,
 }: ClientsToolbarProps) {
+  const t = useTranslations("clients.toolbar");
   const isDateActive = sort === "newest" || sort === "oldest";
   const isNameActive = sort === "name_asc" || sort === "name_desc";
 
@@ -29,31 +31,31 @@ export function ClientsToolbar({
       <div className="relative flex-1 sm:max-w-md">
         <Search
           size={16}
-          className="top-1/2 left-3 absolute sm:size-4.5 text-text-secondary -translate-y-1/2"
+          className="top-1/2 inset-s-3 absolute sm:size-4.5 text-text-secondary -translate-y-1/2"
         />
 
         <input
           type="search"
           value={search}
           onChange={(event) => onSearchChange(event.target.value)}
-          placeholder="Search by name, email, or company..."
-          className="bg-surface py-1.5 sm:py-2 pr-4 pl-9 sm:pl-10 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full text-text-primary placeholder:text-text-secondary text-xs sm:text-sm transition"
+          placeholder={t("searchPlaceholder")}
+          className="bg-surface py-1.5 sm:py-2 pe-4 ps-9 sm:ps-10 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full text-text-primary placeholder:text-text-secondary text-xs sm:text-sm transition"
         />
       </div>
 
-      <div className="flex gap-1.5 sm:gap-2 sm:ml-auto">
+      <div className="flex gap-1.5 sm:gap-2 sm:ms-auto">
         <button
           type="button"
           onClick={toggleDate}
           aria-pressed={isDateActive}
           className={`flex items-center gap-1.5 px-3 sm:px-4 h-8 sm:h-9 rounded-lg font-medium text-xs sm:text-sm transition ${
             isDateActive
-              ? "bg-primary text-white"
+              ? "bg-primary text-on-primary"
               : "bg-surface hover:bg-border/40 text-text-secondary hover:text-text-primary"
           }`}
         >
           {sort === "oldest" ? <ArrowUp size={13} /> : <ArrowDown size={13} />}
-          {sort === "oldest" ? "Oldest" : "Newest"}
+          {sort === "oldest" ? t("oldest") : t("newest")}
         </button>
 
         <button
@@ -62,7 +64,7 @@ export function ClientsToolbar({
           aria-pressed={isNameActive}
           className={`flex items-center gap-1.5 px-3 sm:px-4 h-8 sm:h-9 rounded-lg font-medium text-xs sm:text-sm transition ${
             isNameActive
-              ? "bg-primary text-white"
+              ? "bg-primary text-on-primary"
               : "bg-surface hover:bg-border/40 text-text-secondary hover:text-text-primary"
           }`}
         >
@@ -71,7 +73,7 @@ export function ClientsToolbar({
           ) : (
             <ArrowUp size={13} />
           )}
-          {sort === "name_desc" ? "Name (Z–A)" : "Name (A–Z)"}
+          {sort === "name_desc" ? t("nameDesc") : t("nameAsc")}
         </button>
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown, ChevronRight, ShieldAlert } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import type { MilestonePaymentSummaryItem } from "../types/payment";
 import { PaymentStatusBadge } from "./PaymentStatusBadge";
@@ -25,24 +26,23 @@ interface PaymentMilestoneRowProps {
 // milestone, or a freelancer looking at one that's Eligible but not yet
 // paid) — returns null only when the row already shows an action button or
 // the full PaymentDetailCard for that combination.
-function getStatusMessage(status: string, isFreelancer: boolean): string | null {
+type RowMessageKey =
+  | "notEligibleFreelancer"
+  | "notEligibleClient"
+  | "eligibleFreelancer"
+  | "awaitingClient"
+  | "issueFreelancer";
+
+function getStatusMessageKey(status: string, isFreelancer: boolean): RowMessageKey | null {
   switch (status) {
     case "NotEligible":
-      return isFreelancer
-        ? "This milestone isn't eligible for payment yet — it becomes eligible once the client accepts your delivered work."
-        : "This milestone isn't eligible for payment yet — accept the delivered work to make it eligible.";
+      return isFreelancer ? "notEligibleFreelancer" : "notEligibleClient";
     case "Eligible":
-      return isFreelancer
-        ? "This milestone is eligible for payment. Waiting for the client to record payment."
-        : null;
+      return isFreelancer ? "eligibleFreelancer" : null;
     case "AwaitingConfirmation":
-      return !isFreelancer
-        ? "Payment recorded — waiting for the freelancer to confirm receipt."
-        : null;
+      return !isFreelancer ? "awaitingClient" : null;
     case "IssueReported":
-      return isFreelancer
-        ? "An issue was reported with this payment. Waiting for the client to submit corrected evidence."
-        : null;
+      return isFreelancer ? "issueFreelancer" : null;
     default:
       return null;
   }
@@ -53,7 +53,9 @@ function getStatusMessage(status: string, isFreelancer: boolean): string | null 
 // MilestonePaymentDto (evidence, corrections, confirmedAt) is only fetched
 // lazily when the row is expanded, since most milestones won't need it.
 export function PaymentMilestoneRow({ projectId, item, isFreelancer }: PaymentMilestoneRowProps) {
+  const t = useTranslations("payments.row");
   const [expanded, setExpanded] = useState(false);
+  const statusMessageKey = getStatusMessageKey(item.paymentStatus, isFreelancer);
   const hasPaymentRecord = item.paymentStatus !== "NotEligible" && item.paymentStatus !== "Eligible";
 
   const shouldFetchDetail = expanded && hasPaymentRecord;
@@ -68,17 +70,17 @@ export function PaymentMilestoneRow({ projectId, item, isFreelancer }: PaymentMi
       <button
         type="button"
         onClick={() => setExpanded((prev) => !prev)}
-        className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-3 hover:bg-surface-muted p-4 w-full text-left transition"
+        className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-3 hover:bg-surface-muted p-4 w-full text-start transition"
       >
         <div className="flex flex-1 items-center gap-2 min-w-0">
           {expanded ? (
             <ChevronDown size={16} className="text-text-secondary shrink-0" />
           ) : (
-            <ChevronRight size={16} className="text-text-secondary shrink-0" />
+            <ChevronRight size={16} className="rtl-flip text-text-secondary shrink-0" />
           )}
 
           <div className="min-w-0">
-            <h3 className="font-semibold text-text-primary text-sm truncate">
+            <h3 dir="auto" className="font-semibold text-text-primary text-sm truncate">
               {item.milestoneTitle}
             </h3>
             <p className="mt-1 font-numbers text-text-secondary text-xs">
@@ -91,7 +93,7 @@ export function PaymentMilestoneRow({ projectId, item, isFreelancer }: PaymentMi
           {item.isDisputed && (
             <span className="flex items-center gap-1 bg-danger-muted px-2.5 py-1 rounded-full font-medium text-danger text-xs">
               <ShieldAlert size={12} />
-              Disputed
+              {t("disputed")}
             </span>
           )}
           <PaymentStatusBadge status={item.paymentStatus} />
@@ -102,14 +104,13 @@ export function PaymentMilestoneRow({ projectId, item, isFreelancer }: PaymentMi
         <div className="px-4 pb-4">
           {item.isDisputed && (
             <p className="bg-danger-muted mb-3 p-3 rounded-lg text-danger text-xs">
-              This milestone has an open dispute — payment confirmation is on hold until it&apos;s
-              resolved.
+              {t("disputedNotice")}
             </p>
           )}
 
-          {!item.isDisputed && getStatusMessage(item.paymentStatus, isFreelancer) && (
+          {!item.isDisputed && statusMessageKey && (
             <p className="bg-surface-muted mb-3 p-3 rounded-lg text-text-secondary text-sm">
-              {getStatusMessage(item.paymentStatus, isFreelancer)}
+              {t(statusMessageKey)}
             </p>
           )}
 

@@ -1,7 +1,14 @@
 import { z } from "zod";
 
-export const reportPaymentIssueSchema = z.object({
-  reason: z.string().min(1, "A reason is required").max(2000, "Reason is too long"),
-});
+import type { Translator } from "@/src/i18n/types";
 
-export type ReportPaymentIssueFormValues = z.infer<typeof reportPaymentIssueSchema>;
+// A factory, so validation messages follow the active language.
+export function createReportPaymentIssueSchema(t: Translator<"payments.validation">) {
+  return z.object({
+    reason: z.string().min(1, t("reasonRequired")).max(2000, t("reasonTooLong")),
+  });
+}
+
+export type ReportPaymentIssueFormValues = z.infer<
+  ReturnType<typeof createReportPaymentIssueSchema>
+>;

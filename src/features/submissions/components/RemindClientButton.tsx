@@ -1,6 +1,7 @@
 "use client";
 
 import { BellRing } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useRemindClient } from "../hooks/useRemindClient";
 
 interface RemindClientButtonProps {
@@ -17,6 +18,7 @@ export function RemindClientButton({
   milestoneId,
   submissionId,
 }: RemindClientButtonProps) {
+  const t = useTranslations("submissions.remind");
   const remind = useRemindClient(projectId, milestoneId);
 
   return (
@@ -27,7 +29,7 @@ export function RemindClientButton({
       className="flex items-center gap-1.5 hover:bg-surface-muted disabled:opacity-60 px-4 rounded-xl h-9 font-semibold text-text-secondary text-sm transition disabled:cursor-not-allowed"
     >
       <BellRing size={14} />
-      {remind.isPending ? "Sending..." : "Remind Client"}
+      {remind.isPending ? t("sending") : t("button")}
     </button>
   );
 }

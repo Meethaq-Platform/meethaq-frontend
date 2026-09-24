@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useFormat } from "@/src/shared/hooks/useFormat";
 
 import { useClientProject } from "../hooks/useClientProject";
 import { usePageTitle } from "@/src/shared/hooks/usePageTitle";
@@ -22,7 +24,7 @@ import { DisputesTab } from "@/src/features/disputes/components/DisputesTab";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 import Tabs from "@/src/shared/components/Tabs";
-import { formatCurrency, formatDate } from "@/src/shared/lib/format";
+import { formatCurrency } from "@/src/shared/lib/format";
 
 interface ClientProjectDetailPageProps {
   projectId: string;
@@ -37,17 +39,17 @@ type DetailTab =
   | "chat"
   | "activity";
 
-const detailTabs: { value: DetailTab; label: string }[] = [
-  { value: "overview", label: "Overview" },
-  { value: "milestones", label: "Milestones" },
-  { value: "payments", label: "Payments" },
-  { value: "changes", label: "Change Requests" },
-  { value: "disputes", label: "Disputes" },
-  { value: "chat", label: "Chat" },
-  { value: "activity", label: "Activity" },
+const detailTabs: DetailTab[] = [
+  "overview",
+  "milestones",
+  "payments",
+  "changes",
+  "disputes",
+  "chat",
+  "activity",
 ];
 
-const validTabs: readonly string[] = detailTabs.map((t) => t.value);
+const validTabs: readonly string[] = detailTabs;
 
 function readInitialTab(searchParams: URLSearchParams): DetailTab {
   const requested = searchParams.get("tab");
@@ -59,8 +61,11 @@ function readInitialTab(searchParams: URLSearchParams): DetailTab {
 export default function ClientProjectDetailPage({
   projectId,
 }: ClientProjectDetailPageProps) {
+  const t = useTranslations("projects.detail");
+  const format = useFormat();
   const { data, isLoading, isError, refetch } = useClientProject(projectId);
-  usePageTitle(data ? `Projects/${data.title}` : undefined);
+  const tPageTitles = useTranslations("pageTitles");
+  usePageTitle(data ? tPageTitles("project", { title: data.title }) : undefined);
   const searchParams = useSearchParams();
   const [tab, setTab] = useState<DetailTab>(() => readInitialTab(searchParams));
 
@@ -70,8 +75,8 @@ export default function ClientProjectDetailPage({
         href="/projects"
         className="flex items-center gap-1.5 w-fit text-text-secondary hover:text-text-primary text-sm transition"
       >
-        <ArrowLeft size={16} />
-        Back to Projects
+        <ArrowLeft size={16} className="rtl-flip" />
+        {t("back")}
       </Link>
 
       {isLoading ? (
@@ -80,23 +85,23 @@ export default function ClientProjectDetailPage({
         </div>
       ) : isError || !data ? (
         <ErrorState
-          message="Failed to load this project."
+          message={t("loadFailed")}
           onRetry={() => refetch()}
         />
       ) : (
         <section className="space-y-6">
-          <div className="bg-(--amber-bg) p-6 border border-border rounded-2xl">
+          <div className="bg-(--card-bg) p-6 border border-border rounded-2xl">
             <div className="flex sm:flex-row flex-col justify-between items-start gap-4">
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-center gap-3">
-                  <h1 className="font-bold text-text-primary text-xl md:text-2xl truncate">
+                  <h1 dir="auto" className="font-bold text-text-primary text-xl md:text-2xl truncate">
                     {data.title}
                   </h1>
                   <ProjectStatusBadge status={data.status} />
                 </div>
 
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-text-secondary text-sm">
-                  <span>Created {formatDate(data.createdAt)}</span>
+                  <span>{t("created", { date: format.date(data.createdAt) })}</span>
                   {data.totalValue != null && (
                     <>
                       <span aria-hidden className="text-border">
@@ -110,7 +115,7 @@ export default function ClientProjectDetailPage({
                 </div>
 
                 {data.description && (
-                  <p className="mt-3 text-text-primary text-sm whitespace-pre-wrap">
+                  <p dir="auto" className="mt-3 text-text-primary text-sm whitespace-pre-wrap">
                     {data.description}
                   </p>
                 )}
@@ -120,7 +125,11 @@ export default function ClientProjectDetailPage({
             </div>
           </div>
 
-          <Tabs value={tab} onChange={setTab} options={detailTabs} />
+          <Tabs
+            value={tab}
+            onChange={setTab}
+            options={detailTabs.map((value) => ({ value, label: t(`tabs.${value}`) }))}
+          />
 
           {tab === "overview" && (
             <div className="space-y-6">

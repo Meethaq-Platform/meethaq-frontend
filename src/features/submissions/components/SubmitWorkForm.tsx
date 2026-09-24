@@ -1,10 +1,12 @@
 "use client";
 
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
-  submissionFormSchema,
+  createSubmissionFormSchema,
   type SubmissionFormInput,
   type SubmissionFormValues,
 } from "../schemas/submission.schema";
@@ -27,6 +29,10 @@ export function SubmitWorkForm({
   milestoneId,
   onSuccess,
 }: SubmitWorkFormProps) {
+  const t = useTranslations("submissions.form");
+  const tValidation = useTranslations("submissions.validation");
+  const submissionFormSchema = useMemo(() => createSubmissionFormSchema(tValidation), [tValidation]);
+
   const {
     register,
     handleSubmit,
@@ -54,9 +60,9 @@ export function SubmitWorkForm({
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
         <Textarea
-          label="Submission Notes"
+          label={t("notes")}
           rows={4}
-          placeholder="Describe what you're delivering and how it meets the acceptance criteria..."
+          placeholder={t("notesPlaceholder")}
           {...register("notes")}
         />
         <InputError message={errors.notes?.message} />
@@ -66,7 +72,7 @@ export function SubmitWorkForm({
         <FileAttachmentInput
           files={files}
           onChange={(next) => setValue("files", next, { shouldValidate: true })}
-          label="Attach Files"
+          label={t("attach")}
         />
       </div>
 
@@ -81,7 +87,7 @@ export function SubmitWorkForm({
 
       {createSubmission.isError && (
         <InputError
-          message={getErrorMessage(createSubmission.error, "Failed to submit work.")}
+          message={getErrorMessage(createSubmission.error, t("failed"))}
         />
       )}
 
@@ -89,9 +95,9 @@ export function SubmitWorkForm({
         <Button
           type="submit"
           loading={createSubmission.isPending}
-          loadingText="Submitting..."
+          loadingText={t("submitting")}
         >
-          Submit Work
+          {t("submit")}
         </Button>
       </div>
     </form>

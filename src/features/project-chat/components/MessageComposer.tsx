@@ -1,11 +1,14 @@
 "use client";
 
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Send } from "lucide-react";
 
 import {
-  chatMessageFormSchema,
+  createChatMessageFormSchema,
+  MAX_MESSAGE_FILES,
   type ChatMessageFormInput,
   type ChatMessageFormValues,
 } from "../schemas/message.schema";
@@ -20,6 +23,13 @@ interface MessageComposerProps {
 }
 
 export function MessageComposer({ projectId }: MessageComposerProps) {
+  const t = useTranslations("chat");
+  const tValidation = useTranslations("chat.validation");
+  const chatMessageFormSchema = useMemo(
+    () => createChatMessageFormSchema(tValidation),
+    [tValidation],
+  );
+
   const {
     register,
     handleSubmit,
@@ -51,7 +61,7 @@ export function MessageComposer({ projectId }: MessageComposerProps) {
         <div className="flex-1">
           <Textarea
             rows={2}
-            placeholder="Write a message..."
+            placeholder={t("placeholder")}
             {...register("content")}
           />
           <InputError message={errors.content?.message} />
@@ -60,16 +70,16 @@ export function MessageComposer({ projectId }: MessageComposerProps) {
         <FileAttachmentInput
           files={files}
           onChange={(next) => setValue("files", next, { shouldValidate: true })}
-          maxFiles={5}
+          maxFiles={MAX_MESSAGE_FILES}
         />
 
         <button
           type="submit"
           disabled={sendMessage.isPending}
-          aria-label="Send message"
-          className="flex justify-center items-center bg-primary hover:opacity-90 disabled:opacity-60 rounded-xl w-11 h-11 text-white transition disabled:cursor-not-allowed"
+          aria-label={t("send")}
+          className="flex justify-center items-center bg-primary hover:opacity-90 disabled:opacity-60 rounded-xl w-11 h-11 text-on-primary transition disabled:cursor-not-allowed"
         >
-          <Send size={16} />
+          <Send size={16} className="rtl-flip" />
         </button>
       </div>
 
@@ -77,7 +87,7 @@ export function MessageComposer({ projectId }: MessageComposerProps) {
         <InputError
           message={getErrorMessage(
             sendMessage.error,
-            "Failed to send message.",
+            t("sendFailed"),
           )}
         />
       )}

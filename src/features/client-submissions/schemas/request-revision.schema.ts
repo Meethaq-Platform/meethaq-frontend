@@ -1,17 +1,25 @@
 import { z } from "zod";
 
-// Mirrors RequestRevisionDto. Supporting files are optional per spec.
-export const requestRevisionFormSchema = z.object({
-  reason: z
-    .string()
-    .min(1, "Explain what's wrong with this submission")
-    .max(2000, "Reason is too long"),
-  requiredChanges: z
-    .string()
-    .min(1, "Describe the required changes")
-    .max(2000, "Description is too long"),
-  files: z.array(z.instanceof(File)).max(10, "You can attach up to 10 files"),
-});
+import type { Translator } from "@/src/i18n/types";
 
-export type RequestRevisionFormInput = z.input<typeof requestRevisionFormSchema>;
-export type RequestRevisionFormValues = z.output<typeof requestRevisionFormSchema>;
+const MAX_FILES = 10;
+
+// Mirrors RequestRevisionDto. Supporting files are optional per spec. A
+// factory, so validation messages follow the active language.
+export function createRequestRevisionFormSchema(t: Translator<"clientSubmissions.validation">) {
+  return z.object({
+    reason: z
+      .string()
+      .min(1, t("reasonRequired"))
+      .max(2000, t("reasonTooLong")),
+    requiredChanges: z
+      .string()
+      .min(1, t("changesRequired"))
+      .max(2000, t("changesTooLong")),
+    files: z.array(z.instanceof(File)).max(MAX_FILES, t("tooManyFiles", { max: MAX_FILES })),
+  });
+}
+
+type RequestRevisionFormSchema = ReturnType<typeof createRequestRevisionFormSchema>;
+export type RequestRevisionFormInput = z.input<RequestRevisionFormSchema>;
+export type RequestRevisionFormValues = z.output<RequestRevisionFormSchema>;

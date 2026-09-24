@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { CalendarClock } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useApiText } from "../hooks/useApiText";
 import Tabs from "@/src/shared/components/Tabs";
 import EmptyState from "@/src/shared/components/EmptyState";
 import RelativeTime from "@/src/shared/components/RelativeTime";
@@ -20,6 +22,9 @@ interface UpcomingMilestonesListProps {
 // and upcoming are always shown as separate buckets per the sprint's
 // deadline rules, never merged into one undifferentiated list.
 export default function UpcomingMilestonesList({ items }: UpcomingMilestonesListProps) {
+  const t = useTranslations("dashboard.upcoming");
+  const apiText = useApiText();
+  const tDashboard = useTranslations("dashboard");
   const [range, setRange] = useState<RangeFilter>("30");
 
   const filtered = items.filter((item) => {
@@ -36,15 +41,15 @@ export default function UpcomingMilestonesList({ items }: UpcomingMilestonesList
           value={range}
           onChange={setRange}
           options={[
-            { value: "7", label: "Next 7 Days" },
-            { value: "30", label: "Next 30 Days" },
-            { value: "overdue", label: "Overdue" },
+            { value: "7", label: t("next7") },
+            { value: "30", label: t("next30") },
+            { value: "overdue", label: t("overdue") },
           ]}
         />
       </div>
 
       {filtered.length === 0 ? (
-        <EmptyState icon={CalendarClock} title="No milestones in this range." />
+        <EmptyState icon={CalendarClock} title={t("empty")} />
       ) : (
         <ul className="flex flex-col gap-2">
           {filtered.map((item) => (
@@ -53,18 +58,24 @@ export default function UpcomingMilestonesList({ items }: UpcomingMilestonesList
               className="flex flex-wrap items-center gap-3 p-3 border border-border rounded-xl"
             >
               <div className="flex-1 min-w-0">
-                <p className="font-medium text-text-primary text-sm truncate">
+                <p dir="auto" className="font-medium text-text-primary text-sm truncate">
                   {item.milestoneTitle}
                 </p>
                 <p className="text-text-secondary text-xs">
-                  {item.projectName}
-                  {item.counterpartyName ? ` · ${item.counterpartyName}` : ""}
+                  <bdi>{item.projectName}</bdi>
+                  {item.counterpartyName ? (
+                    <>
+                      {" · "}
+                      <bdi>{item.counterpartyName}</bdi>
+                    </>
+                  ) : null}
                   {" · "}
-                  {formatCurrency(item.agreedAmount, item.currency ?? "USD")}
+                  <bdi>{formatCurrency(item.agreedAmount, item.currency ?? "USD")}</bdi>
                 </p>
                 <p className={`mt-1 text-xs ${item.isOverdue ? "text-danger font-medium" : "text-text-secondary"}`}>
-                  {item.isOverdue ? "Overdue — was due " : "Due "}
-                  <RelativeTime value={item.dueDateUtc} />
+                  {t.rich(item.isOverdue ? "overdueWasDue" : "due", {
+                    time: () => <RelativeTime value={item.dueDateUtc} />,
+                  })}
                 </p>
               </div>
 
@@ -76,7 +87,7 @@ export default function UpcomingMilestonesList({ items }: UpcomingMilestonesList
                 href={`/projects/${item.projectId}/milestones/${item.milestoneId}`}
                 className="bg-surface-muted hover:bg-border/60 px-3 rounded-lg h-9 font-semibold text-text-primary text-xs whitespace-nowrap leading-9 transition shrink-0"
               >
-                {item.actionLabel ?? "Open"}
+                {item.actionLabel ? apiText(item.actionLabel) : tDashboard("open")}
               </Link>
             </li>
           ))}

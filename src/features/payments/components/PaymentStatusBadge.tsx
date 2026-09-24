@@ -1,7 +1,5 @@
-import {
-  PAYMENT_STATUS_LABEL,
-  type MilestonePaymentStatus,
-} from "../types/payment";
+import type { MilestonePaymentStatus } from "../types/payment";
+import { useStatusLabel } from "@/src/shared/hooks/useStatusLabel";
 
 const statusStyles: Record<MilestonePaymentStatus, string> = {
   NotEligible: "bg-surface-muted text-text-secondary",
@@ -15,9 +13,10 @@ const statusStyles: Record<MilestonePaymentStatus, string> = {
 // falls back to rendering the raw value rather than breaking if it doesn't
 // match one of our guessed keys.
 export function PaymentStatusBadge({ status }: { status: string }) {
+  const statusLabel = useStatusLabel("milestonePayment");
   const known = status as MilestonePaymentStatus;
   const style = statusStyles[known] ?? "bg-surface-muted text-text-secondary";
-  const label = PAYMENT_STATUS_LABEL[known] ?? status;
+  const label = statusLabel(status);
 
   return (
     <span

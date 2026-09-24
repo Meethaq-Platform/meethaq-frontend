@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+
 interface FreelancerInfoCardProps {
   freelancerName: string;
 }
@@ -7,12 +9,14 @@ interface FreelancerInfoCardProps {
 // a client can't reassign who they're working with, so there's no edit
 // affordance here (unlike ClientCard's AssignClientControl).
 export function FreelancerInfoCard({ freelancerName }: FreelancerInfoCardProps) {
+  const t = useTranslations("clientProjects.freelancerCard");
+
   return (
     <div className="bg-surface p-6 border border-border rounded-2xl">
       <p className="mb-4 font-semibold text-text-secondary text-xs uppercase tracking-wide">
-        Freelancer
+        {t("title")}
       </p>
-      <p className="text-text-primary text-sm">{freelancerName}</p>
+      <p dir="auto" className="text-text-primary text-sm">{freelancerName}</p>
     </div>
   );
 }

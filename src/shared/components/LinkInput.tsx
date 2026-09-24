@@ -1,6 +1,7 @@
 "use client";
 
 import { Link2, Plus, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Input from "./Input";
 import InputError from "./InputError";
 
@@ -24,6 +25,7 @@ export default function LinkInput({
   errors,
   maxLinks = 10,
 }: LinkInputProps) {
+  const t = useTranslations("common.links");
   const handleAdd = () => {
     if (links.length >= maxLinks) return;
     onChange([...links, { url: "", label: "" }]);
@@ -43,8 +45,9 @@ export default function LinkInput({
         <div key={index} className="flex items-start gap-2">
           <div className="flex-1 space-y-1">
             <Input
-              label={index === 0 ? "Delivery Link" : `Delivery Link ${index + 1}`}
+              label={index === 0 ? t("deliveryLink") : t("deliveryLinkNumbered", { number: index + 1 })}
               placeholder="https://..."
+              dir="ltr"
               value={link.url}
               onChange={(event) => handleUpdate(index, { url: event.target.value })}
             />
@@ -55,7 +58,7 @@ export default function LinkInput({
             <button
               type="button"
               onClick={() => handleRemove(index)}
-              aria-label="Remove link"
+              aria-label={t("remove")}
               className="hover:bg-surface-muted p-2 rounded-lg text-text-secondary hover:text-danger transition"
             >
               <X size={16} />
@@ -72,7 +75,7 @@ export default function LinkInput({
         >
           <Link2 size={14} />
           <Plus size={12} />
-          Add Link
+          {t("add")}
         </button>
       )}
     </div>

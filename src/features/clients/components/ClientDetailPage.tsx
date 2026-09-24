@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Pencil } from "lucide-react";
 import { useIsMutating } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
+import { useFormat } from "@/src/shared/hooks/useFormat";
 
 import { useClient } from "../hooks/useClient";
 import { usePageTitle } from "@/src/shared/hooks/usePageTitle";
@@ -12,15 +14,18 @@ import { EditClientForm } from "./EditClientForm";
 import Button from "@/src/shared/components/Button";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
-import { formatDate } from "@/src/shared/lib/format";
 
 interface ClientDetailPageProps {
   clientId: string;
 }
 
 export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
+  const t = useTranslations("clients.detail");
+  const tActions = useTranslations("common.actions");
+  const format = useFormat();
   const { data, isLoading, isError, refetch } = useClient(clientId);
-  usePageTitle(data ? `Clients/${data.clientFullName}` : undefined);
+  const tPageTitles = useTranslations("pageTitles");
+  usePageTitle(data ? tPageTitles("client", { name: data.clientFullName }) : undefined);
   const [isEditing, setIsEditing] = useState(false);
   const [isFormDirty, setIsFormDirty] = useState(false);
   const isSaving = useIsMutating({ mutationKey: ["update-client"] }) > 0;
@@ -31,8 +36,8 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
         href="/clients"
         className="flex items-center gap-1.5 text-text-secondary hover:text-text-primary text-sm transition"
       >
-        <ArrowLeft size={16} />
-        Back to Clients
+        <ArrowLeft size={16} className="rtl-flip" />
+        {t("back")}
       </Link>
 
       {isLoading ? (
@@ -41,7 +46,7 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
         </div>
       ) : isError || !data ? (
         <ErrorState
-          message="Failed to load this client."
+          message={t("loadFailed")}
           onRetry={() => refetch()}
         />
       ) : (
@@ -49,7 +54,7 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
           {/* Header: avatar + identity + contact metadata — mirrors
               ProjectDetailPage's header. Edit lives on the Details card
               below since that's the only content it actually edits. */}
-          <div className="bg-(--amber-bg) p-6 border border-border rounded-2xl">
+          <div className="bg-(--card-bg) p-6 border border-border rounded-2xl">
             <div className="flex items-start gap-4 min-w-0">
               <ClientAvatar
                 fullName={data.clientFullName}
@@ -57,18 +62,18 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
               />
 
               <div className="min-w-0">
-                <h1 className="font-bold text-text-primary text-xl md:text-2xl truncate">
+                <h1 dir="auto" className="font-bold text-text-primary text-xl md:text-2xl truncate">
                   {data.clientFullName}
                 </h1>
 
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-text-secondary text-sm">
-                  <span>{data.clientEmail}</span>
+                  <span dir="ltr">{data.clientEmail}</span>
                   {data.clientPhoneNumber && (
                     <>
                       <span aria-hidden className="text-border">
                         ·
                       </span>
-                      <span>{data.clientPhoneNumber}</span>
+                      <span dir="ltr">{data.clientPhoneNumber}</span>
                     </>
                   )}
                   {data.clientCountry && (
@@ -76,13 +81,13 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
                       <span aria-hidden className="text-border">
                         ·
                       </span>
-                      <span>{data.clientCountry}</span>
+                      <bdi>{data.clientCountry}</bdi>
                     </>
                   )}
                 </div>
 
                 <p className="mt-2 text-text-secondary text-xs">
-                  Added {formatDate(data.dateAdded)}
+                  {t("added", { date: format.date(data.dateAdded) })}
                 </p>
               </div>
             </div>
@@ -91,7 +96,7 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
           <div className="bg-surface p-6 border border-border rounded-2xl">
             <div className="flex justify-between items-center mb-4">
               <p className="font-semibold text-text-secondary text-xs uppercase tracking-wide">
-                Details
+                {t("details")}
               </p>
 
               <div className="flex items-center gap-2 shrink-0">
@@ -103,7 +108,7 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
                       onClick={() => setIsEditing(false)}
                       className="px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
                     >
-                      Cancel
+                      {tActions("cancel")}
                     </Button>
 
                     <Button
@@ -111,10 +116,10 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
                       form="client-edit-form"
                       disabled={!isFormDirty}
                       loading={isSaving}
-                      loadingText="Saving..."
+                      loadingText={tActions("saving")}
                       className="px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
                     >
-                      Save Changes
+                      {tActions("saveChanges")}
                     </Button>
                   </>
                 ) : (
@@ -127,7 +132,7 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
                     className="flex items-center gap-1.5 px-3 sm:px-4 h-8 sm:h-9 text-xs sm:text-sm"
                   >
                     <Pencil size={14} className="sm:size-4 size-3.5" />
-                    Edit
+                    {tActions("edit")}
                   </Button>
                 )}
               </div>
@@ -143,9 +148,9 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
               <div className="gap-x-6 gap-y-6 grid grid-cols-1 sm:grid-cols-3">
                 <div>
                   <p className="text-text-secondary text-xs uppercase tracking-wide">
-                    Company
+                    {t("company")}
                   </p>
-                  <p className="text-text-primary text-sm">
+                  <p dir="auto" className="text-text-primary text-sm">
                     {data.companyName ?? "—"}
                   </p>
                 </div>
@@ -153,9 +158,9 @@ export default function ClientDetailPage({ clientId }: ClientDetailPageProps) {
                 {data.notes && (
                   <div className="sm:col-span-2">
                     <p className="text-text-secondary text-xs uppercase tracking-wide">
-                      Notes
+                      {t("notes")}
                     </p>
-                    <p className="text-text-primary text-sm">{data.notes}</p>
+                    <p dir="auto" className="text-text-primary text-sm">{data.notes}</p>
                   </div>
                 )}
               </div>

@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Download, Paperclip } from "lucide-react";
 
 import {
-  addEvidenceSchema,
+  createAddEvidenceSchema,
   type AddEvidenceFormValues,
-  proposeResolutionSchema,
+  createProposeResolutionSchema,
   type ProposeResolutionFormValues,
-  rejectResolutionSchema,
+  createRejectResolutionSchema,
   type RejectResolutionFormValues,
 } from "../schemas/dispute.schema";
 import { useDispute } from "../hooks/useDispute";
@@ -21,7 +21,8 @@ import { useWithdrawDispute } from "../hooks/useWithdrawDispute";
 import { getExportUrl } from "../lib/service";
 import { DisputeStatusBadge } from "./DisputeStatusBadge";
 import { DisputeCategoryBadge } from "./DisputeCategoryBadge";
-import { DISPUTE_EVIDENCE_SOURCE_LABEL } from "../types/dispute";
+import { useTranslations } from "next-intl";
+import { useStatusLabel } from "@/src/shared/hooks/useStatusLabel";
 import { useCurrentUser } from "@/src/features/auth/hooks/useCurrentUser";
 import Modal from "@/src/shared/components/Modal";
 import Button from "@/src/shared/components/Button";
@@ -29,7 +30,7 @@ import Input from "@/src/shared/components/Input";
 import Textarea from "@/src/shared/components/Textarea";
 import InputError from "@/src/shared/components/InputError";
 import Spinner from "@/src/shared/components/Spinner";
-import { formatDateTime } from "@/src/shared/lib/format";
+import { useFormat } from "@/src/shared/hooks/useFormat";
 import { getErrorMessage } from "@/src/shared/lib/getErrorMessage";
 
 interface DisputeDetailModalProps {
@@ -45,6 +46,20 @@ export function DisputeDetailModal({
   disputeId,
   onClose,
 }: DisputeDetailModalProps) {
+  const evidenceSourceLabel = useStatusLabel("evidenceSource");
+  const tStatus = useTranslations("status");
+  const t = useTranslations("disputes.detail");
+  const tActions = useTranslations("common.actions");
+  const tValidation = useTranslations("disputes.validation");
+  const format = useFormat();
+  const schemas = useMemo(
+    () => ({
+      addEvidence: createAddEvidenceSchema(tValidation),
+      proposeResolution: createProposeResolutionSchema(tValidation),
+      rejectResolution: createRejectResolutionSchema(tValidation),
+    }),
+    [tValidation],
+  );
   const [showEvidenceForm, setShowEvidenceForm] = useState(false);
   const [showProposeForm, setShowProposeForm] = useState(false);
   const [rejectingProposalId, setRejectingProposalId] = useState<number | null>(null);
@@ -76,17 +91,17 @@ export function DisputeDetailModal({
   );
 
   const evidenceForm = useForm<AddEvidenceFormValues>({
-    resolver: zodResolver(addEvidenceSchema),
+    resolver: zodResolver(schemas.addEvidence),
     defaultValues: { description: "", externalUrl: "" },
   });
 
   const proposeForm = useForm<ProposeResolutionFormValues>({
-    resolver: zodResolver(proposeResolutionSchema),
+    resolver: zodResolver(schemas.proposeResolution),
     defaultValues: { proposedResolution: "" },
   });
 
   const rejectForm = useForm<RejectResolutionFormValues>({
-    resolver: zodResolver(rejectResolutionSchema),
+    resolver: zodResolver(schemas.rejectResolution),
     defaultValues: { rejectionReason: "" },
   });
 
@@ -142,7 +157,7 @@ export function DisputeDetailModal({
   };
 
   return (
-    <Modal open={isOpen} onClose={handleClose} title="Dispute" size="lg">
+    <Modal open={isOpen} onClose={handleClose} title={t("title")} size="lg">
       {isLoading || !dispute ? (
         <div className="flex justify-center py-8">
           <Spinner size={24} />
@@ -151,7 +166,7 @@ export function DisputeDetailModal({
         <div className="space-y-5">
           <div className="flex justify-between items-start gap-3">
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-text-primary text-base wrap-break-word">
+              <h3 dir="auto" className="font-semibold text-text-primary text-base wrap-break-word">
                 {dispute.milestoneTitle}
               </h3>
               <div className="flex items-center gap-2 mt-1">
@@ -162,15 +177,15 @@ export function DisputeDetailModal({
           </div>
 
           <div>
-            <p className="mb-1 text-text-secondary text-xs">Description</p>
-            <p className="text-text-primary text-sm whitespace-pre-wrap">
+            <p className="mb-1 text-text-secondary text-xs">{t("description")}</p>
+            <p dir="auto" className="text-text-primary text-sm whitespace-pre-wrap">
               {dispute.description}
             </p>
           </div>
 
           <div>
-            <p className="mb-1 text-text-secondary text-xs">Requested Resolution</p>
-            <p className="text-text-primary text-sm whitespace-pre-wrap">
+            <p className="mb-1 text-text-secondary text-xs">{t("requestedResolution")}</p>
+            <p dir="auto" className="text-text-primary text-sm whitespace-pre-wrap">
               {dispute.requestedResolution}
             </p>
           </div>
@@ -180,25 +195,25 @@ export function DisputeDetailModal({
               <p className="font-numbers font-semibold text-text-primary text-base">
                 {dispute.evidencePackage.submissionsCount}
               </p>
-              <p className="text-text-secondary">Submissions</p>
+              <p className="text-text-secondary">{t("submissions")}</p>
             </div>
             <div>
               <p className="font-numbers font-semibold text-text-primary text-base">
                 {dispute.evidencePackage.feedbackReviewsCount}
               </p>
-              <p className="text-text-secondary">Feedback</p>
+              <p className="text-text-secondary">{t("feedback")}</p>
             </div>
             <div>
               <p className="font-numbers font-semibold text-text-primary text-base">
                 {dispute.evidencePackage.chatMessagesCount}
               </p>
-              <p className="text-text-secondary">Messages</p>
+              <p className="text-text-secondary">{t("messages")}</p>
             </div>
             <div>
               <p className="font-numbers font-semibold text-text-primary text-base">
                 {dispute.evidencePackage.paymentRecordsCount}
               </p>
-              <p className="text-text-secondary">Payments</p>
+              <p className="text-text-secondary">{t("payments")}</p>
             </div>
           </div>
 
@@ -208,12 +223,12 @@ export function DisputeDetailModal({
             className="flex items-center gap-1.5 font-semibold text-primary text-sm"
           >
             <Download size={14} />
-            Export full evidence package (.zip)
+            {t("export")}
           </a>
 
           <div>
             <div className="flex justify-between items-center mb-2">
-              <p className="font-semibold text-text-primary text-sm">Evidence</p>
+              <p className="font-semibold text-text-primary text-sm">{t("evidence")}</p>
               {isDisputeOpen && (
                 <button
                   type="button"
@@ -221,7 +236,7 @@ export function DisputeDetailModal({
                   className="flex items-center gap-1 font-semibold text-primary text-xs"
                 >
                   <Paperclip size={12} />
-                  Add Evidence
+                  {t("addEvidence")}
                 </button>
               )}
             </div>
@@ -231,9 +246,9 @@ export function DisputeDetailModal({
                 onSubmit={evidenceForm.handleSubmit(onAddEvidence)}
                 className="space-y-2 bg-surface-muted mb-3 p-3 rounded-xl"
               >
-                <Input label="Link (optional)" {...evidenceForm.register("externalUrl")} />
+                <Input label={t("link")} dir="ltr" {...evidenceForm.register("externalUrl")} />
                 <Textarea
-                  label="Description (optional)"
+                  label={t("evidenceDescription")}
                   rows={2}
                   {...evidenceForm.register("description")}
                 />
@@ -249,12 +264,12 @@ export function DisputeDetailModal({
                 <InputError message={evidenceForm.formState.errors.externalUrl?.message} />
                 {addEvidence.isError && (
                   <InputError
-                    message={getErrorMessage(addEvidence.error, "Failed to add evidence.")}
+                    message={getErrorMessage(addEvidence.error, t("evidenceFailed"))}
                   />
                 )}
                 <div className="flex justify-end gap-2">
                   <Button type="submit" loading={addEvidence.isPending} className="h-9">
-                    Add
+                    {t("add")}
                   </Button>
                 </div>
               </form>
@@ -267,12 +282,12 @@ export function DisputeDetailModal({
                   className="flex justify-between items-center gap-3 bg-surface-muted px-3 py-2 rounded-lg text-sm"
                 >
                   <div className="min-w-0">
-                    <p className="text-text-primary truncate">
-                      {item.description || item.fileName || item.externalUrl || "Evidence"}
+                    <p dir="auto" className="text-text-primary truncate">
+                      {item.description || item.fileName || item.externalUrl || t("evidenceFallback")}
                     </p>
                     <p className="text-text-secondary text-xs">
-                      {DISPUTE_EVIDENCE_SOURCE_LABEL[item.sourceType] ?? "Evidence"} ·{" "}
-                      {formatDateTime(item.addedAt)}
+                      {evidenceSourceLabel(item.sourceType, tStatus("evidenceSourceUnknown"))} ·{" "}
+                      {format.dateTime(item.addedAt)}
                     </p>
                   </div>
                   {item.downloadUrl && (
@@ -282,7 +297,7 @@ export function DisputeDetailModal({
                       rel="noopener noreferrer"
                       className="text-primary text-xs shrink-0"
                     >
-                      View
+                      {t("view")}
                     </a>
                   )}
                   {item.externalUrl && (
@@ -292,7 +307,7 @@ export function DisputeDetailModal({
                       rel="noopener noreferrer"
                       className="text-primary text-xs shrink-0"
                     >
-                      Open Link
+                      {t("openLink")}
                     </a>
                   )}
                 </div>
@@ -301,23 +316,26 @@ export function DisputeDetailModal({
           </div>
 
           <div>
-            <p className="mb-2 font-semibold text-text-primary text-sm">Resolution</p>
+            <p className="mb-2 font-semibold text-text-primary text-sm">{t("resolution")}</p>
 
             {dispute.resolutionProposals.length === 0 && (
-              <p className="text-text-secondary text-sm">No resolution has been proposed yet.</p>
+              <p className="text-text-secondary text-sm">{t("noProposals")}</p>
             )}
 
             <div className="space-y-2">
               {dispute.resolutionProposals.map((proposal) => (
                 <div key={proposal.proposalId} className="bg-surface-muted p-3 rounded-lg text-sm">
-                  <p className="text-text-primary whitespace-pre-wrap">
+                  <p dir="auto" className="text-text-primary whitespace-pre-wrap">
                     {proposal.proposedResolution}
                   </p>
                   <p className="mt-1 text-text-secondary text-xs">
-                    Proposed {formatDateTime(proposal.proposedAt)}
-                    {proposal.status === 2 &&
-                      proposal.rejectionReason &&
-                      ` · Rejected: ${proposal.rejectionReason}`}
+                    {proposal.status === 2 && proposal.rejectionReason
+                      ? t.rich("proposedRejected", {
+                          date: format.dateTime(proposal.proposedAt),
+                          reason: proposal.rejectionReason,
+                          bdi: (chunks) => <bdi>{chunks}</bdi>,
+                        })
+                      : t("proposed", { date: format.dateTime(proposal.proposedAt) })}
                   </p>
                 </div>
               ))}
@@ -329,7 +347,7 @@ export function DisputeDetailModal({
                 className="space-y-2 bg-surface-muted mt-2 p-3 rounded-xl"
               >
                 <Textarea
-                  label="Rejection reason (optional)"
+                  label={t("rejectionReason")}
                   rows={2}
                   {...rejectForm.register("rejectionReason")}
                 />
@@ -339,17 +357,17 @@ export function DisputeDetailModal({
                     onClick={() => setRejectingProposalId(null)}
                     className="px-3 h-9 text-text-secondary text-sm"
                   >
-                    Back
+                    {t("back")}
                   </button>
                   <Button type="submit" variant="amber" loading={decideResolution.isPending} className="h-9">
-                    Confirm Reject
+                    {t("confirmReject")}
                   </Button>
                 </div>
               </form>
             )}
 
             {decideResolution.isError && (
-              <InputError message={getErrorMessage(decideResolution.error, "Action failed.")} />
+              <InputError message={getErrorMessage(decideResolution.error, t("failed"))} />
             )}
 
             <div className="flex flex-wrap justify-end gap-2 mt-3">
@@ -359,7 +377,7 @@ export function DisputeDetailModal({
                   onClick={() => setShowProposeForm(true)}
                   className="hover:bg-surface-muted px-4 rounded-xl h-9 font-semibold text-primary text-sm transition"
                 >
-                  Propose Resolution
+                  {t("propose")}
                 </button>
               )}
 
@@ -370,7 +388,7 @@ export function DisputeDetailModal({
                   disabled={withdrawDispute.isPending}
                   className="hover:bg-surface-muted disabled:opacity-60 px-4 rounded-xl h-9 font-semibold text-text-secondary text-sm transition"
                 >
-                  Withdraw Dispute
+                  {t("withdraw")}
                 </button>
               )}
 
@@ -381,7 +399,7 @@ export function DisputeDetailModal({
                     onClick={() => setRejectingProposalId(latestProposal!.proposalId)}
                     className="hover:bg-surface-muted px-4 rounded-xl h-9 font-semibold text-danger text-sm transition"
                   >
-                    Reject
+                    {t("reject")}
                   </button>
                   <Button
                     type="button"
@@ -397,7 +415,7 @@ export function DisputeDetailModal({
                       )
                     }
                   >
-                    Accept Resolution
+                    {t("accept")}
                   </Button>
                 </>
               )}
@@ -409,7 +427,7 @@ export function DisputeDetailModal({
                 className="space-y-2 bg-surface-muted mt-3 p-3 rounded-xl"
               >
                 <Textarea
-                  label="Proposed resolution"
+                  label={t("proposalLabel")}
                   rows={3}
                   {...proposeForm.register("proposedResolution")}
                 />
@@ -418,7 +436,7 @@ export function DisputeDetailModal({
                 />
                 {proposeResolution.isError && (
                   <InputError
-                    message={getErrorMessage(proposeResolution.error, "Failed to propose resolution.")}
+                    message={getErrorMessage(proposeResolution.error, t("proposeFailed"))}
                   />
                 )}
                 <div className="flex flex-wrap justify-end gap-2">
@@ -427,10 +445,10 @@ export function DisputeDetailModal({
                     onClick={() => setShowProposeForm(false)}
                     className="px-3 h-9 text-text-secondary text-sm"
                   >
-                    Cancel
+                    {tActions("cancel")}
                   </button>
                   <Button type="submit" loading={proposeResolution.isPending} className="h-9">
-                    Submit Proposal
+                    {t("submitProposal")}
                   </Button>
                 </div>
               </form>

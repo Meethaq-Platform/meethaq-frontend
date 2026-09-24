@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import CurrencySelect from "./CurrencySelect";
 import FinancialMetricCardView from "./FinancialMetricCardView";
 import ShowMoreToggle from "./ShowMoreToggle";
@@ -26,6 +27,7 @@ export default function FreelancerFinancialOverview({
   currency,
   onCurrencyChange,
 }: FreelancerFinancialOverviewProps) {
+  const t = useTranslations("dashboard.financial.freelancer");
   const [period, setPeriod] = useState<TrendPeriod>(6);
   const [showAllCards, setShowAllCards] = useState(false);
   const trend = useFinancialTrend("freelancer", period, currency);
@@ -43,19 +45,19 @@ export default function FreelancerFinancialOverview({
 
       <div className="flex flex-col gap-3">
         <div className="gap-3 grid grid-cols-2 lg:grid-cols-4">
-          <FinancialMetricCardView card={overview.totalIncomeReceived} tone="primary" />
-          <FinancialMetricCardView card={overview.incomeReceivedThisMonth} tone="info" />
-          <FinancialMetricCardView card={overview.approvedProjectValue} tone="amber" />
-          <FinancialMetricCardView card={overview.acceptedWorkValue} tone="success" />
+          <FinancialMetricCardView metric="totalIncomeReceived" card={overview.totalIncomeReceived} tone="primary" />
+          <FinancialMetricCardView metric="incomeReceivedThisMonth" card={overview.incomeReceivedThisMonth} tone="info" />
+          <FinancialMetricCardView metric="approvedProjectValue" card={overview.approvedProjectValue} tone="amber" />
+          <FinancialMetricCardView metric="acceptedWorkValue" card={overview.acceptedWorkValue} tone="success" />
 
           {showAllCards && (
             <>
-              <FinancialMetricCardView card={overview.totalUnpaidValue} />
-              <FinancialMetricCardView card={overview.readyForClientPayment} />
-              <FinancialMetricCardView card={overview.awaitingReceiptConfirmation} />
-              <FinancialMetricCardView card={overview.paymentIssues} />
-              <FinancialMetricCardView card={overview.onDisputeHold} />
-              <FinancialMetricCardView card={overview.notYetEligible} />
+              <FinancialMetricCardView metric="totalUnpaidValue" card={overview.totalUnpaidValue} />
+              <FinancialMetricCardView metric="readyForClientPayment" card={overview.readyForClientPayment} />
+              <FinancialMetricCardView metric="awaitingReceiptConfirmation" card={overview.awaitingReceiptConfirmation} />
+              <FinancialMetricCardView metric="paymentIssues" card={overview.paymentIssues} />
+              <FinancialMetricCardView metric="onDisputeHold" card={overview.onDisputeHold} />
+              <FinancialMetricCardView metric="notYetEligible" card={overview.notYetEligible} />
             </>
           )}
         </div>
@@ -69,27 +71,27 @@ export default function FreelancerFinancialOverview({
             <div className="border-2 border-primary/30 border-t-primary rounded-full w-6 h-6 animate-spin" />
           </div>
         ) : trend.isError || !trend.data ? (
-          <ErrorState message="Failed to load income trend." onRetry={() => trend.refetch()} />
+          <ErrorState message={t("trendFailed")} onRetry={() => trend.refetch()} />
         ) : (
           <IncomeTrendChart
             trend={trend.data}
             period={period}
             onPeriodChange={setPeriod}
-            title="Income Trend"
+            title={t("trendTitle")}
           />
         )}
       </div>
 
       <div>
-        <h3 className="mb-3 font-semibold text-text-primary text-sm">Payment Follow-Up</h3>
+        <h3 className="mb-3 font-semibold text-text-primary text-sm">{t("followUpTitle")}</h3>
         {followUp.isLoading ? (
           <div className="flex justify-center py-8">
             <div className="border-2 border-primary/30 border-t-primary rounded-full w-6 h-6 animate-spin" />
           </div>
         ) : followUp.isError || !followUp.data ? (
-          <ErrorState message="Failed to load payment follow-up." onRetry={() => followUp.refetch()} />
+          <ErrorState message={t("followUpFailed")} onRetry={() => followUp.refetch()} />
         ) : (
-          <PaymentFollowUpTable items={followUp.data.items ?? []} counterpartyLabel="Client" />
+          <PaymentFollowUpTable items={followUp.data.items ?? []} counterpartyLabel={t("counterparty")} />
         )}
       </div>
     </div>

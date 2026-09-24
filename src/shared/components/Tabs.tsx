@@ -25,7 +25,7 @@ export default function Tabs<T extends string>({
           onClick={() => onChange(option.value)}
           className={`px-3 sm:px-4 h-8 sm:h-9 rounded-lg font-semibold text-xs sm:text-sm whitespace-nowrap transition ${
             value === option.value
-              ? "bg-primary text-white shadow-sm"
+              ? "bg-primary text-on-primary shadow-sm"
               : "text-text-secondary hover:text-text-primary"
           }`}
         >

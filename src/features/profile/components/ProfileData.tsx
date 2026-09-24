@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { ProfileOverviewCard } from "./ProfileOverviewCard";
 import { PersonalInformationCard } from "./PersonalInformationCard";
 import { BioCard } from "./BioCard";
@@ -22,6 +23,7 @@ export default function ProfileData({
   onDirtyChange,
   onStartEditing,
 }: ProfileDataProps) {
+  const t = useTranslations("profile");
   const { data, isLoading, isError, refetch } = useProfile();
 
   if (isLoading) {
@@ -35,7 +37,7 @@ export default function ProfileData({
   if (isError || !data) {
     return (
       <ErrorState
-        message="Failed to load your profile."
+        message={t("loadFailed")}
         onRetry={() => refetch()}
       />
     );

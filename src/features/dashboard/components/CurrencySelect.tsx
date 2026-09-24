@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+
 interface CurrencySelectProps {
   currencies: string[];
   value: string;
@@ -12,11 +14,13 @@ export default function CurrencySelect({
   value,
   onChange,
 }: CurrencySelectProps) {
+  const t = useTranslations("dashboard");
+
   if (currencies.length <= 1) return null;
 
   return (
     <label className="flex items-center gap-2 text-sm">
-      <span className="text-text-secondary">Currency</span>
+      <span className="text-text-secondary">{t("currency")}</span>
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}

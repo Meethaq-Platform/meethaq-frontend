@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* `dark:` utilities follow the .dark class on <html> (set by the theme script
+   in the root layout), not the OS media query. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* =========================================================
    Primitive Colors
    Source: Mithaq Design System
@@ -72,9 +76,11 @@
 
   --primary: var(--teal-600);
   --primary-muted: var(--teal-50);
+  --on-primary: #ffffff;
 
   --accent-value: var(--amber-400);
   --accent-value-muted: var(--amber-50);
+  --on-accent-value: #ffffff;
 
   --success: var(--success-400);
   --success-muted: var(--success-50);
@@ -89,6 +95,8 @@
   --info-muted: var(--info-50);
 
   --card-bg: var(--amber-bg);
+
+  color-scheme: light;
 }
 
 /* =========================================================
@@ -107,21 +115,29 @@
 
   --primary: #5dcaa5;
   --primary-muted: #04342c;
+  /* The dark-mode primary/accent are light enough that white text on them
+     fails contrast, so filled buttons switch to a deep foreground. */
+  --on-primary: var(--teal-900);
 
   --accent-value: #ef9f27;
   --accent-value-muted: #412402;
+  --on-accent-value: var(--amber-900);
 
   --success: #639922;
-  --success-muted: #eaf3de;
+  --success-muted: color-mix(in srgb, #639922 18%, #242320);
 
   --warning: #ba7517;
-  --warning-muted: #faeeda;
+  --warning-muted: color-mix(in srgb, #ba7517 20%, #242320);
 
   --danger: #e24b4a;
-  --danger-muted: #fcebeb;
+  --danger-muted: color-mix(in srgb, #e24b4a 18%, #242320);
 
   --info: #378add;
-  --info-muted: #e6f1fb;
+  --info-muted: color-mix(in srgb, #378add 18%, #242320);
+
+  --card-bg: color-mix(in srgb, #ef9f27 20%, #242320);
+
+  color-scheme: dark;
 }
 
 /* =========================================================
@@ -166,9 +182,11 @@
 
   --color-primary: var(--primary);
   --color-primary-muted: var(--primary-muted);
+  --color-on-primary: var(--on-primary);
 
   --color-accent-value: var(--accent-value);
   --color-accent-value-muted: var(--accent-value-muted);
+  --color-on-accent-value: var(--on-accent-value);
 
   --color-success: var(--success);
   --color-success-muted: var(--success-muted);
@@ -186,6 +204,17 @@
   --font-numbers: var(--font-plex-arabic);
 }
 
+/* Mirrors direction-bearing icons (arrows, chevrons, send, logout, undo) in
+   RTL. Apply only to icons that point somewhere; symmetric icons, up/down
+   arrows, clocks and media controls stay as they are. Uses the individual
+   `scale` property, so a `translate-x` nudge on the same icon is NOT
+   mirrored and needs its own rtl: counterpart. */
+@utility rtl-flip {
+  &:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
+    scale: -1 1;
+  }
+}
+
 /* =========================================================
    Base
    ========================================================= */
@@ -197,6 +226,29 @@ html {
 body {
   background: var(--background);
   color: var(--text-primary);
+}
+
+/* Text that keeps its own direction (a name, a note or a URL marked
+   dir="auto"/"ltr") still lines up with the page: an English name sits on
+   the right in Arabic, like the labels around it. Form fields keep their
+   own alignment; in a layer so alignment utilities still win. */
+@layer base {
+  :where(:dir(rtl))
+    > :where([dir="auto"]:not(input, textarea, select), p[dir="ltr"], a[dir="ltr"], td[dir="ltr"]) {
+    text-align: right;
+  }
+
+  :where(:dir(ltr))
+    > :where([dir="auto"]:not(input, textarea, select), p[dir="ltr"], a[dir="ltr"], td[dir="ltr"]) {
+    text-align: left;
+  }
+}
+
+/* Theme switch crossfade (see setTheme in shared/lib/theme.ts). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 350ms;
+  animation-timing-function: ease-in-out;
 }
 
 /* The (protected) layout scrolls inside <main>, not the document — anchor

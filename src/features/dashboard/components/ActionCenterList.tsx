@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import { useApiText } from "../hooks/useApiText";
 import RelativeTime from "@/src/shared/components/RelativeTime";
 import EmptyState from "@/src/shared/components/EmptyState";
 import { CheckCircle2 } from "lucide-react";
@@ -29,9 +31,10 @@ interface ActionCenterListProps {
 // set (someone else is late), not deadlineUtc, so it always lands in
 // "Waiting" regardless of raw enum plumbing.
 export default function ActionCenterList({ items, emptyMessage }: ActionCenterListProps) {
+  const t = useTranslations("dashboard.actionCenter");
   if (items.length === 0) {
     return (
-      <EmptyState icon={CheckCircle2} title={emptyMessage} description="Nothing needs your attention right now." />
+      <EmptyState icon={CheckCircle2} title={emptyMessage} description={t("empty")} />
     );
   }
 
@@ -41,10 +44,10 @@ export default function ActionCenterList({ items, emptyMessage }: ActionCenterLi
   return (
     <div className="flex flex-col gap-5">
       {yourAction.length > 0 && (
-        <ActionGroup title="Your Action Required" items={yourAction} />
+        <ActionGroup title={t("yourAction")} items={yourAction} />
       )}
       {waiting.length > 0 && (
-        <ActionGroup title="Waiting for the Other Party" items={waiting} muted />
+        <ActionGroup title={t("waiting")} items={waiting} muted />
       )}
     </div>
   );
@@ -59,6 +62,9 @@ function ActionGroup({
   items: ActionCenterItem[];
   muted?: boolean;
 }) {
+  const t = useTranslations("dashboard.actionCenter");
+  const apiText = useApiText();
+  const locale = useLocale();
   return (
     <div>
       <h3 className="mb-2 font-medium text-text-secondary text-xs uppercase tracking-wide">
@@ -73,29 +79,40 @@ function ActionGroup({
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center gap-2 mb-1">
                 {item.priorityBadge && (
-                  <StatusPill text={item.priorityBadge} tone={urgencyTone[item.urgencyLevel] ?? "neutral"} />
+                  <StatusPill text={apiText(item.priorityBadge)} tone={urgencyTone[item.urgencyLevel] ?? "neutral"} />
                 )}
-                <span className="font-medium text-text-primary text-sm truncate">
+                <span dir="auto" className="font-medium text-text-primary text-sm truncate">
                   {item.relatedRecordTitle ?? item.actionType}
                 </span>
               </div>
 
               <p className="text-text-secondary text-xs">
-                {item.projectName}
-                {item.counterpartyName ? ` · ${item.counterpartyName}` : ""}
-                {item.amount != null && item.currency ? ` · ${item.currency} ${item.amount.toLocaleString()}` : ""}
+                <bdi>{item.projectName}</bdi>
+                {item.counterpartyName ? (
+                  <>
+                    {" · "}
+                    <bdi>{item.counterpartyName}</bdi>
+                  </>
+                ) : null}
+                {item.amount != null && item.currency ? (
+                  <>
+                    {" · "}
+                    <bdi>
+                      {`${item.currency} ${
+                        // Arabic keeps Western digits and the "USD 1,500" shape.
+                        locale === "ar" ? item.amount.toLocaleString("en-US") : item.amount.toLocaleString()
+                      }`}
+                    </bdi>
+                  </>
+                ) : null}
               </p>
 
               {(item.deadlineUtc || item.waitingSinceUtc) && (
                 <p className="mt-1 text-text-secondary text-xs">
                   {item.deadlineUtc ? (
-                    <>
-                      Due <RelativeTime value={item.deadlineUtc} />
-                    </>
+                    t.rich("due", { time: () => <RelativeTime value={item.deadlineUtc!} /> })
                   ) : (
-                    <>
-                      Waiting since <RelativeTime value={item.waitingSinceUtc!} />
-                    </>
+                    t.rich("waitingSince", { time: () => <RelativeTime value={item.waitingSinceUtc!} /> })
                   )}
                 </p>
               )}
@@ -107,10 +124,10 @@ function ActionGroup({
               // resolves to a real page, so every action opens there instead.
               <Link
                 href={`/projects/${item.projectId}`}
-                className="flex items-center gap-1 bg-primary hover:opacity-90 px-3 rounded-lg h-9 font-semibold text-white text-xs whitespace-nowrap transition shrink-0"
+                className="flex items-center gap-1 bg-primary hover:opacity-90 px-3 rounded-lg h-9 font-semibold text-on-primary text-xs whitespace-nowrap transition shrink-0"
               >
-                {item.actionButtonText}
-                <ArrowRight size={13} />
+                {apiText(item.actionButtonText)}
+                <ArrowRight size={13} className="rtl-flip" />
               </Link>
             )}
           </li>

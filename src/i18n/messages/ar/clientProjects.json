@@ -1,0 +1,49 @@
+{
+  "header": {
+    "title": "المشاريع",
+    "subtitle": "مراجعة الدعوات ومتابعة المشاريع المقبولة."
+  },
+  "tabs": {
+    "projects": "مشاريعي",
+    "invitations": "الدعوات"
+  },
+  "list": {
+    "loadFailed": "تعذّر تحميل المشاريع.",
+    "emptyTitle": "لا توجد مشاريع نشطة بعد",
+    "emptyDescription": "ستظهر هنا المشاريع المقبولة من المستقلين."
+  },
+  "invitations": {
+    "loadFailed": "تعذّر تحميل الدعوات.",
+    "emptyTitle": "لا توجد دعوات معلّقة",
+    "emptyDescription": "ستظهر هنا دعوات المشاريع المرسلة من المستقلين.",
+    "freelancerColumn": "المستقل",
+    "view": "عرض دعوة {title}"
+  },
+  "invitation": {
+    "accept": "قبول الدعوة",
+    "loadFailed": "تعذّر تحميل هذه الدعوة.",
+    "invited": "تاريخ الدعوة {date}",
+    "freelancer": "المستقل",
+    "confirmTitle": "قبول هذه الدعوة؟",
+    "confirmDescription": "سيبدأ مشروع «<bdi>{title}</bdi>» مع <bdi>{name}</bdi>.",
+    "confirm": "نعم، قبول",
+    "confirming": "جارٍ القبول...",
+    "failed": "تعذّر قبول الدعوة."
+  },
+  "contractCard": {
+    "title": "العقد",
+    "emptyTitle": "لا يوجد ما يُراجع بعد",
+    "emptyDescription": "لم يرسل المستقل عقدًا للمراجعة بعد.",
+    "summary": {
+      "PendingApproval": "بانتظار الموافقة.",
+      "ChangesRequested": "تم طلب تعديلات — بانتظار التحديثات.",
+      "Approved": "تم الاعتماد والتثبيت."
+    },
+    "summaryFallback": "إدارة هذا العقد.",
+    "view": "عرض العقد",
+    "review": "مراجعة العقد"
+  },
+  "freelancerCard": {
+    "title": "المستقل"
+  }
+}

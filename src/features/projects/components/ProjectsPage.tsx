@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -28,6 +30,7 @@ function useInitialStatus(): ProjectStatus | "" {
 }
 
 export default function ProjectsPage() {
+  const t = useTranslations("projects.list");
   const [status, setStatus] = useState<ProjectStatus | "">(useInitialStatus());
   const [search, setSearch] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
@@ -83,7 +86,7 @@ export default function ProjectsPage() {
         </div>
       ) : isError || !data ? (
         <ErrorState
-          message="Failed to load your projects."
+          message={t("loadFailed")}
           onRetry={() => refetch()}
         />
       ) : (

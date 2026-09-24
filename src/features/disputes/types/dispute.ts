@@ -5,31 +5,14 @@
 // Withdrawn). Display-only — verify against live data and fix here if wrong.
 export type DisputeStatus = 0 | 1 | 2 | 3;
 
-export const DISPUTE_STATUS_LABEL: Record<DisputeStatus, string> = {
-  0: "Open",
-  1: "Resolution Proposed",
-  2: "Resolved",
-  3: "Withdrawn",
-};
-
 // Mirrors DisputeCategory (0-5). Order matches the sprint doc's own listed
 // order exactly. This IS submitted by the user (Open Dispute form) — a wrong
 // guess mislabels which category ordinal a user's selection sends, same
 // correctness risk class as PaymentMethod.
 export type DisputeCategory = 0 | 1 | 2 | 3 | 4 | 5;
 
-export const DISPUTE_CATEGORY_OPTIONS: { value: DisputeCategory; label: string }[] = [
-  { value: 0, label: "Deliverable Quality" },
-  { value: 1, label: "Scope Disagreement" },
-  { value: 2, label: "Missed Deadline" },
-  { value: 3, label: "Acceptance Disagreement" },
-  { value: 4, label: "Payment Issue" },
-  { value: 5, label: "Other" },
-];
-
-export const DISPUTE_CATEGORY_LABEL: Record<DisputeCategory, string> = Object.fromEntries(
-  DISPUTE_CATEGORY_OPTIONS.map((o) => [o.value, o.label]),
-) as Record<DisputeCategory, string>;
+// Labels live under status.disputeCategory in the message catalogs.
+export const DISPUTE_CATEGORIES: DisputeCategory[] = [0, 1, 2, 3, 4, 5];
 
 // Mirrors DisputeProposalStatus (0-2) — no textual anchor in the doc at all,
 // ordered by the obvious lifecycle (submitted -> accepted/rejected).
@@ -48,17 +31,6 @@ export const DISPUTE_PROPOSAL_STATUS_LABEL: Record<DisputeProposalStatus, string
 // Display-only; the UI renders a generic "Evidence" label for any
 // unmapped/unexpected value rather than breaking.
 export type DisputeEvidenceSourceType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
-
-export const DISPUTE_EVIDENCE_SOURCE_LABEL: Record<DisputeEvidenceSourceType, string> = {
-  0: "Contract",
-  1: "Amendment",
-  2: "Milestone Terms",
-  3: "Submission",
-  4: "Client Feedback",
-  5: "Message",
-  6: "Payment Record",
-  7: "User Upload",
-};
 
 // Mirrors DisputeSummaryDto (list item).
 export interface DisputeSummary {

@@ -1,0 +1,7 @@
+{
+  "loadFailed": "Failed to load activity history.",
+  "emptyTitle": "No activity yet",
+  "emptyDescription": "Milestone and submission events for this project will appear here.",
+  "showMore": "Show {count, number, plain} More",
+  "lastActivity": "Last Activity"
+}

@@ -3,6 +3,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Briefcase, Loader2, Users } from "lucide-react";
 
 import { useDebouncedValue } from "@/src/features/clients/hooks/useDebouncedValue";
@@ -17,6 +18,7 @@ interface FlatResult extends SearchResultItem {
 }
 
 export function GlobalSearch({ className = "" }: { className?: string }) {
+  const t = useTranslations("layout.search");
   const router = useRouter();
   const listboxId = useId();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -101,34 +103,38 @@ export function GlobalSearch({ className = "" }: { className?: string }) {
           if (hasQuery) setIsOpen(true);
         }}
         onKeyDown={handleKeyDown}
-        placeholder="Search projects and clients..."
+        placeholder={t("placeholder")}
       />
 
       {showDropdown && (
         <div
           id={listboxId}
           role="listbox"
-          aria-label="Search results"
+          aria-label={t("resultsLabel")}
           className="top-full z-20 absolute bg-surface shadow-lg mt-1.5 border border-border rounded-xl w-full max-h-96 overflow-auto"
         >
           {isLoading ? (
             <p className="flex items-center gap-2 px-4 py-3 text-text-secondary text-sm">
               <Loader2 size={14} className="animate-spin" />
-              Searching...
+              {t("searching")}
             </p>
           ) : isError ? (
             <p className="px-4 py-3 text-danger text-sm">
-              Search failed. Try again.
+              {t("failed")}
             </p>
           ) : results.length === 0 ? (
             <p className="px-4 py-3 text-text-secondary text-sm">
-              No projects or clients match &ldquo;{query.trim()}&rdquo;.
+              {t.rich("noResults", {
+                query: query.trim(),
+                // The query is user text in either script; isolate it from the sentence.
+                q: (chunks) => <bdi>{chunks}</bdi>,
+              })}
             </p>
           ) : (
             <>
               {projects.length > 0 && (
                 <ResultGroup
-                  label="Projects"
+                  label={t("groups.projects")}
                   icon={Briefcase}
                   items={projects}
                   listboxId={listboxId}
@@ -141,7 +147,7 @@ export function GlobalSearch({ className = "" }: { className?: string }) {
 
               {clients.length > 0 && (
                 <ResultGroup
-                  label="Clients"
+                  label={t("groups.clients")}
                   icon={Users}
                   items={clients}
                   listboxId={listboxId}

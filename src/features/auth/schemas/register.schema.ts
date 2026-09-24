@@ -1,21 +1,29 @@
 import { z } from "zod";
 
-export const signupSchema = z.object({
-  firstName: z
-    .string()
-    .min(2, "First name must be at least 2 characters")
-    .max(50, "First name is too long"),
+import type { Translator } from "@/src/i18n/types";
 
-  lastName: z
-    .string()
-    .min(2, "Last name must be at least 2 characters")
-    .max(50, "Last name is too long"),
+const NAME_MIN = 2;
+const PASSWORD_MIN = 8;
 
-  email: z.string().email("Please enter a valid email address"),
+// A factory, so validation messages follow the active language.
+export function createSignupSchema(t: Translator<"auth.validation">) {
+  return z.object({
+    firstName: z
+      .string()
+      .min(NAME_MIN, t("firstNameMin", { min: NAME_MIN }))
+      .max(50, t("firstNameMax")),
 
-  password: z.string().min(8, "Password must be at least 8 characters"),
+    lastName: z
+      .string()
+      .min(NAME_MIN, t("lastNameMin", { min: NAME_MIN }))
+      .max(50, t("lastNameMax")),
 
-  role: z.enum(["freelancer", "client"]),
-});
+    email: z.string().email(t("emailInvalid")),
 
-export type SignupFormValues = z.infer<typeof signupSchema>;
+    password: z.string().min(PASSWORD_MIN, t("passwordMin", { min: PASSWORD_MIN })),
+
+    role: z.enum(["freelancer", "client"]),
+  });
+}
+
+export type SignupFormValues = z.infer<ReturnType<typeof createSignupSchema>>;

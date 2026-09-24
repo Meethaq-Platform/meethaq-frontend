@@ -1,0 +1,35 @@
+{
+  "review": {
+    "loadFailed": "Failed to load this contract.",
+    "emptyTitle": "No contract to review yet",
+    "preparing": "Your freelancer is still preparing the contract for this project.",
+    "notSubmitted": "Your freelancer hasn't submitted a contract for this project yet.",
+    "approvedOn": "You approved this contract on {date} — {amount} locked in.",
+    "changesRequested": "You requested changes on this contract. Your freelancer is revising it and will resubmit for your review."
+  },
+  "approve": {
+    "button": "Approve Contract",
+    "title": "Approve this contract?",
+    "description": "This permanently locks in the agreement details. You won't be able to request changes after approving.",
+    "confirm": "Yes, approve",
+    "confirming": "Approving...",
+    "failed": "Failed to approve contract."
+  },
+  "requestChanges": {
+    "button": "Request Changes",
+    "title": "Request changes to this contract",
+    "label": "What needs to change?",
+    "placeholder": "Describe what you'd like the freelancer to update...",
+    "failed": "Failed to request changes.",
+    "sending": "Sending...",
+    "send": "Send Feedback"
+  },
+  "validation": {
+    "feedbackRequired": "Describe what needs to change",
+    "feedbackTooLong": "Feedback is too long"
+  },
+  "feedbackHistory": {
+    "title": "Feedback History",
+    "you": "You"
+  }
+}
