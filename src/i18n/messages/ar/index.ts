@@ -7,9 +7,10 @@ import chat from "./chat.json";
 import dashboard from "./dashboard.json";
 import status from "./status.json";
 import projects from "./projects.json";
+import clients from "./clients.json";
 
 // One file per feature keeps translation diffs reviewable. Keep this list in
 // the same order as the other locale's index.
-const messages = { auth, common, layout, notifications, activity, chat, dashboard, status, projects };
+const messages = { auth, common, layout, notifications, activity, chat, dashboard, status, projects, clients };
 
 export default messages;

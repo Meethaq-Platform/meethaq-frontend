@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowDown, ArrowUp, Search } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface ClientsToolbarProps {
   search: string;
@@ -15,6 +16,7 @@ export function ClientsToolbar({
   sort,
   onSortChange,
 }: ClientsToolbarProps) {
+  const t = useTranslations("clients.toolbar");
   const isDateActive = sort === "newest" || sort === "oldest";
   const isNameActive = sort === "name_asc" || sort === "name_desc";
 
@@ -36,7 +38,7 @@ export function ClientsToolbar({
           type="search"
           value={search}
           onChange={(event) => onSearchChange(event.target.value)}
-          placeholder="Search by name, email, or company..."
+          placeholder={t("searchPlaceholder")}
           className="bg-surface py-1.5 sm:py-2 pe-4 ps-9 sm:ps-10 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full text-text-primary placeholder:text-text-secondary text-xs sm:text-sm transition"
         />
       </div>
@@ -53,7 +55,7 @@ export function ClientsToolbar({
           }`}
         >
           {sort === "oldest" ? <ArrowUp size={13} /> : <ArrowDown size={13} />}
-          {sort === "oldest" ? "Oldest" : "Newest"}
+          {sort === "oldest" ? t("oldest") : t("newest")}
         </button>
 
         <button
@@ -71,7 +73,7 @@ export function ClientsToolbar({
           ) : (
             <ArrowUp size={13} />
           )}
-          {sort === "name_desc" ? "Name (Z–A)" : "Name (A–Z)"}
+          {sort === "name_desc" ? t("nameDesc") : t("nameAsc")}
         </button>
       </div>
     </div>

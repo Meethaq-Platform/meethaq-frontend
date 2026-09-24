@@ -1,0 +1,52 @@
+{
+  "header": {
+    "title": "Clients",
+    "subtitle": "Manage the people and companies you work with.",
+    "add": "Add Client"
+  },
+  "toolbar": {
+    "searchPlaceholder": "Search by name, email, or company...",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "nameAsc": "Name (A–Z)",
+    "nameDesc": "Name (Z–A)"
+  },
+  "list": {
+    "loadFailed": "Failed to load your clients.",
+    "noResultsTitle": "No clients found",
+    "noResultsDescription": "Try adjusting your search or filters.",
+    "emptyTitle": "No clients yet",
+    "emptyDescription": "Add your first client to start tracking projects together.",
+    "columns": {
+      "client": "Client",
+      "email": "Email",
+      "company": "Company",
+      "actions": "Actions"
+    },
+    "viewDetails": "View {name}'s details"
+  },
+  "form": {
+    "email": "Email Address",
+    "company": "Company Name",
+    "notes": "Notes",
+    "addTitle": "Add Client",
+    "add": "Add Client",
+    "adding": "Adding...",
+    "addFailed": "Failed to add client.",
+    "updateFailed": "Failed to update client.",
+    "lookupHint": "The client must already have a Meethaq account — we'll look them up by email."
+  },
+  "validation": {
+    "emailInvalid": "Enter a valid email address",
+    "companyTooLong": "Company name is too long",
+    "notesTooLong": "Notes are too long"
+  },
+  "detail": {
+    "back": "Back to Clients",
+    "loadFailed": "Failed to load this client.",
+    "added": "Added {date}",
+    "details": "Details",
+    "company": "Company",
+    "notes": "Notes"
+  }
+}

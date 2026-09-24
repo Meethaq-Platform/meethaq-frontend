@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Users } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import type { Client } from "../types/client";
 import { ClientAvatar } from "./ClientAvatar";
@@ -23,18 +24,20 @@ export function ClientsTable({
   totalCount,
   onPageChange,
 }: ClientsTableProps) {
+  const t = useTranslations("clients.list");
+
   if (clients.length === 0) {
     return isFiltering ? (
       <EmptyState
         icon={Users}
-        title="No clients found"
-        description="Try adjusting your search or filters."
+        title={t("noResultsTitle")}
+        description={t("noResultsDescription")}
       />
     ) : (
       <EmptyState
         icon={Users}
-        title="No clients yet"
-        description="Add your first client to start tracking projects together."
+        title={t("emptyTitle")}
+        description={t("emptyDescription")}
       />
     );
   }
@@ -46,16 +49,16 @@ export function ClientsTable({
           <thead className="bg-primary-muted">
             <tr className="border-border border-b">
               <th className="px-6 py-3.5 font-medium text-primary text-xs text-start uppercase tracking-wide">
-                Client
+                {t("columns.client")}
               </th>
               <th className="px-6 py-3.5 font-medium text-primary text-xs text-start uppercase tracking-wide">
-                Email
+                {t("columns.email")}
               </th>
               <th className="px-6 py-3.5 font-medium text-primary text-xs text-start uppercase tracking-wide">
-                Company
+                {t("columns.company")}
               </th>
               <th className="relative px-6 py-3.5 font-medium text-primary text-xs text-end uppercase tracking-wide">
-                <span className="sr-only">Actions</span>
+                <span className="sr-only">{t("columns.actions")}</span>
               </th>
             </tr>
           </thead>
@@ -72,7 +75,7 @@ export function ClientsTable({
                       fullName={client.clientFullName}
                       profileImage={client.clientProfileImage}
                     />
-                    <span className="font-medium text-text-primary">
+                    <span dir="auto" className="font-medium text-text-primary">
                       {client.clientFullName}
                     </span>
                   </div>
@@ -82,14 +85,14 @@ export function ClientsTable({
                   <span dir="ltr">{client.clientEmail}</span>
                 </td>
 
-                <td className="px-6 py-4 text-text-secondary">
+                <td dir="auto" className="px-6 py-4 text-text-secondary">
                   {client.companyName ?? "—"}
                 </td>
 
                 <td className="px-6 py-4 text-end">
                   <Link
                     href={`/clients/${client.relationshipId}`}
-                    aria-label={`View ${client.clientFullName}'s details`}
+                    aria-label={t("viewDetails", { name: client.clientFullName })}
                     className="inline-flex justify-center items-center hover:bg-surface p-2 rounded-lg text-text-secondary hover:text-primary transition"
                   >
                     <ArrowRight size={16} className="rtl-flip" />

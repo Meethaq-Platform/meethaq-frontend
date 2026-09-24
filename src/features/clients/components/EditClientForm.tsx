@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
-  updateClientSchema,
+  createUpdateClientSchema,
   type UpdateClientFormValues,
 } from "../schemas/client.schema";
 import { useUpdateClient } from "../hooks/useUpdateClient";
@@ -25,6 +26,10 @@ export function EditClientForm({
   onSuccess,
   onDirtyChange,
 }: EditClientFormProps) {
+  const t = useTranslations("clients.form");
+  const tValidation = useTranslations("clients.validation");
+  const updateClientSchema = useMemo(() => createUpdateClientSchema(tValidation), [tValidation]);
+
   const {
     register,
     handleSubmit,
@@ -57,12 +62,12 @@ export function EditClientForm({
       className="gap-x-6 gap-y-4 grid grid-cols-1 sm:grid-cols-3"
     >
       <div>
-        <Input label="Company Name" {...register("companyName")} />
+        <Input label={t("company")} {...register("companyName")} />
         <InputError message={errors.companyName?.message} />
       </div>
 
       <div className="sm:col-span-2">
-        <Textarea label="Notes" rows={3} {...register("notes")} />
+        <Textarea label={t("notes")} rows={3} {...register("notes")} />
         <InputError message={errors.notes?.message} />
       </div>
 
@@ -72,7 +77,7 @@ export function EditClientForm({
             message={
               error instanceof Error
                 ? error.message
-                : "Failed to update client."
+                : t("updateFailed")
             }
           />
         </div>
