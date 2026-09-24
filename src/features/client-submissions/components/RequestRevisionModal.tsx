@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MessageSquareWarning } from "lucide-react";
 
 import {
-  requestRevisionFormSchema,
+  createRequestRevisionFormSchema,
   type RequestRevisionFormInput,
   type RequestRevisionFormValues,
 } from "../schemas/request-revision.schema";
@@ -29,6 +30,10 @@ export function RequestRevisionModal({
   milestoneId,
   submissionId,
 }: RequestRevisionModalProps) {
+  const t = useTranslations("clientSubmissions.revision");
+  const tActions = useTranslations("common.actions");
+  const tValidation = useTranslations("clientSubmissions.validation");
+  const requestRevisionFormSchema = useMemo(() => createRequestRevisionFormSchema(tValidation), [tValidation]);
   const [open, setOpen] = useState(false);
   const {
     register,
@@ -71,22 +76,20 @@ export function RequestRevisionModal({
         className="flex items-center gap-1.5 hover:bg-surface-muted px-4 rounded-xl h-9 font-semibold text-text-secondary text-sm transition"
       >
         <MessageSquareWarning size={14} />
-        Request Revision
+        {t("button")}
       </button>
 
-      <Modal open={open} onClose={handleClose} title="Request a revision">
+      <Modal open={open} onClose={handleClose} title={t("title")}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <p className="text-text-secondary text-xs">
-            Revision requests address work within the approved scope and acceptance
-            criteria. If you need to change scope, price, or the agreed deadline, use
-            a Change Request instead — this won&apos;t alter the contract.
+            {t("hint")}
           </p>
 
           <div>
             <Textarea
-              label="What's wrong with this submission?"
+              label={t("reason")}
               rows={3}
-              placeholder="Explain the issue..."
+              placeholder={t("reasonPlaceholder")}
               {...register("reason")}
             />
             <InputError message={errors.reason?.message} />
@@ -94,9 +97,9 @@ export function RequestRevisionModal({
 
           <div>
             <Textarea
-              label="Required Changes"
+              label={t("changes")}
               rows={3}
-              placeholder="Describe exactly what needs to change..."
+              placeholder={t("changesPlaceholder")}
               {...register("requiredChanges")}
             />
             <InputError message={errors.requiredChanges?.message} />
@@ -105,11 +108,11 @@ export function RequestRevisionModal({
           <FileAttachmentInput
             files={files}
             onChange={(next) => setValue("files", next, { shouldValidate: true })}
-            label="Attach Supporting Files (optional)"
+            label={t("files")}
           />
 
           {isError && (
-            <InputError message={getErrorMessage(error, "Failed to request revision.")} />
+            <InputError message={getErrorMessage(error, t("failed"))} />
           )}
 
           <div className="flex justify-end gap-3 pt-2">
@@ -119,11 +122,11 @@ export function RequestRevisionModal({
               disabled={isPending}
               className="hover:bg-surface-muted disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-text-secondary text-sm transition disabled:cursor-not-allowed"
             >
-              Cancel
+              {tActions("cancel")}
             </button>
 
-            <Button type="submit" loading={isPending} loadingText="Sending...">
-              Send Revision Request
+            <Button type="submit" loading={isPending} loadingText={t("sending")}>
+              {t("send")}
             </Button>
           </div>
         </form>

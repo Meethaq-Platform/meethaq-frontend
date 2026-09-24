@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -26,6 +27,7 @@ export function MilestoneReviewPage({
   projectId,
   milestoneId,
 }: MilestoneReviewPageProps) {
+  const t = useTranslations("clientSubmissions.review");
   const { data: milestone, isLoading, isError, refetch } = useClientMilestone(
     projectId,
     milestoneId,
@@ -46,7 +48,7 @@ export function MilestoneReviewPage({
 
   if (isError || !milestone) {
     return (
-      <ErrorState message="Failed to load this milestone." onRetry={() => refetch()} />
+      <ErrorState message={t("loadFailed")} onRetry={() => refetch()} />
     );
   }
 
@@ -80,7 +82,7 @@ export function MilestoneReviewPage({
       {milestone.executionStatus === "NotStarted" && (
         <div className="bg-surface-muted p-4 border border-border rounded-2xl">
           <p className="text-text-secondary text-sm">
-            The freelancer hasn&apos;t started this milestone yet.
+            {t("notStarted")}
           </p>
         </div>
       )}
@@ -88,8 +90,7 @@ export function MilestoneReviewPage({
       {milestone.executionStatus === "InProgress" && (
         <div className="bg-info-muted p-4 border border-info/20 rounded-2xl">
           <p className="text-info text-sm">
-            The freelancer is working on this milestone. You&apos;ll be notified once
-            they submit a deliverable for review.
+            {t("inProgress")}
           </p>
         </div>
       )}
@@ -97,14 +98,13 @@ export function MilestoneReviewPage({
       {milestone.executionStatus === "Accepted" && (
         <div className="bg-success-muted p-4 border border-success/20 rounded-2xl">
           <p className="text-success text-sm">
-            You&apos;ve accepted this milestone&apos;s deliverable. It&apos;s now
-            eligible for payment processing.
+            {t("accepted")}
           </p>
           <Link
             href={`/projects/${projectId}?tab=payments`}
             className="inline-flex items-center gap-1.5 mt-2 font-semibold text-success text-sm underline underline-offset-2"
           >
-            Go to Payment
+            {t("goToPayment")}
             <ArrowRight size={14} className="rtl-flip" />
           </Link>
         </div>
