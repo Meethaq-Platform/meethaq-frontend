@@ -26,7 +26,7 @@ export default function SuccessfulRegister() {
         className="flex justify-center items-center gap-2 bg-primary hover:opacity-90 mt-8 px-5 rounded-xl w-full h-11 font-semibold text-on-primary text-sm transition"
       >
         Go to Sign in
-        <ArrowRight className="w-4 h-4" />
+        <ArrowRight className="rtl-flip w-4 h-4" />
       </Link>
     </div>
   );

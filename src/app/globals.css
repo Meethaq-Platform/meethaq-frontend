@@ -204,6 +204,17 @@
   --font-numbers: var(--font-plex-arabic);
 }
 
+/* Mirrors direction-bearing icons (arrows, chevrons, send, logout, undo) in
+   RTL. Apply only to icons that point somewhere; symmetric icons, up/down
+   arrows, clocks and media controls stay as they are. Uses the individual
+   `scale` property, so a `translate-x` nudge on the same icon is NOT
+   mirrored and needs its own rtl: counterpart. */
+@utility rtl-flip {
+  &:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
+    scale: -1 1;
+  }
+}
+
 /* =========================================================
    Base
    ========================================================= */

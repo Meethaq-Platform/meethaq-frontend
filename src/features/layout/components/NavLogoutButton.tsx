@@ -13,7 +13,7 @@ export function NavLogoutButton() {
       onClick={logout}
       className="group relative flex md:justify-center lg:justify-start items-center gap-3 hover:bg-danger-muted px-3 py-2.5 rounded-xl w-full font-medium text-danger text-sm transition"
     >
-      <LogOut size={20} className="shrink-0" />
+      <LogOut size={20} className="rtl-flip shrink-0" />
 
       <span className="md:hidden lg:inline">Logout</span>
 

@@ -74,7 +74,7 @@ export function PaymentMilestoneRow({ projectId, item, isFreelancer }: PaymentMi
           {expanded ? (
             <ChevronDown size={16} className="text-text-secondary shrink-0" />
           ) : (
-            <ChevronRight size={16} className="text-text-secondary shrink-0" />
+            <ChevronRight size={16} className="rtl-flip text-text-secondary shrink-0" />
           )}
 
           <div className="min-w-0">

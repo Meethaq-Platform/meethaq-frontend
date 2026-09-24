@@ -97,7 +97,7 @@ export default function WelcomeHeader({
               className="inline-flex items-center gap-1 mt-2 font-semibold text-primary text-sm hover:underline"
             >
               Review what needs your attention
-              <ArrowRight size={13} />
+              <ArrowRight size={13} className="rtl-flip" />
             </Link>
           )}
         </div>

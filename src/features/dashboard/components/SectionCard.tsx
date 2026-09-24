@@ -48,7 +48,7 @@ export default function SectionCard<T>({
             className="flex items-center gap-1 shrink-0 font-medium text-primary text-sm hover:underline"
           >
             {viewAllLabel}
-            <ArrowRight size={14} />
+            <ArrowRight size={14} className="rtl-flip" />
           </Link>
         )}
       </div>

@@ -56,7 +56,7 @@ export function ContractCard({ project }: { project: Project }) {
           </p>
           <span className="flex items-center gap-1.5 font-semibold text-primary text-sm whitespace-nowrap shrink-0">
             {project.contractStatus === "Approved" ? "View Contract" : "Manage Contract"}
-            <ArrowRight size={16} />
+            <ArrowRight size={16} className="rtl-flip" />
           </span>
         </Link>
       )}

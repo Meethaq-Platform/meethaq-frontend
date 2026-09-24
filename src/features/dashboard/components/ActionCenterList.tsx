@@ -110,7 +110,7 @@ function ActionGroup({
                 className="flex items-center gap-1 bg-primary hover:opacity-90 px-3 rounded-lg h-9 font-semibold text-on-primary text-xs whitespace-nowrap transition shrink-0"
               >
                 {item.actionButtonText}
-                <ArrowRight size={13} />
+                <ArrowRight size={13} className="rtl-flip" />
               </Link>
             )}
           </li>

@@ -17,7 +17,7 @@ export function WithdrawContractButton({ projectId }: { projectId: string }) {
         onClick={() => setOpen(true)}
         className="flex items-center gap-1.5 hover:bg-surface-muted px-4 rounded-xl h-9 font-semibold text-text-secondary text-sm transition"
       >
-        <Undo2 size={14} />
+        <Undo2 size={14} className="rtl-flip" />
         Withdraw
       </button>
 

@@ -43,7 +43,7 @@ export function SubmitContractButton({ projectId }: { projectId: string }) {
         onClick={openModal}
         className="flex items-center gap-1.5 h-9"
       >
-        <Send size={14} />
+        <Send size={14} className="rtl-flip" />
         Submit for Approval
       </Button>
 

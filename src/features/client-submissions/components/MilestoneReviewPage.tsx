@@ -105,7 +105,7 @@ export function MilestoneReviewPage({
             className="inline-flex items-center gap-1.5 mt-2 font-semibold text-success text-sm underline underline-offset-2"
           >
             Go to Payment
-            <ArrowRight size={14} />
+            <ArrowRight size={14} className="rtl-flip" />
           </Link>
         </div>
       )}

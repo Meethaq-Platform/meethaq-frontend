@@ -80,7 +80,7 @@ export function MilestonesListView({
 
             <ChevronRight
               size={16}
-              className="text-text-secondary group-hover:text-primary transition-transform group-hover:translate-x-0.5 shrink-0"
+              className="rtl-flip text-text-secondary group-hover:text-primary transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 shrink-0"
             />
           </div>
         </Link>

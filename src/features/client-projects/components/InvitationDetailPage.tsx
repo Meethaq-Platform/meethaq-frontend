@@ -34,7 +34,7 @@ export default function InvitationDetailPage({
           href="/projects"
           className="flex items-center gap-1.5 text-text-secondary hover:text-text-primary text-sm transition"
         >
-          <ArrowLeft size={16} />
+          <ArrowLeft size={16} className="rtl-flip" />
           Back to Projects
         </Link>
 

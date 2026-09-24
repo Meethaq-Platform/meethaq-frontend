@@ -61,7 +61,7 @@ export default function UserMenu() {
             onClick={handleLogout}
             className="flex items-center gap-3 hover:bg-danger-muted px-4 w-full h-11 text-danger text-sm transition"
           >
-            <LogOut size={16} />
+            <LogOut size={16} className="rtl-flip" />
             <span>Sign out</span>
           </button>
         </div>

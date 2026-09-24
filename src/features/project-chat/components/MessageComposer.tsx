@@ -69,7 +69,7 @@ export function MessageComposer({ projectId }: MessageComposerProps) {
           aria-label="Send message"
           className="flex justify-center items-center bg-primary hover:opacity-90 disabled:opacity-60 rounded-xl w-11 h-11 text-on-primary transition disabled:cursor-not-allowed"
         >
-          <Send size={16} />
+          <Send size={16} className="rtl-flip" />
         </button>
       </div>
 

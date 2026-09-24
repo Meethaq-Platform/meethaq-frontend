@@ -92,7 +92,7 @@ export function ClientsTable({
                     aria-label={`View ${client.clientFullName}'s details`}
                     className="inline-flex justify-center items-center hover:bg-surface p-2 rounded-lg text-text-secondary hover:text-primary transition"
                   >
-                    <ArrowRight size={16} />
+                    <ArrowRight size={16} className="rtl-flip" />
                   </Link>
                 </td>
               </tr>
