@@ -43,9 +43,12 @@ export function ContractSummaryCard({ summary }: { summary: ContractSummary }) {
               isOverAllocated ? "text-danger" : "text-text-primary"
             }`}
           >
-            {isOverAllocated
-              ? `−${formatCurrency(Math.abs(summary.remainingValue))}`
-              : formatCurrency(summary.remainingValue)}
+            {/* ltr keeps the minus sign in front of the amount in Arabic */}
+            <span dir="ltr">
+              {isOverAllocated
+                ? `−${formatCurrency(Math.abs(summary.remainingValue))}`
+                : formatCurrency(summary.remainingValue)}
+            </span>
           </p>
         </div>
       </div>
