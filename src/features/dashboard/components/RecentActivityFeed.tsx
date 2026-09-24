@@ -12,6 +12,7 @@ import {
   Upload,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import EmptyState from "@/src/shared/components/EmptyState";
 import RelativeTime from "@/src/shared/components/RelativeTime";
 import { eventToneClasses, getEventTone } from "@/src/shared/lib/eventTone";
@@ -41,8 +42,10 @@ interface RecentActivityFeedProps {
 
 // Feature 21 — reads the existing activity history, never synthesizes events.
 export default function RecentActivityFeed({ items }: RecentActivityFeedProps) {
+  const t = useTranslations("dashboard.recentActivity");
+
   if (items.length === 0) {
-    return <EmptyState icon={Activity} title="No recent activity." />;
+    return <EmptyState icon={Activity} title={t("empty")} />;
   }
 
   return (
@@ -59,10 +62,15 @@ export default function RecentActivityFeed({ items }: RecentActivityFeedProps) {
               <Icon size={14} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-text-primary text-sm">{item.description}</p>
+              <p dir="auto" className="text-text-primary text-sm">{item.description}</p>
               <p className="text-text-secondary text-xs">
-                {item.projectName}
-                {item.performedByName ? ` · ${item.performedByName}` : ""}
+                <bdi>{item.projectName}</bdi>
+                {item.performedByName ? (
+                  <>
+                    {" · "}
+                    <bdi>{item.performedByName}</bdi>
+                  </>
+                ) : null}
                 {" · "}
                 <RelativeTime value={item.timestampUtc} />
               </p>

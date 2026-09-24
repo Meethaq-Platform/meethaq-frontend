@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import ErrorState from "@/src/shared/components/ErrorState";
 import type { DashboardSection } from "../types/dashboard";
@@ -25,11 +26,12 @@ export default function SectionCard<T>({
   description,
   section,
   viewAllHref,
-  viewAllLabel = "View All",
+  viewAllLabel,
   isLoading = false,
   onRetry,
   children,
 }: SectionCardProps<T>) {
+  const t = useTranslations("dashboard");
   return (
     <section className="flex flex-col bg-surface p-4 sm:p-5 border border-border rounded-2xl h-full">
       <div className="flex justify-between items-start gap-3 mb-4">
@@ -47,7 +49,7 @@ export default function SectionCard<T>({
             href={viewAllHref}
             className="flex items-center gap-1 shrink-0 font-medium text-primary text-sm hover:underline"
           >
-            {viewAllLabel}
+            {viewAllLabel ?? t("viewAll")}
             <ArrowRight size={14} className="rtl-flip" />
           </Link>
         )}
@@ -60,7 +62,7 @@ export default function SectionCard<T>({
           </div>
         ) : !section || section.hasError || !section.data ? (
           <ErrorState
-            message={section?.errorMessage ?? "This section couldn't be loaded."}
+            message={section?.errorMessage ?? t("sectionFailed")}
             onRetry={onRetry}
           />
         ) : (

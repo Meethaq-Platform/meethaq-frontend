@@ -1,0 +1,114 @@
+{
+  "loadFailed": "تعذّر تحميل لوحة التحكم.",
+  "sections": {
+    "projectOverview": "نظرة عامة على المشاريع",
+    "financialOverview": "نظرة عامة مالية",
+    "needsAttention": "بحاجة إلى اهتمام",
+    "upcomingMilestones": "المراحل القادمة",
+    "recentActivity": "النشاط الأخير"
+  },
+  "allCaughtUp": "لا توجد مهام معلّقة.",
+  "lastUpdated": "آخر تحديث <time></time>",
+  "staleData": "عرض آخر بيانات متاحة — تعذّر التحديث.",
+  "refresh": "تحديث",
+  "viewAll": "عرض الكل",
+  "sectionFailed": "تعذّر تحميل هذا القسم.",
+  "showMore": "عرض المزيد",
+  "showLess": "عرض أقل",
+  "currency": "العملة",
+  "open": "عرض",
+  "welcome": {
+    "greeting": "مرحبًا مجددًا، {name}",
+    "greetingNoName": "مرحبًا مجددًا",
+    "reviewAttention": "مراجعة ما يحتاج إلى اهتمام",
+    "quickActions": {
+      "openProjects": "عرض المشاريع",
+      "openClients": "عرض العملاء"
+    }
+  },
+  "actionCenter": {
+    "empty": "لا يوجد ما يحتاج إلى اهتمام حاليًا.",
+    "yourAction": "إجراء مطلوب",
+    "waiting": "بانتظار الطرف الآخر",
+    "due": "الاستحقاق <time></time>",
+    "waitingSince": "بدأ الانتظار <time></time>"
+  },
+  "firstUse": {
+    "freelancerTitle": "مرحبًا {name} — لنبدأ المشروع الأول",
+    "freelancerTitleNoName": "مرحبًا — لنبدأ المشروع الأول",
+    "freelancerSubtitle": "تبدأ أول اتفاقية بعد إكمال هذه الخطوات.",
+    "steps": {
+      "addClient": "إضافة عميل",
+      "createProject": "إنشاء مشروع",
+      "prepareContract": "إعداد العقد",
+      "sendForApproval": "الإرسال لموافقة العميل"
+    },
+    "clientTitle": "مرحبًا، {name}",
+    "clientTitleNoName": "مرحبًا",
+    "clientGuidance": "ستظهر المشاريع هنا عندما يشارك أحد المستقلين الوصول إليها.",
+    "reviewInvitations": "مراجعة {count, plural, one {الدعوة المعلّقة} two {الدعوتين المعلّقتين} few {{count, number, plain} دعوات معلّقة} many {{count, number, plain} دعوة معلّقة} other {{count, number, plain} دعوة معلّقة}}"
+  },
+  "metric": {
+    "help": "ما المقصود بـ «{title}»؟",
+    "periods": {
+      "AllTime": "منذ البداية",
+      "CurrentOutstanding": "المستحق حاليًا",
+      "ThisMonth": "هذا الشهر"
+    }
+  },
+  "financial": {
+    "freelancer": {
+      "trendFailed": "تعذّر تحميل اتجاه الدخل.",
+      "trendTitle": "اتجاه الدخل",
+      "followUpTitle": "متابعة الدفعات",
+      "followUpFailed": "تعذّر تحميل متابعة الدفعات.",
+      "counterparty": "العميل"
+    },
+    "client": {
+      "trendFailed": "تعذّر تحميل اتجاه المدفوعات.",
+      "trendTitle": "المدفوعات المؤكدة شهريًا",
+      "followUpTitle": "قائمة إجراءات الدفع",
+      "followUpFailed": "تعذّر تحميل قائمة إجراءات الدفع.",
+      "counterparty": "المستقل"
+    }
+  },
+  "projectOverview": {
+    "total": "المشاريع",
+    "draft": "مسودة",
+    "active": "نشط",
+    "completed": "مكتمل",
+    "cancelled": "ملغى",
+    "other": "أخرى"
+  },
+  "trend": {
+    "totalOver": "الإجمالي خلال آخر {months, plural, one {شهر واحد} two {شهرين} few {{months, number, plain} أشهر} many {{months, number, plain} شهرًا} other {{months, number, plain} شهر}}",
+    "months6": "6 أشهر",
+    "months12": "12 شهرًا",
+    "viewTable": "عرض كجدول",
+    "viewChart": "عرض الرسم البياني",
+    "month": "الشهر",
+    "confirmedIncome": "الدخل المؤكد"
+  },
+  "upcoming": {
+    "next7": "خلال 7 أيام",
+    "next30": "خلال 30 يومًا",
+    "overdue": "متأخرة",
+    "empty": "لا توجد مراحل في هذه الفترة.",
+    "overdueWasDue": "متأخرة — كان الاستحقاق <time></time>",
+    "due": "الاستحقاق <time></time>"
+  },
+  "followUp": {
+    "empty": "لا توجد دفعات تحتاج إلى متابعة.",
+    "milestone": "المرحلة",
+    "amount": "المبلغ",
+    "status": "الحالة",
+    "action": "الإجراء",
+    "disputeHold": "محتجز بسبب نزاع",
+    "overdueDue": "متأخرة — الاستحقاق <time></time>",
+    "due": "الاستحقاق <time></time>",
+    "accepted": "تم القبول <time></time>"
+  },
+  "recentActivity": {
+    "empty": "لا يوجد نشاط حديث."
+  }
+}

@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import ProjectStatusDonut from "./ProjectStatusDonut";
 import type { ProjectOverviewSummary } from "../types/dashboard";
 import type { DonutSegment } from "./ProjectStatusDonut";
@@ -15,31 +16,32 @@ interface FreelancerProjectOverviewProps {
 export default function FreelancerProjectOverview({
   overview,
 }: FreelancerProjectOverviewProps) {
+  const t = useTranslations("dashboard.projectOverview");
   const segments: DonutSegment[] = [
     {
       key: "draft",
-      label: "Draft",
+      label: t("draft"),
       value: overview.draftProjects,
       color: "var(--color-neutral-400)",
       href: "/projects?status=Draft",
     },
     {
       key: "active",
-      label: "Active",
+      label: t("active"),
       value: overview.activeProjects,
       color: "var(--color-teal-400)",
       href: "/projects?status=Active",
     },
     {
       key: "completed",
-      label: "Completed",
+      label: t("completed"),
       value: overview.completedProjects,
       color: "var(--color-info)",
       href: "/projects?status=Completed",
     },
     {
       key: "cancelled",
-      label: "Cancelled",
+      label: t("cancelled"),
       value: overview.cancelledProjects,
       color: "var(--color-danger)",
       href: "/projects?status=Cancelled",
@@ -50,7 +52,7 @@ export default function FreelancerProjectOverview({
     <ProjectStatusDonut
       segments={segments}
       total={overview.totalProjects}
-      totalLabel="Projects"
+      totalLabel={t("total")}
       totalHref="/projects"
     />
   );

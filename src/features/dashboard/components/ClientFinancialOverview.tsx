@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import CurrencySelect from "./CurrencySelect";
 import FinancialMetricCardView from "./FinancialMetricCardView";
 import ShowMoreToggle from "./ShowMoreToggle";
@@ -26,6 +27,7 @@ export default function ClientFinancialOverview({
   currency,
   onCurrencyChange,
 }: ClientFinancialOverviewProps) {
+  const t = useTranslations("dashboard.financial.client");
   const [period, setPeriod] = useState<TrendPeriod>(6);
   const [showAllCards, setShowAllCards] = useState(false);
   const trend = useFinancialTrend("client", period, currency);
@@ -68,27 +70,27 @@ export default function ClientFinancialOverview({
             <div className="border-2 border-primary/30 border-t-primary rounded-full w-6 h-6 animate-spin" />
           </div>
         ) : trend.isError || !trend.data ? (
-          <ErrorState message="Failed to load payment trend." onRetry={() => trend.refetch()} />
+          <ErrorState message={t("trendFailed")} onRetry={() => trend.refetch()} />
         ) : (
           <IncomeTrendChart
             trend={trend.data}
             period={period}
             onPeriodChange={setPeriod}
-            title="Confirmed Payments by Month"
+            title={t("trendTitle")}
           />
         )}
       </div>
 
       <div>
-        <h3 className="mb-3 font-semibold text-text-primary text-sm">Payment Action List</h3>
+        <h3 className="mb-3 font-semibold text-text-primary text-sm">{t("followUpTitle")}</h3>
         {followUp.isLoading ? (
           <div className="flex justify-center py-8">
             <div className="border-2 border-primary/30 border-t-primary rounded-full w-6 h-6 animate-spin" />
           </div>
         ) : followUp.isError || !followUp.data ? (
-          <ErrorState message="Failed to load the payment action list." onRetry={() => followUp.refetch()} />
+          <ErrorState message={t("followUpFailed")} onRetry={() => followUp.refetch()} />
         ) : (
-          <PaymentFollowUpTable items={followUp.data.items ?? []} counterpartyLabel="Freelancer" />
+          <PaymentFollowUpTable items={followUp.data.items ?? []} counterpartyLabel={t("counterparty")} />
         )}
       </div>
     </div>

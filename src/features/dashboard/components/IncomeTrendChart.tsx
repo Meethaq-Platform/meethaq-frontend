@@ -12,6 +12,8 @@ import {
 } from "recharts";
 import Tabs from "@/src/shared/components/Tabs";
 import { formatCurrency } from "@/src/shared/lib/format";
+import { useFormat } from "@/src/shared/hooks/useFormat";
+import { useLocale, useTranslations } from "next-intl";
 import { useDirection } from "@/src/i18n/useDirection";
 import type { FinancialTrend } from "../types/dashboard";
 import type { TrendPeriod } from "../types/dashboard";
@@ -58,7 +60,18 @@ export default function IncomeTrendChart({
   const isRtl = useDirection() === "rtl";
   const tableId = useId();
   const currency = trend.currency ?? "USD";
-  const points = trend.points ?? [];
+  const t = useTranslations("dashboard.trend");
+  const locale = useLocale();
+  const format = useFormat();
+  // The API's periodLabel is English ("Apr 2026"); Arabic builds its own from
+  // the numeric year/month so month names and digits follow the language.
+  const points =
+    locale === "ar"
+      ? (trend.points ?? []).map((point) => ({
+          ...point,
+          periodLabel: format.monthYear(point.year, point.month),
+        }))
+      : (trend.points ?? []);
 
   return (
     <div>
@@ -68,7 +81,7 @@ export default function IncomeTrendChart({
           <p className="font-semibold text-text-primary text-lg">
             {formatCurrency(trend.totalAmount, currency)}
             <span className="ms-1.5 font-normal text-text-secondary text-xs">
-              total over {trend.periodMonths} months
+              {t("totalOver", { months: trend.periodMonths })}
             </span>
           </p>
         </div>
@@ -78,8 +91,8 @@ export default function IncomeTrendChart({
             value={String(period) as "6" | "12"}
             onChange={(value) => onPeriodChange(Number(value) as TrendPeriod)}
             options={[
-              { value: "6", label: "6 Months" },
-              { value: "12", label: "12 Months" },
+              { value: "6", label: t("months6") },
+              { value: "12", label: t("months12") },
             ]}
           />
           <button
@@ -89,7 +102,7 @@ export default function IncomeTrendChart({
             aria-controls={tableId}
             className="hover:bg-surface-muted px-3 border border-border rounded-lg h-9 font-medium text-text-secondary text-xs transition"
           >
-            {showTable ? "View chart" : "View as table"}
+            {showTable ? t("viewChart") : t("viewTable")}
           </button>
         </div>
       </div>
@@ -99,8 +112,8 @@ export default function IncomeTrendChart({
           <table className="w-full text-sm">
             <thead>
               <tr className="border-border border-b text-text-secondary text-xs">
-                <th className="py-2 font-medium text-start">Month</th>
-                <th className="py-2 font-medium text-end">Confirmed Income</th>
+                <th className="py-2 font-medium text-start">{t("month")}</th>
+                <th className="py-2 font-medium text-end">{t("confirmedIncome")}</th>
               </tr>
             </thead>
             <tbody>
@@ -137,9 +150,7 @@ export default function IncomeTrendChart({
                 axisLine={false}
                 width={48}
                 tick={{ fill: "var(--color-text-secondary)", fontSize: 12 }}
-                tickFormatter={(value: number) =>
-                  new Intl.NumberFormat("en-US", { notation: "compact" }).format(value)
-                }
+                tickFormatter={(value: number) => format.compact(value)}
               />
               <Tooltip
                 cursor={{ fill: "var(--color-surface-muted)" }}

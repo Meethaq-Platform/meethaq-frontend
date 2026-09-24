@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ShieldAlert, Wallet } from "lucide-react";
+import { useTranslations } from "next-intl";
 import EmptyState from "@/src/shared/components/EmptyState";
 import RelativeTime from "@/src/shared/components/RelativeTime";
 import { formatCurrency, getTimeRemaining } from "@/src/shared/lib/format";
@@ -17,8 +18,11 @@ interface PaymentFollowUpTableProps {
 // per the sprint rule that a missing due date must show elapsed time without
 // being labeled overdue.
 export default function PaymentFollowUpTable({ items, counterpartyLabel }: PaymentFollowUpTableProps) {
+  const t = useTranslations("dashboard.followUp");
+  const tDashboard = useTranslations("dashboard");
+
   if (items.length === 0) {
-    return <EmptyState icon={Wallet} title="No payments need follow-up." />;
+    return <EmptyState icon={Wallet} title={t("empty")} />;
   }
 
   return (
@@ -26,11 +30,11 @@ export default function PaymentFollowUpTable({ items, counterpartyLabel }: Payme
       <table className="w-full text-sm">
         <thead>
           <tr className="border-border border-b text-text-secondary text-xs">
-            <th className="py-2 pe-3 font-medium text-start">Milestone</th>
+            <th className="py-2 pe-3 font-medium text-start">{t("milestone")}</th>
             <th className="py-2 pe-3 font-medium text-start">{counterpartyLabel}</th>
-            <th className="py-2 pe-3 font-medium text-end">Amount</th>
-            <th className="py-2 pe-3 font-medium text-start">Status</th>
-            <th className="py-2 pe-3 font-medium text-start">Action</th>
+            <th className="py-2 pe-3 font-medium text-end">{t("amount")}</th>
+            <th className="py-2 pe-3 font-medium text-start">{t("status")}</th>
+            <th className="py-2 pe-3 font-medium text-start">{t("action")}</th>
           </tr>
         </thead>
         <tbody>
@@ -40,7 +44,7 @@ export default function PaymentFollowUpTable({ items, counterpartyLabel }: Payme
             return (
               <tr key={item.milestoneId} className="border-border/60 border-b last:border-0 align-top">
                 <td className="py-2.5 pe-3">
-                  <p className="font-medium text-text-primary">{item.milestoneTitle}</p>
+                  <p dir="auto" className="font-medium text-text-primary">{item.milestoneTitle}</p>
                   <p className="text-text-secondary text-xs">{item.projectName}</p>
                 </td>
                 <td className="py-2.5 pe-3 text-text-secondary">{item.counterpartyName}</td>
@@ -51,19 +55,18 @@ export default function PaymentFollowUpTable({ items, counterpartyLabel }: Payme
                   <div className="flex flex-col gap-1">
                     {item.isDisputed && (
                       <span className="inline-flex items-center gap-1 text-danger text-xs">
-                        <ShieldAlert size={12} /> On dispute hold
+                        <ShieldAlert size={12} /> {t("disputeHold")}
                       </span>
                     )}
                     <span className={`text-xs ${isOverdue ? "font-medium text-danger" : "text-text-secondary"}`}>
                       {item.paymentDueDateUtc ? (
-                        <>
-                          {isOverdue ? "Overdue — due " : "Due "}
-                          <RelativeTime value={item.paymentDueDateUtc} />
-                        </>
+                        t.rich(isOverdue ? "overdueDue" : "due", {
+                          time: () => <RelativeTime value={item.paymentDueDateUtc!} />,
+                        })
                       ) : (
-                        <>
-                          Accepted <RelativeTime value={item.acceptanceDateUtc} />
-                        </>
+                        t.rich("accepted", {
+                          time: () => <RelativeTime value={item.acceptanceDateUtc} />,
+                        })
                       )}
                     </span>
                   </div>
@@ -76,7 +79,7 @@ export default function PaymentFollowUpTable({ items, counterpartyLabel }: Payme
                     href={`/projects/${item.projectId}/milestones/${item.milestoneId}`}
                     className="inline-flex items-center bg-surface-muted hover:bg-border/60 px-3 rounded-lg h-8 font-semibold text-text-primary text-xs whitespace-nowrap transition"
                   >
-                    {item.actionLabel ?? "Open"}
+                    {item.actionLabel ?? tDashboard("open")}
                   </Link>
                 </td>
               </tr>

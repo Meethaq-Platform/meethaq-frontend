@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Check, Circle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { FreelancerFirstUse as FreelancerFirstUseDto } from "../types/dashboard";
 
 interface FreelancerFirstUseProps {
@@ -9,7 +10,7 @@ interface FreelancerFirstUseProps {
 
 interface Step {
   done: boolean;
-  title: string;
+  key: "addClient" | "createProject" | "prepareContract" | "sendForApproval";
   href: string;
 }
 
@@ -19,25 +20,26 @@ interface Step {
 // screen it belongs to (Clients / Projects) rather than a step-specific
 // route that doesn't exist yet.
 export default function FreelancerFirstUse({ firstUse, userName }: FreelancerFirstUseProps) {
+  const t = useTranslations("dashboard.firstUse");
   const steps: Step[] = [
-    { done: firstUse.step1_ClientAdded, title: "Add a Client", href: "/clients" },
-    { done: firstUse.step2_ProjectCreated, title: "Create a Project", href: "/projects" },
-    { done: firstUse.step3_ContractPrepared, title: "Prepare the Contract", href: "/projects" },
-    { done: firstUse.step4_ContractSentForApproval, title: "Send for Client Approval", href: "/projects" },
+    { done: firstUse.step1_ClientAdded, key: "addClient", href: "/clients" },
+    { done: firstUse.step2_ProjectCreated, key: "createProject", href: "/projects" },
+    { done: firstUse.step3_ContractPrepared, key: "prepareContract", href: "/projects" },
+    { done: firstUse.step4_ContractSentForApproval, key: "sendForApproval", href: "/projects" },
   ];
 
   return (
     <section className="bg-surface p-6 sm:p-8 border border-border rounded-2xl text-center">
       <h1 className="font-bold text-text-primary text-xl sm:text-2xl">
-        Welcome, {userName ?? "there"} — let&apos;s start your first Project
+        {userName ? t("freelancerTitle", { name: userName }) : t("freelancerTitleNoName")}
       </h1>
       <p className="mt-2 text-text-secondary text-sm">
-        Complete these steps to get your first agreement moving.
+        {t("freelancerSubtitle")}
       </p>
 
       <ol className="flex flex-col gap-2 mx-auto mt-6 max-w-md text-start">
         {steps.map((step, index) => (
-          <li key={step.title}>
+          <li key={step.key}>
             <Link
               href={step.href}
               className={`flex items-center gap-3 p-3 border border-border rounded-xl transition hover:bg-surface-muted ${
@@ -50,7 +52,7 @@ export default function FreelancerFirstUse({ firstUse, userName }: FreelancerFir
                 <Circle size={18} className="text-text-secondary shrink-0" />
               )}
               <span className="text-text-primary text-sm">
-                {index + 1}. {step.title}
+                {index + 1}. {t(`steps.${step.key}`)}
               </span>
             </Link>
           </li>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 import { useFreelancerDashboard } from "../hooks/useFreelancerDashboard";
@@ -35,6 +36,7 @@ function storeCurrency(currency: string) {
 }
 
 export default function FreelancerDashboard() {
+  const t = useTranslations("dashboard");
   // Lazy initializer (not an effect): runs once per mount, safe on the
   // server (window guard) and doesn't need a setState-after-mount sync.
   const [currency, setCurrency] = useState<string | undefined>(
@@ -66,7 +68,7 @@ export default function FreelancerDashboard() {
   if (isError || !data) {
     return (
       <ErrorState
-        message="Failed to load your dashboard."
+        message={t("loadFailed")}
         onRetry={() => refetch()}
       />
     );
@@ -102,7 +104,7 @@ export default function FreelancerDashboard() {
 
         <div className="lg:w-96 shrink-0">
           <SectionCard
-            title="Project Overview"
+            title={t("sections.projectOverview")}
             section={data.projectOverview}
             viewAllHref={data.projectOverview.data?.viewAllNavigationUrl}
             onRetry={refetch}
@@ -113,7 +115,7 @@ export default function FreelancerDashboard() {
       </div>
 
       <SectionCard
-        title="Financial Overview"
+        title={t("sections.financialOverview")}
         section={data.financialOverview}
         onRetry={refetch}
       >
@@ -129,14 +131,14 @@ export default function FreelancerDashboard() {
       <div className="flex lg:flex-row flex-col gap-5">
         <div id={NEEDS_ATTENTION_ANCHOR_ID} className="flex-1 min-w-0 scroll-mt-6">
           <SectionCard
-            title="Needs Your Attention"
+            title={t("sections.needsAttention")}
             section={data.actionCenter}
             onRetry={refetch}
           >
             {(actionCenter) => (
               <ActionCenterList
                 items={actionCenter.items ?? []}
-                emptyMessage="You're all caught up."
+                emptyMessage={t("allCaughtUp")}
               />
             )}
           </SectionCard>
@@ -144,7 +146,7 @@ export default function FreelancerDashboard() {
 
         <div className="flex-1 min-w-0">
           <SectionCard
-            title="Upcoming Milestones"
+            title={t("sections.upcomingMilestones")}
             section={data.upcomingMilestones}
             onRetry={refetch}
           >
@@ -154,7 +156,7 @@ export default function FreelancerDashboard() {
       </div>
 
       <SectionCard
-        title="Recent Activity"
+        title={t("sections.recentActivity")}
         section={data.recentActivity}
         onRetry={refetch}
       >

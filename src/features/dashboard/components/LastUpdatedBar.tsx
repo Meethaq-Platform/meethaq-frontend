@@ -1,6 +1,7 @@
 "use client";
 
 import { RefreshCw } from "lucide-react";
+import { useTranslations } from "next-intl";
 import RelativeTime from "@/src/shared/components/RelativeTime";
 
 interface LastUpdatedBarProps {
@@ -19,17 +20,16 @@ export default function LastUpdatedBar({
   isStale,
   onRefresh,
 }: LastUpdatedBarProps) {
+  const t = useTranslations("dashboard");
   return (
     <div className="flex flex-wrap justify-between items-center gap-2 text-text-secondary text-xs">
       <span>
         {isStale ? (
           <span className="font-medium text-warning">
-            Showing last known data — refresh failed.
+            {t("staleData")}
           </span>
         ) : (
-          <>
-            Last updated <RelativeTime value={lastUpdatedAtUtc} />
-          </>
+          t.rich("lastUpdated", { time: () => <RelativeTime value={lastUpdatedAtUtc} /> })
         )}
       </span>
 
@@ -40,7 +40,7 @@ export default function LastUpdatedBar({
         className="flex items-center gap-1.5 hover:text-text-primary disabled:opacity-60 font-medium transition disabled:cursor-not-allowed"
       >
         <RefreshCw size={13} className={isRefreshing ? "animate-spin" : ""} />
-        Refresh
+        {t("refresh")}
       </button>
     </div>
   );

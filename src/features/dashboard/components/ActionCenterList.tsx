@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import RelativeTime from "@/src/shared/components/RelativeTime";
 import EmptyState from "@/src/shared/components/EmptyState";
 import { CheckCircle2 } from "lucide-react";
@@ -29,9 +30,10 @@ interface ActionCenterListProps {
 // set (someone else is late), not deadlineUtc, so it always lands in
 // "Waiting" regardless of raw enum plumbing.
 export default function ActionCenterList({ items, emptyMessage }: ActionCenterListProps) {
+  const t = useTranslations("dashboard.actionCenter");
   if (items.length === 0) {
     return (
-      <EmptyState icon={CheckCircle2} title={emptyMessage} description="Nothing needs your attention right now." />
+      <EmptyState icon={CheckCircle2} title={emptyMessage} description={t("empty")} />
     );
   }
 
@@ -41,10 +43,10 @@ export default function ActionCenterList({ items, emptyMessage }: ActionCenterLi
   return (
     <div className="flex flex-col gap-5">
       {yourAction.length > 0 && (
-        <ActionGroup title="Your Action Required" items={yourAction} />
+        <ActionGroup title={t("yourAction")} items={yourAction} />
       )}
       {waiting.length > 0 && (
-        <ActionGroup title="Waiting for the Other Party" items={waiting} muted />
+        <ActionGroup title={t("waiting")} items={waiting} muted />
       )}
     </div>
   );
@@ -59,6 +61,8 @@ function ActionGroup({
   items: ActionCenterItem[];
   muted?: boolean;
 }) {
+  const t = useTranslations("dashboard.actionCenter");
+  const locale = useLocale();
   return (
     <div>
       <h3 className="mb-2 font-medium text-text-secondary text-xs uppercase tracking-wide">
@@ -75,27 +79,38 @@ function ActionGroup({
                 {item.priorityBadge && (
                   <StatusPill text={item.priorityBadge} tone={urgencyTone[item.urgencyLevel] ?? "neutral"} />
                 )}
-                <span className="font-medium text-text-primary text-sm truncate">
+                <span dir="auto" className="font-medium text-text-primary text-sm truncate">
                   {item.relatedRecordTitle ?? item.actionType}
                 </span>
               </div>
 
               <p className="text-text-secondary text-xs">
-                {item.projectName}
-                {item.counterpartyName ? ` · ${item.counterpartyName}` : ""}
-                {item.amount != null && item.currency ? ` · ${item.currency} ${item.amount.toLocaleString()}` : ""}
+                <bdi>{item.projectName}</bdi>
+                {item.counterpartyName ? (
+                  <>
+                    {" · "}
+                    <bdi>{item.counterpartyName}</bdi>
+                  </>
+                ) : null}
+                {item.amount != null && item.currency ? (
+                  <>
+                    {" · "}
+                    <bdi>
+                      {`${item.currency} ${
+                        // Arabic keeps Western digits and the "USD 1,500" shape.
+                        locale === "ar" ? item.amount.toLocaleString("en-US") : item.amount.toLocaleString()
+                      }`}
+                    </bdi>
+                  </>
+                ) : null}
               </p>
 
               {(item.deadlineUtc || item.waitingSinceUtc) && (
                 <p className="mt-1 text-text-secondary text-xs">
                   {item.deadlineUtc ? (
-                    <>
-                      Due <RelativeTime value={item.deadlineUtc} />
-                    </>
+                    t.rich("due", { time: () => <RelativeTime value={item.deadlineUtc!} /> })
                   ) : (
-                    <>
-                      Waiting since <RelativeTime value={item.waitingSinceUtc!} />
-                    </>
+                    t.rich("waitingSince", { time: () => <RelativeTime value={item.waitingSinceUtc!} /> })
                   )}
                 </p>
               )}

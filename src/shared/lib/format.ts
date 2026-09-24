@@ -58,6 +58,33 @@ export function formatDateTime(value: string, locale: Locale = "en"): string {
   });
 }
 
+export function formatLongDate(value: string, locale: Locale = "en"): string {
+  return new Date(value).toLocaleDateString(intlLocale(locale), {
+    ...localeOptions(locale),
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+// "Apr 2026" from numeric parts, for chart axes whose API labels are English.
+export function formatMonthYear(year: number, month: number, locale: Locale = "en"): string {
+  return new Date(Date.UTC(year, month - 1, 1)).toLocaleDateString(intlLocale(locale), {
+    ...localeOptions(locale),
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+export function formatCompactNumber(value: number, locale: Locale = "en"): string {
+  return new Intl.NumberFormat(intlLocale(locale), {
+    ...(locale === "ar" ? LATIN_DIGITS : {}),
+    notation: "compact",
+  }).format(value);
+}
+
 const RELATIVE_UNITS: { limit: number; divisor: number; unit: Intl.RelativeTimeFormatUnit }[] = [
   { limit: 60, divisor: 1, unit: "second" },
   { limit: 3600, divisor: 60, unit: "minute" },

@@ -2,6 +2,7 @@
 
 import { Info } from "lucide-react";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { formatCurrency } from "@/src/shared/lib/format";
 import type { FinancialMetricCard } from "../types/dashboard";
 
@@ -34,6 +35,14 @@ export default function FinancialMetricCardView({
   tone,
 }: FinancialMetricCardViewProps) {
   const [showTooltip, setShowTooltip] = useState(false);
+  const t = useTranslations("dashboard.metric");
+
+  // Known period tokens are translated; unknown ones fall back to the
+  // spaced-out token, as before.
+  const periodLabel = (period: string) => {
+    const key = `periods.${period}` as "periods.AllTime";
+    return t.has(key) ? t(key) : humanizePeriod(period);
+  };
 
   // Not a link: the backend's drillDownNavigationUrl points at flat
   // cross-project pages (/payments, /contracts, /milestones) that don't
@@ -47,7 +56,7 @@ export default function FinancialMetricCardView({
       }`}
     >
       <div className="flex justify-between items-start gap-2">
-        <span className="text-text-secondary text-xs">{card.title}</span>
+        <span dir="auto" className="text-text-secondary text-xs">{card.title}</span>
 
         {card.definitionTooltip && (
           <button
@@ -56,7 +65,7 @@ export default function FinancialMetricCardView({
               event.preventDefault();
               setShowTooltip((prev) => !prev);
             }}
-            aria-label={`What does "${card.title}" mean?`}
+            aria-label={t("help", { title: card.title ?? "" })}
             className="text-text-secondary hover:text-text-primary shrink-0"
           >
             <Info size={13} />
@@ -69,11 +78,11 @@ export default function FinancialMetricCardView({
       </span>
 
       {card.period && (
-        <span className="text-text-secondary text-xs">{humanizePeriod(card.period)}</span>
+        <span className="text-text-secondary text-xs">{periodLabel(card.period)}</span>
       )}
 
       {showTooltip && card.definitionTooltip && (
-        <p className="bg-surface mt-1 p-2 border border-border rounded-lg text-text-secondary text-xs">
+        <p dir="auto" className="bg-surface mt-1 p-2 border border-border rounded-lg text-text-secondary text-xs">
           {card.definitionTooltip}
         </p>
       )}
