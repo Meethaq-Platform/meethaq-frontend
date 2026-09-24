@@ -1,12 +1,14 @@
 "use client";
 
+import { useMemo } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { AuthCard } from "./AuthCard";
 import { AuthHeader } from "./AuthHeader";
 import Button from "@/src/shared/components/Button";
 import Input from "@/src/shared/components/Input";
 import PasswordInput from "@/src/shared/components/PasswordInput";
-import { LoginFormValues, loginSchema } from "../schemas/login.schema";
+import { createLoginSchema, type LoginFormValues } from "../schemas/login.schema";
 import { useLogin } from "../hooks/useLogin";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +16,10 @@ import { useForm } from "react-hook-form";
 import InputError from "@/src/shared/components/InputError";
 
 export function LoginForm() {
+  const t = useTranslations("auth.login");
+  const tValidation = useTranslations("auth.validation");
+  const loginSchema = useMemo(() => createLoginSchema(tValidation), [tValidation]);
+
   const {
     register,
     handleSubmit,
@@ -39,23 +45,23 @@ export function LoginForm() {
 
   return (
     <AuthCard>
-      <AuthHeader title="Sign in to your account" />
+      <AuthHeader title={t("title")} />
 
       <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
         <Input
           id="emailOrFullName"
           {...register("emailOrFullName")}
           name="emailOrFullName"
-          label="Email or Username"
+          label={t("identifierLabel")}
           type="email"
-          placeholder="you@example.com"
+          placeholder={t("identifierPlaceholder")}
         />
         <InputError message={errors.emailOrFullName?.message} />
         <PasswordInput
           id="password"
           {...register("password")}
           name="password"
-          label="Password"
+          label={t("passwordLabel")}
           placeholder="••••••••"
         />
         <InputError message={errors.password?.message} />
@@ -65,7 +71,7 @@ export function LoginForm() {
             message={
               error instanceof Error
                 ? error.message
-                : "Login failed. Please try again."
+                : t("failed")
             }
           />
         )}
@@ -73,20 +79,23 @@ export function LoginForm() {
           type="submit"
           className="mt-6 w-full"
           loading={isPending}
-          loadingText="Signing in..."
+          loadingText={t("submitting")}
         >
-          Sign in
+          {t("submit")}
         </Button>
       </form>
 
       <p className="mt-6 text-text-secondary text-sm text-center">
-        Don&apos;t have an account?
-        <Link
-          href="/register"
-          className="font-semibold text-primary hover:underline"
-        >
-          Create one
-        </Link>
+        {t.rich("noAccount", {
+          link: (chunks) => (
+            <Link
+              href="/register"
+              className="font-semibold text-primary hover:underline"
+            >
+              {chunks}
+            </Link>
+          ),
+        })}
       </p>
     </AuthCard>
   );

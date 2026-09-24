@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown, LogOut } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { useLogout } from "../hooks/useLogout";
@@ -11,8 +12,18 @@ export default function UserMenu() {
   const { data: user, isLoading } = useCurrentUser();
   const { data: profile } = useProfile();
   const handleLogout = useLogout();
+  const t = useTranslations("auth");
 
   const [isOpen, setIsOpen] = useState(false);
+
+  // The API sends roles as English names; show known ones translated and
+  // anything unexpected as-is.
+  const roleLabel = (role: string | undefined) => {
+    const key = role?.toLowerCase();
+    return key === "freelancer" || key === "client" || key === "admin"
+      ? t(`roles.${key}`)
+      : role;
+  };
 
   if (isLoading || !user) {
     return null;
@@ -43,7 +54,7 @@ export default function UserMenu() {
             {user.fullName}
           </p>
 
-          <p className="text-text-secondary text-xs">{user.roles[0]}</p>
+          <p className="text-text-secondary text-xs">{roleLabel(user.roles[0])}</p>
         </div>
 
         <ChevronDown
@@ -62,7 +73,7 @@ export default function UserMenu() {
             className="flex items-center gap-3 hover:bg-danger-muted px-4 w-full h-11 text-danger text-sm transition"
           >
             <LogOut size={16} className="rtl-flip" />
-            <span>Sign out</span>
+            <span>{t("userMenu.signOut")}</span>
           </button>
         </div>
       )}

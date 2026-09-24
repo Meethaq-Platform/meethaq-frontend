@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function AuthTabs() {
   const pathname = usePathname();
+  const t = useTranslations("auth.tabs");
 
   const activeTab = pathname === "/register" ? "register" : "login";
   return (
@@ -17,7 +19,7 @@ export default function AuthTabs() {
             : "text-text-secondary hover:text-text-primary"
         }`}
       >
-        Sign in
+        {t("signIn")}
       </Link>
       <div className="bg-border w-[1px] h-5"></div>
       <Link
@@ -28,7 +30,7 @@ export default function AuthTabs() {
             : "text-text-secondary hover:text-text-primary"
         }`}
       >
-        Sign up
+        {t("signUp")}
       </Link>
     </div>
   );

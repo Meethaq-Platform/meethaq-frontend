@@ -6,12 +6,13 @@ import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
-  signupSchema,
+  createSignupSchema,
   type SignupFormValues,
 } from "../schemas/register.schema";
 import RoleSelection from "./RoleSelection";
 import { useRegister } from "../hooks/useRegister";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import Button from "@/src/shared/components/Button";
 import Input from "@/src/shared/components/Input";
 import InputError from "@/src/shared/components/InputError";
@@ -19,6 +20,10 @@ import PasswordInput from "@/src/shared/components/PasswordInput";
 import SuccessfulRegister from "./SuccessfulRegister";
 
 export function SignupForm() {
+  const t = useTranslations("auth.signup");
+  const tValidation = useTranslations("auth.validation");
+  const signupSchema = useMemo(() => createSignupSchema(tValidation), [tValidation]);
+
   const {
     register,
     handleSubmit,
@@ -55,7 +60,7 @@ export function SignupForm() {
       ) : (
         <>
           {" "}
-          <AuthHeader title="Create your account" />
+          <AuthHeader title={t("title")} />
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             {/* Name */}
             <div className="gap-4 grid grid-cols-1 sm:grid-cols-2">
@@ -63,9 +68,9 @@ export function SignupForm() {
                 <Input
                   id="firstName"
                   {...register("firstName")}
-                  label="First name"
+                  label={t("firstNameLabel")}
                   type="text"
-                  placeholder="John"
+                  placeholder={t("firstNamePlaceholder")}
                 />
                 <InputError message={errors.firstName?.message} />
               </div>
@@ -74,9 +79,9 @@ export function SignupForm() {
                 <Input
                   id="lastName"
                   {...register("lastName")}
-                  label="Last name"
+                  label={t("lastNameLabel")}
                   type="text"
-                  placeholder="Doe"
+                  placeholder={t("lastNamePlaceholder")}
                 />
                 <InputError message={errors.lastName?.message} />
               </div>
@@ -87,9 +92,9 @@ export function SignupForm() {
               <Input
                 id="email"
                 {...register("email")}
-                label="Email"
+                label={t("emailLabel")}
                 type="email"
-                placeholder="you@example.com"
+                placeholder={t("emailPlaceholder")}
               />
               <InputError message={errors.email?.message} />
             </div>
@@ -99,7 +104,7 @@ export function SignupForm() {
               <PasswordInput
                 id="password"
                 {...register("password")}
-                label="Password"
+                label={t("passwordLabel")}
                 placeholder="••••••••"
               />
               <InputError message={errors.password?.message} />
@@ -119,7 +124,7 @@ export function SignupForm() {
                   message={
                     error instanceof Error
                       ? error.message
-                      : "Registration failed. Please try again."
+                      : t("failed")
                   }
                 />
               )}
@@ -128,9 +133,9 @@ export function SignupForm() {
               <Button
                 type="submit"
                 loading={isPending}
-                loadingText="Creating account..."
+                loadingText={t("submitting")}
               >
-                Create account
+                {t("submit")}
               </Button>
             </div>
           </form>
