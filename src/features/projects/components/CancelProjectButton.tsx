@@ -24,7 +24,8 @@ export function CancelProjectButton({ projectId }: CancelProjectButtonProps) {
         className="flex items-center gap-1.5 hover:bg-danger-muted px-3 sm:px-4 rounded-xl h-8 sm:h-9 font-semibold text-danger text-xs sm:text-sm transition"
       >
         <Ban size={14} className="sm:size-4 size-3.5" />
-        Cancel Project
+        <span className="hidden sm:inline">Cancel Project</span>
+        <span className="sm:hidden">Cancel</span>
       </button>
 
       <ConfirmModal

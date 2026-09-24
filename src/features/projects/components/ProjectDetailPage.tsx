@@ -115,7 +115,7 @@ export default function ProjectDetailPage({
                 ) : (
                   <>
                     <div className="flex flex-wrap items-center gap-3">
-                      <h1 className="font-bold text-text-primary text-xl md:text-2xl truncate">
+                      <h1 className="font-bold text-text-primary text-lg sm:text-xl md:text-2xl wrap-break-word">
                         {data.title}
                       </h1>
                       <ProjectStatusBadge status={data.status} />
