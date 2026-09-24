@@ -45,18 +45,18 @@ export default function ClientFinancialOverview({
 
       <div className="flex flex-col gap-3">
         <div className="gap-3 grid grid-cols-2 lg:grid-cols-4">
-          <FinancialMetricCardView card={overview.totalConfirmedPayments} tone="primary" />
-          <FinancialMetricCardView card={overview.confirmedPaymentsThisMonth} tone="info" />
-          <FinancialMetricCardView card={overview.approvedProjectValue} tone="amber" />
-          <FinancialMetricCardView card={overview.totalUnpaidValue} tone="success" />
+          <FinancialMetricCardView metric="totalConfirmedPayments" card={overview.totalConfirmedPayments} tone="primary" />
+          <FinancialMetricCardView metric="confirmedPaymentsThisMonth" card={overview.confirmedPaymentsThisMonth} tone="info" />
+          <FinancialMetricCardView metric="approvedProjectValue" card={overview.approvedProjectValue} tone="amber" />
+          <FinancialMetricCardView metric="totalUnpaidValue" card={overview.totalUnpaidValue} tone="success" />
 
           {showAllCards && (
             <>
-              <FinancialMetricCardView card={overview.readyForPayment} />
-              <FinancialMetricCardView card={overview.awaitingFreelancerConfirmation} />
-              <FinancialMetricCardView card={overview.paymentIssues} />
-              <FinancialMetricCardView card={overview.onDisputeHold} />
-              <FinancialMetricCardView card={overview.futureMilestoneValue} />
+              <FinancialMetricCardView metric="readyForPayment" card={overview.readyForPayment} />
+              <FinancialMetricCardView metric="awaitingFreelancerConfirmation" card={overview.awaitingFreelancerConfirmation} />
+              <FinancialMetricCardView metric="paymentIssues" card={overview.paymentIssues} />
+              <FinancialMetricCardView metric="onDisputeHold" card={overview.onDisputeHold} />
+              <FinancialMetricCardView metric="futureMilestoneValue" card={overview.futureMilestoneValue} />
             </>
           )}
         </div>

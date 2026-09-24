@@ -98,6 +98,8 @@ export default function FreelancerDashboard() {
             <WelcomeHeader
               welcome={data.welcome.data}
               pendingActionsCount={data.actionCenter.data?.totalPendingCount}
+              overdueCount={data.actionCenter.data?.overdueCount}
+              approachingCount={data.actionCenter.data?.approachingDeadlinesCount}
             />
           </div>
         )}

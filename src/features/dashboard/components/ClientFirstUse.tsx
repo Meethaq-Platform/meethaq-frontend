@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Mail } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import type { ClientFirstUse as ClientFirstUseDto } from "../types/dashboard";
 
 interface ClientFirstUseProps {
@@ -14,6 +14,7 @@ interface ClientFirstUseProps {
 // its way into a Project.
 export default function ClientFirstUse({ firstUse, userName }: ClientFirstUseProps) {
   const t = useTranslations("dashboard.firstUse");
+  const locale = useLocale();
 
   return (
     <section className="bg-surface p-6 sm:p-8 border border-border rounded-2xl text-center">
@@ -21,7 +22,7 @@ export default function ClientFirstUse({ firstUse, userName }: ClientFirstUsePro
         {userName ? t("clientTitle", { name: userName }) : t("clientTitleNoName")}
       </h1>
       <p dir="auto" className="mx-auto mt-2 max-w-md text-text-secondary text-sm">
-        {firstUse.guidanceMessage ?? t("clientGuidance")}
+        {(locale === "en" && firstUse.guidanceMessage) || t("clientGuidance")}
       </p>
 
       {firstUse.pendingInvitationsCount > 0 && (

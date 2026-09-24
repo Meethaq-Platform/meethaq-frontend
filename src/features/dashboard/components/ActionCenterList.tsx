@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { useApiText } from "../hooks/useApiText";
 import RelativeTime from "@/src/shared/components/RelativeTime";
 import EmptyState from "@/src/shared/components/EmptyState";
 import { CheckCircle2 } from "lucide-react";
@@ -62,6 +63,7 @@ function ActionGroup({
   muted?: boolean;
 }) {
   const t = useTranslations("dashboard.actionCenter");
+  const apiText = useApiText();
   const locale = useLocale();
   return (
     <div>
@@ -77,7 +79,7 @@ function ActionGroup({
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center gap-2 mb-1">
                 {item.priorityBadge && (
-                  <StatusPill text={item.priorityBadge} tone={urgencyTone[item.urgencyLevel] ?? "neutral"} />
+                  <StatusPill text={apiText(item.priorityBadge)} tone={urgencyTone[item.urgencyLevel] ?? "neutral"} />
                 )}
                 <span dir="auto" className="font-medium text-text-primary text-sm truncate">
                   {item.relatedRecordTitle ?? item.actionType}
@@ -124,7 +126,7 @@ function ActionGroup({
                 href={`/projects/${item.projectId}`}
                 className="flex items-center gap-1 bg-primary hover:opacity-90 px-3 rounded-lg h-9 font-semibold text-on-primary text-xs whitespace-nowrap transition shrink-0"
               >
-                {item.actionButtonText}
+                {apiText(item.actionButtonText)}
                 <ArrowRight size={13} className="rtl-flip" />
               </Link>
             )}

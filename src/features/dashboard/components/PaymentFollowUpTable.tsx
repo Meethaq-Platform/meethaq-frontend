@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ShieldAlert, Wallet } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useApiText } from "../hooks/useApiText";
 import EmptyState from "@/src/shared/components/EmptyState";
 import RelativeTime from "@/src/shared/components/RelativeTime";
 import { formatCurrency, getTimeRemaining } from "@/src/shared/lib/format";
@@ -19,6 +20,7 @@ interface PaymentFollowUpTableProps {
 // being labeled overdue.
 export default function PaymentFollowUpTable({ items, counterpartyLabel }: PaymentFollowUpTableProps) {
   const t = useTranslations("dashboard.followUp");
+  const apiText = useApiText();
   const tDashboard = useTranslations("dashboard");
 
   if (items.length === 0) {
@@ -79,7 +81,7 @@ export default function PaymentFollowUpTable({ items, counterpartyLabel }: Payme
                     href={`/projects/${item.projectId}/milestones/${item.milestoneId}`}
                     className="inline-flex items-center bg-surface-muted hover:bg-border/60 px-3 rounded-lg h-8 font-semibold text-text-primary text-xs whitespace-nowrap transition"
                   >
-                    {item.actionLabel ?? tDashboard("open")}
+                    {item.actionLabel ? apiText(item.actionLabel) : tDashboard("open")}
                   </Link>
                 </td>
               </tr>

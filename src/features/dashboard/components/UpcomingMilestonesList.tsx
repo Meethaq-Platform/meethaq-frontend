@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { CalendarClock } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useApiText } from "../hooks/useApiText";
 import Tabs from "@/src/shared/components/Tabs";
 import EmptyState from "@/src/shared/components/EmptyState";
 import RelativeTime from "@/src/shared/components/RelativeTime";
@@ -22,6 +23,7 @@ interface UpcomingMilestonesListProps {
 // deadline rules, never merged into one undifferentiated list.
 export default function UpcomingMilestonesList({ items }: UpcomingMilestonesListProps) {
   const t = useTranslations("dashboard.upcoming");
+  const apiText = useApiText();
   const tDashboard = useTranslations("dashboard");
   const [range, setRange] = useState<RangeFilter>("30");
 
@@ -85,7 +87,7 @@ export default function UpcomingMilestonesList({ items }: UpcomingMilestonesList
                 href={`/projects/${item.projectId}/milestones/${item.milestoneId}`}
                 className="bg-surface-muted hover:bg-border/60 px-3 rounded-lg h-9 font-semibold text-text-primary text-xs whitespace-nowrap leading-9 transition shrink-0"
               >
-                {item.actionLabel ?? tDashboard("open")}
+                {item.actionLabel ? apiText(item.actionLabel) : tDashboard("open")}
               </Link>
             </li>
           ))}

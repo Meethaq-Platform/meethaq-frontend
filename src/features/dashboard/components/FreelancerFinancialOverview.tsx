@@ -45,19 +45,19 @@ export default function FreelancerFinancialOverview({
 
       <div className="flex flex-col gap-3">
         <div className="gap-3 grid grid-cols-2 lg:grid-cols-4">
-          <FinancialMetricCardView card={overview.totalIncomeReceived} tone="primary" />
-          <FinancialMetricCardView card={overview.incomeReceivedThisMonth} tone="info" />
-          <FinancialMetricCardView card={overview.approvedProjectValue} tone="amber" />
-          <FinancialMetricCardView card={overview.acceptedWorkValue} tone="success" />
+          <FinancialMetricCardView metric="totalIncomeReceived" card={overview.totalIncomeReceived} tone="primary" />
+          <FinancialMetricCardView metric="incomeReceivedThisMonth" card={overview.incomeReceivedThisMonth} tone="info" />
+          <FinancialMetricCardView metric="approvedProjectValue" card={overview.approvedProjectValue} tone="amber" />
+          <FinancialMetricCardView metric="acceptedWorkValue" card={overview.acceptedWorkValue} tone="success" />
 
           {showAllCards && (
             <>
-              <FinancialMetricCardView card={overview.totalUnpaidValue} />
-              <FinancialMetricCardView card={overview.readyForClientPayment} />
-              <FinancialMetricCardView card={overview.awaitingReceiptConfirmation} />
-              <FinancialMetricCardView card={overview.paymentIssues} />
-              <FinancialMetricCardView card={overview.onDisputeHold} />
-              <FinancialMetricCardView card={overview.notYetEligible} />
+              <FinancialMetricCardView metric="totalUnpaidValue" card={overview.totalUnpaidValue} />
+              <FinancialMetricCardView metric="readyForClientPayment" card={overview.readyForClientPayment} />
+              <FinancialMetricCardView metric="awaitingReceiptConfirmation" card={overview.awaitingReceiptConfirmation} />
+              <FinancialMetricCardView metric="paymentIssues" card={overview.paymentIssues} />
+              <FinancialMetricCardView metric="onDisputeHold" card={overview.onDisputeHold} />
+              <FinancialMetricCardView metric="notYetEligible" card={overview.notYetEligible} />
             </>
           )}
         </div>

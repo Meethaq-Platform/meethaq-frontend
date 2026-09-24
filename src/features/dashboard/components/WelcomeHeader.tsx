@@ -14,7 +14,7 @@ import {
 import * as Icons from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { WelcomeSummary } from "../types/dashboard";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useFormat } from "@/src/shared/hooks/useFormat";
 
 // Shared with FreelancerDashboard/ClientDashboard, which set this id on the
@@ -24,6 +24,8 @@ export const NEEDS_ATTENTION_ANCHOR_ID = "needs-your-attention";
 interface WelcomeHeaderProps {
   welcome: WelcomeSummary;
   pendingActionsCount?: number;
+  overdueCount?: number;
+  approachingCount?: number;
 }
 
 // The backend's QuickActionShortcutDto.icon string doesn't line up with any
@@ -70,8 +72,23 @@ function resolveIcon(
 export default function WelcomeHeader({
   welcome,
   pendingActionsCount = 0,
+  overdueCount = 0,
+  approachingCount = 0,
 }: WelcomeHeaderProps) {
   const t = useTranslations("dashboard.welcome");
+  const locale = useLocale();
+  // The API's summary sentence is English; other languages build the same
+  // sentence from the action-center counts.
+  const summary =
+    locale === "en" || !welcome.summaryText
+      ? welcome.summaryText
+      : pendingActionsCount > 0
+        ? t("summary", {
+            total: pendingActionsCount,
+            overdue: overdueCount,
+            approaching: approachingCount,
+          })
+        : t("summaryNone");
   const format = useFormat();
   const today = format.longDate(welcome.currentDateUtc);
   const firstName = welcome.userName?.split(" ")[0];
@@ -94,9 +111,9 @@ export default function WelcomeHeader({
             {firstName ? t("greeting", { name: firstName }) : t("greetingNoName")}{" "}
             <span className="md:hidden">👋</span>
           </h1>
-          {welcome.summaryText && (
+          {summary && (
             <p dir="auto" className="mt-2 max-w-2xl text-sm text-accent-value">
-              {welcome.summaryText}
+              {summary}
             </p>
           )}
 
