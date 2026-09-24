@@ -20,15 +20,17 @@ export function LastActivitySummary({ projectId }: LastActivitySummaryProps) {
   )[0];
 
   return (
-    <div className="flex items-start gap-3 bg-surface-muted shadow-sm px-4 py-3 border border-border rounded-xl w-full sm:w-auto sm:max-w-sm text-left">
-      <div className="flex justify-center items-center bg-primary-muted rounded-full w-9 h-9 text-primary shrink-0">
-        <History size={16} />
+    <div className="flex items-start gap-2 sm:gap-3 bg-surface-muted shadow-sm px-3 sm:px-4 py-2.5 sm:py-3 border border-border rounded-xl w-full sm:w-auto sm:max-w-sm text-left">
+      <div className="flex justify-center items-center bg-primary-muted rounded-full w-8 sm:w-9 h-8 sm:h-9 text-primary shrink-0">
+        <History size={15} className="sm:size-4" />
       </div>
       <div className="min-w-0">
         <p className="font-semibold text-text-secondary text-xs uppercase tracking-wide">
           Last Activity
         </p>
-        <p className="mt-0.5 text-text-primary text-sm">{latest.description}</p>
+        <p className="mt-0.5 text-text-primary text-xs sm:text-sm">
+          {latest.description}
+        </p>
         <p className="mt-1 text-text-secondary text-xs">
           {latest.performedByName} · <RelativeTime value={latest.createdAt} />
         </p>

@@ -103,7 +103,7 @@ export default function ProjectDetailPage({
         <section className="space-y-6">
           {/* Header: title + status + metadata merged in one place, actions
               alongside — replaces the old near-empty "Dashboard" card. */}
-          <div className="bg-(--amber-bg) p-6 border border-border rounded-2xl">
+          <div className="bg-(--amber-bg) p-4 sm:p-6 border border-border rounded-2xl">
             <div className="flex flex-row justify-between items-start gap-3 sm:gap-4">
               <div className="flex-1 min-w-0">
                 {isEditing ? (
@@ -114,7 +114,7 @@ export default function ProjectDetailPage({
                   />
                 ) : (
                   <>
-                    <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                       <h1 className="font-bold text-text-primary text-lg sm:text-xl md:text-2xl wrap-break-word">
                         {data.title}
                       </h1>
@@ -124,7 +124,7 @@ export default function ProjectDetailPage({
                       )}
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-text-secondary text-sm">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-text-secondary text-xs sm:text-sm">
                       <span>Created {formatDate(data.createdAt)}</span>
                       {data.totalValue != null && (
                         <>
@@ -139,7 +139,7 @@ export default function ProjectDetailPage({
                     </div>
 
                     {data.description && (
-                      <p className="mt-3 text-text-primary text-sm whitespace-pre-wrap">
+                      <p className="mt-3 text-text-primary text-xs sm:text-sm whitespace-pre-wrap">
                         {data.description}
                       </p>
                     )}
