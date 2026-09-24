@@ -1,4 +1,5 @@
 import { AlertTriangle, Clock } from "lucide-react";
+import { useTranslations } from "next-intl";
 import RelativeTime from "@/src/shared/components/RelativeTime";
 
 interface ReviewDeadlineBadgeProps {
@@ -12,6 +13,7 @@ export function ReviewDeadlineBadge({
   reviewDeadline,
   isOverdue,
 }: ReviewDeadlineBadgeProps) {
+  const t = useTranslations("submissions.deadline");
   const Icon = isOverdue ? AlertTriangle : Clock;
 
   return (
@@ -21,8 +23,9 @@ export function ReviewDeadlineBadge({
       }`}
     >
       <Icon size={12} />
-      {isOverdue ? "Review overdue — " : "Review due "}
-      <RelativeTime value={reviewDeadline} />
+      {t.rich(isOverdue ? "overdue" : "due", {
+        time: () => <RelativeTime value={reviewDeadline} />,
+      })}
     </span>
   );
 }

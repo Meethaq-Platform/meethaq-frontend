@@ -1,0 +1,49 @@
+{
+  "remind": {
+    "button": "تذكير العميل",
+    "sending": "جارٍ الإرسال..."
+  },
+  "deadline": {
+    "overdue": "المراجعة متأخرة — <time></time>",
+    "due": "موعد المراجعة <time></time>"
+  },
+  "history": {
+    "loadFailed": "تعذّر تحميل سجل التسليمات.",
+    "emptyTitle": "لا توجد تسليمات بعد",
+    "emptyDescription": "ستظهر هنا الأعمال المسلّمة وسجل نسخها.",
+    "title": "سجل التسليمات"
+  },
+  "version": {
+    "title": "النسخة {number}",
+    "awaitingReview": "بانتظار المراجعة",
+    "submittedBy": "سلّمها <bdi>{name}</bdi> بتاريخ {date}",
+    "submitted": "تاريخ التسليم {date}",
+    "accepted": "مقبولة",
+    "revisionRequested": "طُلبت تعديلات",
+    "acceptanceNote": "ملاحظة القبول",
+    "revisionFeedback": "ملاحظات التعديل",
+    "requiredChanges": "التعديلات المطلوبة",
+    "acceptedBy": "قَبِلها <bdi>{name}</bdi> بتاريخ {date}",
+    "acceptedByClient": "قَبِلها العميل بتاريخ {date}",
+    "requestedBy": "طلبها <bdi>{name}</bdi> بتاريخ {date}",
+    "requestedByClient": "طلبها العميل بتاريخ {date}"
+  },
+  "form": {
+    "notes": "ملاحظات التسليم",
+    "notesPlaceholder": "وصف ما يتم تسليمه وكيف يستوفي معايير القبول...",
+    "attach": "إرفاق ملفات",
+    "failed": "تعذّر تسليم العمل.",
+    "submitting": "جارٍ التسليم...",
+    "submit": "تسليم العمل"
+  },
+  "validation": {
+    "linkRequired": "يُرجى إدخال رابط",
+    "linkInvalid": "يجب أن يبدأ الرابط بـ http:// أو https://",
+    "labelTooLong": "التسمية طويلة جدًا",
+    "notesRequired": "ملاحظات التسليم مطلوبة",
+    "notesTooLong": "الملاحظات طويلة جدًا",
+    "tooManyLinks": "يمكن إضافة {max, plural, one {رابط واحد} two {رابطين} few {{max, number, plain} روابط} many {{max, number, plain} رابطًا} other {{max, number, plain} رابط}} كحد أقصى",
+    "tooManyFiles": "يمكن إرفاق {max, plural, one {ملف واحد} two {ملفين} few {{max, number, plain} ملفات} many {{max, number, plain} ملفًا} other {{max, number, plain} ملف}} كحد أقصى",
+    "evidenceRequired": "يُرجى إضافة ملف أو رابط تسليم واحد على الأقل"
+  }
+}

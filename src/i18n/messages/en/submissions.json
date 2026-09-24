@@ -1,0 +1,49 @@
+{
+  "remind": {
+    "button": "Remind Client",
+    "sending": "Sending..."
+  },
+  "deadline": {
+    "overdue": "Review overdue — <time></time>",
+    "due": "Review due <time></time>"
+  },
+  "history": {
+    "loadFailed": "Failed to load submission history.",
+    "emptyTitle": "No submissions yet",
+    "emptyDescription": "Submitted work and its version history will appear here.",
+    "title": "Submission History"
+  },
+  "version": {
+    "title": "Version {number}",
+    "awaitingReview": "Awaiting review",
+    "submittedBy": "Submitted by {name} on {date}",
+    "submitted": "Submitted on {date}",
+    "accepted": "Accepted",
+    "revisionRequested": "Revision Requested",
+    "acceptanceNote": "Acceptance Note",
+    "revisionFeedback": "Revision Feedback",
+    "requiredChanges": "Required Changes",
+    "acceptedBy": "Accepted by {name} on {date}",
+    "acceptedByClient": "Accepted by the client on {date}",
+    "requestedBy": "Requested by {name} on {date}",
+    "requestedByClient": "Requested by the client on {date}"
+  },
+  "form": {
+    "notes": "Submission Notes",
+    "notesPlaceholder": "Describe what you're delivering and how it meets the acceptance criteria...",
+    "attach": "Attach Files",
+    "failed": "Failed to submit work.",
+    "submitting": "Submitting...",
+    "submit": "Submit Work"
+  },
+  "validation": {
+    "linkRequired": "Enter a link",
+    "linkInvalid": "Link must start with http:// or https://",
+    "labelTooLong": "Label is too long",
+    "notesRequired": "Submission notes are required",
+    "notesTooLong": "Notes are too long",
+    "tooManyLinks": "You can add up to {max, number, plain} links",
+    "tooManyFiles": "You can attach up to {max, number, plain} files",
+    "evidenceRequired": "Add at least one file or delivery link"
+  }
+}

@@ -1,9 +1,10 @@
 import { CheckCircle2, MessageSquareWarning } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useFormat } from "@/src/shared/hooks/useFormat";
 
 import type { WorkSubmission } from "../types/submission";
 import { ReviewDeadlineBadge } from "./ReviewDeadlineBadge";
 import AttachmentList, { type AttachmentListItem } from "@/src/shared/components/AttachmentList";
-import { formatDateTime } from "@/src/shared/lib/format";
 
 interface SubmissionVersionCardProps {
   projectId: string;
@@ -18,6 +19,8 @@ export function SubmissionVersionCard({
   isLatestAwaitingReview,
   submitterName,
 }: SubmissionVersionCardProps) {
+  const t = useTranslations("submissions.version");
+  const format = useFormat();
   const feedback = submission.reviewFeedback;
 
   const evidenceAttachments: AttachmentListItem[] = submission.evidenceFiles.map((file) => ({
@@ -46,16 +49,21 @@ export function SubmissionVersionCard({
       <div className="flex justify-between items-start gap-3">
         <div>
           <p className="font-semibold text-text-primary text-sm">
-            Version {submission.versionNumber}
+            {t("title", { number: submission.versionNumber })}
             {isLatestAwaitingReview && (
               <span className="ms-2 font-medium text-primary text-xs">
-                Awaiting review
+                {t("awaitingReview")}
               </span>
             )}
           </p>
           <p className="mt-0.5 text-text-secondary text-xs">
-            Submitted{submitterName ? ` by ${submitterName}` : ""} on{" "}
-            {formatDateTime(submission.submittedAt)}
+            {submitterName
+              ? t.rich("submittedBy", {
+                  name: submitterName,
+                  date: format.dateTime(submission.submittedAt),
+                  bdi: (chunks) => <bdi>{chunks}</bdi>,
+                })
+              : t("submitted", { date: format.dateTime(submission.submittedAt) })}
           </p>
         </div>
 
@@ -67,17 +75,17 @@ export function SubmissionVersionCard({
         ) : feedback.decision === "Accepted" ? (
           <span className="inline-flex items-center gap-1.5 bg-success-muted px-2.5 py-1 rounded-full font-medium text-success text-xs">
             <CheckCircle2 size={12} />
-            Accepted
+            {t("accepted")}
           </span>
         ) : (
           <span className="inline-flex items-center gap-1.5 bg-danger-muted px-2.5 py-1 rounded-full font-medium text-danger text-xs">
             <MessageSquareWarning size={12} />
-            Revision Requested
+            {t("revisionRequested")}
           </span>
         )}
       </div>
 
-      <p className="mt-3 text-text-primary text-sm whitespace-pre-wrap">
+      <p dir="auto" className="mt-3 text-text-primary text-sm whitespace-pre-wrap">
         {submission.submissionNotes}
       </p>
 
@@ -103,11 +111,11 @@ export function SubmissionVersionCard({
       {feedback !== null && (
         <div className="mt-3 pt-3 border-border border-t">
           <p className="text-text-secondary text-xs uppercase tracking-wide">
-            {feedback.decision === "Accepted" ? "Acceptance Note" : "Revision Feedback"}
+            {feedback.decision === "Accepted" ? t("acceptanceNote") : t("revisionFeedback")}
           </p>
           {feedback.decision === "Accepted" ? (
             feedback.acceptanceNote && (
-              <p className="mt-1 text-text-primary text-sm whitespace-pre-wrap">
+              <p dir="auto" className="mt-1 text-text-primary text-sm whitespace-pre-wrap">
                 {feedback.acceptanceNote}
               </p>
             )
@@ -121,9 +129,9 @@ export function SubmissionVersionCard({
               {feedback.requiredChanges && (
                 <div className="mt-2">
                   <p className="text-text-secondary text-xs uppercase tracking-wide">
-                    Required Changes
+                    {t("requiredChanges")}
                   </p>
-                  <p className="mt-1 text-text-primary text-sm whitespace-pre-wrap">
+                  <p dir="auto" className="mt-1 text-text-primary text-sm whitespace-pre-wrap">
                     {feedback.requiredChanges}
                   </p>
                 </div>
@@ -136,9 +144,17 @@ export function SubmissionVersionCard({
             </>
           )}
           <p className="mt-2 text-text-secondary text-xs">
-            {feedback.decision === "Accepted" ? "Accepted" : "Requested"} by{" "}
-            {feedback.reviewedByClientName ?? "the client"} on{" "}
-            {formatDateTime(feedback.reviewedAt)}
+            {(() => {
+              const accepted = feedback.decision === "Accepted";
+              const date = format.dateTime(feedback.reviewedAt);
+              return feedback.reviewedByClientName
+                ? t.rich(accepted ? "acceptedBy" : "requestedBy", {
+                    name: feedback.reviewedByClientName,
+                    date,
+                    bdi: (chunks) => <bdi>{chunks}</bdi>,
+                  })
+                : t(accepted ? "acceptedByClient" : "requestedByClient", { date });
+            })()}
           </p>
         </div>
       )}
