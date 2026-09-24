@@ -1,0 +1,15 @@
+{
+  "password": {
+    "show": "Show password",
+    "hide": "Hide password"
+  },
+  "theme": {
+    "switchToDark": "Switch to dark mode",
+    "switchToLight": "Switch to light mode",
+    "dark": "Dark mode",
+    "light": "Light mode"
+  },
+  "toasts": {
+    "regionLabel": "Notifications"
+  }
+}

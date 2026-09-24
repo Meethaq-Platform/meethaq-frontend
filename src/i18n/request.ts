@@ -10,6 +10,11 @@ import {
 } from "./config";
 import { formats } from "./formats";
 
+const loadMessages = {
+  en: () => import("./messages/en"),
+  ar: () => import("./messages/ar"),
+} satisfies Record<Locale, () => Promise<unknown>>;
+
 // No i18n routing: the locale lives in a cookie, and URLs stay the same.
 export default getRequestConfig(async () => {
   const locale = await resolveLocale();
@@ -17,7 +22,7 @@ export default getRequestConfig(async () => {
   return {
     locale,
     formats,
-    messages: (await import(`./messages/${locale}.json`)).default,
+    messages: (await loadMessages[locale]()).default,
   };
 });
 
