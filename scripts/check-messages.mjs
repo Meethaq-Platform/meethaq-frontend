@@ -33,7 +33,10 @@ for (const locale of locales) {
       const where = `${locale}/${file} ${key}`;
       if (typeof value !== "string" || value.trim() === "") problems.push(`${where}: empty or non-string message`);
       if (typeof value !== "string") continue;
-      if (value.includes("#")) problems.push(`${where}: uses '#'; use {n, number, integer} instead`);
+      // Outside a plural, `#` is just a literal character (e.g. "Amendment #3").
+      if (/,\s*(plural|selectordinal)\s*,/.test(value) && value.includes("#")) {
+        problems.push(`${where}: uses '#' in a plural; use {n, number, integer} instead`);
+      }
       for (const match of value.matchAll(/\{\s*(\w+)\s*,\s*number\s*(?:,\s*([^}]*?)\s*)?\}/g)) {
         if (!match[2] || !allowedNumberStyles.has(match[2])) {
           problems.push(`${where}: {${match[1]}, number${match[2] ? `, ${match[2]}` : ""}} must use a named format (${[...allowedNumberStyles].join(", ")})`);

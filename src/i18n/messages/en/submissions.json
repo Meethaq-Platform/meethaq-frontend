@@ -14,7 +14,7 @@
     "title": "Submission History"
   },
   "version": {
-    "title": "Version {number}",
+    "title": "Version {number, number, integer}",
     "awaitingReview": "Awaiting review",
     "submittedBy": "Submitted by {name} on {date}",
     "submitted": "Submitted on {date}",

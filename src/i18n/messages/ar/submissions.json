@@ -14,7 +14,7 @@
     "title": "سجل التسليمات"
   },
   "version": {
-    "title": "النسخة {number}",
+    "title": "النسخة {number, number, integer}",
     "awaitingReview": "بانتظار المراجعة",
     "submittedBy": "سلّمها <bdi>{name}</bdi> بتاريخ {date}",
     "submitted": "تاريخ التسليم {date}",
