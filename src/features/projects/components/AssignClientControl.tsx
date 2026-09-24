@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Loader2, Search, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { useClients } from "@/src/features/clients/hooks/useClients";
 import { useDebouncedValue } from "@/src/features/clients/hooks/useDebouncedValue";
@@ -22,6 +23,7 @@ export function AssignClientControl({
   clientId,
   clientName,
 }: AssignClientControlProps) {
+  const t = useTranslations("projects.assignClient");
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<{
@@ -78,7 +80,7 @@ export function AssignClientControl({
     return (
       <div>
         <div className="flex items-center justify-between">
-          <span className="text-text-primary text-sm">{clientName}</span>
+          <span dir="auto" className="text-text-primary text-sm">{clientName}</span>
 
           <button
             type="button"
@@ -86,7 +88,7 @@ export function AssignClientControl({
             className="flex items-center gap-1.5 hover:bg-danger-muted px-3 rounded-lg h-8 font-medium text-danger text-sm transition"
           >
             <X size={14} />
-            Unassign
+            {t("unassign")}
           </button>
         </div>
 
@@ -98,17 +100,24 @@ export function AssignClientControl({
               onSuccess: () => setIsUnassignOpen(false),
             })
           }
-          title="Unassign this client?"
-          description={`${clientName ?? "This client"} will no longer be linked to this project. You can reassign a client at any time.`}
-          confirmLabel="Yes, unassign"
-          confirmingLabel="Unassigning..."
+          title={t("confirmTitle")}
+          description={
+            clientName
+              ? t.rich("confirmDescription", {
+                  name: clientName,
+                  bdi: (chunks) => <bdi>{chunks}</bdi>,
+                })
+              : t("confirmDescriptionNoName")
+          }
+          confirmLabel={t("confirm")}
+          confirmingLabel={t("confirming")}
           variant="amber"
           isConfirming={unassignClient.isPending}
           errorMessage={
             unassignClient.isError
               ? unassignClient.error instanceof Error
                 ? unassignClient.error.message
-                : "Failed to unassign client."
+                : t("unassignFailed")
               : undefined
           }
         />
@@ -137,7 +146,7 @@ export function AssignClientControl({
             onKeyDown={(event) => {
               if (event.key === "Escape") setIsOpen(false);
             }}
-            placeholder="Search clients by name..."
+            placeholder={t("searchPlaceholder")}
             className="bg-surface py-2 pe-4 ps-9 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full h-10 text-text-primary placeholder:text-text-secondary text-sm transition"
           />
 
@@ -146,7 +155,7 @@ export function AssignClientControl({
               {isLoadingClients ? (
                 <p className="flex items-center gap-2 px-3 py-2 text-text-secondary text-sm">
                   <Loader2 size={14} className="animate-spin" />
-                  Searching...
+                  {t("searching")}
                 </p>
               ) : clients?.items.length ? (
                 clients.items.map((client) => (
@@ -163,7 +172,7 @@ export function AssignClientControl({
                 ))
               ) : (
                 <p className="px-3 py-2 text-text-secondary text-sm">
-                  No clients found.
+                  {t("noClients")}
                 </p>
               )}
             </div>
@@ -175,10 +184,10 @@ export function AssignClientControl({
           onClick={handleAssign}
           disabled={!selected}
           loading={assignClient.isPending}
-          loadingText="Assigning..."
+          loadingText={t("assigning")}
           className="h-10 shrink-0"
         >
-          Assign
+          {t("assign")}
         </Button>
       </div>
 
@@ -187,7 +196,7 @@ export function AssignClientControl({
           message={
             assignClient.error instanceof Error
               ? assignClient.error.message
-              : "Failed to assign client."
+              : t("assignFailed")
           }
         />
       )}

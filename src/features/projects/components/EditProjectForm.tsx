@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
-  updateProjectSchema,
+  createUpdateProjectSchema,
   type UpdateProjectFormInput,
   type UpdateProjectFormValues,
 } from "../schemas/project.schema";
@@ -26,6 +27,10 @@ export function EditProjectForm({
   onSuccess,
   onDirtyChange,
 }: EditProjectFormProps) {
+  const t = useTranslations("projects.form");
+  const tValidation = useTranslations("projects.validation");
+  const updateProjectSchema = useMemo(() => createUpdateProjectSchema(tValidation), [tValidation]);
+
   const {
     register,
     handleSubmit,
@@ -63,22 +68,22 @@ export function EditProjectForm({
       className="space-y-4"
     >
       <div>
-        <Input label="Title" {...register("title")} />
+        <Input label={t("title")} {...register("title")} />
         <InputError message={errors.title?.message} />
       </div>
 
       <div>
-        <Textarea label="Description" rows={3} {...register("description")} />
+        <Textarea label={t("description")} rows={3} {...register("description")} />
         <InputError message={errors.description?.message} />
       </div>
 
       <div>
         <Input
-          label="Project Value ($)"
+          label={t("value")}
           type="number"
           step="0.01"
           min="0.01"
-          placeholder="e.g. 5000"
+          placeholder={t("valuePlaceholder")}
           {...register("totalValue")}
         />
         <InputError message={errors.totalValue?.message} />
@@ -87,7 +92,7 @@ export function EditProjectForm({
       {isError && (
         <InputError
           message={
-            error instanceof Error ? error.message : "Failed to update project."
+            error instanceof Error ? error.message : t("updateFailed")
           }
         />
       )}

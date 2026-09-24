@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Briefcase } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import type { ProjectSummary } from "../types/project";
 import { ProjectStatusBadge } from "./ProjectStatusBadge";
@@ -26,18 +27,20 @@ export function ProjectsTable({
   totalCount,
   onPageChange,
 }: ProjectsTableProps) {
+  const t = useTranslations("projects.list");
+
   if (projects.length === 0) {
     return isFiltering ? (
       <EmptyState
         icon={Briefcase}
-        title="No projects found"
-        description="Try a different search or status filter."
+        title={t("noResultsTitle")}
+        description={t("noResultsDescription")}
       />
     ) : (
       <EmptyState
         icon={Briefcase}
-        title="No projects yet"
-        description="Create your first project to get started."
+        title={t("emptyTitle")}
+        description={t("emptyDescription")}
       />
     );
   }
@@ -49,25 +52,25 @@ export function ProjectsTable({
           <thead className="bg-primary-muted">
             <tr className="border-border border-b">
               <th className="px-6 py-3.5 font-medium text-primary text-xs text-start uppercase tracking-wide">
-                Title
+                {t("columns.title")}
               </th>
               <th className="px-6 py-3.5 font-medium text-primary text-xs text-start uppercase tracking-wide">
-                Status
+                {t("columns.status")}
               </th>
               <th className="px-6 py-3.5 font-medium text-primary text-xs text-start uppercase tracking-wide">
-                Contract
+                {t("columns.contract")}
               </th>
               <th className="px-6 py-3.5 font-medium text-primary text-xs text-start uppercase tracking-wide">
-                Client
+                {t("columns.client")}
               </th>
               <th className="hidden lg:table-cell px-6 py-3.5 font-medium text-primary text-xs text-end uppercase tracking-wide">
-                Value
+                {t("columns.value")}
               </th>
               <th className="hidden lg:table-cell px-6 py-3.5 font-medium text-primary text-xs text-start uppercase tracking-wide">
-                Updated
+                {t("columns.updated")}
               </th>
               <th className="relative px-6 py-3.5 font-medium text-primary text-xs text-end uppercase tracking-wide">
-                <span className="sr-only">Actions</span>
+                <span className="sr-only">{t("columns.actions")}</span>
               </th>
             </tr>
           </thead>
@@ -78,7 +81,7 @@ export function ProjectsTable({
                 key={project.id}
                 className="even:bg-surface-muted hover:bg-border/40 transition"
               >
-                <td className="px-6 py-4 font-medium text-text-primary">
+                <td dir="auto" className="px-6 py-4 font-medium text-text-primary">
                   {project.title}
                 </td>
 
@@ -91,7 +94,7 @@ export function ProjectsTable({
                 </td>
 
                 <td className="px-6 py-4 text-text-secondary">
-                  {project.clientName ?? "Unassigned"}
+                  {project.clientName ?? t("unassigned")}
                 </td>
 
                 <td className="hidden lg:table-cell px-6 py-4 font-numbers text-text-primary text-end">
@@ -109,7 +112,7 @@ export function ProjectsTable({
                 <td className="px-6 py-4 text-end">
                   <Link
                     href={`/projects/${project.id}`}
-                    aria-label={`View ${project.title} details`}
+                    aria-label={t("viewDetails", { title: project.title })}
                     className="inline-flex justify-center items-center hover:bg-surface p-2 rounded-lg text-text-secondary hover:text-primary transition"
                   >
                     <ArrowRight size={16} className="rtl-flip" />

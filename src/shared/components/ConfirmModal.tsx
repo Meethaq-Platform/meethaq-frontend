@@ -1,5 +1,8 @@
 "use client";
 
+import type { ReactNode } from "react";
+import { useTranslations } from "next-intl";
+
 import Modal from "./Modal";
 import InputError from "./InputError";
 
@@ -8,7 +11,7 @@ interface ConfirmModalProps {
   onClose: () => void;
   onConfirm: () => void;
   title: string;
-  description?: string;
+  description?: ReactNode;
   confirmLabel?: string;
   confirmingLabel?: string;
   cancelLabel?: string;
@@ -29,13 +32,14 @@ export default function ConfirmModal({
   onConfirm,
   title,
   description,
-  confirmLabel = "Confirm",
-  confirmingLabel = "Please wait...",
-  cancelLabel = "Cancel",
+  confirmLabel,
+  confirmingLabel,
+  cancelLabel,
   isConfirming = false,
   variant = "danger",
   errorMessage,
 }: ConfirmModalProps) {
+  const t = useTranslations("common.actions");
   return (
     <Modal open={open} onClose={onClose} title={title}>
       <div className="space-y-5">
@@ -52,7 +56,7 @@ export default function ConfirmModal({
             disabled={isConfirming}
             className="hover:bg-surface-muted disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-text-secondary text-sm transition disabled:cursor-not-allowed"
           >
-            {cancelLabel}
+            {cancelLabel ?? t("cancel")}
           </button>
 
           <button
@@ -61,7 +65,7 @@ export default function ConfirmModal({
             disabled={isConfirming}
             className={`${variantBg[variant]} hover:opacity-90 disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-sm transition disabled:cursor-not-allowed`}
           >
-            {isConfirming ? confirmingLabel : confirmLabel}
+            {isConfirming ? (confirmingLabel ?? t("pleaseWait")) : (confirmLabel ?? t("confirm"))}
           </button>
         </div>
       </div>

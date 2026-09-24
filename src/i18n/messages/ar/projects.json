@@ -1,0 +1,120 @@
+{
+  "header": {
+    "title": "المشاريع",
+    "subtitle": "متابعة الأعمال الجارية وإدارتها.",
+    "newProject": "إنشاء مشروع"
+  },
+  "toolbar": {
+    "searchPlaceholder": "البحث في المشاريع حسب العنوان...",
+    "allStatuses": "كل الحالات"
+  },
+  "list": {
+    "loadFailed": "تعذّر تحميل المشاريع.",
+    "noResultsTitle": "لا توجد مشاريع مطابقة",
+    "noResultsDescription": "يُرجى تجربة بحث أو تصفية مختلفة.",
+    "emptyTitle": "لا توجد مشاريع بعد",
+    "emptyDescription": "يمكن البدء بإنشاء المشروع الأول.",
+    "columns": {
+      "title": "العنوان",
+      "status": "الحالة",
+      "contract": "العقد",
+      "client": "العميل",
+      "value": "القيمة",
+      "updated": "آخر تحديث",
+      "actions": "الإجراءات"
+    },
+    "unassigned": "غير مُسنَد",
+    "viewDetails": "عرض تفاصيل {title}"
+  },
+  "form": {
+    "title": "العنوان",
+    "description": "الوصف",
+    "value": "قيمة المشروع ($)",
+    "valuePlaceholder": "مثال: 5000",
+    "createTitle": "إنشاء مشروع",
+    "create": "إنشاء المشروع",
+    "creating": "جارٍ الإنشاء...",
+    "createFailed": "تعذّر إنشاء المشروع.",
+    "updateFailed": "تعذّر تحديث المشروع."
+  },
+  "validation": {
+    "titleRequired": "العنوان مطلوب",
+    "titleTooLong": "العنوان طويل جدًا",
+    "descriptionTooLong": "الوصف طويل جدًا",
+    "amountInvalid": "يُرجى إدخال مبلغ صحيح",
+    "amountPositive": "يجب أن تكون القيمة أكبر من 0",
+    "amountTooLarge": "القيمة كبيرة جدًا"
+  },
+  "detail": {
+    "back": "العودة إلى المشاريع",
+    "loadFailed": "تعذّر تحميل هذا المشروع.",
+    "created": "تاريخ الإنشاء {date}",
+    "tabs": {
+      "overview": "نظرة عامة",
+      "milestones": "المراحل",
+      "payments": "المدفوعات",
+      "changes": "طلبات التغيير",
+      "disputes": "النزاعات",
+      "chat": "المحادثة",
+      "activity": "النشاط"
+    }
+  },
+  "clientCard": {
+    "title": "العميل",
+    "unassigned": "غير مُسنَد",
+    "emptyTitle": "لم يتم إسناد عميل",
+    "emptyDescription": "يلزم إسناد عميل إلى هذا المشروع لإتاحة إنشاء العقد.",
+    "assign": "إسناد عميل"
+  },
+  "assignClient": {
+    "unassign": "إلغاء الإسناد",
+    "confirmTitle": "إلغاء إسناد هذا العميل؟",
+    "confirmDescription": "لن يبقى <bdi>{name}</bdi> مرتبطًا بهذا المشروع. يمكن إسناد عميل مرة أخرى في أي وقت.",
+    "confirmDescriptionNoName": "لن يبقى هذا العميل مرتبطًا بهذا المشروع. يمكن إسناد عميل مرة أخرى في أي وقت.",
+    "confirm": "نعم، إلغاء الإسناد",
+    "confirming": "جارٍ إلغاء الإسناد...",
+    "unassignFailed": "تعذّر إلغاء إسناد العميل.",
+    "searchPlaceholder": "البحث عن العملاء بالاسم...",
+    "searching": "جارٍ البحث...",
+    "noClients": "لا يوجد عملاء مطابقون.",
+    "assign": "إسناد",
+    "assigning": "جارٍ الإسناد...",
+    "assignFailed": "تعذّر إسناد العميل."
+  },
+  "contractCard": {
+    "title": "العقد",
+    "emptyTitle": "لا يوجد عقد بعد",
+    "emptyEligible": "يمكن صياغة عقد لتحديد نطاق العمل والمراحل والشروط.",
+    "emptyIneligible": "يلزم إسناد عميل وتحديد قيمة المشروع للبدء.",
+    "create": "إنشاء عقد",
+    "summary": {
+      "Draft": "المسودة قيد الإعداد — يلزم إكمالها وإرسالها للموافقة.",
+      "PendingApproval": "تم الإرسال — بانتظار موافقة العميل.",
+      "ChangesRequested": "طلب العميل تعديلات على هذا العقد.",
+      "Approved": "تم الاعتماد والتثبيت."
+    },
+    "summaryFallback": "إدارة هذا العقد.",
+    "view": "عرض العقد",
+    "manage": "إدارة العقد"
+  },
+  "cancel": {
+    "button": "إلغاء المشروع",
+    "buttonShort": "إلغاء",
+    "title": "إلغاء هذا المشروع؟",
+    "description": "سيتم تحويل حالة المشروع إلى «ملغى»، ولا يمكن التراجع عن ذلك.",
+    "confirm": "نعم، إلغاء المشروع",
+    "confirming": "جارٍ الإلغاء...",
+    "keep": "الإبقاء عليه",
+    "failed": "تعذّر إلغاء المشروع."
+  },
+  "complete": {
+    "button": "تحديد المشروع كمكتمل",
+    "buttonShort": "إكمال",
+    "title": "إكمال هذا المشروع؟",
+    "description": "يتطلب ذلك قبول جميع المراحل ودفعها، مع عدم وجود نزاعات غير محلولة أو طلبات تغيير معلّقة. عند عدم استيفاء أي شرط، ستظهر التفاصيل أدناه.",
+    "notes": "ملاحظات الإكمال (اختياري)",
+    "failed": "تعذّر إكمال المشروع.",
+    "confirm": "إكمال المشروع",
+    "confirming": "جارٍ الإكمال..."
+  }
+}

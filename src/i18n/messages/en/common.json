@@ -45,5 +45,13 @@
     "deliveryLinkNumbered": "Delivery Link {number, number, plain}",
     "remove": "Remove link",
     "add": "Add Link"
+  },
+  "actions": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "pleaseWait": "Please wait...",
+    "edit": "Edit",
+    "saveChanges": "Save Changes",
+    "saving": "Saving..."
   }
 }

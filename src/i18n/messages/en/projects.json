@@ -1,0 +1,120 @@
+{
+  "header": {
+    "title": "Projects",
+    "subtitle": "Track and manage the work you have in progress.",
+    "newProject": "New Project"
+  },
+  "toolbar": {
+    "searchPlaceholder": "Search projects by title...",
+    "allStatuses": "All Statuses"
+  },
+  "list": {
+    "loadFailed": "Failed to load your projects.",
+    "noResultsTitle": "No projects found",
+    "noResultsDescription": "Try a different search or status filter.",
+    "emptyTitle": "No projects yet",
+    "emptyDescription": "Create your first project to get started.",
+    "columns": {
+      "title": "Title",
+      "status": "Status",
+      "contract": "Contract",
+      "client": "Client",
+      "value": "Value",
+      "updated": "Updated",
+      "actions": "Actions"
+    },
+    "unassigned": "Unassigned",
+    "viewDetails": "View {title} details"
+  },
+  "form": {
+    "title": "Title",
+    "description": "Description",
+    "value": "Project Value ($)",
+    "valuePlaceholder": "e.g. 5000",
+    "createTitle": "Create Project",
+    "create": "Create Project",
+    "creating": "Creating...",
+    "createFailed": "Failed to create project.",
+    "updateFailed": "Failed to update project."
+  },
+  "validation": {
+    "titleRequired": "Title is required",
+    "titleTooLong": "Title is too long",
+    "descriptionTooLong": "Description is too long",
+    "amountInvalid": "Enter a valid amount",
+    "amountPositive": "Must be greater than 0",
+    "amountTooLarge": "Value is too large"
+  },
+  "detail": {
+    "back": "Back to Projects",
+    "loadFailed": "Failed to load this project.",
+    "created": "Created {date}",
+    "tabs": {
+      "overview": "Overview",
+      "milestones": "Milestones",
+      "payments": "Payments",
+      "changes": "Change Requests",
+      "disputes": "Disputes",
+      "chat": "Chat",
+      "activity": "Activity"
+    }
+  },
+  "clientCard": {
+    "title": "Client",
+    "unassigned": "Unassigned",
+    "emptyTitle": "No client assigned",
+    "emptyDescription": "Assign a client to this project to unlock contract creation.",
+    "assign": "Assign Client"
+  },
+  "assignClient": {
+    "unassign": "Unassign",
+    "confirmTitle": "Unassign this client?",
+    "confirmDescription": "{name} will no longer be linked to this project. You can reassign a client at any time.",
+    "confirmDescriptionNoName": "This client will no longer be linked to this project. You can reassign a client at any time.",
+    "confirm": "Yes, unassign",
+    "confirming": "Unassigning...",
+    "unassignFailed": "Failed to unassign client.",
+    "searchPlaceholder": "Search clients by name...",
+    "searching": "Searching...",
+    "noClients": "No clients found.",
+    "assign": "Assign",
+    "assigning": "Assigning...",
+    "assignFailed": "Failed to assign client."
+  },
+  "contractCard": {
+    "title": "Contract",
+    "emptyTitle": "No contract yet",
+    "emptyEligible": "Draft a contract to define scope, milestones, and terms.",
+    "emptyIneligible": "Assign a client and set a project value to get started.",
+    "create": "Create Contract",
+    "summary": {
+      "Draft": "Draft in progress — finish it and submit for approval.",
+      "PendingApproval": "Submitted — awaiting the client's approval.",
+      "ChangesRequested": "The client requested changes to this contract.",
+      "Approved": "Approved and locked in."
+    },
+    "summaryFallback": "Manage this contract.",
+    "view": "View Contract",
+    "manage": "Manage Contract"
+  },
+  "cancel": {
+    "button": "Cancel Project",
+    "buttonShort": "Cancel",
+    "title": "Cancel this project?",
+    "description": "This will mark the project as cancelled. You won't be able to undo this.",
+    "confirm": "Yes, cancel project",
+    "confirming": "Cancelling...",
+    "keep": "Keep it",
+    "failed": "Failed to cancel project."
+  },
+  "complete": {
+    "button": "Mark Project as Complete",
+    "buttonShort": "Complete",
+    "title": "Complete this project?",
+    "description": "This requires every milestone to be Accepted and Paid, with no unresolved disputes or pending change requests. If a condition isn't met, we'll tell you what's outstanding below.",
+    "notes": "Completion Notes (optional)",
+    "failed": "Failed to complete project.",
+    "confirm": "Complete Project",
+    "confirming": "Completing..."
+  }
+}

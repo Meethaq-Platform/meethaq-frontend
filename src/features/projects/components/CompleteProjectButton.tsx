@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { PartyPopper } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { useCompleteProject } from "../hooks/useCompleteProject";
 import Modal from "@/src/shared/components/Modal";
@@ -22,6 +23,8 @@ interface CompleteProjectButtonProps {
 export function CompleteProjectButton({
   projectId,
 }: CompleteProjectButtonProps) {
+  const t = useTranslations("projects.complete");
+  const tActions = useTranslations("common.actions");
   const [open, setOpen] = useState(false);
   const [notes, setNotes] = useState("");
   const { mutate, isPending, isError, error } = useCompleteProject(
@@ -41,20 +44,18 @@ export function CompleteProjectButton({
         className="flex items-center gap-1 px-2.5 sm:px-3 h-6 sm:h-7 text-xs"
       >
         <PartyPopper size={13} />
-        <span className="hidden sm:inline">Mark Project as Complete</span>
-        <span className="sm:hidden">Complete</span>
+        <span className="hidden sm:inline">{t("button")}</span>
+        <span className="sm:hidden">{t("buttonShort")}</span>
       </Button>
 
-      <Modal open={open} onClose={handleClose} title="Complete this project?">
+      <Modal open={open} onClose={handleClose} title={t("title")}>
         <div className="space-y-4">
           <p className="text-text-secondary text-sm">
-            This requires every milestone to be Accepted and Paid, with no
-            unresolved disputes or pending change requests. If a condition
-            isn&apos;t met, we&apos;ll tell you what&apos;s outstanding below.
+            {t("description")}
           </p>
 
           <Textarea
-            label="Completion Notes (optional)"
+            label={t("notes")}
             rows={3}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
@@ -62,7 +63,7 @@ export function CompleteProjectButton({
 
           {isError && (
             <InputError
-              message={getErrorMessage(error, "Failed to complete project.")}
+              message={getErrorMessage(error, t("failed"))}
             />
           )}
 
@@ -73,13 +74,13 @@ export function CompleteProjectButton({
               disabled={isPending}
               className="hover:bg-surface-muted disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-text-secondary text-sm transition disabled:cursor-not-allowed"
             >
-              Cancel
+              {tActions("cancel")}
             </button>
 
             <Button
               type="button"
               loading={isPending}
-              loadingText="Completing..."
+              loadingText={t("confirming")}
               onClick={() =>
                 mutate(
                   { completionNotes: notes || undefined },
@@ -87,7 +88,7 @@ export function CompleteProjectButton({
                 )
               }
             >
-              Complete Project
+              {t("confirm")}
             </Button>
           </div>
         </div>

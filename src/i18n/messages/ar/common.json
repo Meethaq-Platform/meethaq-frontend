@@ -45,5 +45,13 @@
     "deliveryLinkNumbered": "رابط التسليم {number, number, plain}",
     "remove": "إزالة الرابط",
     "add": "إضافة رابط"
+  },
+  "actions": {
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "pleaseWait": "يُرجى الانتظار...",
+    "edit": "تعديل",
+    "saveChanges": "حفظ التغييرات",
+    "saving": "جارٍ الحفظ..."
   }
 }
