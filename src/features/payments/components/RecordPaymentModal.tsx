@@ -1,17 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Wallet } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import {
-  recordPaymentFormSchema,
+  createRecordPaymentFormSchema,
   type RecordPaymentFormInput,
   type RecordPaymentFormValues,
 } from "../schemas/record-payment.schema";
 import { useRecordPayment } from "../hooks/useRecordPayment";
-import { PAYMENT_METHOD_OPTIONS } from "../types/payment";
+import { PAYMENT_METHODS } from "../types/payment";
 import Button from "@/src/shared/components/Button";
 import Modal from "@/src/shared/components/Modal";
 import Input from "@/src/shared/components/Input";
@@ -37,6 +38,10 @@ export function RecordPaymentModal({
   defaultAmount,
   currency,
 }: RecordPaymentModalProps) {
+  const t = useTranslations("payments");
+  const tActions = useTranslations("common.actions");
+  const tValidation = useTranslations("payments.validation");
+  const recordPaymentFormSchema = useMemo(() => createRecordPaymentFormSchema(tValidation), [tValidation]);
   const [open, setOpen] = useState(false);
   const {
     register,
@@ -84,22 +89,22 @@ export function RecordPaymentModal({
     <>
       <Button type="button" onClick={() => setOpen(true)} className="flex items-center gap-1.5 h-9">
         <Wallet size={14} />
-        Record Payment
+        {t("record.button")}
       </Button>
 
-      <Modal open={open} onClose={handleClose} title="Record milestone payment" size="md">
+      <Modal open={open} onClose={handleClose} title={t("record.title")} size="md">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="block mb-2 font-medium text-text-primary text-sm">
-              Payment Method
+              {t("record.method")}
             </label>
             <select
               {...register("paymentMethod", { valueAsNumber: true })}
               className="bg-surface px-4 border border-border focus:border-primary rounded-xl outline-none focus:ring-2 focus:ring-primary/20 w-full h-11 text-text-primary text-sm transition"
             >
-              {PAYMENT_METHOD_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
+              {PAYMENT_METHODS.map((value) => (
+                <option key={value} value={value}>
+                  {t(`methods.${value}`)}
                 </option>
               ))}
             </select>
@@ -108,14 +113,14 @@ export function RecordPaymentModal({
 
           <div className="gap-4 grid grid-cols-1 sm:grid-cols-2">
             <div>
-              <Input type="date" label="Payment Date" {...register("paymentDate")} />
+              <Input type="date" label={t("record.date")} {...register("paymentDate")} />
               <InputError message={errors.paymentDate?.message} />
             </div>
             <div>
               <Input
                 type="number"
                 step="0.01"
-                label={`Amount (${currency})`}
+                label={t("record.amount", { currency })}
                 {...register("amount")}
               />
               <InputError message={errors.amount?.message} />
@@ -124,8 +129,8 @@ export function RecordPaymentModal({
 
           <div>
             <Input
-              label="Transaction Reference"
-              placeholder="e.g. wire confirmation number"
+              label={t("record.reference")}
+              placeholder={t("record.referencePlaceholder")}
               {...register("transactionReference")}
             />
             <InputError message={errors.transactionReference?.message} />
@@ -133,7 +138,7 @@ export function RecordPaymentModal({
 
           <div>
             <Textarea
-              label="Payment Notes (optional)"
+              label={t("record.notes")}
               rows={3}
               {...register("paymentNotes")}
             />
@@ -143,12 +148,12 @@ export function RecordPaymentModal({
             <FileAttachmentInput
               files={receiptFiles}
               onChange={(next) => setValue("receiptFiles", next, { shouldValidate: true })}
-              label="Attach Receipt"
+              label={t("record.attach")}
             />
           </div>
 
           {isError && (
-            <InputError message={getErrorMessage(error, "Failed to record payment.")} />
+            <InputError message={getErrorMessage(error, t("record.failed"))} />
           )}
 
           <div className="flex justify-end gap-3 pt-2">
@@ -158,11 +163,11 @@ export function RecordPaymentModal({
               disabled={isPending}
               className="hover:bg-surface-muted disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-text-secondary text-sm transition disabled:cursor-not-allowed"
             >
-              Cancel
+              {tActions("cancel")}
             </button>
 
-            <Button type="submit" loading={isPending} loadingText="Recording...">
-              Record Payment
+            <Button type="submit" loading={isPending} loadingText={t("record.recording")}>
+              {t("record.button")}
             </Button>
           </div>
         </form>

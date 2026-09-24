@@ -10,13 +10,8 @@
 // this mapping is now the real backend enum, not a guess.
 export type PaymentMethod = 0 | 1 | 2 | 3 | 4;
 
-export const PAYMENT_METHOD_OPTIONS: { value: PaymentMethod; label: string }[] = [
-  { value: 0, label: "Bank Transfer" },
-  { value: 1, label: "Wire Transfer" },
-  { value: 2, label: "PayPal" },
-  { value: 3, label: "Cash" },
-  { value: 4, label: "Other" },
-];
+// Labels live in the payments.methods messages.
+export const PAYMENT_METHODS: PaymentMethod[] = [0, 1, 2, 3, 4];
 
 // Mirrors MilestonePaymentDto.status — swagger types it as a plain string
 // (no enum values listed), so this PascalCase union is a best-guess casing,

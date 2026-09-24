@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { usePaymentsSummary } from "../hooks/usePaymentsSummary";
 import Spinner from "@/src/shared/components/Spinner";
 import { formatCurrency } from "@/src/shared/lib/format";
@@ -12,6 +14,7 @@ interface ProjectPaymentSummaryCardProps {
 // ExecutionOverviewCard's stats-grid layout for visual consistency between
 // the two "project-wide numbers" cards on the Overview tab.
 export function ProjectPaymentSummaryCard({ projectId }: ProjectPaymentSummaryCardProps) {
+  const t = useTranslations("payments.summary");
   const { data: summary, isLoading } = usePaymentsSummary(projectId);
 
   if (isLoading) {
@@ -29,21 +32,21 @@ export function ProjectPaymentSummaryCard({ projectId }: ProjectPaymentSummaryCa
   const currency = summary.currency;
 
   const stats = [
-    { label: "Approved Value", value: formatCurrency(summary.approvedProjectValue, currency) },
-    { label: "Total Paid", value: formatCurrency(summary.totalPaid, currency) },
-    { label: "Total Unpaid", value: formatCurrency(summary.totalUnpaid, currency) },
-    { label: "Eligible", value: formatCurrency(summary.amountEligible, currency) },
+    { label: t("approvedValue"), value: formatCurrency(summary.approvedProjectValue, currency) },
+    { label: t("totalPaid"), value: formatCurrency(summary.totalPaid, currency) },
+    { label: t("totalUnpaid"), value: formatCurrency(summary.totalUnpaid, currency) },
+    { label: t("eligible"), value: formatCurrency(summary.amountEligible, currency) },
     {
-      label: "Awaiting Confirmation",
+      label: t("awaitingConfirmation"),
       value: formatCurrency(summary.amountAwaitingConfirmation, currency),
     },
     {
-      label: "Payment Issues",
+      label: t("issues"),
       value: formatCurrency(summary.amountWithPaymentIssues, currency),
       danger: summary.amountWithPaymentIssues > 0,
     },
     {
-      label: "Dispute Hold",
+      label: t("disputeHold"),
       value: formatCurrency(summary.amountOnDisputeHold, currency),
       danger: summary.amountOnDisputeHold > 0,
     },
@@ -52,7 +55,7 @@ export function ProjectPaymentSummaryCard({ projectId }: ProjectPaymentSummaryCa
   return (
     <div className="bg-surface p-6 border border-border rounded-2xl">
       <h2 className="mb-4 font-semibold text-text-primary text-base">
-        Payment Summary
+        {t("title")}
       </h2>
 
       <div className="gap-4 grid grid-cols-2 sm:grid-cols-4">

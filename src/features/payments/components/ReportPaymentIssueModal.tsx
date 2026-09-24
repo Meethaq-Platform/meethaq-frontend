@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertTriangle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import {
-  reportPaymentIssueSchema,
+  createReportPaymentIssueSchema,
   type ReportPaymentIssueFormValues,
 } from "../schemas/report-payment-issue.schema";
 import { useReportPaymentIssue } from "../hooks/useReportPaymentIssue";
@@ -24,6 +25,10 @@ interface ReportPaymentIssueModalProps {
 // Freelancer-only action, shown once a payment is AwaitingConfirmation, as
 // the alternative to Confirm Receipt.
 export function ReportPaymentIssueModal({ projectId, milestoneId }: ReportPaymentIssueModalProps) {
+  const t = useTranslations("payments.report");
+  const tActions = useTranslations("common.actions");
+  const tValidation = useTranslations("payments.validation");
+  const reportPaymentIssueSchema = useMemo(() => createReportPaymentIssueSchema(tValidation), [tValidation]);
   const [open, setOpen] = useState(false);
   const {
     register,
@@ -54,28 +59,27 @@ export function ReportPaymentIssueModal({ projectId, milestoneId }: ReportPaymen
         className="flex items-center gap-1.5 hover:bg-surface-muted px-4 rounded-xl h-9 font-semibold text-danger text-sm transition"
       >
         <AlertTriangle size={14} />
-        Report Issue
+        {t("button")}
       </button>
 
-      <Modal open={open} onClose={handleClose} title="Report a payment issue">
+      <Modal open={open} onClose={handleClose} title={t("title")}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <p className="text-text-secondary text-sm">
-            This flags the recorded payment as disputed evidence. The client can review
-            and submit corrected details.
+            {t("description")}
           </p>
 
           <div>
             <Textarea
-              label="What's wrong?"
+              label={t("reason")}
               rows={4}
-              placeholder="Describe the issue with this payment..."
+              placeholder={t("reasonPlaceholder")}
               {...register("reason")}
             />
             <InputError message={errors.reason?.message} />
           </div>
 
           {isError && (
-            <InputError message={getErrorMessage(error, "Failed to report issue.")} />
+            <InputError message={getErrorMessage(error, t("failed"))} />
           )}
 
           <div className="flex justify-end gap-3 pt-2">
@@ -85,11 +89,11 @@ export function ReportPaymentIssueModal({ projectId, milestoneId }: ReportPaymen
               disabled={isPending}
               className="hover:bg-surface-muted disabled:opacity-60 px-4 rounded-xl h-11 font-semibold text-text-secondary text-sm transition disabled:cursor-not-allowed"
             >
-              Cancel
+              {tActions("cancel")}
             </button>
 
-            <Button type="submit" variant="amber" loading={isPending} loadingText="Reporting...">
-              Report Issue
+            <Button type="submit" variant="amber" loading={isPending} loadingText={t("reporting")}>
+              {t("button")}
             </Button>
           </div>
         </form>

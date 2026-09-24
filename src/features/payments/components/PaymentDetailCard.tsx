@@ -1,6 +1,8 @@
 import type { MilestonePayment } from "../types/payment";
 import AttachmentList from "@/src/shared/components/AttachmentList";
-import { formatCurrency, formatDateTime } from "@/src/shared/lib/format";
+import { formatCurrency } from "@/src/shared/lib/format";
+import { useFormat } from "@/src/shared/hooks/useFormat";
+import { useTranslations } from "next-intl";
 
 interface PaymentDetailCardProps {
   projectId: string;
@@ -15,6 +17,12 @@ function toFileUrl(projectId: string, fileId: number) {
 }
 
 export function PaymentDetailCard({ projectId, payment }: PaymentDetailCardProps) {
+  const t = useTranslations("payments.detail");
+  const tMethods = useTranslations("payments.methodNames");
+  const format = useFormat();
+  const methodKey = payment.paymentMethod as "BankTransfer";
+  const method = tMethods.has(methodKey) ? tMethods(methodKey) : payment.paymentMethod;
+
   const evidenceItems = payment.evidenceFiles.map((file) => ({
     id: file.id,
     fileName: file.fileName,
@@ -27,52 +35,54 @@ export function PaymentDetailCard({ projectId, payment }: PaymentDetailCardProps
     <div className="space-y-4 bg-surface-muted p-4 rounded-xl text-sm">
       <div className="gap-3 grid grid-cols-2">
         <div>
-          <p className="text-text-secondary text-xs">Method</p>
-          <p className="text-text-primary">{payment.paymentMethod}</p>
+          <p className="text-text-secondary text-xs">{t("method")}</p>
+          <p className="text-text-primary">{method}</p>
         </div>
         <div>
-          <p className="text-text-secondary text-xs">Amount</p>
+          <p className="text-text-secondary text-xs">{t("amount")}</p>
           <p className="font-numbers text-text-primary">
             {formatCurrency(payment.amount, payment.currency)}
           </p>
         </div>
         {payment.paymentDate && (
           <div>
-            <p className="text-text-secondary text-xs">Payment Date</p>
-            <p className="text-text-primary">{formatDateTime(payment.paymentDate)}</p>
+            <p className="text-text-secondary text-xs">{t("paymentDate")}</p>
+            <p className="text-text-primary">{format.dateTime(payment.paymentDate)}</p>
           </div>
         )}
         {payment.transactionReference && (
           <div>
-            <p className="text-text-secondary text-xs">Reference</p>
-            <p className="text-text-primary">{payment.transactionReference}</p>
+            <p className="text-text-secondary text-xs">{t("reference")}</p>
+            <p className="text-text-primary">
+              <bdi>{payment.transactionReference}</bdi>
+            </p>
           </div>
         )}
       </div>
 
       {payment.paymentNotes && (
         <div>
-          <p className="text-text-secondary text-xs">Notes</p>
-          <p className="text-text-primary whitespace-pre-wrap">{payment.paymentNotes}</p>
+          <p className="text-text-secondary text-xs">{t("notes")}</p>
+          <p dir="auto" className="text-text-primary whitespace-pre-wrap">{payment.paymentNotes}</p>
         </div>
       )}
 
       {evidenceItems.length > 0 && (
         <div>
-          <p className="mb-1.5 text-text-secondary text-xs">Evidence</p>
+          <p className="mb-1.5 text-text-secondary text-xs">{t("evidence")}</p>
           <AttachmentList attachments={evidenceItems} />
         </div>
       )}
 
       {payment.confirmedAt && (
         <div className="bg-success-muted p-3 rounded-lg text-success text-xs">
-          Confirmed {formatDateTime(payment.confirmedAt)}
+          {t("confirmed", { date: format.dateTime(payment.confirmedAt) })}
         </div>
       )}
 
       {payment.corrections.length > 0 && (
         <div>
-          <p className="mb-1.5 text-text-secondary text-xs">Correction History</p>
+          <p className="mb-1.5 text-text-secondary text-xs">{t("corrections")}</p>
           <div className="space-y-2">
             {payment.corrections.map((correction) => {
               const correctionFiles = correction.evidenceFiles.map((file) => ({
@@ -86,15 +96,18 @@ export function PaymentDetailCard({ projectId, payment }: PaymentDetailCardProps
               return (
                 <div key={correction.id} className="bg-surface p-3 border border-border rounded-lg">
                   <p className="text-text-secondary text-xs">
-                    Submitted {formatDateTime(correction.submittedAt)}
+                    {t("submitted", { date: format.dateTime(correction.submittedAt) })}
                   </p>
                   {correction.transactionReference && (
                     <p className="mt-1 text-text-primary text-sm">
-                      Ref: {correction.transactionReference}
+                      {t.rich("ref", {
+                        reference: correction.transactionReference,
+                        bdi: (chunks) => <bdi>{chunks}</bdi>,
+                      })}
                     </p>
                   )}
                   {correction.correctionNotes && (
-                    <p className="mt-1 text-text-primary text-sm whitespace-pre-wrap">
+                    <p dir="auto" className="mt-1 text-text-primary text-sm whitespace-pre-wrap">
                       {correction.correctionNotes}
                     </p>
                   )}
