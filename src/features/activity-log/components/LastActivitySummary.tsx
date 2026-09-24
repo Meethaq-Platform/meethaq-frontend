@@ -3,6 +3,8 @@
 import { History } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useActivity } from "../hooks/useActivity";
+import { useEventText } from "@/src/shared/hooks/useEventText";
+import { useMilestoneTitles } from "../hooks/useMilestoneTitles";
 import RelativeTime from "@/src/shared/components/RelativeTime";
 
 interface LastActivitySummaryProps {
@@ -12,6 +14,8 @@ interface LastActivitySummaryProps {
 export function LastActivitySummary({ projectId }: LastActivitySummaryProps) {
   const t = useTranslations("activity");
   const { data: entries, isLoading } = useActivity(projectId);
+  const eventText = useEventText();
+  const milestoneTitles = useMilestoneTitles(projectId, eventText.translates);
 
   if (isLoading || !entries || entries.length === 0) {
     return null;
@@ -31,10 +35,13 @@ export function LastActivitySummary({ projectId }: LastActivitySummaryProps) {
           {t("lastActivity")}
         </p>
         <p dir="auto" className="mt-0.5 text-text-primary text-xs sm:text-sm">
-          {latest.description}
+          {eventText.sentence(latest.eventType, latest.description, {
+            milestone: latest.milestoneId ? milestoneTitles.get(latest.milestoneId) : null,
+            version: latest.submissionVersion,
+          })}
         </p>
         <p className="mt-1 text-text-secondary text-xs">
-          {latest.performedByName} · <RelativeTime value={latest.createdAt} />
+          <bdi>{latest.performedByName}</bdi> · <RelativeTime value={latest.createdAt} />
         </p>
       </div>
     </div>

@@ -17,6 +17,7 @@ import type { LucideIcon } from "lucide-react";
 
 import type { Notification } from "../types/notification";
 import RelativeTime from "@/src/shared/components/RelativeTime";
+import { useEventText } from "@/src/shared/hooks/useEventText";
 import { eventToneClasses, getEventTone } from "@/src/shared/lib/eventTone";
 
 // eventType is a plain string on the backend (no enum values listed in
@@ -53,6 +54,8 @@ interface NotificationRowProps {
 
 export function NotificationRow({ notification, onOpen }: NotificationRowProps) {
   const Icon = eventIcons[notification.eventType] ?? Bell;
+  const eventText = useEventText();
+  const translated = eventText.isTranslated(notification.eventType);
   const tone = getEventTone(notification.eventType);
 
   return (
@@ -70,9 +73,20 @@ export function NotificationRow({ notification, onOpen }: NotificationRowProps) 
       </div>
 
       <div className="flex-1 min-w-0">
-        {/* Title and message come from the API (English until it sends codes). */}
-        <p dir="auto" className="font-medium text-text-primary text-sm">{notification.title}</p>
-        <p dir="auto" className="text-text-secondary text-sm">{notification.message}</p>
+        {/* Title and message come from the API in English; other languages
+            build them from eventType and keep the English message (which
+            carries the names) as a small detail line. */}
+        <p dir="auto" className="font-medium text-text-primary text-sm">
+          {eventText.notificationTitle(notification.eventType, notification.title)}
+        </p>
+        <p dir="auto" className="text-text-secondary text-sm">
+          {eventText.sentence(notification.eventType, notification.message)}
+        </p>
+        {translated && (
+          <p className="mt-0.5 text-text-secondary/80 text-xs">
+            <bdi>{notification.message}</bdi>
+          </p>
+        )}
         <p className="mt-0.5 text-text-secondary text-xs">
           <RelativeTime value={notification.createdAt} />
         </p>

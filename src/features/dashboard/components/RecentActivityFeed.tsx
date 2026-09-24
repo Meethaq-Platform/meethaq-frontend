@@ -17,6 +17,7 @@ import EmptyState from "@/src/shared/components/EmptyState";
 import RelativeTime from "@/src/shared/components/RelativeTime";
 import { eventToneClasses, getEventTone } from "@/src/shared/lib/eventTone";
 import type { RecentActivityItem } from "../types/dashboard";
+import { useEventText } from "@/src/shared/hooks/useEventText";
 
 // eventType is a plain backend string (no enum values in swagger) — same
 // best-effort casing convention already used by the notifications feature's
@@ -43,6 +44,7 @@ interface RecentActivityFeedProps {
 // Feature 21 — reads the existing activity history, never synthesizes events.
 export default function RecentActivityFeed({ items }: RecentActivityFeedProps) {
   const t = useTranslations("dashboard.recentActivity");
+  const eventText = useEventText();
 
   if (items.length === 0) {
     return <EmptyState icon={Activity} title={t("empty")} />;
@@ -62,7 +64,9 @@ export default function RecentActivityFeed({ items }: RecentActivityFeedProps) {
               <Icon size={14} />
             </div>
             <div className="flex-1 min-w-0">
-              <p dir="auto" className="text-text-primary text-sm">{item.description}</p>
+              <p dir="auto" className="text-text-primary text-sm">
+                {eventText.sentence(item.eventType, item.description)}
+              </p>
               <p className="text-text-secondary text-xs">
                 <bdi>{item.projectName}</bdi>
                 {item.performedByName ? (
