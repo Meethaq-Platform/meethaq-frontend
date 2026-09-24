@@ -57,5 +57,9 @@
     "edit": "Edit",
     "saveChanges": "Save Changes",
     "saving": "Saving..."
+  },
+  "brand": {
+    "name": "Meethaq",
+    "logoAlt": "meethaq"
   }
 }
