@@ -33,6 +33,8 @@ const eventIcons: Record<string, LucideIcon> = {
   ReviewOverdue: AlertTriangle,
   PaymentEligible: CreditCard,
   PaymentEvidenceSubmitted: CreditCard,
+  PaymentEvidenceUpdated: CreditCard,
+  ContractAmendmentCreated: FileEdit,
   PaymentReceiptConfirmed: CheckCircle2,
   PaymentIssueReported: AlertTriangle,
   ChangeRequestSubmitted: FileEdit,
@@ -80,7 +82,9 @@ export function NotificationRow({ notification, onOpen }: NotificationRowProps) 
           {eventText.notificationTitle(notification.eventType, notification.title)}
         </p>
         <p dir="auto" className="text-text-secondary text-sm">
-          {eventText.sentence(notification.eventType, notification.message)}
+          {eventText.sentence(notification.eventType, notification.message, {
+            nameSource: notification.title,
+          })}
         </p>
         {translated && (
           <p className="mt-0.5 text-text-secondary/80 text-xs">

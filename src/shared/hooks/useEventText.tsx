@@ -10,6 +10,13 @@ import { useStatusLabel } from "./useStatusLabel";
 // languages build their own wording from the eventType (and whatever
 // structured fields the entry carries). An eventType with no translation
 // yet falls back to the English text, so nothing is ever hidden.
+// The backend's English text names its subject in single quotes ("Deliverable
+// accepted for 'stage1'", "approved change request 'new change'"), so that
+// name can be carried into the translated wording. No quoted name → none.
+function quotedName(text: string | null | undefined): string | null {
+  return text?.match(/(?:^|\s)'([^']+)'(?=[\s.,:;!?]|$)/)?.[1] ?? null;
+}
+
 export function useEventText() {
   const locale = useLocale();
   const t = useTranslations("events");
@@ -24,17 +31,24 @@ export function useEventText() {
     sentence(
       eventType: string | null | undefined,
       fallback: string | null | undefined,
-      extra: { milestone?: string | null; version?: number | null } = {},
+      // milestone: a known title; otherwise the quoted name in `nameSource`
+      // (defaults to the English text itself) is used.
+      extra: {
+        milestone?: string | null;
+        version?: number | null;
+        nameSource?: string | null;
+      } = {},
     ): ReactNode {
       const key = `sentences.${eventType}`;
       if (!eventType || !has(key)) return fallback ?? "";
 
       let text = t(key as "sentences.ContractApproved");
       if (extra.version) text = t("withVersion", { text, version: extra.version });
-      if (extra.milestone) {
+      const name = extra.milestone || quotedName(extra.nameSource ?? fallback);
+      if (name) {
         return t.rich("withMilestone", {
           text,
-          milestone: extra.milestone,
+          milestone: name,
           bdi: (chunks) => <bdi>{chunks}</bdi>,
         });
       }

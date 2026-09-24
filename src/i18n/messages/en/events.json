@@ -28,7 +28,9 @@
     "DisputeEvidenceAdded": "Evidence added to a dispute",
     "DisputeResolutionProposed": "A resolution was proposed",
     "DisputeResolved": "Dispute resolved",
-    "ProjectCompleted": "Project completed"
+    "ProjectCompleted": "Project completed",
+    "PaymentEvidenceUpdated": "Corrected payment evidence submitted",
+    "ContractAmendmentCreated": "Contract amendment created"
   },
   "notificationTitles": {
     "ContractSent": "Contract sent",
@@ -59,7 +61,9 @@
     "DisputeEvidenceAdded": "Dispute evidence",
     "DisputeResolutionProposed": "Resolution proposed",
     "DisputeResolved": "Dispute resolved",
-    "ProjectCompleted": "Project completed"
+    "ProjectCompleted": "Project completed",
+    "PaymentEvidenceUpdated": "Corrected payment evidence",
+    "ContractAmendmentCreated": "Contract amended"
   },
   "withVersion": "{text} (version {version, number, integer})",
   "withMilestone": "{text} — <bdi>{milestone}</bdi>"

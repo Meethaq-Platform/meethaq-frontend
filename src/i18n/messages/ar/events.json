@@ -28,7 +28,9 @@
     "DisputeEvidenceAdded": "تمت إضافة دليل إلى النزاع",
     "DisputeResolutionProposed": "تم اقتراح حل للنزاع",
     "DisputeResolved": "تم حل النزاع",
-    "ProjectCompleted": "تم إكمال المشروع"
+    "ProjectCompleted": "تم إكمال المشروع",
+    "PaymentEvidenceUpdated": "تم إرسال أدلة دفع مصححة",
+    "ContractAmendmentCreated": "تم إنشاء تعديل على العقد"
   },
   "notificationTitles": {
     "ContractSent": "عقد بانتظار الموافقة",
@@ -59,7 +61,9 @@
     "DisputeEvidenceAdded": "دليل جديد في النزاع",
     "DisputeResolutionProposed": "اقتراح حل للنزاع",
     "DisputeResolved": "تم حل النزاع",
-    "ProjectCompleted": "اكتمل المشروع"
+    "ProjectCompleted": "اكتمل المشروع",
+    "PaymentEvidenceUpdated": "أدلة دفع مصححة",
+    "ContractAmendmentCreated": "تعديل على العقد"
   },
   "withVersion": "{text} (النسخة {version, number, integer})",
   "withMilestone": "{text} — <bdi>{milestone}</bdi>"
