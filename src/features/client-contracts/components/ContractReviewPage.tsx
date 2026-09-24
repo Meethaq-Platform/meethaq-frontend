@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { ArrowLeft, FileText } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useFormat } from "@/src/shared/hooks/useFormat";
 
 import { useClientProject } from "@/src/features/client-projects/hooks/useClientProject";
 import { useClientContract } from "../hooks/useClientContract";
@@ -16,13 +18,16 @@ import { MilestonesSection } from "@/src/features/contracts/components/Milestone
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 import EmptyState from "@/src/shared/components/EmptyState";
-import { formatCurrency, formatDate } from "@/src/shared/lib/format";
+import { formatCurrency } from "@/src/shared/lib/format";
 
 interface ContractReviewPageProps {
   projectId: string;
 }
 
 export default function ContractReviewPage({ projectId }: ContractReviewPageProps) {
+  const t = useTranslations("clientContracts.review");
+  const tContracts = useTranslations("contracts.workspace");
+  const format = useFormat();
   const project = useClientProject(projectId);
   const contractQuery = useClientContract(projectId);
   usePageTitle(project.data ? `Projects/${project.data.title}/Contract` : undefined);
@@ -36,7 +41,7 @@ export default function ContractReviewPage({ projectId }: ContractReviewPageProp
       className="flex items-center gap-1.5 text-text-secondary hover:text-text-primary text-sm transition"
     >
       <ArrowLeft size={16} className="rtl-flip" />
-      Back to Project
+      {tContracts("back")}
     </Link>
   );
 
@@ -56,7 +61,7 @@ export default function ContractReviewPage({ projectId }: ContractReviewPageProp
       <div className="space-y-6 mx-auto h-full">
         {backLink}
         <ErrorState
-          message="Failed to load this contract."
+          message={t("loadFailed")}
           onRetry={() => {
             project.refetch();
             contractQuery.refetch();
@@ -100,11 +105,11 @@ export default function ContractReviewPage({ projectId }: ContractReviewPageProp
       {!contract ? (
         <EmptyState
           icon={FileText}
-          title="No contract to review yet"
+          title={t("emptyTitle")}
           description={
             currentProject.contractStatus === "Draft"
-              ? "Your freelancer is still preparing the contract for this project."
-              : "Your freelancer hasn't submitted a contract for this project yet."
+              ? t("preparing")
+              : t("notSubmitted")
           }
         />
       ) : (
@@ -112,10 +117,10 @@ export default function ContractReviewPage({ projectId }: ContractReviewPageProp
           <div className="bg-surface p-6 border border-border rounded-2xl">
             <div className="flex sm:flex-row flex-col justify-between items-start gap-4">
               <div className="flex-1">
-                <h1 className="font-semibold text-text-primary text-lg">
+                <h1 dir="auto" className="font-semibold text-text-primary text-lg">
                   {contract.title}
                 </h1>
-                <p className="mt-2 text-text-primary text-sm whitespace-pre-wrap">
+                <p dir="auto" className="mt-2 text-text-primary text-sm whitespace-pre-wrap">
                   {contract.scopeOfWork}
                 </p>
               </div>
@@ -123,8 +128,8 @@ export default function ContractReviewPage({ projectId }: ContractReviewPageProp
               <div className="flex flex-col items-end gap-2 w-fit shrink-0">
                 <ContractStatusBadge status={displayedContractStatus} />
                 <p className="text-text-secondary text-sm text-end">
-                  {formatDate(contract.startDate)} –{" "}
-                  {formatDate(contract.expectedEndDate)}
+                  {format.date(contract.startDate)} –{" "}
+                  {format.date(contract.expectedEndDate)}
                 </p>
               </div>
             </div>
@@ -132,9 +137,9 @@ export default function ContractReviewPage({ projectId }: ContractReviewPageProp
             {contract.generalTerms && (
               <div className="mt-4 pt-4 border-border border-t">
                 <p className="mb-1 text-text-secondary text-xs uppercase tracking-wide">
-                  General Terms
+                  {tContracts("generalTerms")}
                 </p>
-                <p className="text-text-primary text-sm whitespace-pre-wrap">
+                <p dir="auto" className="text-text-primary text-sm whitespace-pre-wrap">
                   {contract.generalTerms}
                 </p>
               </div>
@@ -143,8 +148,11 @@ export default function ContractReviewPage({ projectId }: ContractReviewPageProp
             {isApproved && contract.approvedAt && (
               <div className="mt-4 pt-4 border-border border-t">
                 <p className="text-success text-sm">
-                  You approved this contract on {formatDate(contract.approvedAt)} —{" "}
-                  {formatCurrency(contract.summary.projectValue)} locked in.
+                  {t.rich("approvedOn", {
+                    date: format.date(contract.approvedAt),
+                    amount: formatCurrency(contract.summary.projectValue),
+                    bdi: (chunks) => <bdi>{chunks}</bdi>,
+                  })}
                 </p>
               </div>
             )}
@@ -153,8 +161,7 @@ export default function ContractReviewPage({ projectId }: ContractReviewPageProp
           {isChangesRequested && (
             <div className="bg-warning-muted p-4 border border-warning/20 rounded-2xl">
               <p className="text-warning text-sm">
-                You requested changes on this contract. Your freelancer is revising
-                it and will resubmit for your review.
+                {t("changesRequested")}
               </p>
             </div>
           )}

@@ -1,7 +1,10 @@
+import { useTranslations } from "next-intl";
 import { useContractFeedback } from "../hooks/useContractFeedback";
-import { formatDate } from "@/src/shared/lib/format";
+import { useFormat } from "@/src/shared/hooks/useFormat";
 
 export function ContractFeedbackHistory({ projectId }: { projectId: string }) {
+  const t = useTranslations("clientContracts.feedbackHistory");
+  const format = useFormat();
   const { data } = useContractFeedback(projectId);
 
   if (!data || data.items.length === 0) return null;
@@ -9,7 +12,7 @@ export function ContractFeedbackHistory({ projectId }: { projectId: string }) {
   return (
     <div className="bg-surface p-6 border border-border rounded-2xl">
       <h2 className="mb-4 font-semibold text-text-primary text-base">
-        Feedback History
+        {t("title")}
       </h2>
 
       <div className="space-y-4">
@@ -19,7 +22,7 @@ export function ContractFeedbackHistory({ projectId }: { projectId: string }) {
               {item.feedback}
             </p>
             <p className="mt-1 text-text-secondary text-xs">
-              {item.requestedByClientName ?? "You"} — {formatDate(item.requestedAt)}
+              <bdi>{item.requestedByClientName ?? t("you")}</bdi> — {format.date(item.requestedAt)}
             </p>
           </div>
         ))}
