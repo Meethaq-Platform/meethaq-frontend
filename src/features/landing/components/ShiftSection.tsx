@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { sectionTitle } from "../lib/styles";
@@ -28,7 +28,14 @@ export function ShiftSection() {
             </span>
             <ul className="flex flex-col gap-3.5 text-text-secondary">
               {BEFORE.map((key) => (
-                <li key={key}>{t(`before.${key}`)}</li>
+                <li key={key} className="flex items-start gap-3">
+                  <X
+                    aria-hidden
+                    size={16}
+                    className="mt-1.5 text-text-secondary/70 shrink-0"
+                  />
+                  {t(`before.${key}`)}
+                </li>
               ))}
             </ul>
           </div>
@@ -47,7 +54,15 @@ export function ShiftSection() {
             </span>
             <ul className="flex flex-col gap-3.5 font-medium">
               {AFTER.map((key) => (
-                <li key={key}>{t(`after.${key}`)}</li>
+                <li key={key} className="flex items-start gap-3">
+                  <Check
+                    aria-hidden
+                    size={16}
+                    strokeWidth={2.5}
+                    className="mt-1.5 text-primary shrink-0"
+                  />
+                  {t(`after.${key}`)}
+                </li>
               ))}
             </ul>
           </div>
