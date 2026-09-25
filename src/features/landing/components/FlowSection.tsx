@@ -32,8 +32,9 @@ export function FlowSection() {
                   as="li"
                   key={key}
                   delay={index * 90}
-                  // The connector runs from under this number to the next one.
-                  className="before:top-11 before:bottom-0 before:absolute relative flex gap-5 pb-10 last:pb-0 before:bg-border before:w-px before:start-5.25"
+                  // The connector runs from under this number to the next one;
+                  // the last step has none.
+                  className="before:top-11 before:bottom-0 before:absolute relative flex gap-5 pb-10 last:pb-0 last:before:hidden before:bg-border before:w-px before:start-5.25"
                 >
                   <span className="z-10 flex justify-center items-center bg-primary-muted rounded-full size-11 font-numbers font-bold text-[17px] text-primary shrink-0">
                     {index + 1}
