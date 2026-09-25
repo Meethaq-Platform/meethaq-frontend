@@ -204,6 +204,22 @@
   --font-numbers: var(--font-plex-arabic);
 }
 
+@theme {
+  /* Landing hero entrance; pair with motion-safe: so reduced motion skips it. */
+  --animate-rise: rise 0.7s ease both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
 /* Mirrors direction-bearing icons (arrows, chevrons, send, logout, undo) in
    RTL. Apply only to icons that point somewhere; symmetric icons, up/down
    arrows, clocks and media controls stay as they are. Uses the individual
