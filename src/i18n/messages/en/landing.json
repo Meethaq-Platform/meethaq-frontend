@@ -1,0 +1,95 @@
+{
+  "metaDescription": "Meethaq brings the contract, delivery and payment into one track, so no milestone's payment is released until it's accepted.",
+  "nav": {
+    "label": "Main navigation",
+    "features": "Features",
+    "howItWorks": "How it works",
+    "contact": "Contact us",
+    "signIn": "Sign in",
+    "getStarted": "Get started free"
+  },
+  "hero": {
+    "title": "Document every step. Secure what you're owed.",
+    "subtitle": "Meethaq brings the contract, conversation, delivery and payment into one track, so no milestone's payment is released until it's accepted.",
+    "seeHowItWorks": "See how it works",
+    "illustrationAlt": "Illustration of accepting an agreement on Meethaq"
+  },
+  "shift": {
+    "title": "One documented track instead of scattered messages",
+    "beforeLabel": "Before Meethaq",
+    "before": {
+      "messages": "WhatsApp or email for messages",
+      "contract": "A separate document for the contract",
+      "files": "An external link for delivery files",
+      "payment": "A bank transfer with no clear record"
+    },
+    "afterLabel": "With Meethaq",
+    "after": {
+      "onePlace": "Contract, chat and project in one place",
+      "criteria": "Milestones with clear acceptance criteria",
+      "delivery": "Delivery and records in the same track",
+      "payment": "Payment tied to an actual acceptance"
+    }
+  },
+  "flow": {
+    "title": "Five steps, from agreement to payment",
+    "illustrationAlt": "Illustration of the steps of working on Meethaq",
+    "steps": {
+      "create": {
+        "title": "Create the client and project",
+        "description": "A simple client profile and a dedicated project space."
+      },
+      "agree": {
+        "title": "Agree on the milestones",
+        "description": "Scope, deadline, acceptance criteria and value for each milestone, approved by both sides."
+      },
+      "deliver": {
+        "title": "Deliver each milestone",
+        "description": "Delivery files or links attached directly to their milestone."
+      },
+      "accept": {
+        "title": "The client reviews the delivery",
+        "description": "Acceptance or a specific revision request, with every decision recorded and dated."
+      },
+      "release": {
+        "title": "The payment becomes due",
+        "description": "As soon as it's accepted, the milestone's value becomes eligible for payment."
+      }
+    }
+  },
+  "features": {
+    "title": "Core features",
+    "contract": {
+      "title": "Milestone-based contract",
+      "description": "Every milestone has a scope, deadline, acceptance criteria and value from day one, so there's no confusion later about what was agreed."
+    },
+    "delivery": {
+      "title": "Documented delivery",
+      "description": "Every file, link or reply to a revision request is logged with its date and author, building a clear record for each milestone."
+    },
+    "payment": {
+      "title": "Payment tied to acceptance",
+      "description": "A milestone's value is only released once the client actually accepts it: no payment before the work, and no work without payment."
+    },
+    "record": {
+      "title": "A record that holds up",
+      "description": "If a dispute comes up, the full timeline of the agreement, deliveries and decisions is ready, instead of digging through scattered chats."
+    }
+  },
+  "principle": {
+    "title": "Every milestone in Meethaq answers five questions",
+    "questions": {
+      "what": "What's required?",
+      "when": "By when?",
+      "criteria": "What are the acceptance criteria?",
+      "value": "How much is it worth?",
+      "proof": "What proves it was delivered?"
+    }
+  },
+  "finalCta": {
+    "title": "Ready to document your next project?"
+  },
+  "footer": {
+    "rights": "© {year} Meethaq. All rights reserved."
+  }
+}
