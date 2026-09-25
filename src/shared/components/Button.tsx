@@ -1,10 +1,13 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { Loader2 } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   loading?: boolean;
   loadingText?: string;
+  /** Show a spinner beside the loading text. */
+  spinner?: boolean;
   variant?: "primary" | "amber" | "danger";
 }
 
@@ -18,6 +21,7 @@ export default function Button({
   children,
   loading = false,
   loadingText = "Loading...",
+  spinner = false,
   variant = "primary",
   disabled,
   className,
@@ -32,7 +36,16 @@ export default function Button({
         className,
       )}
     >
-      {loading ? loadingText : children}
+      {loading && spinner ? (
+        <span className="inline-flex justify-center items-center gap-2">
+          <Loader2 size={16} className="animate-spin shrink-0" aria-hidden />
+          {loadingText}
+        </span>
+      ) : loading ? (
+        loadingText
+      ) : (
+        children
+      )}
     </button>
   );
 }

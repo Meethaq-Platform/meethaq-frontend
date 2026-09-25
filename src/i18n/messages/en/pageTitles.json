@@ -9,5 +9,6 @@
   "client": "Clients/{name}",
   "login": "Meethaq - Login",
   "register": "Meethaq - Register",
-  "home": "Meethaq - Track every step"
+  "home": "Meethaq - Track every step",
+  "meta": "Meethaq helps freelancers and clients manage milestone-based contracts - clear scope, documented delivery, and payments released only after approval"
 }

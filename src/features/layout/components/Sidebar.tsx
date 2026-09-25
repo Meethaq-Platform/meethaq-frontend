@@ -5,12 +5,18 @@ import { useTranslations } from "next-intl";
 
 import { useCurrentUser } from "@/src/features/auth/hooks/useCurrentUser";
 import Brand from "@/src/shared/components/Brand";
+import LanguageSwitcher from "@/src/shared/components/LanguageSwitcher";
+import ThemeToggle from "@/src/shared/components/ThemeToggle";
 
 import { useSidebar } from "../context/SidebarContext";
 import { getNavItems } from "../lib/nav-items";
 import { NavItem } from "./NavItem";
 import { NavLogoutButton } from "./NavLogoutButton";
 import Image from "next/image";
+
+// Matches NavItem's inactive link style.
+const sidebarButtonClass =
+  "flex items-center gap-3 rounded-xl px-3 py-2.5 w-full text-sm font-medium text-text-secondary hover:bg-surface-muted hover:text-text-primary";
 
 export function Sidebar() {
   const { isMobileOpen, closeMobile } = useSidebar();
@@ -46,6 +52,11 @@ export function Sidebar() {
         {navItems.map((item) => (
           <NavItem key={item.href} item={item} />
         ))}
+
+        <div className="md:hidden flex flex-col gap-1 mt-2 pt-3 border-border border-t">
+          <LanguageSwitcher showLabel className={sidebarButtonClass} />
+          <ThemeToggle showLabel className={sidebarButtonClass} />
+        </div>
 
         <Image
           src="/illustrations/Agreement-bro.svg"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useTransition } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { AuthCard } from "./AuthCard";
@@ -34,11 +34,14 @@ export function LoginForm() {
 
   const { mutate, isPending, isError, error } = useLogin();
   const router = useRouter();
+  // Stays pending until the dashboard renders, so the button doesn't
+  // flip back to idle between login success and the page change.
+  const [isRedirecting, startRedirect] = useTransition();
 
   const onSubmit = (data: LoginFormValues) => {
     mutate(data, {
       onSuccess: () => {
-        router.push("/dashboard");
+        startRedirect(() => router.push("/dashboard"));
       },
     });
   };
@@ -78,8 +81,9 @@ export function LoginForm() {
         <Button
           type="submit"
           className="mt-6 w-full"
-          loading={isPending}
-          loadingText={t("submitting")}
+          loading={isPending || isRedirecting}
+          spinner
+          loadingText={isRedirecting ? t("redirecting") : t("submitting")}
         >
           {t("submit")}
         </Button>
