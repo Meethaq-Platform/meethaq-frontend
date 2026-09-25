@@ -8,7 +8,13 @@ import { twMerge } from "tailwind-merge";
 
 import { saveLocale } from "@/src/i18n/locale";
 
-export default function LanguageSwitcher({ className }: { className?: string }) {
+export default function LanguageSwitcher({
+  className,
+  showLabel = false,
+}: {
+  className?: string;
+  showLabel?: boolean;
+}) {
   const locale = useLocale();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -37,8 +43,8 @@ export default function LanguageSwitcher({ className }: { className?: string }) 
         className
       )}
     >
-      <Languages size={20} />
-      <span className="hidden sm:inline">{label}</span>
+      <Languages size={20} className="shrink-0" />
+      <span className={showLabel ? undefined : "hidden sm:inline"}>{label}</span>
     </button>
   );
 }
