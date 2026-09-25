@@ -3,21 +3,22 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 import { pillLarge, pillPrimary } from "../lib/styles";
+import { Reveal } from "./Reveal";
 
 export function HeroSection() {
   const t = useTranslations("landing");
 
   return (
     <section id="top" className="pt-10 md:pt-18 pb-10 overflow-hidden">
-      <div className="relative flex md:flex-row flex-col items-center gap-10 md:gap-14 mx-auto px-4 sm:px-6 max-w-295 text-start">
+      <Reveal className="relative flex md:flex-row flex-col items-center gap-10 md:gap-14 mx-auto px-4 sm:px-6 max-w-295 text-start">
         <div className="md:flex-[1_1_480px] min-w-0">
-          <h1 className="font-bold text-[clamp(2.1rem,3.6vw+1rem,3.4rem)] leading-tight tracking-tight motion-safe:animate-rise">
+          <h1 className="font-bold text-[clamp(2.1rem,3.6vw+1rem,3.4rem)] leading-tight tracking-tight">
             {t("hero.title")}
           </h1>
-          <p className="mt-5 max-w-[46ch] text-text-secondary text-lg leading-relaxed motion-safe:animate-rise motion-safe:[animation-delay:80ms]">
+          <p className="mt-5 max-w-[46ch] text-text-secondary text-lg leading-relaxed">
             {t("hero.subtitle")}
           </p>
-          <div className="flex flex-wrap items-center gap-2 mt-8 pe-36 md:pe-0 motion-safe:animate-rise motion-safe:[animation-delay:160ms]">
+          <div className="flex flex-wrap items-center gap-2 mt-8 pe-36 md:pe-0">
             <Link href="/register" className={`${pillPrimary} ${pillLarge}`}>
               {t("nav.getStarted")}
             </Link>
@@ -34,7 +35,7 @@ export function HeroSection() {
             opposite the buttons (which leave room for it with pe-36). Both theme
             variants are rendered and the theme class picks one; neither is
             `priority`, so the hidden one isn't fetched. */}
-        <div className="md:static absolute bottom-0 end-4 md:flex-[1_1_380px] w-32 md:w-full min-w-0 motion-safe:animate-rise motion-safe:[animation-delay:100ms]">
+        <div className="md:static absolute bottom-0 end-4 md:flex-[1_1_380px] w-32 md:w-full min-w-0">
           <div className="rounded-2xl md:rounded-[28px] overflow-hidden">
             <Image
               src="/illustrations/Accept terms.gif"
@@ -52,7 +53,7 @@ export function HeroSection() {
             />
           </div>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

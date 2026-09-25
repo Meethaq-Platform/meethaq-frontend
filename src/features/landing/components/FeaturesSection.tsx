@@ -2,6 +2,7 @@ import { CircleCheck, FileText, ScrollText, Upload } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { sectionTitle } from "../lib/styles";
+import { Reveal } from "./Reveal";
 
 const FEATURES = [
   { key: "contract", Icon: FileText },
@@ -19,9 +20,10 @@ export function FeaturesSection() {
         <h2 className={`${sectionTitle} mb-14`}>{t("title")}</h2>
 
         <div>
-          {FEATURES.map(({ key, Icon }) => (
-            <div
+          {FEATURES.map(({ key, Icon }, index) => (
+            <Reveal
               key={key}
+              delay={index * 80}
               // Rows alternate sides on wide screens and stack when narrow.
               className="flex sm:even:flex-row-reverse sm:flex-row flex-col items-center gap-4.5 sm:gap-12 py-9 border-border border-t last:border-b sm:text-start text-center"
             >
@@ -34,7 +36,7 @@ export function FeaturesSection() {
                   {t(`${key}.description`)}
                 </p>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

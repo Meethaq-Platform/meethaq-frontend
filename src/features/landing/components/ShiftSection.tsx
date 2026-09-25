@@ -2,6 +2,7 @@ import { Check, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { sectionTitle } from "../lib/styles";
+import { Reveal } from "./Reveal";
 
 const BEFORE = ["messages", "contract", "files", "payment"] as const;
 const AFTER = ["onePlace", "criteria", "delivery", "payment"] as const;
@@ -14,7 +15,7 @@ export function ShiftSection() {
       <div className="mx-auto px-4 sm:px-6 max-w-295">
         <h2 className={`${sectionTitle} mb-10`}>{t("title")}</h2>
 
-        <div className="flex sm:flex-row flex-col bg-surface border border-border rounded-[20px] overflow-hidden">
+        <Reveal className="flex sm:flex-row flex-col bg-surface border border-border rounded-[20px] overflow-hidden">
           <div className="flex-1 px-6 sm:px-9 py-8">
             <span className="flex items-center gap-2 mb-4.5 font-semibold text-[13px] text-text-secondary">
               {/* rtl-flip turns "?" into the Arabic "؟". */}
@@ -66,7 +67,7 @@ export function ShiftSection() {
               ))}
             </ul>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { Reveal } from "./Reveal";
 
 const QUESTIONS = ["what", "when", "criteria", "value", "proof"] as const;
 
@@ -19,7 +20,7 @@ export function PrincipleSection() {
         className="hidden md:block -bottom-3.5 -end-4.5 absolute opacity-90 w-[clamp(120px,16vw,200px)] h-auto pointer-events-none"
       />
 
-      <div className="relative mx-auto px-4 sm:px-6 max-w-190 text-center">
+      <Reveal className="relative mx-auto px-4 sm:px-6 max-w-190 text-center">
         <p className="mb-11 font-semibold text-[clamp(1.5rem,2vw+1rem,2rem)] dark:text-white leading-snug">
           {t("title")}
         </p>
@@ -33,7 +34,7 @@ export function PrincipleSection() {
             </li>
           ))}
         </ul>
-      </div>
+      </Reveal>
     </section>
   );
 }

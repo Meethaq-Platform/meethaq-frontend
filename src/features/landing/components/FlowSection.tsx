@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 import { sectionTitle } from "../lib/styles";
+import { Reveal } from "./Reveal";
 
 const STEPS = ["create", "agree", "deliver", "accept", "release"] as const;
 
@@ -27,8 +28,10 @@ export function FlowSection() {
           <ol className="flex flex-col mx-auto max-w-160">
             {STEPS.map((key, index) => {
               return (
-                <li
+                <Reveal
+                  as="li"
                   key={key}
+                  delay={index * 90}
                   // The connector runs from under this number to the next one.
                   className="before:top-11 before:bottom-0 before:absolute relative flex gap-5 pb-10 last:pb-0 before:bg-border before:w-px before:start-5.25"
                 >
@@ -43,7 +46,7 @@ export function FlowSection() {
                       {t(`steps.${key}.description`)}
                     </p>
                   </div>
-                </li>
+                </Reveal>
               );
             })}
           </ol>
