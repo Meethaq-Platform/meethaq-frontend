@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown, LogOut } from "lucide-react";
+import { ChevronDown, Loader2, LogOut } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { useCurrentUser } from "../hooks/useCurrentUser";
@@ -12,7 +12,7 @@ import { useProfile } from "@/src/features/profile/hooks/useProfile";
 export default function UserMenu() {
   const { data: user, isLoading } = useCurrentUser();
   const { data: profile } = useProfile();
-  const handleLogout = useLogout();
+  const { logout, isPending: isLoggingOut } = useLogout();
   const t = useTranslations("auth");
 
   const [isOpen, setIsOpen] = useState(false);
@@ -77,10 +77,15 @@ export default function UserMenu() {
         <div className="inset-e-0 z-50 absolute bg-surface shadow-lg mt-2 border border-border rounded-xl w-52 overflow-hidden">
           <button
             type="button"
-            onClick={handleLogout}
-            className="flex items-center gap-3 hover:bg-danger-muted px-4 w-full h-11 text-danger text-sm transition"
+            onClick={logout}
+            disabled={isLoggingOut}
+            className="flex items-center gap-3 hover:bg-danger-muted disabled:opacity-60 px-4 w-full h-11 text-danger text-sm transition disabled:cursor-not-allowed"
           >
-            <LogOut size={16} className="rtl-flip" />
+            {isLoggingOut ? (
+              <Loader2 size={16} className="animate-spin" aria-hidden />
+            ) : (
+              <LogOut size={16} className="rtl-flip" />
+            )}
             <span>{t("userMenu.signOut")}</span>
           </button>
         </div>
