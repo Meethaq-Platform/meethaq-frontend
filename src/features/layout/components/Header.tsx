@@ -29,8 +29,11 @@ export function Header() {
       <GlobalSearch className="flex-1 max-w-md" />
 
       <div className="flex items-center gap-2 ms-auto">
-        <LanguageSwitcher />
-        <ThemeToggle />
+        {/* On mobile these live in the sidebar instead. */}
+        <div className="hidden md:flex items-center gap-2">
+          <LanguageSwitcher />
+          <ThemeToggle />
+        </div>
         <NotificationButton />
         <UserMenu />
       </div>

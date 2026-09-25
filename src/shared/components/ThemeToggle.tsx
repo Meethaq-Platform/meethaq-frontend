@@ -6,7 +6,13 @@ import { useTranslations } from "next-intl";
 
 import { useTheme } from "../hooks/useTheme";
 
-export default function ThemeToggle({ className }: { className?: string }) {
+export default function ThemeToggle({
+  className,
+  showLabel = false,
+}: {
+  className?: string;
+  showLabel?: boolean;
+}) {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === "dark";
   const t = useTranslations("common.theme");
@@ -24,11 +30,14 @@ export default function ThemeToggle({ className }: { className?: string }) {
     >
       {/* Theme is unknown until hydration; keep the slot sized meanwhile. */}
       {theme === null ? (
-        <span className="block w-5 h-5" />
+        <span className="block w-5 h-5 shrink-0" />
       ) : isDark ? (
-        <Sun size={20} />
+        <Sun size={20} className="shrink-0" />
       ) : (
-        <Moon size={20} />
+        <Moon size={20} className="shrink-0" />
+      )}
+      {showLabel && theme !== null && (
+        <span>{isDark ? t("light") : t("dark")}</span>
       )}
     </button>
   );

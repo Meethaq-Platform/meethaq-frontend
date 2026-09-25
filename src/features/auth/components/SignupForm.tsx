@@ -133,6 +133,7 @@ export function SignupForm() {
               <Button
                 type="submit"
                 loading={isPending}
+                spinner
                 loadingText={t("submitting")}
               >
                 {t("submit")}
