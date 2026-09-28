@@ -27,8 +27,8 @@ export function FeaturesSection() {
               // Rows alternate sides on wide screens and stack when narrow.
               className="flex sm:even:flex-row-reverse sm:flex-row flex-col items-center gap-4.5 sm:gap-12 py-9 border-border border-t last:border-b sm:text-start text-center"
             >
-              <div className="flex justify-center items-center bg-surface-muted rounded-[20px] size-19 shrink-0">
-                <Icon size={30} strokeWidth={1.8} className="text-accent-value" />
+              <div className="flex justify-center items-center bg-primary-muted border border-primary/20 rounded-[20px] size-19 shrink-0">
+                <Icon size={30} strokeWidth={1.8} className="text-primary" />
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="mb-2 font-bold text-xl">{t(`${key}.title`)}</h3>
