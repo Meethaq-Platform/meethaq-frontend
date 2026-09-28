@@ -6,6 +6,7 @@ import type { ProjectInvitation } from "../types/client-project";
 import { ProjectStatusBadge } from "@/src/features/projects/components/ProjectStatusBadge";
 import Pagination from "@/src/shared/components/Pagination";
 import EmptyState from "@/src/shared/components/EmptyState";
+import LinkRow from "@/src/shared/components/LinkRow";
 
 interface InvitationsTableProps {
   invitations: ProjectInvitation[];
@@ -58,8 +59,9 @@ export function InvitationsTable({
 
           <tbody className="divide-y divide-border">
             {invitations.map((invitation) => (
-              <tr
+              <LinkRow
                 key={invitation.id}
+                href={`/projects/invitations/${invitation.id}`}
                 className="hover:bg-surface-muted transition"
               >
                 <td dir="auto" className="px-6 py-4 font-medium text-text-primary">
@@ -83,7 +85,7 @@ export function InvitationsTable({
                     <ArrowRight size={16} className="rtl-flip" />
                   </Link>
                 </td>
-              </tr>
+              </LinkRow>
             ))}
           </tbody>
         </table>

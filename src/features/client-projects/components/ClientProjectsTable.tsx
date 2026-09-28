@@ -9,6 +9,7 @@ import Pagination from "@/src/shared/components/Pagination";
 import EmptyState from "@/src/shared/components/EmptyState";
 import RelativeTime from "@/src/shared/components/RelativeTime";
 import { formatCurrency } from "@/src/shared/lib/format";
+import LinkRow from "@/src/shared/components/LinkRow";
 
 interface ClientProjectsTableProps {
   projects: ProjectSummary[];
@@ -75,8 +76,9 @@ export function ClientProjectsTable({
 
           <tbody className="divide-y divide-border">
             {projects.map((project) => (
-              <tr
+              <LinkRow
                 key={project.id}
+                href={`/projects/${project.id}`}
                 className="even:bg-surface-muted hover:bg-border/40 transition"
               >
                 <td dir="auto" className="px-6 py-4 font-medium text-text-primary">
@@ -108,7 +110,7 @@ export function ClientProjectsTable({
                     <ArrowRight size={16} className="rtl-flip" />
                   </Link>
                 </td>
-              </tr>
+              </LinkRow>
             ))}
           </tbody>
         </table>
