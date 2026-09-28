@@ -4,10 +4,33 @@ import { ShieldCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { container, pillLarge, pillPrimary } from "../lib/styles";
-import { Reveal } from "./Reveal";
+
+// The hero plays one CSS sequence on load instead of the scroll Reveal, so
+// the headline doesn't wait for hydration. Delays are in ms.
+const WORD_START = 150;
+const WORD_STEP = 80;
+
+const rise = "motion-safe:animate-rise-in";
+const delay = (ms: number) => ({ animationDelay: `${ms}ms` });
+
+// Whole words only: splitting Arabic any finer would break letter joining.
+function Words({ text, start }: { text: string; start: number }) {
+  return text.split(" ").map((word, index) => (
+    <span key={index}>
+      {index > 0 && " "}
+      <span className={`inline-block ${rise}`} style={delay(start + index * WORD_STEP)}>
+        {word}
+      </span>
+    </span>
+  ));
+}
 
 export function HeroSection() {
   const t = useTranslations("landing");
+  const lead = t("hero.titleLead");
+  const highlight = t("hero.titleHighlight");
+  const highlightStart = WORD_START + lead.split(" ").length * WORD_STEP;
+  const titleEnd = highlightStart + highlight.split(" ").length * WORD_STEP;
 
   return (
     // From md up it fills the first screen under the sticky nav (~4.5rem).
@@ -21,22 +44,32 @@ export function HeroSection() {
         className="absolute inset-0 bg-[radial-gradient(var(--border)_1.5px,transparent_1.5px)] bg-size-[24px_24px] mask-[radial-gradient(ellipse_at_center,black_30%,transparent_75%)] pointer-events-none"
       />
 
-      <Reveal
+      <div
         className={`relative flex md:flex-row flex-col items-center gap-10 md:gap-16 w-full text-start ${container}`}
       >
         <div className="md:flex-[1_1_540px] min-w-0">
-          <span className="inline-flex items-center gap-2 bg-surface shadow-xs mb-6 px-4 py-2 border border-border rounded-full font-semibold text-primary text-sm">
+          <span
+            className={`inline-flex items-center gap-2 bg-surface shadow-xs mb-6 px-4 py-2 border border-border rounded-full font-semibold text-primary text-sm ${rise}`}
+          >
             <ShieldCheck aria-hidden size={16} strokeWidth={2.2} />
             {t("hero.eyebrow")}
           </span>
           <h1 className="font-bold text-[clamp(2.3rem,3.8vw+1rem,4rem)] leading-[1.15] tracking-tight">
-            {t("hero.titleLead")}{" "}
-            <span className="block text-primary">{t("hero.titleHighlight")}</span>
+            <Words text={lead} start={WORD_START} />{" "}
+            <span className="block text-primary">
+              <Words text={highlight} start={highlightStart} />
+            </span>
           </h1>
-          <p className="mt-6 max-w-[46ch] text-text-secondary text-lg md:text-xl leading-relaxed">
+          <p
+            className={`mt-6 max-w-[46ch] text-text-secondary text-lg md:text-xl leading-relaxed ${rise}`}
+            style={delay(titleEnd - 150)}
+          >
             {t("hero.subtitle")}
           </p>
-          <div className="flex flex-wrap items-center gap-3 mt-9 md:mt-10 pe-36 md:pe-0">
+          <div
+            className={`flex flex-wrap items-center gap-3 mt-9 md:mt-10 pe-36 md:pe-0 ${rise}`}
+            style={delay(titleEnd)}
+          >
             <Link
               href="/register"
               className={`${pillPrimary} ${pillLarge} md:px-9 md:py-4 md:text-lg`}
@@ -57,7 +90,10 @@ export function HeroSection() {
             variants are rendered and the theme class picks one; neither is
             `priority`, so the hidden one isn't fetched. Capped near the GIFs'
             500px source size so they don't blur. */}
-        <div className="md:static absolute bottom-0 inset-e-4 md:flex-[1_1_440px] w-32 md:w-full md:max-w-135 min-w-0">
+        <div
+          className={`md:static absolute bottom-0 inset-e-4 md:flex-[1_1_440px] w-32 md:w-full md:max-w-135 min-w-0 ${rise}`}
+          style={delay(300)}
+        >
           <div className="rounded-2xl md:rounded-4xl overflow-hidden">
             <Image
               src="/illustrations/Accept terms.gif"
@@ -75,7 +111,7 @@ export function HeroSection() {
             />
           </div>
         </div>
-      </Reveal>
+      </div>
     </section>
   );
 }
