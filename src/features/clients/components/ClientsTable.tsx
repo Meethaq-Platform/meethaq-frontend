@@ -7,6 +7,7 @@ import { ClientAvatar } from "./ClientAvatar";
 import Pagination from "@/src/shared/components/Pagination";
 import EmptyState from "@/src/shared/components/EmptyState";
 import LinkRow from "@/src/shared/components/LinkRow";
+import TableSkeleton from "@/src/shared/components/TableSkeleton";
 
 interface ClientsTableProps {
   clients: Client[];
@@ -114,5 +115,20 @@ export function ClientsTable({
         itemLabel="client"
       />
     </div>
+  );
+}
+
+export function ClientsTableSkeleton() {
+  const t = useTranslations("clients.list");
+
+  return (
+    <TableSkeleton
+      columns={[
+        { label: t("columns.client"), shape: "avatar" },
+        { label: t("columns.email"), width: "w-44" },
+        { label: t("columns.company"), width: "w-28" },
+        { label: t("columns.actions"), srOnlyLabel: true, shape: "action", align: "end" },
+      ]}
+    />
   );
 }

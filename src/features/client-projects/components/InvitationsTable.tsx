@@ -7,6 +7,7 @@ import { ProjectStatusBadge } from "@/src/features/projects/components/ProjectSt
 import Pagination from "@/src/shared/components/Pagination";
 import EmptyState from "@/src/shared/components/EmptyState";
 import LinkRow from "@/src/shared/components/LinkRow";
+import TableSkeleton from "@/src/shared/components/TableSkeleton";
 
 interface InvitationsTableProps {
   invitations: ProjectInvitation[];
@@ -99,5 +100,22 @@ export function InvitationsTable({
         itemLabel="invitation"
       />
     </div>
+  );
+}
+
+export function InvitationsTableSkeleton() {
+  const t = useTranslations("clientProjects.invitations");
+  const tProjects = useTranslations("projects.list");
+
+  return (
+    <TableSkeleton
+      header="plain"
+      columns={[
+        { label: tProjects("columns.title"), width: "w-40" },
+        { label: t("freelancerColumn"), width: "w-28" },
+        { label: tProjects("columns.status"), shape: "badge" },
+        { label: tProjects("columns.actions"), srOnlyLabel: true, shape: "action", align: "end" },
+      ]}
+    />
   );
 }

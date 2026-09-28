@@ -10,6 +10,7 @@ import EmptyState from "@/src/shared/components/EmptyState";
 import RelativeTime from "@/src/shared/components/RelativeTime";
 import { formatCurrency } from "@/src/shared/lib/format";
 import LinkRow from "@/src/shared/components/LinkRow";
+import TableSkeleton from "@/src/shared/components/TableSkeleton";
 
 interface ClientProjectsTableProps {
   projects: ProjectSummary[];
@@ -124,5 +125,22 @@ export function ClientProjectsTable({
         itemLabel="project"
       />
     </div>
+  );
+}
+
+export function ClientProjectsTableSkeleton() {
+  const t = useTranslations("projects.list");
+
+  return (
+    <TableSkeleton
+      columns={[
+        { label: t("columns.title"), width: "w-40" },
+        { label: t("columns.status"), shape: "badge" },
+        { label: t("columns.contract"), shape: "badge" },
+        { label: t("columns.value"), width: "w-20", align: "end", lgOnly: true },
+        { label: t("columns.updated"), width: "w-20", lgOnly: true },
+        { label: t("columns.actions"), srOnlyLabel: true, shape: "action", align: "end" },
+      ]}
+    />
   );
 }
