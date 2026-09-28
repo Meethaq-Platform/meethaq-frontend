@@ -1,7 +1,7 @@
 "use client";
 
 import { useCurrentUser } from "@/src/features/auth/hooks/useCurrentUser";
-import Spinner from "@/src/shared/components/Spinner";
+import { DashboardSkeleton } from "./DashboardSkeleton";
 import FreelancerDashboard from "./FreelancerDashboard";
 import ClientDashboard from "./ClientDashboard";
 
@@ -10,11 +10,7 @@ export default function DashboardHome() {
   const { data: user, isLoading } = useCurrentUser();
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-16">
-        <Spinner size={28} />
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   const isFreelancer = user?.roles[0]?.toLowerCase() === "freelancer";

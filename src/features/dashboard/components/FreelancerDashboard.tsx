@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import Spinner from "@/src/shared/components/Spinner";
+import { DashboardSkeleton } from "./DashboardSkeleton";
 import ErrorState from "@/src/shared/components/ErrorState";
 import { useFreelancerDashboard } from "../hooks/useFreelancerDashboard";
 import WelcomeHeader, { NEEDS_ATTENTION_ANCHOR_ID } from "./WelcomeHeader";
@@ -58,11 +58,7 @@ export default function FreelancerDashboard() {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-16">
-        <Spinner size={28} />
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   if (isError || !data) {
@@ -108,7 +104,8 @@ export default function FreelancerDashboard() {
           <SectionCard
             title={t("sections.projectOverview")}
             section={data.projectOverview}
-            viewAllHref={data.projectOverview.data?.viewAllNavigationUrl}
+            // viewAllNavigationUrl follows the backend's route map, not this app's.
+            viewAllHref="/projects"
             onRetry={refetch}
           >
             {(overview) => <FreelancerProjectOverview overview={overview} />}

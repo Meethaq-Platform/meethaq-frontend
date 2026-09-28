@@ -10,6 +10,7 @@ import { useSubmissions } from "@/src/features/submissions/hooks/useSubmissions"
 import { SubmitWorkForm } from "@/src/features/submissions/components/SubmitWorkForm";
 import { SubmissionHistoryList } from "@/src/features/submissions/components/SubmissionHistoryList";
 import { RemindClientButton } from "@/src/features/submissions/components/RemindClientButton";
+import { RequestMilestoneChangeButton } from "@/src/features/change-requests/components/RequestMilestoneChangeButton";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 
@@ -64,24 +65,34 @@ export function MilestoneWorkspacePage({
   const isOverdue = Boolean(
     isAwaitingReview && latest && latest.reviewFeedback === null && latest.isOverdue,
   );
+  // An accepted milestone is finished work — there's nothing left to change.
+  const canRequestChange = milestone.executionStatus !== "Accepted";
 
   return (
     <MilestoneDetailShell
       projectId={projectId}
       milestone={milestone}
       actions={
-        canStart ? (
-          <StartMilestoneButton projectId={projectId} milestoneId={milestone.milestoneId} />
-        ) : (
-          isOverdue &&
-          latest && (
-            <RemindClientButton
+        <div className="flex flex-wrap justify-end items-center gap-3">
+          {canRequestChange && (
+            <RequestMilestoneChangeButton
               projectId={projectId}
-              milestoneId={milestoneId}
-              submissionId={latest.submissionId}
+              milestoneId={milestone.milestoneId}
             />
-          )
-        )
+          )}
+          {canStart ? (
+            <StartMilestoneButton projectId={projectId} milestoneId={milestone.milestoneId} />
+          ) : (
+            isOverdue &&
+            latest && (
+              <RemindClientButton
+                projectId={projectId}
+                milestoneId={milestoneId}
+                submissionId={latest.submissionId}
+              />
+            )
+          )}
+        </div>
       }
     >
       {milestone.executionStatus === "RevisionRequested" && (

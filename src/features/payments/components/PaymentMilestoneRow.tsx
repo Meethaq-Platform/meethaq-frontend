@@ -12,7 +12,7 @@ import { CorrectedEvidenceModal } from "./CorrectedEvidenceModal";
 import { ConfirmReceiptButton } from "./ConfirmReceiptButton";
 import { ReportPaymentIssueModal } from "./ReportPaymentIssueModal";
 import { useMilestonePayment } from "../hooks/useMilestonePayment";
-import Spinner from "@/src/shared/components/Spinner";
+import Skeleton, { SkeletonRegion } from "@/src/shared/components/Skeleton";
 import { formatCurrency } from "@/src/shared/lib/format";
 
 interface PaymentMilestoneRowProps {
@@ -115,9 +115,15 @@ export function PaymentMilestoneRow({ projectId, item, isFreelancer }: PaymentMi
           )}
 
           {shouldFetchDetail && paymentQuery.isLoading && (
-            <div className="flex justify-center py-6">
-              <Spinner size={20} />
-            </div>
+            // Shaped like PaymentDetailCard's label/value grid.
+            <SkeletonRegion className="gap-3 grid grid-cols-2 bg-surface-muted p-4 rounded-xl">
+              {Array.from({ length: 4 }, (_, i) => (
+                <div key={i} className="space-y-1.5">
+                  <Skeleton className="w-16 h-3" />
+                  <Skeleton className="w-24 h-4" />
+                </div>
+              ))}
+            </SkeletonRegion>
           )}
 
           {shouldFetchDetail && paymentQuery.data && (
