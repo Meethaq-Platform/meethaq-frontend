@@ -78,18 +78,11 @@ export function MilestoneReviewPage({
             />
           )}
           {canReview && (
-            <>
-              <RequestRevisionModal
-                projectId={projectId}
-                milestoneId={milestoneId}
-                submissionId={latest.submissionId}
-              />
-              <AcceptDeliverableButton
-                projectId={projectId}
-                milestoneId={milestoneId}
-                submissionId={latest.submissionId}
-              />
-            </>
+            <AcceptDeliverableButton
+              projectId={projectId}
+              milestoneId={milestoneId}
+              submissionId={latest.submissionId}
+            />
           )}
         </div>
       }
@@ -133,6 +126,17 @@ export function MilestoneReviewPage({
         onRetry={() => submissionsQuery.refetch()}
         submitterName={project?.freelancerName}
       />
+
+      {/* Asked for after reading the submissions, so it sits below them. */}
+      {canReview && (
+        <div className="flex justify-end">
+          <RequestRevisionModal
+            projectId={projectId}
+            milestoneId={milestoneId}
+            submissionId={latest.submissionId}
+          />
+        </div>
+      )}
     </MilestoneDetailShell>
   );
 }
