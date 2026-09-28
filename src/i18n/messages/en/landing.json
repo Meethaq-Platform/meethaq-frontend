@@ -84,6 +84,26 @@
       "description": "If a dispute comes up, the full timeline of the agreement, deliveries and decisions is ready, instead of digging through scattered chats."
     }
   },
+  "memory": {
+    "eyebrow": "A calmer working relationship",
+    "title": "Not just a contract. A trusted memory of the project.",
+    "subtitle": "Meethaq doesn't add another tool to the pile. It connects the moments that matter, so each side knows what happened, when, and what comes next.",
+    "note": "Built to keep the project's context, not to replace human conversation.",
+    "points": {
+      "clarity": {
+        "title": "Clarity before you start",
+        "description": "Scope, deadline, value and acceptance criteria are written down from the start."
+      },
+      "approval": {
+        "title": "Approval with no room for doubt",
+        "description": "Every delivery and approval is tied to its milestone, on a clear timeline."
+      },
+      "payment": {
+        "title": "Payment follows the work",
+        "description": "Each milestone's value is released only once it's approved, as both sides agreed."
+      }
+    }
+  },
   "principle": {
     "title": "Every milestone in Meethaq answers five questions",
     "questions": {

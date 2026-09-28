@@ -7,6 +7,7 @@ import { HeroSection } from "@/src/features/landing/components/HeroSection";
 import { FinalCta } from "@/src/features/landing/components/FinalCta";
 import { LandingFooter } from "@/src/features/landing/components/LandingFooter";
 import { LandingNav } from "@/src/features/landing/components/LandingNav";
+import { MemorySection } from "@/src/features/landing/components/MemorySection";
 import { PrincipleSection } from "@/src/features/landing/components/PrincipleSection";
 import { ShiftSection } from "@/src/features/landing/components/ShiftSection";
 
@@ -27,6 +28,7 @@ export default function Home() {
         <ShiftSection />
         <FlowSection />
         <FeaturesSection />
+        <MemorySection />
         <PrincipleSection />
         <FinalCta />
       </main>
