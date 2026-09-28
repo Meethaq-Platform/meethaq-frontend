@@ -1,7 +1,7 @@
 import { Check, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { sectionTitle } from "../lib/styles";
+import { container, sectionTitle } from "../lib/styles";
 import { Reveal } from "./Reveal";
 
 const BEFORE = ["messages", "contract", "files", "payment"] as const;
@@ -12,7 +12,7 @@ export function ShiftSection() {
 
   return (
     <section className="py-16">
-      <div className="mx-auto px-4 sm:px-6 max-w-295">
+      <div className={container}>
         <h2 className={`${sectionTitle} mb-10`}>{t("title")}</h2>
 
         <Reveal className="flex sm:flex-row flex-col bg-surface border border-border rounded-[20px] overflow-hidden">

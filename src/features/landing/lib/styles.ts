@@ -9,3 +9,7 @@ export const pillLarge = "px-7.5 py-3.75 text-base";
 
 export const sectionTitle =
   "font-bold text-[clamp(1.6rem,1.8vw+1rem,2.1rem)] text-center leading-snug";
+
+// The landing page's content column, shared so every section lines up.
+export const container = "mx-auto px-4 sm:px-6 max-w-320";
+

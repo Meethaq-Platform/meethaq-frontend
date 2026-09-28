@@ -1,7 +1,7 @@
 import { CircleCheck, FileText, ScrollText, Upload } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { sectionTitle } from "../lib/styles";
+import { container, sectionTitle } from "../lib/styles";
 import { Reveal } from "./Reveal";
 
 const FEATURES = [
@@ -16,7 +16,7 @@ export function FeaturesSection() {
 
   return (
     <section id="features" className="pt-10 pb-20 scroll-mt-16">
-      <div className="mx-auto px-4 sm:px-6 max-w-295">
+      <div className={container}>
         <h2 className={`${sectionTitle} mb-14`}>{t("title")}</h2>
 
         <div>
