@@ -1,73 +1,60 @@
-import { Check, X } from "lucide-react";
+import { FileText, Folder, MessageCircle, Wallet } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { container, sectionTitle } from "../lib/styles";
+import {
+  container,
+  sectionDisplayTitle,
+  sectionEyebrow,
+  sectionLead,
+} from "../lib/styles";
 import { Reveal } from "./Reveal";
 
-const BEFORE = ["messages", "contract", "files", "payment"] as const;
-const AFTER = ["onePlace", "criteria", "delivery", "payment"] as const;
+// Each piece of a project and the separate place it usually ends up in.
+const ITEMS = [
+  { key: "agreement", Icon: MessageCircle },
+  { key: "contract", Icon: FileText },
+  { key: "delivery", Icon: Folder },
+  { key: "payment", Icon: Wallet },
+] as const;
 
 export function ShiftSection() {
   const t = useTranslations("landing.shift");
 
   return (
-    <section className="py-16">
+    <section className="py-20 md:py-24">
       <div className={container}>
-        <h2 className={`${sectionTitle} mb-10`}>{t("title")}</h2>
-
-        <Reveal className="flex sm:flex-row flex-col bg-surface border border-border rounded-[20px] overflow-hidden">
-          <div className="flex-1 px-6 sm:px-9 py-8">
-            <span className="flex items-center gap-2 mb-4.5 font-semibold text-[13px] text-text-secondary">
-              {/* rtl-flip turns "?" into the Arabic "؟". */}
-              <span
-                aria-hidden
-                className="flex justify-center items-center bg-accent-value rounded-full size-5 font-bold text-on-accent-value text-xs leading-none"
-              >
-                <span className="inline-block rtl-flip">?</span>
-              </span>
-              {t("beforeLabel")}
-            </span>
-            <ul className="flex flex-col gap-3.5 text-text-secondary">
-              {BEFORE.map((key) => (
-                <li key={key} className="flex items-start gap-3">
-                  <X
-                    aria-hidden
-                    size={16}
-                    className="mt-1.5 text-text-secondary/70 shrink-0"
-                  />
-                  {t(`before.${key}`)}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div aria-hidden className="bg-border w-full sm:w-px h-px sm:h-auto" />
-
-          <div className="flex-1 px-6 sm:px-9 py-8">
-            <span className="flex items-center gap-2 mb-4.5 font-semibold text-[13px] text-primary">
-              <span
-                aria-hidden
-                className="flex justify-center items-center bg-primary rounded-full size-5 text-on-primary"
-              >
-                <Check size={13} strokeWidth={3} />
-              </span>
-              {t("afterLabel")}
-            </span>
-            <ul className="flex flex-col gap-3.5 font-medium">
-              {AFTER.map((key) => (
-                <li key={key} className="flex items-start gap-3">
-                  <Check
-                    aria-hidden
-                    size={16}
-                    strokeWidth={2.5}
-                    className="mt-1.5 text-primary shrink-0"
-                  />
-                  {t(`after.${key}`)}
-                </li>
-              ))}
-            </ul>
-          </div>
+        <Reveal className="mx-auto max-w-200 text-center">
+          <p className={`${sectionEyebrow} text-accent-value`}>
+            {t("eyebrow")}
+          </p>
+          <h2 className={sectionDisplayTitle}>
+            {t("title")}
+          </h2>
+          <p className={`${sectionLead} mx-auto max-w-[62ch]`}>
+            {t("subtitle")}
+          </p>
         </Reveal>
+
+        <ul className="gap-3 lg:gap-4 grid grid-cols-2 lg:grid-cols-4 mt-14">
+          {ITEMS.map(({ key, Icon }, index) => (
+            <Reveal
+              as="li"
+              key={key}
+              delay={index * 80}
+              // On one row, a dashed line links each card to the next at icon
+              // height, bridging the grid gap.
+              className="lg:after:top-14 lg:after:-inset-e-4 lg:after:absolute relative flex flex-col items-center bg-surface px-4 py-6 border border-border lg:after:border-text-secondary/40 lg:after:border-t lg:after:border-dashed rounded-[20px] lg:after:w-4 text-center lg:last:after:hidden"
+            >
+              <span className="flex justify-center items-center bg-accent-value-muted mb-5 border border-accent-value/25 rounded-2xl size-16 text-accent-value">
+                <Icon aria-hidden size={24} strokeWidth={1.8} />
+              </span>
+              <h3 className="mb-1 font-bold text-lg">{t(`items.${key}.title`)}</h3>
+              <p className="text-text-secondary text-sm md:text-[15px]">
+                {t(`items.${key}.source`)}
+              </p>
+            </Reveal>
+          ))}
+        </ul>
       </div>
     </section>
   );

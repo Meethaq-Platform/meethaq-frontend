@@ -17,20 +17,26 @@
     "illustrationAlt": "Illustration of signing an agreement on Meethaq"
   },
   "shift": {
-    "title": "One documented track instead of scattered messages",
-    "beforeLabel": "Before Meethaq",
-    "before": {
-      "messages": "WhatsApp or email for messages",
-      "contract": "A separate document for the contract",
-      "files": "An external link for delivery files",
-      "payment": "A bank transfer with no clear record"
-    },
-    "afterLabel": "With Meethaq",
-    "after": {
-      "onePlace": "Contract, chat and project in one place",
-      "criteria": "Milestones with clear acceptance criteria",
-      "delivery": "Delivery and records in the same track",
-      "payment": "Payment tied to an actual acceptance"
+    "eyebrow": "The problem isn't the work",
+    "title": "It's agreements scattered everywhere.",
+    "subtitle": "A message here, a file there, a transfer with no record. Every new tool loses a piece of the project's context, until proving what was agreed is harder than doing the work itself.",
+    "items": {
+      "agreement": {
+        "title": "Agreement",
+        "source": "A WhatsApp chat"
+      },
+      "contract": {
+        "title": "Contract",
+        "source": "A separate file"
+      },
+      "delivery": {
+        "title": "Delivery",
+        "source": "A Drive link"
+      },
+      "payment": {
+        "title": "Payment",
+        "source": "A transfer with no record"
+      }
     }
   },
   "flow": {
