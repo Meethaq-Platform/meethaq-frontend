@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { ArrowLeft, Pencil } from "lucide-react";
 import { useIsMutating } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
@@ -29,41 +28,12 @@ import Button from "@/src/shared/components/Button";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 import Tabs from "@/src/shared/components/Tabs";
+import { useProjectTab } from "../hooks/useProjectTab";
+import { PROJECT_TABS } from "../lib/project-tabs";
 import { formatCurrency } from "@/src/shared/lib/format";
 
 interface ProjectDetailPageProps {
   projectId: string;
-}
-
-type DetailTab =
-  | "overview"
-  | "milestones"
-  | "payments"
-  | "changes"
-  | "disputes"
-  | "chat"
-  | "activity";
-
-const detailTabs: DetailTab[] = [
-  "overview",
-  "milestones",
-  "payments",
-  "changes",
-  "disputes",
-  "chat",
-  "activity",
-];
-
-const validTabs: readonly string[] = detailTabs;
-
-// Lets other pages deep-link here with e.g. ?tab=payments (used by the
-// "View Payment" link shown once a milestone is accepted) — falls back to
-// "overview" for a missing/invalid value rather than an invalid tab state.
-function readInitialTab(searchParams: URLSearchParams): DetailTab {
-  const requested = searchParams.get("tab");
-  return validTabs.includes(requested ?? "")
-    ? (requested as DetailTab)
-    : "overview";
 }
 
 export default function ProjectDetailPage({
@@ -75,10 +45,9 @@ export default function ProjectDetailPage({
   const { data, isLoading, isError, refetch } = useProject(projectId);
   const tPageTitles = useTranslations("pageTitles");
   usePageTitle(data ? tPageTitles("project", { title: data.title }) : undefined);
-  const searchParams = useSearchParams();
   const [isEditing, setIsEditing] = useState(false);
   const [isFormDirty, setIsFormDirty] = useState(false);
-  const [tab, setTab] = useState<DetailTab>(() => readInitialTab(searchParams));
+  const [tab, setTab] = useProjectTab();
   const isSaving = useIsMutating({ mutationKey: ["update-project"] }) > 0;
 
   const canEdit = data?.status === "Draft";
@@ -208,7 +177,7 @@ export default function ProjectDetailPage({
           <Tabs
             value={tab}
             onChange={setTab}
-            options={detailTabs.map((value) => ({ value, label: t(`tabs.${value}`) }))}
+            options={PROJECT_TABS.map((value) => ({ value, label: t(`tabs.${value}`) }))}
           />
 
           {tab === "overview" && (
