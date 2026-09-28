@@ -63,6 +63,21 @@ export function MessageComposer({ projectId }: MessageComposerProps) {
             rows={2}
             placeholder={t("placeholder")}
             {...register("content")}
+            // Enter sends, Shift+Enter keeps the default newline. isComposing
+            // skips the Enter that confirms an IME candidate.
+            onKeyDown={(event) => {
+              if (
+                event.key !== "Enter" ||
+                event.shiftKey ||
+                event.nativeEvent.isComposing
+              ) {
+                return;
+              }
+              event.preventDefault();
+              if (!sendMessage.isPending) {
+                event.currentTarget.form?.requestSubmit();
+              }
+            }}
           />
           <InputError message={errors.content?.message} />
         </div>
