@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import Spinner from "@/src/shared/components/Spinner";
+import { DashboardSkeleton } from "./DashboardSkeleton";
 import ErrorState from "@/src/shared/components/ErrorState";
 import { useClientDashboard } from "../hooks/useClientDashboard";
 import WelcomeHeader, { NEEDS_ATTENTION_ANCHOR_ID } from "./WelcomeHeader";
@@ -54,11 +54,7 @@ export default function ClientDashboard() {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-16">
-        <Spinner size={28} />
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   if (isError || !data) {

@@ -25,7 +25,7 @@ import { PaymentsTab } from "@/src/features/payments/components/PaymentsTab";
 import { ChangeRequestsTab } from "@/src/features/change-requests/components/ChangeRequestsTab";
 import { DisputesTab } from "@/src/features/disputes/components/DisputesTab";
 import Button from "@/src/shared/components/Button";
-import Spinner from "@/src/shared/components/Spinner";
+import { ProjectDetailSkeleton } from "./ProjectDetailSkeleton";
 import ErrorState from "@/src/shared/components/ErrorState";
 import Tabs from "@/src/shared/components/Tabs";
 import { useProjectTab } from "../hooks/useProjectTab";
@@ -66,9 +66,7 @@ export default function ProjectDetailPage({
       </Link>
 
       {isLoading ? (
-        <div className="flex justify-center items-center py-16">
-          <Spinner size={28} />
-        </div>
+        <ProjectDetailSkeleton withBackLink={false} />
       ) : isError || !data ? (
         <ErrorState
           message={t("loadFailed")}
