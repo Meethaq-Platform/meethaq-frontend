@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,6 +16,7 @@ import { useSendMessage } from "../hooks/useSendMessage";
 import Textarea from "@/src/shared/components/Textarea";
 import InputError from "@/src/shared/components/InputError";
 import FileAttachmentInput from "@/src/shared/components/FileAttachmentInput";
+import FilePreviewStrip from "@/src/shared/components/FilePreviewStrip";
 import { getErrorMessage } from "@/src/shared/lib/getErrorMessage";
 
 interface MessageComposerProps {
@@ -44,6 +45,10 @@ export function MessageComposer({ projectId }: MessageComposerProps) {
 
   const files = watch("files") ?? [];
   const sendMessage = useSendMessage(projectId);
+  const [attachError, setAttachError] = useState<string | null>(null);
+
+  const setFiles = (next: File[]) =>
+    setValue("files", next, { shouldValidate: true });
 
   const onSubmit = (values: ChatMessageFormValues) => {
     sendMessage.mutate(
@@ -57,8 +62,18 @@ export function MessageComposer({ projectId }: MessageComposerProps) {
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-3 shrink-0 p-4 border-border border-t"
     >
+      {/* Picked files preview full-width above the message box, the way
+          they'll be sent, instead of stacking under the attach button. */}
+      <FilePreviewStrip
+        files={files}
+        onRemove={(index) => {
+          setFiles(files.filter((_, i) => i !== index));
+          setAttachError(null);
+        }}
+      />
+
       {/* Top-aligned with one shared height (h-16), so the buttons line up
-          with the message box even when an error or file list appears below. */}
+          with the message box even when an error appears below it. */}
       <div className="flex items-start gap-2">
         <div className="flex-1">
           <Textarea
@@ -87,9 +102,11 @@ export function MessageComposer({ projectId }: MessageComposerProps) {
 
         <FileAttachmentInput
           files={files}
-          onChange={(next) => setValue("files", next, { shouldValidate: true })}
+          onChange={setFiles}
           maxFiles={MAX_MESSAGE_FILES}
           buttonClassName="w-12 h-16"
+          buttonOnly
+          onValidationError={setAttachError}
         />
 
         <button
@@ -101,6 +118,10 @@ export function MessageComposer({ projectId }: MessageComposerProps) {
           <Send size={16} className="rtl-flip" />
         </button>
       </div>
+
+      {(attachError || errors.files?.message) && (
+        <InputError message={attachError ?? errors.files?.message} />
+      )}
 
       {sendMessage.isError && (
         <InputError

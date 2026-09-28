@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { twMerge } from "tailwind-merge";
 
 import { bidiIsolate } from "../lib/format";
+import { formatFileSize } from "./AttachmentList";
 
 interface FileAttachmentInputProps {
   files: File[];
@@ -17,6 +18,12 @@ interface FileAttachmentInputProps {
   label?: string;
   /** Extra classes for the attach button, e.g. to match a neighbour's height. */
   buttonClassName?: string;
+  /**
+   * Render only the attach button: the caller shows the selected files (e.g.
+   * as FilePreviewStrip) and the validation error via onValidationError.
+   */
+  buttonOnly?: boolean;
+  onValidationError?: (message: string | null) => void;
 }
 
 const DEFAULT_ACCEPTED_TYPES = [
@@ -35,12 +42,6 @@ const DEFAULT_ACCEPTED_TYPES = [
 
 const DEFAULT_MAX_SIZE_BYTES = 25 * 1024 * 1024;
 
-function formatFileSize(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-}
-
 // Generalizes EditProfilePictureModal's single-file upload block into a
 // reusable multi-file picker. Client-side MIME/size validation before adding
 // to the pending list — matches that component's precedent.
@@ -52,9 +53,15 @@ export default function FileAttachmentInput({
   maxFiles = 10,
   label,
   buttonClassName,
+  buttonOnly = false,
+  onValidationError,
 }: FileAttachmentInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [validationError, setValidationError] = useState<string | null>(null);
+  const [validationError, setError] = useState<string | null>(null);
+  const setValidationError = (message: string | null) => {
+    setError(message);
+    onValidationError?.(message);
+  };
   const t = useTranslations("common.files");
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -115,11 +122,11 @@ export default function FileAttachmentInput({
         {label}
       </button>
 
-      {validationError && (
+      {!buttonOnly && validationError && (
         <p className="text-danger text-sm">{validationError}</p>
       )}
 
-      {files.length > 0 && (
+      {!buttonOnly && files.length > 0 && (
         <ul className="space-y-1.5">
           {files.map((file, index) => (
             <li
