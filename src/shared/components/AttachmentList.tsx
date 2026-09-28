@@ -1,4 +1,5 @@
-import { FileArchive, FileImage, FileText, File as FileIcon } from "lucide-react";
+import { Download, FileArchive, FileImage, FileText, File as FileIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export interface AttachmentListItem {
   id: number;
@@ -39,19 +40,25 @@ export function FileTypeIcon({
 
 // Read-only render of already-uploaded attachments, always pointing at the
 // BFF attachment-proxy route — never a raw backend URL, since these files
-// are project-confidential.
+// are project-confidential. The row opens the file; the button at its end
+// downloads it (siblings, since links can't nest).
 export default function AttachmentList({ attachments }: AttachmentListProps) {
+  const t = useTranslations("common.files");
+
   if (attachments.length === 0) return null;
 
   return (
     <ul className="space-y-1.5">
       {attachments.map((attachment) => (
-        <li key={attachment.id}>
+        <li
+          key={attachment.id}
+          className="flex items-center bg-surface-muted hover:bg-border/40 pe-1 rounded-lg transition"
+        >
           <a
             href={attachment.fileUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 bg-surface-muted hover:bg-border/40 px-3 py-2 rounded-lg text-sm transition"
+            className="flex flex-1 items-center gap-3 px-3 py-2 min-w-0 text-sm"
           >
             <FileTypeIcon
               contentType={attachment.contentType}
@@ -64,6 +71,15 @@ export default function AttachmentList({ attachments }: AttachmentListProps) {
             <span dir="ltr" className="shrink-0 text-text-secondary text-xs">
               {formatFileSize(attachment.fileSizeBytes)}
             </span>
+          </a>
+          <a
+            href={attachment.fileUrl}
+            download={attachment.fileName}
+            aria-label={t("downloadNamed", { name: attachment.fileName })}
+            title={t("download")}
+            className="flex justify-center items-center hover:bg-border/60 rounded-full w-7 h-7 text-text-secondary hover:text-text-primary transition shrink-0"
+          >
+            <Download size={14} />
           </a>
         </li>
       ))}
