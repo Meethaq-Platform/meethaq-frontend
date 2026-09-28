@@ -86,30 +86,22 @@ export function HeroSection() {
         </div>
 
         {/* On small screens it shrinks into the text block's bottom corner,
-            opposite the buttons (which leave room for it with pe-36). Both theme
-            variants are rendered and the theme class picks one; neither is
-            `priority`, so the hidden one isn't fetched. Capped near the GIFs'
-            500px source size so they don't blur. */}
+            opposite the buttons (which leave room for it with pe-36). Its
+            transparent background suits both themes. Capped near the 500px
+            source size so it doesn't blur. */}
         <div
           className={`md:static absolute bottom-0 inset-e-4 md:flex-[1_1_440px] w-32 md:w-full md:max-w-135 min-w-0 ${rise}`}
           style={delay(300)}
         >
-          <div className="rounded-2xl md:rounded-4xl overflow-hidden">
-            <Image
-              src="/illustrations/Accept terms.gif"
-              alt={t("hero.illustrationAlt")}
-              width={500}
-              height={500}
-              className="dark:hidden w-full h-auto"
-            />
-            <Image
-              src="/illustrations/Accept terms-dark.gif"
-              alt={t("hero.illustrationAlt")}
-              width={500}
-              height={500}
-              className="hidden dark:block w-full h-auto"
-            />
-          </div>
+          <Image
+            src="/hero.png"
+            alt={t("hero.illustrationAlt")}
+            width={500}
+            height={500}
+            loading="eager"
+            fetchPriority="high"
+            className="w-full h-auto"
+          />
         </div>
       </div>
     </section>
