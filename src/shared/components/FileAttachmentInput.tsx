@@ -4,6 +4,7 @@ import type { ChangeEvent } from "react";
 import { useRef, useState } from "react";
 import { Paperclip, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { twMerge } from "tailwind-merge";
 
 import { bidiIsolate } from "../lib/format";
 
@@ -14,6 +15,8 @@ interface FileAttachmentInputProps {
   maxSizeBytes?: number;
   maxFiles?: number;
   label?: string;
+  /** Extra classes for the attach button, e.g. to match a neighbour's height. */
+  buttonClassName?: string;
 }
 
 const DEFAULT_ACCEPTED_TYPES = [
@@ -48,6 +51,7 @@ export default function FileAttachmentInput({
   maxSizeBytes = DEFAULT_MAX_SIZE_BYTES,
   maxFiles = 10,
   label,
+  buttonClassName,
 }: FileAttachmentInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
@@ -100,11 +104,12 @@ export default function FileAttachmentInput({
         type="button"
         onClick={() => fileInputRef.current?.click()}
         aria-label={label ? undefined : t("attach")}
-        className={
+        className={twMerge(
           label
             ? "flex items-center gap-2 hover:bg-surface-muted px-4 border border-border rounded-xl h-11 font-semibold text-text-secondary text-sm whitespace-nowrap transition"
-            : "flex justify-center items-center hover:bg-surface-muted border border-border rounded-xl w-11 h-11 text-text-secondary transition"
-        }
+            : "flex justify-center items-center hover:bg-surface-muted border border-border rounded-xl w-11 h-11 text-text-secondary transition",
+          buttonClassName,
+        )}
       >
         <Paperclip size={14} className="shrink-0" />
         {label}
