@@ -48,7 +48,16 @@ const iconsByLabel: Record<string, LucideIcon> = {
 // Clients" for freelancers (clients have no Clients page). Filtering by
 // label rather than array position means each role naturally gets the right
 // count (2 for freelancer, 1 for client) without branching on role here.
-const VISIBLE_QUICK_ACTION_LABELS = new Set(["open projects", "open clients"]);
+// The destination is ours too: the backend's navigationUrl is built for its
+// own route map, which doesn't match this app's pages.
+const QUICK_ACTION_HREFS: Record<string, string> = {
+  "open projects": "/projects",
+  "open clients": "/clients",
+};
+
+function quickActionHref(label: string | null) {
+  return QUICK_ACTION_HREFS[(label ?? "").trim().toLowerCase()];
+}
 
 function resolveIcon(
   label: string | null,
@@ -140,19 +149,14 @@ export default function WelcomeHeader({
       {welcome.quickActions && welcome.quickActions.length > 0 && (
         <div className="flex flex-wrap gap-2 mt-4">
           {welcome.quickActions
-            .filter((action) =>
-              VISIBLE_QUICK_ACTION_LABELS.has(
-                (action.label ?? "").trim().toLowerCase(),
-              ),
-            )
+            .filter((action) => quickActionHref(action.label))
             .map((action) => {
-              if (!action.navigationUrl) return null;
               const Icon = resolveIcon(action.label, action.icon);
 
               return (
                 <Link
                   key={action.key ?? action.label}
-                  href={action.navigationUrl}
+                  href={quickActionHref(action.label)}
                   className="flex items-center gap-2 hover:opacity-90 px-4 rounded-xl h-10 font-semibold text-on-accent-value text-sm transition bg-accent-value"
                 >
                   <Icon size={15} />

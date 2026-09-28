@@ -94,7 +94,8 @@ export default function ClientDashboard() {
           <SectionCard
             title={t("sections.projectOverview")}
             section={data.projectOverview}
-            viewAllHref={data.projectOverview.data?.viewAllNavigationUrl}
+            // viewAllNavigationUrl follows the backend's route map, not this app's.
+            viewAllHref="/projects"
             onRetry={refetch}
           >
             {(overview) => <ClientProjectOverview overview={overview} />}
