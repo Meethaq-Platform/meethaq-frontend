@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
+import { ClosingSection } from "@/src/features/landing/components/ClosingSection";
 import { FeaturesSection } from "@/src/features/landing/components/FeaturesSection";
 import { FlowSection } from "@/src/features/landing/components/FlowSection";
 import { HeroSection } from "@/src/features/landing/components/HeroSection";
-import { FinalCta } from "@/src/features/landing/components/FinalCta";
 import { LandingFooter } from "@/src/features/landing/components/LandingFooter";
 import { LandingNav } from "@/src/features/landing/components/LandingNav";
 import { MemorySection } from "@/src/features/landing/components/MemorySection";
-import { PrincipleSection } from "@/src/features/landing/components/PrincipleSection";
 import { ShiftSection } from "@/src/features/landing/components/ShiftSection";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -29,8 +28,7 @@ export default function Home() {
         <FlowSection />
         <FeaturesSection />
         <MemorySection />
-        <PrincipleSection />
-        <FinalCta />
+        <ClosingSection />
       </main>
       <LandingFooter />
     </>

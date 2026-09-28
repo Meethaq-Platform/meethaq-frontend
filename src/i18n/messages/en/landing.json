@@ -104,18 +104,11 @@
       }
     }
   },
-  "principle": {
-    "title": "Every milestone in Meethaq answers five questions",
-    "questions": {
-      "what": "What's required?",
-      "when": "By when?",
-      "criteria": "What are the acceptance criteria?",
-      "value": "How much is it worth?",
-      "proof": "What proves it was delivered?"
-    }
-  },
-  "finalCta": {
-    "title": "Ready to document your next project?"
+  "closing": {
+    "eyebrow": "Start on clear terms",
+    "title": "Clearer agreements. Calmer work. Secured rights.",
+    "subtitle": "Create your first project, split it into milestones, and start with your client from a point that's clear to everyone.",
+    "cta": "Create your Meethaq for free"
   },
   "footer": {
     "rights": "© {year} Meethaq. All rights reserved."
