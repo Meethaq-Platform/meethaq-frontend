@@ -12,7 +12,8 @@ interface MilestoneDeltaEditorProps {
   allocationMode: ContractAllocationMode;
   value: MilestoneDeltaInput;
   onChange: (next: MilestoneDeltaInput) => void;
-  onRemove: () => void;
+  /** Omit to make the row fixed (no remove button). */
+  onRemove?: () => void;
 }
 
 // One row per affected milestone — pre-filled with that milestone's current
@@ -33,14 +34,16 @@ export function MilestoneDeltaEditor({
     <div className="space-y-3 bg-surface-muted p-4 rounded-xl">
       <div className="flex justify-between items-center">
         <p dir="auto" className="font-semibold text-text-primary text-sm">{milestoneTitle}</p>
-        <button
-          type="button"
-          onClick={onRemove}
-          aria-label={t("remove", { title: milestoneTitle })}
-          className="text-text-secondary hover:text-danger transition"
-        >
-          <X size={16} />
-        </button>
+        {onRemove && (
+          <button
+            type="button"
+            onClick={onRemove}
+            aria-label={t("remove", { title: milestoneTitle })}
+            className="text-text-secondary hover:text-danger transition"
+          >
+            <X size={16} />
+          </button>
+        )}
       </div>
 
       <Input

@@ -12,6 +12,7 @@ import { useClientProject } from "@/src/features/client-projects/hooks/useClient
 import { usePageTitle } from "@/src/shared/hooks/usePageTitle";
 import { AcceptDeliverableButton } from "./AcceptDeliverableButton";
 import { RequestRevisionModal } from "./RequestRevisionModal";
+import { RequestMilestoneChangeButton } from "@/src/features/change-requests/components/RequestMilestoneChangeButton";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 import { projectHref } from "@/src/features/projects/lib/project-tabs";
@@ -61,26 +62,36 @@ export function MilestoneReviewPage({
   const latest = milestone.latestSubmission;
   const canReview =
     milestone.executionStatus === "Submitted" && latest && latest.reviewFeedback === null;
+  // An accepted milestone is finished work — there's nothing left to change.
+  const canRequestChange = milestone.executionStatus !== "Accepted";
 
   return (
     <MilestoneDetailShell
       projectId={projectId}
       milestone={milestone}
       actions={
-        canReview && (
-          <div className="flex items-center gap-3">
-            <RequestRevisionModal
+        <div className="flex flex-wrap justify-end items-center gap-3">
+          {canRequestChange && (
+            <RequestMilestoneChangeButton
               projectId={projectId}
-              milestoneId={milestoneId}
-              submissionId={latest.submissionId}
+              milestoneId={milestone.milestoneId}
             />
-            <AcceptDeliverableButton
-              projectId={projectId}
-              milestoneId={milestoneId}
-              submissionId={latest.submissionId}
-            />
-          </div>
-        )
+          )}
+          {canReview && (
+            <>
+              <RequestRevisionModal
+                projectId={projectId}
+                milestoneId={milestoneId}
+                submissionId={latest.submissionId}
+              />
+              <AcceptDeliverableButton
+                projectId={projectId}
+                milestoneId={milestoneId}
+                submissionId={latest.submissionId}
+              />
+            </>
+          )}
+        </div>
       }
     >
       {milestone.executionStatus === "NotStarted" && (
