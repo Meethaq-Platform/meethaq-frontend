@@ -4,8 +4,10 @@ import type { ChangeEvent } from "react";
 import { useRef, useState } from "react";
 import { Paperclip, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { twMerge } from "tailwind-merge";
 
 import { bidiIsolate } from "../lib/format";
+import { formatFileSize } from "./AttachmentList";
 
 interface FileAttachmentInputProps {
   files: File[];
@@ -14,6 +16,14 @@ interface FileAttachmentInputProps {
   maxSizeBytes?: number;
   maxFiles?: number;
   label?: string;
+  /** Extra classes for the attach button, e.g. to match a neighbour's height. */
+  buttonClassName?: string;
+  /**
+   * Render only the attach button: the caller shows the selected files (e.g.
+   * as FilePreviewStrip) and the validation error via onValidationError.
+   */
+  buttonOnly?: boolean;
+  onValidationError?: (message: string | null) => void;
 }
 
 const DEFAULT_ACCEPTED_TYPES = [
@@ -32,12 +42,6 @@ const DEFAULT_ACCEPTED_TYPES = [
 
 const DEFAULT_MAX_SIZE_BYTES = 25 * 1024 * 1024;
 
-function formatFileSize(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-}
-
 // Generalizes EditProfilePictureModal's single-file upload block into a
 // reusable multi-file picker. Client-side MIME/size validation before adding
 // to the pending list — matches that component's precedent.
@@ -48,9 +52,16 @@ export default function FileAttachmentInput({
   maxSizeBytes = DEFAULT_MAX_SIZE_BYTES,
   maxFiles = 10,
   label,
+  buttonClassName,
+  buttonOnly = false,
+  onValidationError,
 }: FileAttachmentInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [validationError, setValidationError] = useState<string | null>(null);
+  const [validationError, setError] = useState<string | null>(null);
+  const setValidationError = (message: string | null) => {
+    setError(message);
+    onValidationError?.(message);
+  };
   const t = useTranslations("common.files");
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -100,21 +111,22 @@ export default function FileAttachmentInput({
         type="button"
         onClick={() => fileInputRef.current?.click()}
         aria-label={label ? undefined : t("attach")}
-        className={
+        className={twMerge(
           label
             ? "flex items-center gap-2 hover:bg-surface-muted px-4 border border-border rounded-xl h-11 font-semibold text-text-secondary text-sm whitespace-nowrap transition"
-            : "flex justify-center items-center hover:bg-surface-muted border border-border rounded-xl w-11 h-11 text-text-secondary transition"
-        }
+            : "flex justify-center items-center hover:bg-surface-muted border border-border rounded-xl w-11 h-11 text-text-secondary transition",
+          buttonClassName,
+        )}
       >
         <Paperclip size={14} className="shrink-0" />
         {label}
       </button>
 
-      {validationError && (
+      {!buttonOnly && validationError && (
         <p className="text-danger text-sm">{validationError}</p>
       )}
 
-      {files.length > 0 && (
+      {!buttonOnly && files.length > 0 && (
         <ul className="space-y-1.5">
           {files.map((file, index) => (
             <li

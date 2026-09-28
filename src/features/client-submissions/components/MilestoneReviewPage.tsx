@@ -12,8 +12,10 @@ import { useClientProject } from "@/src/features/client-projects/hooks/useClient
 import { usePageTitle } from "@/src/shared/hooks/usePageTitle";
 import { AcceptDeliverableButton } from "./AcceptDeliverableButton";
 import { RequestRevisionModal } from "./RequestRevisionModal";
+import { RequestMilestoneChangeButton } from "@/src/features/change-requests/components/RequestMilestoneChangeButton";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
+import { projectHref } from "@/src/features/projects/lib/project-tabs";
 
 interface MilestoneReviewPageProps {
   projectId: string;
@@ -60,26 +62,29 @@ export function MilestoneReviewPage({
   const latest = milestone.latestSubmission;
   const canReview =
     milestone.executionStatus === "Submitted" && latest && latest.reviewFeedback === null;
+  // An accepted milestone is finished work — there's nothing left to change.
+  const canRequestChange = milestone.executionStatus !== "Accepted";
 
   return (
     <MilestoneDetailShell
       projectId={projectId}
       milestone={milestone}
       actions={
-        canReview && (
-          <div className="flex items-center gap-3">
-            <RequestRevisionModal
+        <div className="flex flex-wrap justify-end items-center gap-3">
+          {canRequestChange && (
+            <RequestMilestoneChangeButton
               projectId={projectId}
-              milestoneId={milestoneId}
-              submissionId={latest.submissionId}
+              milestoneId={milestone.milestoneId}
             />
+          )}
+          {canReview && (
             <AcceptDeliverableButton
               projectId={projectId}
               milestoneId={milestoneId}
               submissionId={latest.submissionId}
             />
-          </div>
-        )
+          )}
+        </div>
       }
     >
       {milestone.executionStatus === "NotStarted" && (
@@ -104,7 +109,7 @@ export function MilestoneReviewPage({
             {t("accepted")}
           </p>
           <Link
-            href={`/projects/${projectId}?tab=payments`}
+            href={projectHref(projectId, "payments")}
             className="inline-flex items-center gap-1.5 mt-2 font-semibold text-success text-sm underline underline-offset-2"
           >
             {t("goToPayment")}
@@ -121,6 +126,17 @@ export function MilestoneReviewPage({
         onRetry={() => submissionsQuery.refetch()}
         submitterName={project?.freelancerName}
       />
+
+      {/* Asked for after reading the submissions, so it sits below them. */}
+      {canReview && (
+        <div className="flex justify-end">
+          <RequestRevisionModal
+            projectId={projectId}
+            milestoneId={milestoneId}
+            submissionId={latest.submissionId}
+          />
+        </div>
+      )}
     </MilestoneDetailShell>
   );
 }

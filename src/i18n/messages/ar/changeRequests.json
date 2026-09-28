@@ -13,6 +13,7 @@
   },
   "create": {
     "button": "طلب تغيير جديد",
+    "milestoneButton": "طلب تغيير",
     "title": "اقتراح طلب تغيير",
     "titleLabel": "العنوان",
     "reason": "السبب",

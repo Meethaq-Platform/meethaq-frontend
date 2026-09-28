@@ -18,6 +18,7 @@ import RelativeTime from "@/src/shared/components/RelativeTime";
 import { eventToneClasses, getEventTone } from "@/src/shared/lib/eventTone";
 import type { RecentActivityItem } from "../types/dashboard";
 import { useEventText } from "@/src/shared/hooks/useEventText";
+import { projectHref, projectTabFor } from "@/src/features/projects/lib/project-tabs";
 
 // eventType is a plain backend string (no enum values in swagger) — same
 // best-effort casing convention already used by the notifications feature's
@@ -90,11 +91,11 @@ export default function RecentActivityFeed({ items }: RecentActivityFeedProps) {
 
         // The backend's navigationUrl doesn't reliably resolve to a page in
         // this app, but every event carries the project it happened on —
-        // that always opens.
+        // that always opens, on the tab the event belongs to.
         return (
           <li key={item.eventId}>
             <Link
-              href={`/projects/${item.projectId}`}
+              href={projectHref(item.projectId, projectTabFor(item.eventType))}
               className="block hover:bg-surface-muted -mx-1 px-1 rounded-lg transition"
             >
               {row}

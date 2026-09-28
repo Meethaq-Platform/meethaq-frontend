@@ -4,8 +4,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { useInvitations } from "../hooks/useInvitations";
-import { InvitationsTable } from "./InvitationsTable";
-import Spinner from "@/src/shared/components/Spinner";
+import { InvitationsTable, InvitationsTableSkeleton } from "./InvitationsTable";
 import ErrorState from "@/src/shared/components/ErrorState";
 
 const PAGE_SIZE = 10;
@@ -20,11 +19,7 @@ export function InvitationsSection() {
   });
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-16">
-        <Spinner size={28} />
-      </div>
-    );
+    return <InvitationsTableSkeleton />;
   }
 
   if (isError || !data) {

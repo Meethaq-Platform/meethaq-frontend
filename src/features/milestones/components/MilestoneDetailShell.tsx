@@ -7,6 +7,7 @@ import { useFormat } from "@/src/shared/hooks/useFormat";
 import type { MilestoneExecutionDetail } from "../types/milestone";
 import { MilestoneStatusBadge } from "./MilestoneStatusBadge";
 import { formatCurrency } from "@/src/shared/lib/format";
+import { projectHref } from "@/src/features/projects/lib/project-tabs";
 
 interface MilestoneDetailShellProps {
   projectId: string;
@@ -32,7 +33,7 @@ export function MilestoneDetailShell({
     <div className="space-y-6 mx-auto h-full">
       <div className="flex justify-between items-center">
         <Link
-          href={`/projects/${projectId}`}
+          href={projectHref(projectId, "milestones")}
           className="flex items-center gap-1.5 text-text-secondary hover:text-text-primary text-sm transition"
         >
           <ArrowLeft size={16} className="rtl-flip" />

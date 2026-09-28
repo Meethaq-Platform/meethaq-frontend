@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Check } from "lucide-react";
@@ -32,6 +32,9 @@ export default function InvitationDetailPage({
   usePageTitle(data ? tPageTitles("project", { title: data.title }) : undefined);
   const [isAcceptOpen, setIsAcceptOpen] = useState(false);
   const acceptInvitation = useAcceptInvitation(invitationId);
+  // Keeps the dialog busy until the project page renders, not just until the
+  // request resolves.
+  const [isRedirecting, startRedirect] = useTransition();
 
   return (
     <div className="space-y-6 mx-auto h-full">
@@ -106,7 +109,8 @@ export default function InvitationDetailPage({
           onClose={() => setIsAcceptOpen(false)}
           onConfirm={() =>
             acceptInvitation.mutate(undefined, {
-              onSuccess: () => router.push(`/projects/${data.id}`),
+              onSuccess: () =>
+                startRedirect(() => router.push(`/projects/${data.id}`)),
             })
           }
           title={t("confirmTitle")}
@@ -118,7 +122,7 @@ export default function InvitationDetailPage({
           confirmLabel={t("confirm")}
           confirmingLabel={t("confirming")}
           variant="primary"
-          isConfirming={acceptInvitation.isPending}
+          isConfirming={acceptInvitation.isPending || isRedirecting}
           errorMessage={
             acceptInvitation.isError
               ? acceptInvitation.error instanceof Error

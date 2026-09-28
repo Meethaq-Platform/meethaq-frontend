@@ -6,8 +6,7 @@ import { useState } from "react";
 import { useClients } from "../hooks/useClients";
 import { useDebouncedValue } from "../hooks/useDebouncedValue";
 import { ClientsToolbar } from "./ClientsToolbar";
-import { ClientsTable } from "./ClientsTable";
-import Spinner from "@/src/shared/components/Spinner";
+import { ClientsTable, ClientsTableSkeleton } from "./ClientsTable";
 import ErrorState from "@/src/shared/components/ErrorState";
 
 const PAGE_SIZE = 10;
@@ -47,9 +46,7 @@ export default function ClientsPage() {
       />
 
       {isLoading ? (
-        <div className="flex justify-center items-center py-16">
-          <Spinner size={28} />
-        </div>
+        <ClientsTableSkeleton />
       ) : isError || !data ? (
         <ErrorState
           message={t("loadFailed")}
