@@ -6,7 +6,8 @@ import { useTranslations } from "next-intl";
 
 import { useMessages } from "../hooks/useMessages";
 import { useCurrentUser } from "@/src/features/auth/hooks/useCurrentUser";
-import AttachmentList, { type AttachmentListItem } from "@/src/shared/components/AttachmentList";
+import type { AttachmentListItem } from "@/src/shared/components/AttachmentList";
+import AttachmentGallery from "@/src/shared/components/AttachmentGallery";
 import RelativeTime from "@/src/shared/components/RelativeTime";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
@@ -93,7 +94,7 @@ export function MessageList({ projectId }: MessageListProps) {
               )}
               {attachments.length > 0 && (
                 <div className={message.content ? "mt-2" : ""}>
-                  <AttachmentList attachments={attachments} />
+                  <AttachmentGallery attachments={attachments} />
                 </div>
               )}
             </div>

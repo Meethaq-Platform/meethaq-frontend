@@ -44,7 +44,10 @@
     "remove": "Remove {name}",
     "tooMany": "You can attach up to {max, number, plain} files.",
     "unsupported": "\"{name}\" is not a supported file type.",
-    "tooLarge": "\"{name}\" is too large. Max size is {size}."
+    "tooLarge": "\"{name}\" is too large. Max size is {size}.",
+    "download": "Download",
+    "openImage": "Open {name}",
+    "downloadNamed": "Download {name}"
   },
   "links": {
     "deliveryLink": "Delivery Link",

@@ -30,7 +30,7 @@ function subscribeNoop() {
 }
 
 // document.body only exists client-side; this avoids rendering the portal during SSR.
-function useIsMounted() {
+export function useIsMounted() {
   return useSyncExternalStore(
     subscribeNoop,
     () => true,
