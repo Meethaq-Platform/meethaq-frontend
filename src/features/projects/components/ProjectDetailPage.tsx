@@ -218,7 +218,7 @@ export default function ProjectDetailPage({
 
           {tab === "milestones" && <MilestonesTab projectId={projectId} />}
           {tab === "payments" && <PaymentsTab projectId={projectId} />}
-          {tab === "changes" && <ChangeRequestsTab projectId={projectId} />}
+          {tab === "changes" && <ChangeRequestsTab projectId={projectId} viewer="freelancer" />}
           {tab === "disputes" && <DisputesTab projectId={projectId} />}
           {tab === "chat" && <ProjectChatTab projectId={projectId} />}
           {tab === "activity" && <ActivityTab projectId={projectId} />}

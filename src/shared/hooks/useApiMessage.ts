@@ -18,6 +18,32 @@ function toKey(message: string) {
     .replace(/^_|_$/g, "");
 }
 
+// Messages that embed a value (a milestone title, …) can't be looked up by
+// key, so they're matched by pattern and the value is passed through.
+const PATTERNS: {
+  pattern: RegExp;
+  key: "milestone_submitted_for_review";
+  param: string;
+}[] = [
+  {
+    pattern: /^Cannot approve change request: milestone '(.+)' is currently submitted for review\.?$/,
+    key: "milestone_submitted_for_review",
+    param: "milestone",
+  },
+];
+
+function translate(
+  message: string,
+  t: ReturnType<typeof useTranslations<"apiMessages">>,
+): string | null {
+  for (const { pattern, key, param } of PATTERNS) {
+    const match = message.trim().match(pattern);
+    if (match) return t(key, { [param]: match[1] });
+  }
+  const key = toKey(message) as "operation_completed_successfully";
+  return key && t.has(key) ? t(key) : null;
+}
+
 // For errors shown inline in a form or dialog. Same lookup as useApiMessage,
 // but an untranslated message falls back to the caller's own (already
 // translated, more specific) line instead of a generic one, so an Arabic
@@ -30,8 +56,7 @@ export function useErrorText() {
     (error: unknown, fallback: string): string => {
       if (!(error instanceof Error) || !error.message) return fallback;
       if (locale === "en") return error.message;
-      const key = toKey(error.message) as "operation_completed_successfully";
-      return key && t.has(key) ? t(key) : fallback;
+      return translate(error.message, t) ?? fallback;
     },
     [locale, t],
   );
@@ -49,8 +74,8 @@ export function useApiMessage() {
   return useCallback(
     (message: string, kind: "success" | "error"): ApiMessageText => {
       if (locale === "en") return { text: message };
-      const key = toKey(message) as "operation_completed_successfully";
-      if (key && t.has(key)) return { text: t(key) };
+      const translated = translate(message, t);
+      if (translated) return { text: translated };
       return kind === "success"
         ? { text: tToasts("successGeneric") }
         : { text: tToasts("errorGeneric"), detail: message };
