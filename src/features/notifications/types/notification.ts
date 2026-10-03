@@ -3,6 +3,12 @@
 // for icon selection in NotificationRow, which falls back to a default icon
 // for any unrecognized value, so a casing mismatch degrades gracefully.
 export type NotificationEventType =
+  | "ClientAssigned"
+  | "InvitationAccepted"
+  | "ContractSubmitted"
+  | "ContractChangesRequested"
+  | "ContractApproved"
+  | "MilestoneStarted"
   | "NewProjectMessage"
   | "ChatMessageReceived"
   | "MilestoneSubmitted"

@@ -10,6 +10,7 @@ import { ChangeRequestStatusBadge } from "./ChangeRequestStatusBadge";
 import { CreateChangeRequestModal } from "./CreateChangeRequestModal";
 import { ChangeRequestDetailModal } from "./ChangeRequestDetailModal";
 import { AmendmentHistoryList } from "./AmendmentHistoryList";
+import type { ChangeRequestViewer } from "../hooks/useMilestonesUnderReview";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 import EmptyState from "@/src/shared/components/EmptyState";
@@ -22,9 +23,10 @@ import {
 
 interface ChangeRequestsTabProps {
   projectId: string;
+  viewer: ChangeRequestViewer;
 }
 
-export function ChangeRequestsTab({ projectId }: ChangeRequestsTabProps) {
+export function ChangeRequestsTab({ projectId, viewer }: ChangeRequestsTabProps) {
   const t = useTranslations("changeRequests.tab");
   const format = useFormat();
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -86,6 +88,7 @@ export function ChangeRequestsTab({ projectId }: ChangeRequestsTabProps) {
 
       <ChangeRequestDetailModal
         projectId={projectId}
+        viewer={viewer}
         changeRequestId={selectedId}
         onClose={() => setSelectedId(null)}
       />

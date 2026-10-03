@@ -7,7 +7,8 @@ import { useInvitations } from "../hooks/useInvitations";
 import { InvitationsTable, InvitationsTableSkeleton } from "./InvitationsTable";
 import ErrorState from "@/src/shared/components/ErrorState";
 
-const PAGE_SIZE = 10;
+// Shared with ClientProjectsPage, whose tab dot reads the same first page.
+export const INVITATIONS_PAGE_SIZE = 10;
 
 export function InvitationsSection() {
   const t = useTranslations("clientProjects.invitations");
@@ -15,7 +16,7 @@ export function InvitationsSection() {
 
   const { data, isLoading, isError, refetch } = useInvitations({
     pageNumber,
-    pageSize: PAGE_SIZE,
+    pageSize: INVITATIONS_PAGE_SIZE,
   });
 
   if (isLoading) {
