@@ -17,7 +17,7 @@ import Modal from "@/src/shared/components/Modal";
 import Textarea from "@/src/shared/components/Textarea";
 import InputError from "@/src/shared/components/InputError";
 import FileAttachmentInput from "@/src/shared/components/FileAttachmentInput";
-import { getErrorMessage } from "@/src/shared/lib/getErrorMessage";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface RequestRevisionModalProps {
   projectId: string;
@@ -31,6 +31,7 @@ export function RequestRevisionModal({
   submissionId,
 }: RequestRevisionModalProps) {
   const t = useTranslations("clientSubmissions.revision");
+  const errorText = useErrorText();
   const tActions = useTranslations("common.actions");
   const tValidation = useTranslations("clientSubmissions.validation");
   const requestRevisionFormSchema = useMemo(() => createRequestRevisionFormSchema(tValidation), [tValidation]);
@@ -112,7 +113,7 @@ export function RequestRevisionModal({
           />
 
           {isError && (
-            <InputError message={getErrorMessage(error, t("failed"))} />
+            <InputError message={errorText(error, t("failed"))} />
           )}
 
           <div className="flex justify-end gap-3 pt-2">

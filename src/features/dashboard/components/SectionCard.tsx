@@ -55,7 +55,13 @@ export default function SectionCard<T>({
         )}
       </div>
 
-      <div className="flex flex-col flex-1 justify-center">
+      {/* Content starts at the top so cards side by side line up row for
+          row; only the spinner/error placeholders sit in the middle. */}
+      <div
+        className={`flex flex-col flex-1 ${
+          isLoading || !section || section.hasError || !section.data ? "justify-center" : ""
+        }`}
+      >
         {isLoading ? (
           <div className="flex justify-center py-8">
             <div className="border-2 border-primary/30 border-t-primary rounded-full w-6 h-6 animate-spin" />

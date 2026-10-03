@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Plus } from "lucide-react";
+import { FileEdit, Plus } from "lucide-react";
 
 import {
   createCreateChangeRequestSchema,
@@ -24,10 +24,15 @@ import Input from "@/src/shared/components/Input";
 import Textarea from "@/src/shared/components/Textarea";
 import InputError from "@/src/shared/components/InputError";
 import FileAttachmentInput from "@/src/shared/components/FileAttachmentInput";
-import { getErrorMessage } from "@/src/shared/lib/getErrorMessage";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface CreateChangeRequestModalProps {
   projectId: string;
+  /**
+   * Opens the request for this one milestone (e.g. from its detail page): it
+   * is pre-filled, can't be removed and no other milestone can be added.
+   */
+  milestoneId?: number;
 }
 
 function toDelta(milestone: Milestone, isPercentage: boolean): MilestoneDeltaInput {
@@ -43,8 +48,12 @@ function toDelta(milestone: Milestone, isPercentage: boolean): MilestoneDeltaInp
   };
 }
 
-export function CreateChangeRequestModal({ projectId }: CreateChangeRequestModalProps) {
+export function CreateChangeRequestModal({
+  projectId,
+  milestoneId,
+}: CreateChangeRequestModalProps) {
   const t = useTranslations("changeRequests.create");
+  const errorText = useErrorText();
   const tActions = useTranslations("common.actions");
   const tValidation = useTranslations("changeRequests.validation");
   const createChangeRequestSchema = useMemo(
@@ -58,8 +67,8 @@ export function CreateChangeRequestModal({ projectId }: CreateChangeRequestModal
   const { data: user } = useCurrentUser();
   const isFreelancer = user?.roles[0]?.toLowerCase() === "freelancer";
 
-  const freelancerContract = useContract(projectId);
-  const clientContract = useClientContract(projectId);
+  const freelancerContract = useContract(projectId, Boolean(user) && isFreelancer);
+  const clientContract = useClientContract(projectId, Boolean(user) && !isFreelancer);
   const contract = isFreelancer ? freelancerContract.data : clientContract.data;
 
   const {
@@ -87,6 +96,10 @@ export function CreateChangeRequestModal({ projectId }: CreateChangeRequestModal
     (m) => !deltas.some((d) => d.milestoneId === m.id),
   );
   const isPercentage = contract?.allocationMode === 1;
+  const lockedMilestone =
+    milestoneId === undefined
+      ? undefined
+      : contract?.milestones.find((m) => m.id === milestoneId);
 
   // In Fixed-amount mode, the resulting project value is just the sum of
   // every milestone's amount — fully derivable, so it's auto-computed and
@@ -115,8 +128,13 @@ export function CreateChangeRequestModal({ projectId }: CreateChangeRequestModal
     setOpen(false);
   };
 
-  const addMilestone = (milestoneId: number) => {
-    const milestone = contract?.milestones.find((m) => m.id === milestoneId);
+  const handleOpen = () => {
+    if (lockedMilestone) setDeltas([toDelta(lockedMilestone, isPercentage)]);
+    setOpen(true);
+  };
+
+  const addMilestone = (id: number) => {
+    const milestone = contract?.milestones.find((m) => m.id === id);
     if (!milestone) return;
     setDeltas((prev) => [...prev, toDelta(milestone, isPercentage)]);
     setDeltasError(null);
@@ -143,14 +161,29 @@ export function CreateChangeRequestModal({ projectId }: CreateChangeRequestModal
 
   return (
     <>
-      <Button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="flex items-center gap-1.5 h-9"
-      >
-        <Plus size={14} />
-        {t("button")}
-      </Button>
+      {milestoneId === undefined ? (
+        <Button
+          type="button"
+          onClick={handleOpen}
+          className="flex items-center gap-1.5 h-9"
+        >
+          <Plus size={14} />
+          {t("button")}
+        </Button>
+      ) : (
+        // Amber, beside the milestone's primary action. Disabled until the
+        // contract (and so the milestone's current terms) has loaded.
+        <Button
+          type="button"
+          variant="amber"
+          onClick={handleOpen}
+          disabled={!lockedMilestone}
+          className="flex items-center gap-1.5 h-9 whitespace-nowrap"
+        >
+          <FileEdit size={14} />
+          {t("milestoneButton")}
+        </Button>
+      )}
 
       <Modal open={open} onClose={handleClose} title={t("title")} size="lg">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -184,7 +217,7 @@ export function CreateChangeRequestModal({ projectId }: CreateChangeRequestModal
               {t("milestones")}
             </label>
 
-            {availableMilestones.length > 0 && (
+            {!lockedMilestone && availableMilestones.length > 0 && (
               <select
                 value=""
                 onChange={(e) => addMilestone(Number(e.target.value))}
@@ -215,10 +248,13 @@ export function CreateChangeRequestModal({ projectId }: CreateChangeRequestModal
                         prev.map((d) => (d.milestoneId === next.milestoneId ? next : d)),
                       )
                     }
-                    onRemove={() =>
-                      setDeltas((prev) =>
-                        prev.filter((d) => d.milestoneId !== delta.milestoneId),
-                      )
+                    onRemove={
+                      lockedMilestone
+                        ? undefined
+                        : () =>
+                            setDeltas((prev) =>
+                              prev.filter((d) => d.milestoneId !== delta.milestoneId),
+                            )
                     }
                   />
                 );
@@ -254,7 +290,7 @@ export function CreateChangeRequestModal({ projectId }: CreateChangeRequestModal
           </div>
 
           {isError && (
-            <InputError message={getErrorMessage(error, t("failed"))} />
+            <InputError message={errorText(error, t("failed"))} />
           )}
 
           <div className="flex justify-end gap-3 pt-2">

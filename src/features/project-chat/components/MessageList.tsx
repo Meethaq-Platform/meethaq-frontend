@@ -6,7 +6,8 @@ import { useTranslations } from "next-intl";
 
 import { useMessages } from "../hooks/useMessages";
 import { useCurrentUser } from "@/src/features/auth/hooks/useCurrentUser";
-import AttachmentList, { type AttachmentListItem } from "@/src/shared/components/AttachmentList";
+import type { AttachmentListItem } from "@/src/shared/components/AttachmentList";
+import AttachmentGallery from "@/src/shared/components/AttachmentGallery";
 import RelativeTime from "@/src/shared/components/RelativeTime";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
@@ -20,10 +21,14 @@ export function MessageList({ projectId }: MessageListProps) {
   const t = useTranslations("chat");
   const { data: messages, isLoading, isError, refetch } = useMessages(projectId);
   const { data: currentUser } = useCurrentUser();
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
 
+  // Scroll only the list box. scrollIntoView would also scroll every
+  // scrollable ancestor (the layout's <main>), jumping the whole page each
+  // time a message is sent or arrives.
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ block: "end" });
+    const list = listRef.current;
+    if (list) list.scrollTop = list.scrollHeight;
   }, [messages?.length]);
 
   if (isLoading) {
@@ -60,7 +65,7 @@ export function MessageList({ projectId }: MessageListProps) {
   );
 
   return (
-    <div className="flex-1 space-y-4 p-4 overflow-y-auto">
+    <div ref={listRef} className="flex-1 space-y-4 p-4 overflow-y-auto">
       {sorted.map((message) => {
         const isOwnMessage = message.senderId === currentUser?.id;
         const attachments: AttachmentListItem[] = message.attachments.map((attachment) => ({
@@ -93,7 +98,7 @@ export function MessageList({ projectId }: MessageListProps) {
               )}
               {attachments.length > 0 && (
                 <div className={message.content ? "mt-2" : ""}>
-                  <AttachmentList attachments={attachments} />
+                  <AttachmentGallery attachments={attachments} />
                 </div>
               )}
             </div>
@@ -101,7 +106,6 @@ export function MessageList({ projectId }: MessageListProps) {
           </div>
         );
       })}
-      <div ref={bottomRef} />
     </div>
   );
 }

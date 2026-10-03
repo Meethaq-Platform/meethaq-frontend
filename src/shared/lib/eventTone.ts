@@ -14,6 +14,7 @@ export const eventToneClasses: Record<EventTone, string> = {
 // Unrecognized values fall back to "primary".
 const eventTones: Record<string, EventTone> = {
   NewProjectMessage: "info",
+  ChatMessageReceived: "info",
   ContractSent: "info",
   ContractApproved: "success",
   MilestoneStarted: "primary",
@@ -23,6 +24,7 @@ const eventTones: Record<string, EventTone> = {
   DeliverableAccepted: "success",
   MilestoneDeadlineApproaching: "warning",
   ReviewDeadlineApproaching: "warning",
+  ReviewReminder: "warning",
   ReviewOverdue: "danger",
   PaymentEligible: "success",
   PaymentEvidenceSubmitted: "info",

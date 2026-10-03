@@ -15,6 +15,7 @@ import type { Profile } from "../types/profile";
 import { ProfileSectionCard } from "./ProfileSectionCard";
 import { SharedProfileFields } from "./SharedProfileFields";
 import InputError from "@/src/shared/components/InputError";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface EditClientProfileFormProps {
   profile: Profile;
@@ -28,6 +29,7 @@ export function EditClientProfileForm({
   onDirtyChange,
 }: EditClientProfileFormProps) {
   const t = useTranslations("profile");
+  const errorText = useErrorText();
   const tValidation = useTranslations("profile.validation");
   const clientProfileSchema = useMemo(() => createClientProfileSchema(tValidation), [tValidation]);
 
@@ -77,7 +79,7 @@ export function EditClientProfileForm({
       {isError && (
         <InputError
           message={
-            error instanceof Error ? error.message : t("updateFailed")
+            errorText(error, t("updateFailed"))
           }
         />
       )}

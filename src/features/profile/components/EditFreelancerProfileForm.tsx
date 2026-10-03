@@ -17,6 +17,7 @@ import { SharedProfileFields } from "./SharedProfileFields";
 import Input from "@/src/shared/components/Input";
 import InputError from "@/src/shared/components/InputError";
 import Textarea from "@/src/shared/components/Textarea";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface EditFreelancerProfileFormProps {
   profile: Profile;
@@ -30,6 +31,7 @@ export function EditFreelancerProfileForm({
   onDirtyChange,
 }: EditFreelancerProfileFormProps) {
   const t = useTranslations("profile");
+  const errorText = useErrorText();
   const tValidation = useTranslations("profile.validation");
   const freelancerProfileSchema = useMemo(() => createFreelancerProfileSchema(tValidation), [tValidation]);
 
@@ -103,7 +105,7 @@ export function EditFreelancerProfileForm({
       {isError && (
         <InputError
           message={
-            error instanceof Error ? error.message : t("updateFailed")
+            errorText(error, t("updateFailed"))
           }
         />
       )}

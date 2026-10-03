@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { useApproveContract } from "../hooks/useApproveContract";
 import Button from "@/src/shared/components/Button";
 import ConfirmModal from "@/src/shared/components/ConfirmModal";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface ApproveContractButtonProps {
   projectId: string;
@@ -18,6 +19,7 @@ export function ApproveContractButton({
   concurrencyToken,
 }: ApproveContractButtonProps) {
   const t = useTranslations("clientContracts.approve");
+  const errorText = useErrorText();
   const [open, setOpen] = useState(false);
   const { mutate, isPending, isError, error } = useApproveContract(projectId);
 
@@ -50,9 +52,7 @@ export function ApproveContractButton({
         isConfirming={isPending}
         errorMessage={
           isError
-            ? error instanceof Error
-              ? error.message
-              : t("failed")
+            ? errorText(error, t("failed"))
             : undefined
         }
       />

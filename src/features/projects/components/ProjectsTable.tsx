@@ -9,6 +9,10 @@ import Pagination from "@/src/shared/components/Pagination";
 import EmptyState from "@/src/shared/components/EmptyState";
 import RelativeTime from "@/src/shared/components/RelativeTime";
 import { formatCurrency } from "@/src/shared/lib/format";
+import LinkRow from "@/src/shared/components/LinkRow";
+import TableSkeleton from "@/src/shared/components/TableSkeleton";
+import UpdateDot from "@/src/shared/components/UpdateDot";
+import { useProjectUpdates } from "@/src/features/notifications/hooks/useProjectUpdates";
 
 interface ProjectsTableProps {
   projects: ProjectSummary[];
@@ -28,6 +32,7 @@ export function ProjectsTable({
   onPageChange,
 }: ProjectsTableProps) {
   const t = useTranslations("projects.list");
+  const updates = useProjectUpdates();
 
   if (projects.length === 0) {
     return isFiltering ? (
@@ -77,12 +82,16 @@ export function ProjectsTable({
 
           <tbody className="divide-y divide-border">
             {projects.map((project) => (
-              <tr
+              <LinkRow
                 key={project.id}
+                href={`/projects/${project.id}`}
                 className="even:bg-surface-muted hover:bg-border/40 transition"
               >
-                <td dir="auto" className="px-6 py-4 font-medium text-text-primary">
-                  {project.title}
+                <td className="px-6 py-4 font-medium text-text-primary">
+                  <span className="flex items-center gap-2">
+                    {updates.forProject(project.id) && <UpdateDot />}
+                    <span dir="auto">{project.title}</span>
+                  </span>
                 </td>
 
                 <td className="px-6 py-4">
@@ -118,7 +127,7 @@ export function ProjectsTable({
                     <ArrowRight size={16} className="rtl-flip" />
                   </Link>
                 </td>
-              </tr>
+              </LinkRow>
             ))}
           </tbody>
         </table>
@@ -132,5 +141,23 @@ export function ProjectsTable({
         itemLabel="project"
       />
     </div>
+  );
+}
+
+export function ProjectsTableSkeleton() {
+  const t = useTranslations("projects.list");
+
+  return (
+    <TableSkeleton
+      columns={[
+        { label: t("columns.title"), width: "w-40" },
+        { label: t("columns.status"), shape: "badge" },
+        { label: t("columns.contract"), shape: "badge" },
+        { label: t("columns.client"), width: "w-28" },
+        { label: t("columns.value"), width: "w-20", align: "end", lgOnly: true },
+        { label: t("columns.updated"), width: "w-20", lgOnly: true },
+        { label: t("columns.actions"), srOnlyLabel: true, shape: "action", align: "end" },
+      ]}
+    />
   );
 }

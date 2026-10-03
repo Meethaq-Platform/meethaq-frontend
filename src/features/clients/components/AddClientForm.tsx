@@ -14,6 +14,7 @@ import Input from "@/src/shared/components/Input";
 import InputError from "@/src/shared/components/InputError";
 import Textarea from "@/src/shared/components/Textarea";
 import Button from "@/src/shared/components/Button";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface AddClientFormProps {
   onSuccess: () => void;
@@ -22,6 +23,7 @@ interface AddClientFormProps {
 
 export function AddClientForm({ onSuccess, onCancel }: AddClientFormProps) {
   const t = useTranslations("clients.form");
+  const errorText = useErrorText();
   const tActions = useTranslations("common.actions");
   const tValidation = useTranslations("clients.validation");
   const addClientSchema = useMemo(() => createAddClientSchema(tValidation), [tValidation]);
@@ -49,7 +51,7 @@ export function AddClientForm({ onSuccess, onCancel }: AddClientFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form noValidate onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <p className="text-text-secondary text-sm">
         {t("lookupHint")}
       </p>
@@ -72,7 +74,7 @@ export function AddClientForm({ onSuccess, onCancel }: AddClientFormProps) {
       {isError && (
         <InputError
           message={
-            error instanceof Error ? error.message : t("addFailed")
+            errorText(error, t("addFailed"))
           }
         />
       )}

@@ -10,9 +10,11 @@ import type { ContractValidationErrorItem } from "../types/contract";
 import Modal from "@/src/shared/components/Modal";
 import Button from "@/src/shared/components/Button";
 import InputError from "@/src/shared/components/InputError";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 export function SubmitContractButton({ projectId }: { projectId: string }) {
   const t = useTranslations("contracts.submit");
+  const errorText = useErrorText();
   const tActions = useTranslations("common.actions");
   const [open, setOpen] = useState(false);
   const [validationErrors, setValidationErrors] = useState<
@@ -65,9 +67,7 @@ export function SubmitContractButton({ projectId }: { projectId: string }) {
           {validateContract.isError && (
             <InputError
               message={
-                validateContract.error instanceof Error
-                  ? validateContract.error.message
-                  : t("validateFailed")
+                errorText(validateContract.error, t("validateFailed"))
               }
             />
           )}
@@ -96,9 +96,7 @@ export function SubmitContractButton({ projectId }: { projectId: string }) {
           {submitContract.isError && (
             <InputError
               message={
-                submitContract.error instanceof Error
-                  ? submitContract.error.message
-                  : t("failed")
+                errorText(submitContract.error, t("failed"))
               }
             />
           )}

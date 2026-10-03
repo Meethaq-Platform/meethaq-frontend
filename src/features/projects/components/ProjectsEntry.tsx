@@ -5,16 +5,17 @@ import { ProjectsHeader } from "./ProjectsHeader";
 import ProjectsPage from "./ProjectsPage";
 import { ClientProjectsHeader } from "@/src/features/client-projects/components/ClientProjectsHeader";
 import ClientProjectsPage from "@/src/features/client-projects/components/ClientProjectsPage";
-import Spinner from "@/src/shared/components/Spinner";
+import ListPageSkeleton from "@/src/shared/components/ListPageSkeleton";
+import { ProjectsTableSkeleton } from "./ProjectsTable";
 
 export default function ProjectsEntry() {
   const { data: user, isLoading } = useCurrentUser();
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center py-16">
-        <Spinner size={28} />
-      </div>
+      <ListPageSkeleton filters={5}>
+        <ProjectsTableSkeleton />
+      </ListPageSkeleton>
     );
   }
 

@@ -44,7 +44,10 @@
     "remove": "إزالة {name}",
     "tooMany": "يمكن إرفاق {max, plural, one {ملف واحد} two {ملفين} few {{max, number, plain} ملفات} many {{max, number, plain} ملفًا} other {{max, number, plain} ملف}} كحد أقصى.",
     "unsupported": "نوع الملف «{name}» غير مدعوم.",
-    "tooLarge": "الملف «{name}» كبير جدًا. الحد الأقصى للحجم {size}."
+    "tooLarge": "الملف «{name}» كبير جدًا. الحد الأقصى للحجم {size}.",
+    "download": "تنزيل",
+    "openImage": "فتح {name}",
+    "downloadNamed": "تنزيل {name}"
   },
   "links": {
     "deliveryLink": "رابط التسليم",
@@ -64,5 +67,8 @@
     "name": "ميثاق",
     "logoAlt": "ميثاق",
     "meta": "يجمع ميثاق العقد والتسليم والدفع في مسار واحد، فلا تُصرف دفعة أي مرحلة قبل قبولها."
+  },
+  "updates": {
+    "new": "تحديثات جديدة"
   }
 }

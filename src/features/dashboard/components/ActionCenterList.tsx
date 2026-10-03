@@ -7,6 +7,8 @@ import EmptyState from "@/src/shared/components/EmptyState";
 import { CheckCircle2 } from "lucide-react";
 import StatusPill from "./StatusPill";
 import type { ActionCenterItem } from "../types/dashboard";
+import { tabForActionLabel } from "../lib/action-tab";
+import { projectHref, projectTabFor } from "@/src/features/projects/lib/project-tabs";
 
 const urgencyTone: Record<number, "neutral" | "info" | "warning" | "danger"> = {
   1: "neutral",
@@ -34,7 +36,7 @@ export default function ActionCenterList({ items, emptyMessage }: ActionCenterLi
   const t = useTranslations("dashboard.actionCenter");
   if (items.length === 0) {
     return (
-      <EmptyState icon={CheckCircle2} title={emptyMessage} description={t("empty")} />
+      <EmptyState variant="compact" icon={CheckCircle2} title={emptyMessage} description={t("empty")} />
     );
   }
 
@@ -121,9 +123,14 @@ function ActionGroup({
             {item.actionButtonText && (
               // The backend's actionNavigationUrl points at pages this app
               // doesn't have (e.g. /action-center/{id}) — projectId always
-              // resolves to a real page, so every action opens there instead.
+              // resolves to a real page, so every action opens there instead,
+              // on the tab holding the record the action is about.
               <Link
-                href={`/projects/${item.projectId}`}
+                href={projectHref(
+                  item.projectId,
+                  tabForActionLabel(item.actionButtonText) ??
+                    projectTabFor(item.relatedEntityType ?? item.actionType),
+                )}
                 className="flex items-center gap-1 bg-primary hover:opacity-90 px-3 rounded-lg h-9 font-semibold text-on-primary text-xs whitespace-nowrap transition shrink-0"
               >
                 {apiText(item.actionButtonText)}

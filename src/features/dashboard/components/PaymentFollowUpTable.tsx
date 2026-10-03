@@ -5,6 +5,8 @@ import { useApiText } from "../hooks/useApiText";
 import EmptyState from "@/src/shared/components/EmptyState";
 import RelativeTime from "@/src/shared/components/RelativeTime";
 import { formatCurrency, getTimeRemaining } from "@/src/shared/lib/format";
+import { projectHref } from "@/src/features/projects/lib/project-tabs";
+import { tabForActionLabel } from "../lib/action-tab";
 import type { PaymentFollowUpItem } from "../types/dashboard";
 
 interface PaymentFollowUpTableProps {
@@ -24,7 +26,7 @@ export default function PaymentFollowUpTable({ items, counterpartyLabel }: Payme
   const tDashboard = useTranslations("dashboard");
 
   if (items.length === 0) {
-    return <EmptyState icon={Wallet} title={t("empty")} />;
+    return <EmptyState variant="compact" icon={Wallet} title={t("empty")} />;
   }
 
   return (
@@ -75,10 +77,14 @@ export default function PaymentFollowUpTable({ items, counterpartyLabel }: Payme
                 </td>
                 <td className="py-2.5 pe-3">
                   {/* actionNavigationUrl points at a flat /payments page
-                      that doesn't exist — payments live on the milestone
-                      page, so the link is built from ids instead. */}
+                      that doesn't exist — payments are recorded and
+                      confirmed on the project's Payments tab, while a
+                      reminder is sent from the chat. */}
                   <Link
-                    href={`/projects/${item.projectId}/milestones/${item.milestoneId}`}
+                    href={projectHref(
+                      item.projectId,
+                      tabForActionLabel(item.actionLabel) ?? "payments",
+                    )}
                     className="inline-flex items-center bg-surface-muted hover:bg-border/60 px-3 rounded-lg h-8 font-semibold text-text-primary text-xs whitespace-nowrap transition"
                   >
                     {item.actionLabel ? apiText(item.actionLabel) : tDashboard("open")}

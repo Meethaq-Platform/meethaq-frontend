@@ -9,7 +9,7 @@ import { useNotifications } from "../hooks/useNotifications";
 import { useMarkNotificationRead } from "../hooks/useMarkNotificationRead";
 import { useMarkAllNotificationsRead } from "../hooks/useMarkAllNotificationsRead";
 import { NotificationRow } from "./NotificationRow";
-import Spinner from "@/src/shared/components/Spinner";
+import Skeleton, { SkeletonRegion } from "@/src/shared/components/Skeleton";
 import EmptyState from "@/src/shared/components/EmptyState";
 
 // Fetch the next page once the panel is scrolled within this many pixels of
@@ -95,9 +95,19 @@ export function NotificationBell() {
 
           <div className="max-h-96 overflow-y-auto" onScroll={handleScroll}>
             {isLoading ? (
-              <div className="flex justify-center py-8">
-                <Spinner size={20} />
-              </div>
+              // Three rows shaped like NotificationRow.
+              <SkeletonRegion>
+                {Array.from({ length: 3 }, (_, i) => (
+                  <div key={i} className="flex items-start gap-3 px-4 py-3">
+                    <Skeleton className="mt-0.5 rounded-full w-8 h-8 shrink-0" />
+                    <div className="flex-1 space-y-2 pt-1">
+                      <Skeleton className="w-2/5 h-3.5" />
+                      <Skeleton className="w-4/5 h-3.5" />
+                      <Skeleton className="w-16 h-3" />
+                    </div>
+                  </div>
+                ))}
+              </SkeletonRegion>
             ) : items.length === 0 ? (
               <div className="px-4 py-6">
                 <EmptyState icon={Bell} title={t("empty")} />

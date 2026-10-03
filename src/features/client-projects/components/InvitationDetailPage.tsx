@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Check } from "lucide-react";
@@ -15,6 +15,7 @@ import Button from "@/src/shared/components/Button";
 import ConfirmModal from "@/src/shared/components/ConfirmModal";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface InvitationDetailPageProps {
   invitationId: string;
@@ -24,6 +25,7 @@ export default function InvitationDetailPage({
   invitationId,
 }: InvitationDetailPageProps) {
   const t = useTranslations("clientProjects.invitation");
+  const errorText = useErrorText();
   const tProjects = useTranslations("projects.detail");
   const locale = useLocale();
   const router = useRouter();
@@ -32,6 +34,9 @@ export default function InvitationDetailPage({
   usePageTitle(data ? tPageTitles("project", { title: data.title }) : undefined);
   const [isAcceptOpen, setIsAcceptOpen] = useState(false);
   const acceptInvitation = useAcceptInvitation(invitationId);
+  // Keeps the dialog busy until the project page renders, not just until the
+  // request resolves.
+  const [isRedirecting, startRedirect] = useTransition();
 
   return (
     <div className="space-y-6 mx-auto h-full">
@@ -106,7 +111,8 @@ export default function InvitationDetailPage({
           onClose={() => setIsAcceptOpen(false)}
           onConfirm={() =>
             acceptInvitation.mutate(undefined, {
-              onSuccess: () => router.push(`/projects/${data.id}`),
+              onSuccess: () =>
+                startRedirect(() => router.push(`/projects/${data.id}`)),
             })
           }
           title={t("confirmTitle")}
@@ -118,12 +124,10 @@ export default function InvitationDetailPage({
           confirmLabel={t("confirm")}
           confirmingLabel={t("confirming")}
           variant="primary"
-          isConfirming={acceptInvitation.isPending}
+          isConfirming={acceptInvitation.isPending || isRedirecting}
           errorMessage={
             acceptInvitation.isError
-              ? acceptInvitation.error instanceof Error
-                ? acceptInvitation.error.message
-                : t("failed")
+              ? errorText(acceptInvitation.error, t("failed"))
               : undefined
           }
         />

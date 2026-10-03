@@ -18,6 +18,19 @@ export async function getNotifications(
   return result;
 }
 
+// Used as the SignalR accessTokenFactory — see api/realtime/token.
+export async function getHubAccessToken(): Promise<string> {
+  const response = await fetch("/api/realtime/token", { cache: "no-store" });
+
+  const result = await response.json();
+
+  if (!response.ok || !result.data) {
+    throw new Error(result.message || "Failed to get a realtime access token.");
+  }
+
+  return result.data.accessToken;
+}
+
 export async function markNotificationRead(notificationId: number): Promise<{
   success: boolean;
   message: string;

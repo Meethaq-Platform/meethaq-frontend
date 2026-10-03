@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { useConfirmReceipt } from "../hooks/useConfirmReceipt";
 import Button from "@/src/shared/components/Button";
 import ConfirmModal from "@/src/shared/components/ConfirmModal";
-import { getErrorMessage } from "@/src/shared/lib/getErrorMessage";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface ConfirmReceiptButtonProps {
   projectId: string;
@@ -20,6 +20,7 @@ interface ConfirmReceiptButtonProps {
 // gate against a duplicate/spoofed confirmation either way.
 export function ConfirmReceiptButton({ projectId, milestoneId }: ConfirmReceiptButtonProps) {
   const t = useTranslations("payments.confirm");
+  const errorText = useErrorText();
   const [open, setOpen] = useState(false);
   const { mutate, isPending, isError, error } = useConfirmReceipt(projectId, milestoneId);
 
@@ -44,7 +45,7 @@ export function ConfirmReceiptButton({ projectId, milestoneId }: ConfirmReceiptB
         confirmingLabel={t("confirming")}
         isConfirming={isPending}
         variant="primary"
-        errorMessage={isError ? getErrorMessage(error, t("failed")) : undefined}
+        errorMessage={isError ? errorText(error, t("failed")) : undefined}
       />
     </>
   );

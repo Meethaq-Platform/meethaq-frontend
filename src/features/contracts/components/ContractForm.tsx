@@ -15,6 +15,7 @@ import type { Contract } from "../types/contract";
 import Input from "@/src/shared/components/Input";
 import InputError from "@/src/shared/components/InputError";
 import Textarea from "@/src/shared/components/Textarea";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface ContractFormProps {
   projectId: string;
@@ -38,6 +39,7 @@ export function ContractForm({
   onPendingChange,
 }: ContractFormProps) {
   const t = useTranslations("contracts.form");
+  const errorText = useErrorText();
   const tValidation = useTranslations("contracts.validation");
   const contractFormSchema = useMemo(() => createContractFormSchema(tValidation), [tValidation]);
 
@@ -160,9 +162,7 @@ export function ContractForm({
       {mutation.isError && (
         <InputError
           message={
-            mutation.error instanceof Error
-              ? mutation.error.message
-              : t("saveFailed")
+            errorText(mutation.error, t("saveFailed"))
           }
         />
       )}

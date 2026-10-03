@@ -49,7 +49,7 @@ export default function UpcomingMilestonesList({ items }: UpcomingMilestonesList
       </div>
 
       {filtered.length === 0 ? (
-        <EmptyState icon={CalendarClock} title={t("empty")} />
+        <EmptyState variant="compact" icon={CalendarClock} title={t("empty")} />
       ) : (
         <ul className="flex flex-col gap-2">
           {filtered.map((item) => (

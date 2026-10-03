@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useFormat } from "@/src/shared/hooks/useFormat";
@@ -21,41 +19,22 @@ import { ProjectPaymentSummaryCard } from "@/src/features/payments/components/Pr
 import { PaymentsTab } from "@/src/features/payments/components/PaymentsTab";
 import { ChangeRequestsTab } from "@/src/features/change-requests/components/ChangeRequestsTab";
 import { DisputesTab } from "@/src/features/disputes/components/DisputesTab";
-import Spinner from "@/src/shared/components/Spinner";
+import { ProjectDetailSkeleton } from "@/src/features/projects/components/ProjectDetailSkeleton";
 import ErrorState from "@/src/shared/components/ErrorState";
 import Tabs from "@/src/shared/components/Tabs";
+import { useProjectTab } from "@/src/features/projects/hooks/useProjectTab";
+import { PROJECT_TABS } from "@/src/features/projects/lib/project-tabs";
 import { formatCurrency } from "@/src/shared/lib/format";
+import {
+  useClearUpdates,
+  useProjectUpdates,
+} from "@/src/features/notifications/hooks/useProjectUpdates";
+import { useActivityUpdates } from "@/src/features/activity-log/hooks/useActivityUpdates";
+import { useClientContract } from "@/src/features/client-contracts/hooks/useClientContract";
+import { useProjectTabCounts } from "@/src/features/projects/hooks/useProjectTabCounts";
 
 interface ClientProjectDetailPageProps {
   projectId: string;
-}
-
-type DetailTab =
-  | "overview"
-  | "milestones"
-  | "payments"
-  | "changes"
-  | "disputes"
-  | "chat"
-  | "activity";
-
-const detailTabs: DetailTab[] = [
-  "overview",
-  "milestones",
-  "payments",
-  "changes",
-  "disputes",
-  "chat",
-  "activity",
-];
-
-const validTabs: readonly string[] = detailTabs;
-
-function readInitialTab(searchParams: URLSearchParams): DetailTab {
-  const requested = searchParams.get("tab");
-  return validTabs.includes(requested ?? "")
-    ? (requested as DetailTab)
-    : "overview";
 }
 
 export default function ClientProjectDetailPage({
@@ -66,8 +45,18 @@ export default function ClientProjectDetailPage({
   const { data, isLoading, isError, refetch } = useClientProject(projectId);
   const tPageTitles = useTranslations("pageTitles");
   usePageTitle(data ? tPageTitles("project", { title: data.title }) : undefined);
-  const searchParams = useSearchParams();
-  const [tab, setTab] = useState<DetailTab>(() => readInitialTab(searchParams));
+  const [tab, setTab] = useProjectTab();
+  const updates = useProjectUpdates();
+  const activityUpdates = useActivityUpdates(projectId);
+  // Clients only see a contract once it has been sent to them.
+  const contract = useClientContract(
+    projectId,
+    Boolean(data) && data?.contractStatus !== "None" && data?.contractStatus !== "Draft",
+  );
+  const tabCounts = useProjectTabCounts(projectId, contract.data?.milestones.length);
+  // Opening a tab clears its tab-wide updates (chat, overview...); updates
+  // about one record clear when that record is opened.
+  useClearUpdates(projectId, tab, null, Boolean(data));
 
   return (
     <div className="space-y-6 mx-auto h-full">
@@ -80,9 +69,7 @@ export default function ClientProjectDetailPage({
       </Link>
 
       {isLoading ? (
-        <div className="flex justify-center items-center py-16">
-          <Spinner size={28} />
-        </div>
+        <ProjectDetailSkeleton withBackLink={false} />
       ) : isError || !data ? (
         <ErrorState
           message={t("loadFailed")}
@@ -128,7 +115,15 @@ export default function ClientProjectDetailPage({
           <Tabs
             value={tab}
             onChange={setTab}
-            options={detailTabs.map((value) => ({ value, label: t(`tabs.${value}`) }))}
+            options={PROJECT_TABS.map((value) => ({
+              value,
+              label: t(`tabs.${value}`),
+              count: tabCounts[value],
+              dot:
+                value === "activity"
+                  ? activityUpdates.hasNew
+                  : updates.forTab(projectId, value),
+            }))}
           />
 
           {tab === "overview" && (

@@ -31,7 +31,9 @@
     "tooLarge": "يجب أن يقل حجم الصورة عن 5 ميغابايت.",
     "save": "حفظ الصورة",
     "upload": "رفع صورة",
-    "delete": "حذف الصورة"
+    "delete": "حذف الصورة",
+    "uploadFailed": "تعذّر رفع الصورة الشخصية.",
+    "deleteFailed": "تعذّر حذف الصورة الشخصية."
   },
   "validation": {
     "fullNameMin": "يجب ألا يقل الاسم الكامل عن {min, plural, one {حرف واحد} two {حرفين} few {{min, number, plain} أحرف} many {{min, number, plain} حرفًا} other {{min, number, plain} حرف}}",

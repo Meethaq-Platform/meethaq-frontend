@@ -36,8 +36,8 @@
     "waitingSince": "بدأ الانتظار <time></time>"
   },
   "firstUse": {
-    "freelancerTitle": "مرحبًا {name} — لنبدأ المشروع الأول",
-    "freelancerTitleNoName": "مرحبًا — لنبدأ المشروع الأول",
+    "freelancerTitle": "مرحبًا {name} - لنبدأ المشروع الأول",
+    "freelancerTitleNoName": "مرحبًا - لنبدأ المشروع الأول",
     "freelancerSubtitle": "تبدأ أول اتفاقية بعد إكمال هذه الخطوات.",
     "steps": {
       "addClient": "إضافة عميل",
@@ -48,7 +48,46 @@
     "clientTitle": "مرحبًا، {name}",
     "clientTitleNoName": "مرحبًا",
     "clientGuidance": "ستظهر المشاريع هنا عندما يشارك أحد المستقلين الوصول إليها.",
-    "reviewInvitations": "مراجعة {count, plural, one {الدعوة المعلّقة} two {الدعوتين المعلّقتين} few {{count, number, plain} دعوات معلّقة} many {{count, number, plain} دعوة معلّقة} other {{count, number, plain} دعوة معلّقة}}"
+    "reviewInvitations": "مراجعة {count, plural, one {الدعوة المعلّقة} two {الدعوتين المعلّقتين} few {{count, number, plain} دعوات معلّقة} many {{count, number, plain} دعوة معلّقة} other {{count, number, plain} دعوة معلّقة}}",
+    "eyebrow": "خطوات البدء",
+    "stepDetails": {
+      "addClient": {
+        "description": "حفظ بيانات العميل: الاسم ووسيلة التواصل.",
+        "cta": "إضافة عميل"
+      },
+      "createProject": {
+        "description": "مساحة مستقلة للعمل مرتبطة بالعميل.",
+        "cta": "إنشاء مشروع"
+      },
+      "prepareContract": {
+        "description": "تحديد المراحل ومواعيدها وقيمة كل مرحلة.",
+        "cta": "إعداد العقد"
+      },
+      "sendForApproval": {
+        "description": "إرسال العقد إلى العميل لمراجعته والموافقة عليه.",
+        "cta": "الإرسال للموافقة"
+      }
+    },
+    "clientStepsTitle": "كيف يسير العمل",
+    "clientSteps": {
+      "invited": {
+        "title": "دعوة من أحد المستقلين",
+        "description": "تتيح الدعوة الوصول إلى مشروع المستقل."
+      },
+      "review": {
+        "title": "مراجعة العقد والموافقة عليه",
+        "description": "الاطلاع على المراحل والمواعيد والمبالغ قبل الموافقة."
+      },
+      "track": {
+        "title": "متابعة سير العمل",
+        "description": "مراجعة كل تسليم وقبوله عندما يستوفي المعايير."
+      }
+    }
+  },
+  "onboarding": {
+    "title": "إكمال إعداد الحساب",
+    "subtitle": "بقيت خطوات قليلة لإرسال أول عقد إلى العميل.",
+    "progress": "اكتمل {done, number, plain} من {total, number, plain}"
   },
   "metric": {
     "help": "ما المقصود بـ «{title}»؟",
