@@ -15,7 +15,11 @@ export const eventToneClasses: Record<EventTone, string> = {
 const eventTones: Record<string, EventTone> = {
   NewProjectMessage: "info",
   ChatMessageReceived: "info",
+  ClientAssigned: "info",
+  InvitationAccepted: "success",
   ContractSent: "info",
+  ContractSubmitted: "info",
+  ContractChangesRequested: "warning",
   ContractApproved: "success",
   MilestoneStarted: "primary",
   MilestoneSubmitted: "info",

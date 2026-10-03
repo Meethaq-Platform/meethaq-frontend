@@ -7,12 +7,17 @@ import {
   CheckCircle2,
   Clock,
   CreditCard,
+  FileCheck,
   FileEdit,
+  FileText,
   MessageSquare,
   MessageSquareWarning,
   PartyPopper,
+  PlayCircle,
   ShieldAlert,
   Upload,
+  UserCheck,
+  UserPlus,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -26,9 +31,18 @@ import { eventToneClasses, getEventTone } from "@/src/shared/lib/eventTone";
 // swagger) — this map is a best-effort guess at casing; any unrecognized
 // value falls back to a generic bell icon rather than breaking the row.
 const eventIcons: Record<string, LucideIcon> = {
+  ClientAssigned: UserPlus,
+  InvitationAccepted: UserCheck,
+  ContractSent: FileText,
+  ContractSubmitted: FileText,
+  ContractChangesRequested: FileEdit,
+  ContractApproved: FileCheck,
+  MilestoneStarted: PlayCircle,
   NewProjectMessage: MessageSquare,
   ChatMessageReceived: MessageSquare,
   MilestoneSubmitted: Upload,
+  DeliverableSubmitted: Upload,
+  DeliverableResubmitted: Upload,
   RevisionRequested: MessageSquareWarning,
   DeliverableAccepted: CheckCircle2,
   MilestoneDeadlineApproaching: CalendarClock,
@@ -36,6 +50,8 @@ const eventIcons: Record<string, LucideIcon> = {
   ReviewOverdue: AlertTriangle,
   ReviewReminder: BellRing,
   PaymentEligible: CreditCard,
+  PaymentRecorded: CreditCard,
+  PaymentConfirmed: CheckCircle2,
   PaymentEvidenceSubmitted: CreditCard,
   PaymentEvidenceUpdated: CreditCard,
   ContractAmendmentCreated: FileEdit,
