@@ -15,7 +15,7 @@ import Button from "@/src/shared/components/Button";
 import Modal from "@/src/shared/components/Modal";
 import Textarea from "@/src/shared/components/Textarea";
 import InputError from "@/src/shared/components/InputError";
-import { getErrorMessage } from "@/src/shared/lib/getErrorMessage";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface ReportPaymentIssueModalProps {
   projectId: string;
@@ -26,6 +26,7 @@ interface ReportPaymentIssueModalProps {
 // the alternative to Confirm Receipt.
 export function ReportPaymentIssueModal({ projectId, milestoneId }: ReportPaymentIssueModalProps) {
   const t = useTranslations("payments.report");
+  const errorText = useErrorText();
   const tActions = useTranslations("common.actions");
   const tValidation = useTranslations("payments.validation");
   const reportPaymentIssueSchema = useMemo(() => createReportPaymentIssueSchema(tValidation), [tValidation]);
@@ -79,7 +80,7 @@ export function ReportPaymentIssueModal({ projectId, milestoneId }: ReportPaymen
           </div>
 
           {isError && (
-            <InputError message={getErrorMessage(error, t("failed"))} />
+            <InputError message={errorText(error, t("failed"))} />
           )}
 
           <div className="flex justify-end gap-3 pt-2">

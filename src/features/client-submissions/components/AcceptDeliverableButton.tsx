@@ -15,7 +15,7 @@ import Button from "@/src/shared/components/Button";
 import Modal from "@/src/shared/components/Modal";
 import Textarea from "@/src/shared/components/Textarea";
 import InputError from "@/src/shared/components/InputError";
-import { getErrorMessage } from "@/src/shared/lib/getErrorMessage";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface AcceptDeliverableButtonProps {
   projectId: string;
@@ -29,6 +29,7 @@ export function AcceptDeliverableButton({
   submissionId,
 }: AcceptDeliverableButtonProps) {
   const t = useTranslations("clientSubmissions.accept");
+  const errorText = useErrorText();
   const tActions = useTranslations("common.actions");
   const tValidation = useTranslations("clientSubmissions.validation");
   const acceptDeliverableFormSchema = useMemo(() => createAcceptDeliverableFormSchema(tValidation), [tValidation]);
@@ -83,7 +84,7 @@ export function AcceptDeliverableButton({
           </div>
 
           {isError && (
-            <InputError message={getErrorMessage(error, t("failed"))} />
+            <InputError message={errorText(error, t("failed"))} />
           )}
 
           <div className="flex justify-end gap-3 pt-2">

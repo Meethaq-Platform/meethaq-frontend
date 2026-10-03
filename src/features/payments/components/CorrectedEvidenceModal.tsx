@@ -18,7 +18,7 @@ import Input from "@/src/shared/components/Input";
 import Textarea from "@/src/shared/components/Textarea";
 import InputError from "@/src/shared/components/InputError";
 import FileAttachmentInput from "@/src/shared/components/FileAttachmentInput";
-import { getErrorMessage } from "@/src/shared/lib/getErrorMessage";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface CorrectedEvidenceModalProps {
   projectId: string;
@@ -31,6 +31,7 @@ interface CorrectedEvidenceModalProps {
 // need to show it here since PaymentDetailCard already lists all versions.
 export function CorrectedEvidenceModal({ projectId, milestoneId }: CorrectedEvidenceModalProps) {
   const t = useTranslations("payments.corrected");
+  const errorText = useErrorText();
   const tActions = useTranslations("common.actions");
   const tValidation = useTranslations("payments.validation");
   const correctedEvidenceFormSchema = useMemo(() => createCorrectedEvidenceFormSchema(tValidation), [tValidation]);
@@ -111,7 +112,7 @@ export function CorrectedEvidenceModal({ projectId, milestoneId }: CorrectedEvid
 
           {isError && (
             <InputError
-              message={getErrorMessage(error, t("failed"))}
+              message={errorText(error, t("failed"))}
             />
           )}
 
