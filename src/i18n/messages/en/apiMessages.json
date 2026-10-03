@@ -75,5 +75,6 @@
   "failed_to_add_client": "Failed to add client.",
   "failed_to_accept_invitation": "Failed to accept invitation.",
   "failed_to_accept_deliverable": "Failed to accept deliverable.",
-  "a_reminder_was_already_sent_recently": "A reminder was already sent recently."
+  "a_reminder_was_already_sent_recently": "A reminder was already sent recently.",
+  "milestone_submitted_for_review": "Cannot approve change request: milestone “{milestone}” is currently submitted for review."
 }

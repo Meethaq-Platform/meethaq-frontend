@@ -12,6 +12,10 @@ import {
 import { useChangeRequest } from "../hooks/useChangeRequest";
 import { useDecideChangeRequest } from "../hooks/useDecideChangeRequest";
 import { useWithdrawChangeRequest } from "../hooks/useWithdrawChangeRequest";
+import {
+  useMilestonesUnderReview,
+  type ChangeRequestViewer,
+} from "../hooks/useMilestonesUnderReview";
 import { ChangeRequestStatusBadge } from "./ChangeRequestStatusBadge";
 import { useCurrentUser } from "@/src/features/auth/hooks/useCurrentUser";
 import Modal from "@/src/shared/components/Modal";
@@ -26,6 +30,7 @@ import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface ChangeRequestDetailModalProps {
   projectId: string;
+  viewer: ChangeRequestViewer;
   changeRequestId: number | null;
   onClose: () => void;
 }
@@ -36,6 +41,7 @@ interface ChangeRequestDetailModalProps {
 // enforcement is server-side; this is UI-level guidance only.
 export function ChangeRequestDetailModal({
   projectId,
+  viewer,
   changeRequestId,
   onClose,
 }: ChangeRequestDetailModalProps) {
@@ -70,6 +76,21 @@ export function ChangeRequestDetailModal({
     defaultValues: { rejectionReason: "" },
   });
 
+  const isRequester = cr && user && cr.requestedByUserId === user.id;
+  const isPending = cr?.status === 1;
+  const canDecide = isPending && !isRequester;
+  const canWithdraw = isPending && isRequester;
+
+  // Approval is refused server-side while an amended milestone has a
+  // delivery awaiting review — surface that before the user tries.
+  const { underReview } = useMilestonesUnderReview(
+    projectId,
+    cr?.milestoneDeltas ?? [],
+    viewer,
+    Boolean(canDecide),
+  );
+  const approvalBlocked = underReview.length > 0;
+
   const handleClose = () => {
     setShowReject(false);
     reset();
@@ -77,11 +98,6 @@ export function ChangeRequestDetailModal({
   };
 
   if (!changeRequestId) return null;
-
-  const isRequester = cr && user && cr.requestedByUserId === user.id;
-  const isPending = cr?.status === 1;
-  const canDecide = isPending && !isRequester;
-  const canWithdraw = isPending && isRequester;
 
   const attachments = (cr?.attachments ?? []).map((a) => ({
     id: a.id,
@@ -190,6 +206,17 @@ export function ChangeRequestDetailModal({
             />
           )}
 
+          {canDecide && !showReject && approvalBlocked && (
+            <p className="bg-surface-muted p-3 rounded-lg text-text-secondary text-sm">
+              {t(
+                viewer === "client"
+                  ? "blockedBySubmissionClient"
+                  : "blockedBySubmissionFreelancer",
+                { milestones: format.list(underReview) },
+              )}
+            </p>
+          )}
+
           {canDecide && !showReject && (
             <div className="flex justify-end gap-3 pt-2">
               <button
@@ -204,6 +231,7 @@ export function ChangeRequestDetailModal({
                 type="button"
                 loading={decide.isPending}
                 loadingText={t("approving")}
+                disabled={approvalBlocked}
                 onClick={() => decide.mutate({ approved: true }, { onSuccess: handleClose })}
               >
                 {t("approve")}

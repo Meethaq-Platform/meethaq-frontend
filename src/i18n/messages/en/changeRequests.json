@@ -60,6 +60,8 @@
     "confirmReject": "Confirm Reject",
     "withdrawing": "Withdrawing...",
     "withdraw": "Withdraw Request",
+    "blockedBySubmissionClient": "A delivery for {milestones} is awaiting your review. Accept it or request a revision first, then approve this change request.",
+    "blockedBySubmissionFreelancer": "A delivery for {milestones} is awaiting the client's review. The change request can be approved once the client accepts it or requests a revision.",
     "readOnly": "This request is pending the other party's decision and is read-only until then."
   },
   "validation": {

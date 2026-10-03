@@ -27,6 +27,8 @@ export function useFormat() {
       longDate: (value: string) => formatLongDate(value, locale),
       monthYear: (year: number, month: number) => formatMonthYear(year, month, locale),
       compact: (value: number) => formatCompactNumber(value, locale),
+      list: (items: string[]) =>
+        new Intl.ListFormat(locale, { type: "conjunction" }).format(items),
       relative: (value: string, now?: Date) => getRelativeTime(value, now, locale),
       timeRemaining: (deadline: string, now?: Date) => {
         const { isOverdue, relative } = getTimeRemaining(deadline, now, locale);
