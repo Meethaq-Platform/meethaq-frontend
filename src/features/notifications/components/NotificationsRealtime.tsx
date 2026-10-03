@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useNotificationsHub } from "../hooks/useNotificationsHub";
 import { useMarkNotificationRead } from "../hooks/useMarkNotificationRead";
 import type { Notification, NotificationListData } from "../types/notification";
+import { notificationHref } from "../lib/notificationHref";
 import { useEventText } from "@/src/shared/hooks/useEventText";
 
 // Mounted once in the protected layout, which only renders for a signed-in
@@ -64,15 +65,13 @@ export function NotificationsRealtime({ hubUrl }: { hubUrl: string | null }) {
       description: eventText.sentence(notification.eventType, notification.message, {
         nameSource: notification.title,
       }),
-      action: notification.actionUrl
-        ? {
-            label: t("view"),
-            onClick: () => {
-              markRead.mutate(notification.notificationId);
-              router.push(notification.actionUrl);
-            },
-          }
-        : undefined,
+      action: {
+        label: t("view"),
+        onClick: () => {
+          markRead.mutate(notification.notificationId);
+          router.push(notificationHref(notification));
+        },
+      },
     });
   };
 
