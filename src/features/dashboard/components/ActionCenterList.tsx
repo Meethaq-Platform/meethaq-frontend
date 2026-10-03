@@ -36,7 +36,7 @@ export default function ActionCenterList({ items, emptyMessage }: ActionCenterLi
   const t = useTranslations("dashboard.actionCenter");
   if (items.length === 0) {
     return (
-      <EmptyState icon={CheckCircle2} title={emptyMessage} description={t("empty")} />
+      <EmptyState variant="compact" icon={CheckCircle2} title={emptyMessage} description={t("empty")} />
     );
   }
 

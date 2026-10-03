@@ -26,7 +26,7 @@ export default function PaymentFollowUpTable({ items, counterpartyLabel }: Payme
   const tDashboard = useTranslations("dashboard");
 
   if (items.length === 0) {
-    return <EmptyState icon={Wallet} title={t("empty")} />;
+    return <EmptyState variant="compact" icon={Wallet} title={t("empty")} />;
   }
 
   return (

@@ -54,7 +54,7 @@ export default function RecentActivityFeed({ items }: RecentActivityFeedProps) {
   const eventText = useEventText();
 
   if (items.length === 0) {
-    return <EmptyState icon={Activity} title={t("empty")} />;
+    return <EmptyState variant="compact" icon={Activity} title={t("empty")} />;
   }
 
   return (
