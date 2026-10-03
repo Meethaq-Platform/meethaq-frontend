@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -13,6 +13,9 @@ export function DeleteContractButton({ projectId }: { projectId: string }) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const { mutate, isPending, isError, error } = useDeleteContract(projectId);
+  // Keeps the dialog busy until the project page renders, not just until the
+  // request resolves.
+  const [isRedirecting, startRedirect] = useTransition();
 
   return (
     <>
@@ -30,17 +33,18 @@ export function DeleteContractButton({ projectId }: { projectId: string }) {
         onClose={() => setOpen(false)}
         onConfirm={() =>
           mutate(undefined, {
-            onSuccess: () => {
-              setOpen(false);
-              router.push(`/projects/${projectId}`);
-            },
+            onSuccess: () =>
+              startRedirect(() => {
+                setOpen(false);
+                router.push(`/projects/${projectId}`);
+              }),
           })
         }
         title={t("title")}
         description={t("description")}
         confirmLabel={t("confirm")}
         confirmingLabel={t("confirming")}
-        isConfirming={isPending}
+        isConfirming={isPending || isRedirecting}
         errorMessage={
           isError
             ? error instanceof Error

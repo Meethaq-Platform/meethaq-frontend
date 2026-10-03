@@ -12,12 +12,14 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     return (
       <div className="space-y-2">
-        <label
-          htmlFor={inputId}
-          className="font-medium text-text-primary text-sm"
-        >
-          {label}
-        </label>
+        {label && (
+          <label
+            htmlFor={inputId}
+            className="font-medium text-text-primary text-sm"
+          >
+            {label}
+          </label>
+        )}
         <textarea
           ref={ref}
           id={inputId}

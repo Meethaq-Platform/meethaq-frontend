@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 
 import { usePaymentsSummary } from "../hooks/usePaymentsSummary";
-import Spinner from "@/src/shared/components/Spinner";
+import { StatsCardSkeleton } from "@/src/shared/components/Skeleton";
 import { formatCurrency } from "@/src/shared/lib/format";
 
 interface ProjectPaymentSummaryCardProps {
@@ -18,11 +18,7 @@ export function ProjectPaymentSummaryCard({ projectId }: ProjectPaymentSummaryCa
   const { data: summary, isLoading } = usePaymentsSummary(projectId);
 
   if (isLoading) {
-    return (
-      <div className="bg-surface p-6 border border-border rounded-2xl">
-        <Spinner size={20} />
-      </div>
-    );
+    return <StatsCardSkeleton count={7} gridClassName="grid-cols-2 sm:grid-cols-4" />;
   }
 
   if (!summary) {

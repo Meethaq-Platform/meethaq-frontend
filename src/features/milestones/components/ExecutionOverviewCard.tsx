@@ -3,7 +3,7 @@
 import { CheckCircle2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useExecutionOverview } from "../hooks/useExecutionOverview";
-import Spinner from "@/src/shared/components/Spinner";
+import { StatsCardSkeleton } from "@/src/shared/components/Skeleton";
 
 interface ExecutionOverviewCardProps {
   projectId: string;
@@ -16,11 +16,7 @@ export function ExecutionOverviewCard({ projectId }: ExecutionOverviewCardProps)
   const { data: overview, isLoading } = useExecutionOverview(projectId);
 
   if (isLoading) {
-    return (
-      <div className="bg-surface p-6 border border-border rounded-2xl">
-        <Spinner size={20} />
-      </div>
-    );
+    return <StatsCardSkeleton count={5} gridClassName="grid-cols-2 sm:grid-cols-5" />;
   }
 
   if (!overview || overview.totalMilestones === 0) {

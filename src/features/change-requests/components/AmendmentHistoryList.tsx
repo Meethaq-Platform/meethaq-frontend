@@ -1,7 +1,6 @@
 "use client";
 
 import { useAmendments } from "../hooks/useAmendments";
-import Spinner from "@/src/shared/components/Spinner";
 import { formatCurrency } from "@/src/shared/lib/format";
 import { useFormat } from "@/src/shared/hooks/useFormat";
 import { useTranslations } from "next-intl";
@@ -20,15 +19,9 @@ export function AmendmentHistoryList({ projectId }: AmendmentHistoryListProps) {
   const format = useFormat();
   const { data: amendments, isLoading } = useAmendments(projectId);
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center py-6">
-        <Spinner size={20} />
-      </div>
-    );
-  }
-
-  if (!amendments || amendments.length === 0) {
+  // Most projects have no amendments, so a placeholder here would usually
+  // flash and vanish — render nothing until there's something to show.
+  if (isLoading || !amendments || amendments.length === 0) {
     return null;
   }
 

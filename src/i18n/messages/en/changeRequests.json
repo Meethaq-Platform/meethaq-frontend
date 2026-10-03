@@ -13,6 +13,7 @@
   },
   "create": {
     "button": "New Change Request",
+    "milestoneButton": "Request Change",
     "title": "Propose a change request",
     "titleLabel": "Title",
     "reason": "Reason",

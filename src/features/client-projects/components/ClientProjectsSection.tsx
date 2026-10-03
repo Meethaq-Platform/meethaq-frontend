@@ -6,10 +6,9 @@ import { useSearchParams } from "next/navigation";
 
 import { useClientProjects } from "../hooks/useClientProjects";
 import { useDebouncedValue } from "@/src/features/clients/hooks/useDebouncedValue";
-import { ClientProjectsTable } from "./ClientProjectsTable";
+import { ClientProjectsTable, ClientProjectsTableSkeleton } from "./ClientProjectsTable";
 import { ProjectsToolbar } from "@/src/features/projects/components/ProjectsToolbar";
 import type { ProjectStatus } from "@/src/features/projects/types/project";
-import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 
 const PAGE_SIZE = 10;
@@ -79,9 +78,7 @@ export function ClientProjectsSection() {
       />
 
       {isLoading ? (
-        <div className="flex justify-center items-center py-16">
-          <Spinner size={28} />
-        </div>
+        <ClientProjectsTableSkeleton />
       ) : isError || !data ? (
         <ErrorState
           message={t("loadFailed")}

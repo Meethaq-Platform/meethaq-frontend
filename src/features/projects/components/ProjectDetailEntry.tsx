@@ -3,7 +3,7 @@
 import { useCurrentUser } from "@/src/features/auth/hooks/useCurrentUser";
 import ProjectDetailPage from "./ProjectDetailPage";
 import ClientProjectDetailPage from "@/src/features/client-projects/components/ClientProjectDetailPage";
-import Spinner from "@/src/shared/components/Spinner";
+import { ProjectDetailSkeleton } from "./ProjectDetailSkeleton";
 
 interface ProjectDetailEntryProps {
   projectId: string;
@@ -15,11 +15,7 @@ export default function ProjectDetailEntry({
   const { data: user, isLoading } = useCurrentUser();
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-16">
-        <Spinner size={28} />
-      </div>
-    );
+    return <ProjectDetailSkeleton />;
   }
 
   const isFreelancer = user?.roles[0]?.toLowerCase() === "freelancer";
