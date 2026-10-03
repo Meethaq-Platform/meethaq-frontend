@@ -9,26 +9,34 @@
     "getStarted": "Get started free"
   },
   "hero": {
-    "title": "Document every step. Secure what you're owed.",
+    "eyebrow": "Your work deserves a clear track",
+    "titleLead": "Document every step.",
+    "titleHighlight": "Secure what you're owed.",
     "subtitle": "Meethaq brings the contract, conversation, delivery and payment into one track, so no milestone's payment is released until it's accepted.",
     "seeHowItWorks": "See how it works",
-    "illustrationAlt": "Illustration of accepting an agreement on Meethaq"
+    "illustrationAlt": "Illustration of signing an agreement on Meethaq"
   },
   "shift": {
-    "title": "One documented track instead of scattered messages",
-    "beforeLabel": "Before Meethaq",
-    "before": {
-      "messages": "WhatsApp or email for messages",
-      "contract": "A separate document for the contract",
-      "files": "An external link for delivery files",
-      "payment": "A bank transfer with no clear record"
-    },
-    "afterLabel": "With Meethaq",
-    "after": {
-      "onePlace": "Contract, chat and project in one place",
-      "criteria": "Milestones with clear acceptance criteria",
-      "delivery": "Delivery and records in the same track",
-      "payment": "Payment tied to an actual acceptance"
+    "eyebrow": "The problem isn't the work",
+    "title": "It's agreements scattered everywhere.",
+    "subtitle": "A message here, a file there, a transfer with no record. Every new tool loses a piece of the project's context, until proving what was agreed is harder than doing the work itself.",
+    "items": {
+      "agreement": {
+        "title": "Agreement",
+        "source": "A WhatsApp chat"
+      },
+      "contract": {
+        "title": "Contract",
+        "source": "A separate file"
+      },
+      "delivery": {
+        "title": "Delivery",
+        "source": "A Drive link"
+      },
+      "payment": {
+        "title": "Payment",
+        "source": "A transfer with no record"
+      }
     }
   },
   "flow": {
@@ -76,18 +84,31 @@
       "description": "If a dispute comes up, the full timeline of the agreement, deliveries and decisions is ready, instead of digging through scattered chats."
     }
   },
-  "principle": {
-    "title": "Every milestone in Meethaq answers five questions",
-    "questions": {
-      "what": "What's required?",
-      "when": "By when?",
-      "criteria": "What are the acceptance criteria?",
-      "value": "How much is it worth?",
-      "proof": "What proves it was delivered?"
+  "memory": {
+    "eyebrow": "A calmer working relationship",
+    "title": "Not just a contract. A trusted memory of the project.",
+    "subtitle": "Meethaq doesn't add another tool to the pile. It connects the moments that matter, so each side knows what happened, when, and what comes next.",
+    "note": "Built to keep the project's context, not to replace human conversation.",
+    "points": {
+      "clarity": {
+        "title": "Clarity before you start",
+        "description": "Scope, deadline, value and acceptance criteria are written down from the start."
+      },
+      "approval": {
+        "title": "Approval with no room for doubt",
+        "description": "Every delivery and approval is tied to its milestone, on a clear timeline."
+      },
+      "payment": {
+        "title": "Payment follows the work",
+        "description": "Each milestone's value is released only once it's approved, as both sides agreed."
+      }
     }
   },
-  "finalCta": {
-    "title": "Ready to document your next project?"
+  "closing": {
+    "eyebrow": "Start on clear terms",
+    "title": "Clearer agreements. Calmer work. Secured rights.",
+    "subtitle": "Create your first project, split it into milestones, and start with your client from a point that's clear to everyone.",
+    "cta": "Create your Meethaq for free"
   },
   "footer": {
     "rights": "© {year} Meethaq. All rights reserved."

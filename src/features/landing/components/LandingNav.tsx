@@ -6,7 +6,7 @@ import Brand from "@/src/shared/components/Brand";
 import LanguageSwitcher from "@/src/shared/components/LanguageSwitcher";
 import ThemeToggle from "@/src/shared/components/ThemeToggle";
 
-import { pillBase, pillPrimary } from "../lib/styles";
+import { container, pillBase, pillPrimary } from "../lib/styles";
 import { LandingMobileMenu } from "./LandingMobileMenu";
 
 export function LandingNav() {
@@ -14,8 +14,10 @@ export function LandingNav() {
 
   return (
     <header className="top-0 z-40 sticky bg-background/90 backdrop-blur-md border-border border-b">
-      <div className="flex justify-between items-center gap-3 mx-auto px-4 sm:px-6 py-3 max-w-295">
-        <Link href="#">
+      <div
+        className={`flex justify-between items-center gap-3 py-3 ${container}`}
+      >
+        <Link href="#top">
           <Brand size={32} className="" nameClassName="text-lg" />
         </Link>
 
