@@ -1,6 +1,10 @@
 {
   "sentences": {
+    "ClientAssigned": "تمت دعوتك إلى مشروع",
+    "InvitationAccepted": "قبل العميل دعوة المشروع",
     "ContractSent": "تم إرسال العقد للموافقة",
+    "ContractSubmitted": "تم إرسال العقد للموافقة",
+    "ContractChangesRequested": "طلب العميل تعديلات على العقد",
     "ContractApproved": "تم اعتماد العقد",
     "MilestoneStarted": "بدأ تنفيذ المرحلة",
     "MilestoneSubmitted": "تم تسليم مرحلة للمراجعة",
@@ -34,7 +38,11 @@
     "ContractAmendmentCreated": "تم إنشاء تعديل على العقد"
   },
   "notificationTitles": {
+    "ClientAssigned": "دعوة جديدة إلى مشروع",
+    "InvitationAccepted": "تم قبول الدعوة",
     "ContractSent": "عقد بانتظار الموافقة",
+    "ContractSubmitted": "عقد بانتظار الموافقة",
+    "ContractChangesRequested": "طُلبت تعديلات على العقد",
     "ContractApproved": "تم اعتماد العقد",
     "MilestoneStarted": "بدء مرحلة",
     "MilestoneSubmitted": "تسليم جديد",

@@ -1,6 +1,10 @@
 {
   "sentences": {
+    "ClientAssigned": "You were invited to a project",
+    "InvitationAccepted": "The client accepted the project invitation",
     "ContractSent": "Contract sent for approval",
+    "ContractSubmitted": "Contract sent for approval",
+    "ContractChangesRequested": "The client requested changes to the contract",
     "ContractApproved": "Contract approved",
     "MilestoneStarted": "Milestone started",
     "MilestoneSubmitted": "A milestone was submitted for review",
@@ -34,7 +38,11 @@
     "ContractAmendmentCreated": "Contract amendment created"
   },
   "notificationTitles": {
+    "ClientAssigned": "New project invitation",
+    "InvitationAccepted": "Invitation accepted",
     "ContractSent": "Contract sent",
+    "ContractSubmitted": "Contract awaiting approval",
+    "ContractChangesRequested": "Contract changes requested",
     "ContractApproved": "Contract approved",
     "MilestoneStarted": "Milestone started",
     "MilestoneSubmitted": "New submission",
