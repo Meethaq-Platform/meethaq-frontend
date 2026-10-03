@@ -11,6 +11,8 @@ import RelativeTime from "@/src/shared/components/RelativeTime";
 import { formatCurrency } from "@/src/shared/lib/format";
 import LinkRow from "@/src/shared/components/LinkRow";
 import TableSkeleton from "@/src/shared/components/TableSkeleton";
+import UpdateDot from "@/src/shared/components/UpdateDot";
+import { useProjectUpdates } from "@/src/features/notifications/hooks/useProjectUpdates";
 
 interface ClientProjectsTableProps {
   projects: ProjectSummary[];
@@ -30,6 +32,7 @@ export function ClientProjectsTable({
   onPageChange,
 }: ClientProjectsTableProps) {
   const t = useTranslations("clientProjects.list");
+  const updates = useProjectUpdates();
   const tProjects = useTranslations("projects.list");
 
   if (projects.length === 0) {
@@ -82,8 +85,11 @@ export function ClientProjectsTable({
                 href={`/projects/${project.id}`}
                 className="even:bg-surface-muted hover:bg-border/40 transition"
               >
-                <td dir="auto" className="px-6 py-4 font-medium text-text-primary">
-                  {project.title}
+                <td className="px-6 py-4 font-medium text-text-primary">
+                  <span className="flex items-center gap-2">
+                    {updates.forProject(project.id) && <UpdateDot />}
+                    <span dir="auto">{project.title}</span>
+                  </span>
                 </td>
 
                 <td className="px-6 py-4">
