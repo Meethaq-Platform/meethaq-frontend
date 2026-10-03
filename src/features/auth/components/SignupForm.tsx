@@ -61,7 +61,7 @@ export function SignupForm() {
         <>
           {" "}
           <AuthHeader title={t("title")} />
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+          <form noValidate onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             {/* Name */}
             <div className="gap-4 grid grid-cols-1 sm:grid-cols-2">
               <div>

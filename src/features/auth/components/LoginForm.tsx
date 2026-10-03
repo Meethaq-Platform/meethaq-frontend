@@ -56,7 +56,8 @@ export function LoginForm() {
           {...register("emailOrFullName")}
           name="emailOrFullName"
           label={t("identifierLabel")}
-          type="email"
+          type="text"
+          autoComplete="username"
           placeholder={t("identifierPlaceholder")}
         />
         <InputError message={errors.emailOrFullName?.message} />

@@ -49,7 +49,7 @@ export function AddClientForm({ onSuccess, onCancel }: AddClientFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form noValidate onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <p className="text-text-secondary text-sm">
         {t("lookupHint")}
       </p>

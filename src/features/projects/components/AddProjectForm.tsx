@@ -50,7 +50,7 @@ export function AddProjectForm({ onSuccess, onCancel }: AddProjectFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form noValidate onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
         <Input label={t("title")} {...register("title")} />
         <InputError message={errors.title?.message} />

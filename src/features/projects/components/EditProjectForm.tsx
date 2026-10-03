@@ -64,6 +64,7 @@ export function EditProjectForm({
   return (
     <form
       id="project-edit-form"
+      noValidate
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-4"
     >
