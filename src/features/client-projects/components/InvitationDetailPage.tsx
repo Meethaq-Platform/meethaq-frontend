@@ -15,6 +15,7 @@ import Button from "@/src/shared/components/Button";
 import ConfirmModal from "@/src/shared/components/ConfirmModal";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface InvitationDetailPageProps {
   invitationId: string;
@@ -24,6 +25,7 @@ export default function InvitationDetailPage({
   invitationId,
 }: InvitationDetailPageProps) {
   const t = useTranslations("clientProjects.invitation");
+  const errorText = useErrorText();
   const tProjects = useTranslations("projects.detail");
   const locale = useLocale();
   const router = useRouter();
@@ -125,9 +127,7 @@ export default function InvitationDetailPage({
           isConfirming={acceptInvitation.isPending || isRedirecting}
           errorMessage={
             acceptInvitation.isError
-              ? acceptInvitation.error instanceof Error
-                ? acceptInvitation.error.message
-                : t("failed")
+              ? errorText(acceptInvitation.error, t("failed"))
               : undefined
           }
         />

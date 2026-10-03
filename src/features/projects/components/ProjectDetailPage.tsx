@@ -31,6 +31,13 @@ import Tabs from "@/src/shared/components/Tabs";
 import { useProjectTab } from "../hooks/useProjectTab";
 import { PROJECT_TABS } from "../lib/project-tabs";
 import { formatCurrency } from "@/src/shared/lib/format";
+import {
+  useClearUpdates,
+  useProjectUpdates,
+} from "@/src/features/notifications/hooks/useProjectUpdates";
+import { useActivityUpdates } from "@/src/features/activity-log/hooks/useActivityUpdates";
+import { useContract } from "@/src/features/contracts/hooks/useContract";
+import { useProjectTabCounts } from "@/src/features/projects/hooks/useProjectTabCounts";
 
 interface ProjectDetailPageProps {
   projectId: string;
@@ -48,6 +55,13 @@ export default function ProjectDetailPage({
   const [isEditing, setIsEditing] = useState(false);
   const [isFormDirty, setIsFormDirty] = useState(false);
   const [tab, setTab] = useProjectTab();
+  const updates = useProjectUpdates();
+  const activityUpdates = useActivityUpdates(projectId);
+  const contract = useContract(projectId, Boolean(data) && data?.contractStatus !== "None");
+  const tabCounts = useProjectTabCounts(projectId, contract.data?.milestones.length);
+  // Opening a tab clears its tab-wide updates (chat, overview...); updates
+  // about one record clear when that record is opened.
+  useClearUpdates(projectId, tab, null, Boolean(data));
   const isSaving = useIsMutating({ mutationKey: ["update-project"] }) > 0;
 
   const canEdit = data?.status === "Draft";
@@ -175,7 +189,15 @@ export default function ProjectDetailPage({
           <Tabs
             value={tab}
             onChange={setTab}
-            options={PROJECT_TABS.map((value) => ({ value, label: t(`tabs.${value}`) }))}
+            options={PROJECT_TABS.map((value) => ({
+              value,
+              label: t(`tabs.${value}`),
+              count: tabCounts[value],
+              dot:
+                value === "activity"
+                  ? activityUpdates.hasNew
+                  : updates.forTab(projectId, value),
+            }))}
           />
 
           {tab === "overview" && (

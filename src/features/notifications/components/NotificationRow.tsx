@@ -2,6 +2,7 @@ import Link from "next/link";
 import {
   AlertTriangle,
   Bell,
+  BellRing,
   CalendarClock,
   CheckCircle2,
   Clock,
@@ -16,6 +17,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 
 import type { Notification } from "../types/notification";
+import { notificationHref } from "../lib/notificationHref";
 import RelativeTime from "@/src/shared/components/RelativeTime";
 import { useEventText } from "@/src/shared/hooks/useEventText";
 import { eventToneClasses, getEventTone } from "@/src/shared/lib/eventTone";
@@ -25,12 +27,14 @@ import { eventToneClasses, getEventTone } from "@/src/shared/lib/eventTone";
 // value falls back to a generic bell icon rather than breaking the row.
 const eventIcons: Record<string, LucideIcon> = {
   NewProjectMessage: MessageSquare,
+  ChatMessageReceived: MessageSquare,
   MilestoneSubmitted: Upload,
   RevisionRequested: MessageSquareWarning,
   DeliverableAccepted: CheckCircle2,
   MilestoneDeadlineApproaching: CalendarClock,
   ReviewDeadlineApproaching: Clock,
   ReviewOverdue: AlertTriangle,
+  ReviewReminder: BellRing,
   PaymentEligible: CreditCard,
   PaymentEvidenceSubmitted: CreditCard,
   PaymentEvidenceUpdated: CreditCard,
@@ -62,7 +66,7 @@ export function NotificationRow({ notification, onOpen }: NotificationRowProps) 
 
   return (
     <Link
-      href={notification.actionUrl}
+      href={notificationHref(notification)}
       onClick={() => onOpen(notification.notificationId)}
       className={`flex items-start gap-3 px-4 py-3 hover:bg-surface-muted transition ${
         notification.isRead ? "" : "bg-primary-muted/40"

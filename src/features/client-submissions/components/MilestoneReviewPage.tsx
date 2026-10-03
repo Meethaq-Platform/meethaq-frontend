@@ -10,6 +10,7 @@ import { MilestoneDetailShell } from "@/src/features/milestones/components/Miles
 import { SubmissionHistoryList } from "@/src/features/submissions/components/SubmissionHistoryList";
 import { useClientProject } from "@/src/features/client-projects/hooks/useClientProject";
 import { usePageTitle } from "@/src/shared/hooks/usePageTitle";
+import { useClearUpdates } from "@/src/features/notifications/hooks/useProjectUpdates";
 import { AcceptDeliverableButton } from "./AcceptDeliverableButton";
 import { RequestRevisionModal } from "./RequestRevisionModal";
 import { RequestMilestoneChangeButton } from "@/src/features/change-requests/components/RequestMilestoneChangeButton";
@@ -41,6 +42,7 @@ export function MilestoneReviewPage({
       ? tPageTitles("milestone", { project: project.title, milestone: milestone.title })
       : undefined,
   );
+  useClearUpdates(projectId, "milestones", milestoneId);
   const submissionsQuery = useClientSubmissions(projectId, milestoneId);
 
   if (isLoading) {

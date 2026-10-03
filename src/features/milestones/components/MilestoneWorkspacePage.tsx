@@ -6,6 +6,7 @@ import { MilestoneDetailShell } from "./MilestoneDetailShell";
 import { StartMilestoneButton } from "./StartMilestoneButton";
 import { useProject } from "@/src/features/projects/hooks/useProject";
 import { usePageTitle } from "@/src/shared/hooks/usePageTitle";
+import { useClearUpdates } from "@/src/features/notifications/hooks/useProjectUpdates";
 import { useSubmissions } from "@/src/features/submissions/hooks/useSubmissions";
 import { SubmitWorkForm } from "@/src/features/submissions/components/SubmitWorkForm";
 import { SubmissionHistoryList } from "@/src/features/submissions/components/SubmissionHistoryList";
@@ -40,6 +41,7 @@ export function MilestoneWorkspacePage({
       ? tPageTitles("milestone", { project: project.title, milestone: milestone.title })
       : undefined,
   );
+  useClearUpdates(projectId, "milestones", milestoneId);
   const submissionsQuery = useSubmissions(projectId, milestoneId);
 
   if (isLoading) {

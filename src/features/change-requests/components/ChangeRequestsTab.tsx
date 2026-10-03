@@ -14,6 +14,11 @@ import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 import EmptyState from "@/src/shared/components/EmptyState";
 import { formatCurrency } from "@/src/shared/lib/format";
+import UpdateDot from "@/src/shared/components/UpdateDot";
+import {
+  useClearUpdates,
+  useProjectUpdates,
+} from "@/src/features/notifications/hooks/useProjectUpdates";
 
 interface ChangeRequestsTabProps {
   projectId: string;
@@ -24,6 +29,8 @@ export function ChangeRequestsTab({ projectId }: ChangeRequestsTabProps) {
   const format = useFormat();
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const { data, isLoading, isError, refetch } = useChangeRequests(projectId);
+  const updates = useProjectUpdates();
+  useClearUpdates(projectId, "changes", selectedId, selectedId !== null);
 
   const items = data?.pages.flatMap((page) => page?.items ?? []) ?? [];
   // MVP rule: only one pending change request per project at a time.
@@ -58,9 +65,12 @@ export function ChangeRequestsTab({ projectId }: ChangeRequestsTabProps) {
               className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-3 hover:bg-surface-muted p-4 border-border border-b last:border-b-0 w-full text-start transition"
             >
               <div className="min-w-0">
-                <h3 dir="auto" className="font-semibold text-text-primary text-sm truncate">
-                  {item.title}
-                </h3>
+                <div className="flex items-center gap-2">
+                  {updates.forItem(projectId, "changes", item.id) && <UpdateDot />}
+                  <h3 dir="auto" className="font-semibold text-text-primary text-sm truncate">
+                    {item.title}
+                  </h3>
+                </div>
                 <p className="mt-1 text-text-secondary text-xs">
                   {t("submitted", { date: format.date(item.submittedAt) })} ·{" "}
                   <bdi>{formatCurrency(item.resultingProjectValue)}</bdi>

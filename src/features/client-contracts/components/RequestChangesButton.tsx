@@ -15,6 +15,7 @@ import Button from "@/src/shared/components/Button";
 import Modal from "@/src/shared/components/Modal";
 import Textarea from "@/src/shared/components/Textarea";
 import InputError from "@/src/shared/components/InputError";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface RequestChangesButtonProps {
   projectId: string;
@@ -26,6 +27,7 @@ export function RequestChangesButton({
   concurrencyToken,
 }: RequestChangesButtonProps) {
   const t = useTranslations("clientContracts.requestChanges");
+  const errorText = useErrorText();
   const tActions = useTranslations("common.actions");
   const tValidation = useTranslations("clientContracts.validation");
   const changeRequestSchema = useMemo(() => createChangeRequestSchema(tValidation), [tValidation]);
@@ -81,9 +83,7 @@ export function RequestChangesButton({
           {isError && (
             <InputError
               message={
-                error instanceof Error
-                  ? error.message
-                  : t("failed")
+                errorText(error, t("failed"))
               }
             />
           )}

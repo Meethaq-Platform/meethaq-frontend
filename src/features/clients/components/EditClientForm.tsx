@@ -14,6 +14,7 @@ import type { Client } from "../types/client";
 import Input from "@/src/shared/components/Input";
 import InputError from "@/src/shared/components/InputError";
 import Textarea from "@/src/shared/components/Textarea";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface EditClientFormProps {
   client: Client;
@@ -27,6 +28,7 @@ export function EditClientForm({
   onDirtyChange,
 }: EditClientFormProps) {
   const t = useTranslations("clients.form");
+  const errorText = useErrorText();
   const tValidation = useTranslations("clients.validation");
   const updateClientSchema = useMemo(() => createUpdateClientSchema(tValidation), [tValidation]);
 
@@ -75,9 +77,7 @@ export function EditClientForm({
         <div className="sm:col-span-3">
           <InputError
             message={
-              error instanceof Error
-                ? error.message
-                : t("updateFailed")
+              errorText(error, t("updateFailed"))
             }
           />
         </div>

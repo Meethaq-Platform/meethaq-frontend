@@ -14,6 +14,11 @@ import { ReportPaymentIssueModal } from "./ReportPaymentIssueModal";
 import { useMilestonePayment } from "../hooks/useMilestonePayment";
 import Skeleton, { SkeletonRegion } from "@/src/shared/components/Skeleton";
 import { formatCurrency } from "@/src/shared/lib/format";
+import UpdateDot from "@/src/shared/components/UpdateDot";
+import {
+  useClearUpdates,
+  useProjectUpdates,
+} from "@/src/features/notifications/hooks/useProjectUpdates";
 
 interface PaymentMilestoneRowProps {
   projectId: string;
@@ -55,6 +60,8 @@ function getStatusMessageKey(status: string, isFreelancer: boolean): RowMessageK
 export function PaymentMilestoneRow({ projectId, item, isFreelancer }: PaymentMilestoneRowProps) {
   const t = useTranslations("payments.row");
   const [expanded, setExpanded] = useState(false);
+  const updates = useProjectUpdates();
+  useClearUpdates(projectId, "payments", item.milestoneId, expanded);
   const statusMessageKey = getStatusMessageKey(item.paymentStatus, isFreelancer);
   const hasPaymentRecord = item.paymentStatus !== "NotEligible" && item.paymentStatus !== "Eligible";
 
@@ -80,9 +87,12 @@ export function PaymentMilestoneRow({ projectId, item, isFreelancer }: PaymentMi
           )}
 
           <div className="min-w-0">
-            <h3 dir="auto" className="font-semibold text-text-primary text-sm truncate">
-              {item.milestoneTitle}
-            </h3>
+            <div className="flex items-center gap-2">
+              {updates.forItem(projectId, "payments", item.milestoneId) && <UpdateDot />}
+              <h3 dir="auto" className="font-semibold text-text-primary text-sm truncate">
+                {item.milestoneTitle}
+              </h3>
+            </div>
             <p className="mt-1 font-numbers text-text-secondary text-xs">
               {formatCurrency(item.amount, item.currency)}
             </p>

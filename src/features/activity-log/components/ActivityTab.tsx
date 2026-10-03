@@ -1,17 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ChevronDown, History } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { useActivity } from "../hooks/useActivity";
+import { useActivityUpdates } from "../hooks/useActivityUpdates";
 import { useEventText } from "@/src/shared/hooks/useEventText";
 import { useMilestoneTitles } from "../hooks/useMilestoneTitles";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 import EmptyState from "@/src/shared/components/EmptyState";
 import { useFormat } from "@/src/shared/hooks/useFormat";
+import UpdateDot from "@/src/shared/components/UpdateDot";
 
 interface ActivityTabProps {
   projectId: string;
@@ -27,6 +29,21 @@ export function ActivityTab({ projectId }: ActivityTabProps) {
   const eventText = useEventText();
   const milestoneTitles = useMilestoneTitles(projectId, eventText.translates);
   const [showAll, setShowAll] = useState(false);
+  const activityUpdates = useActivityUpdates(projectId);
+  const { markSeen } = activityUpdates;
+
+  // What was "last seen" when the tab opened: entries after it keep their
+  // dot while the user is here, even though opening the tab marks them seen
+  // (which clears the tab's own dot right away).
+  const [opened, setOpened] = useState<{ since: number } | null>(null);
+  if (opened === null && activityUpdates.seenAt !== null) {
+    setOpened({ since: activityUpdates.seenAt });
+  }
+
+  // Re-runs as new entries arrive while the tab is open.
+  useEffect(() => {
+    if (opened) markSeen();
+  }, [opened, markSeen]);
 
   if (isLoading) {
     return (
@@ -69,23 +86,28 @@ export function ActivityTab({ projectId }: ActivityTabProps) {
 
         const content = (
           <div className="flex justify-between items-start gap-3 p-4 border-border border-b last:border-b-0">
-            <div>
-              {/* The API's description is English; other languages build it from eventType. */}
-              <p dir="auto" className="font-medium text-text-primary text-sm">
-                {eventText.sentence(entry.eventType, entry.description, {
-                  milestone: entry.milestoneId ? milestoneTitles.get(entry.milestoneId) : null,
-                  version: entry.submissionVersion,
-                })}
-              </p>
-              <p className="mt-0.5 text-text-secondary text-xs">
-                <bdi>{entry.performedByName}</bdi> · {format.dateTime(entry.createdAt)}
-              </p>
-              {entry.fromStatus && entry.toStatus && (
-                <p className="mt-1 text-text-secondary text-xs">
-                  {eventText.status(entry.fromStatus)} <span className="rtl-flip inline-block">→</span>{" "}
-                  {eventText.status(entry.toStatus)}
-                </p>
+            <div className="flex items-start gap-2 min-w-0">
+              {opened && activityUpdates.isNew(entry, opened.since) && (
+                <UpdateDot className="mt-1.5" />
               )}
+              <div className="min-w-0">
+                {/* The API's description is English; other languages build it from eventType. */}
+                <p dir="auto" className="font-medium text-text-primary text-sm">
+                  {eventText.sentence(entry.eventType, entry.description, {
+                    milestone: entry.milestoneId ? milestoneTitles.get(entry.milestoneId) : null,
+                    version: entry.submissionVersion,
+                  })}
+                </p>
+                <p className="mt-0.5 text-text-secondary text-xs">
+                  <bdi>{entry.performedByName}</bdi> · {format.dateTime(entry.createdAt)}
+                </p>
+                {entry.fromStatus && entry.toStatus && (
+                  <p className="mt-1 text-text-secondary text-xs">
+                    {eventText.status(entry.fromStatus)} <span className="rtl-flip inline-block">→</span>{" "}
+                    {eventText.status(entry.toStatus)}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         );

@@ -6,6 +6,11 @@ import { Header } from "@/src/features/layout/components/Header";
 import { Sidebar } from "@/src/features/layout/components/Sidebar";
 import { SidebarOverlay } from "@/src/features/layout/components/SidebarOverlay";
 import { SidebarProvider } from "@/src/features/layout/context/SidebarContext";
+import { toAbsoluteUrl } from "@/src/features/auth/lib/server-api";
+import { NotificationsRealtime } from "@/src/features/notifications/components/NotificationsRealtime";
+
+// Mapped at the backend's origin root, not under API_URL's /api base.
+const NOTIFICATIONS_HUB_PATH = "/hubs/notifications";
 
 export default async function ProtectedLayout({
   children,
@@ -34,6 +39,7 @@ export default async function ProtectedLayout({
       </div>
 
       <SidebarOverlay />
+      <NotificationsRealtime hubUrl={toAbsoluteUrl(NOTIFICATIONS_HUB_PATH)} />
     </SidebarProvider>
   );
 }

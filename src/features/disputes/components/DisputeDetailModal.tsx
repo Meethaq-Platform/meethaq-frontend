@@ -31,7 +31,7 @@ import Textarea from "@/src/shared/components/Textarea";
 import InputError from "@/src/shared/components/InputError";
 import Spinner from "@/src/shared/components/Spinner";
 import { useFormat } from "@/src/shared/hooks/useFormat";
-import { getErrorMessage } from "@/src/shared/lib/getErrorMessage";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface DisputeDetailModalProps {
   projectId: string;
@@ -49,6 +49,7 @@ export function DisputeDetailModal({
   const evidenceSourceLabel = useStatusLabel("evidenceSource");
   const tStatus = useTranslations("status");
   const t = useTranslations("disputes.detail");
+  const errorText = useErrorText();
   const tActions = useTranslations("common.actions");
   const tValidation = useTranslations("disputes.validation");
   const format = useFormat();
@@ -264,7 +265,7 @@ export function DisputeDetailModal({
                 <InputError message={evidenceForm.formState.errors.externalUrl?.message} />
                 {addEvidence.isError && (
                   <InputError
-                    message={getErrorMessage(addEvidence.error, t("evidenceFailed"))}
+                    message={errorText(addEvidence.error, t("evidenceFailed"))}
                   />
                 )}
                 <div className="flex justify-end gap-2">
@@ -367,7 +368,7 @@ export function DisputeDetailModal({
             )}
 
             {decideResolution.isError && (
-              <InputError message={getErrorMessage(decideResolution.error, t("failed"))} />
+              <InputError message={errorText(decideResolution.error, t("failed"))} />
             )}
 
             <div className="flex flex-wrap justify-end gap-2 mt-3">
@@ -436,7 +437,7 @@ export function DisputeDetailModal({
                 />
                 {proposeResolution.isError && (
                   <InputError
-                    message={getErrorMessage(proposeResolution.error, t("proposeFailed"))}
+                    message={errorText(proposeResolution.error, t("proposeFailed"))}
                   />
                 )}
                 <div className="flex flex-wrap justify-end gap-2">

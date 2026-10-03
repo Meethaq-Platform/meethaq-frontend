@@ -18,9 +18,11 @@ import Input from "@/src/shared/components/Input";
 import InputError from "@/src/shared/components/InputError";
 import PasswordInput from "@/src/shared/components/PasswordInput";
 import SuccessfulRegister from "./SuccessfulRegister";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 export function SignupForm() {
   const t = useTranslations("auth.signup");
+  const errorText = useErrorText();
   const tValidation = useTranslations("auth.validation");
   const signupSchema = useMemo(() => createSignupSchema(tValidation), [tValidation]);
 
@@ -61,7 +63,7 @@ export function SignupForm() {
         <>
           {" "}
           <AuthHeader title={t("title")} />
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+          <form noValidate onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             {/* Name */}
             <div className="gap-4 grid grid-cols-1 sm:grid-cols-2">
               <div>
@@ -122,9 +124,7 @@ export function SignupForm() {
               {isError && (
                 <InputError
                   message={
-                    error instanceof Error
-                      ? error.message
-                      : t("failed")
+                    errorText(error, t("failed"))
                   }
                 />
               )}

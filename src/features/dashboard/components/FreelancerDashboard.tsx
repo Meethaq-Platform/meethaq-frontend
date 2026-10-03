@@ -14,6 +14,7 @@ import FreelancerProjectOverview from "./FreelancerProjectOverview";
 import UpcomingMilestonesList from "./UpcomingMilestonesList";
 import RecentActivityFeed from "./RecentActivityFeed";
 import FreelancerFirstUse from "./FreelancerFirstUse";
+import FreelancerOnboardingWidget from "./FreelancerOnboardingWidget";
 
 const CURRENCY_STORAGE_KEY = "dashboard-currency-freelancer";
 
@@ -87,6 +88,10 @@ export default function FreelancerDashboard() {
         isStale={isStale}
         onRefresh={handleRefresh}
       />
+
+      {data.firstUse.data?.showCompactOnboardingWidget && (
+        <FreelancerOnboardingWidget firstUse={data.firstUse.data} />
+      )}
 
       <div className="flex lg:flex-row flex-col gap-5">
         {data.welcome.data && (
