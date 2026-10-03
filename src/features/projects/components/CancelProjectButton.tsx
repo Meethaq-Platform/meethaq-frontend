@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 
 import { useCancelProject } from "../hooks/useCancelProject";
 import ConfirmModal from "@/src/shared/components/ConfirmModal";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface CancelProjectButtonProps {
   projectId: number;
@@ -13,6 +14,7 @@ interface CancelProjectButtonProps {
 
 export function CancelProjectButton({ projectId }: CancelProjectButtonProps) {
   const t = useTranslations("projects.cancel");
+  const errorText = useErrorText();
   const [open, setOpen] = useState(false);
   const { mutate, isPending, isError, error } = useCancelProject(
     String(projectId),
@@ -42,9 +44,7 @@ export function CancelProjectButton({ projectId }: CancelProjectButtonProps) {
         isConfirming={isPending}
         errorMessage={
           isError
-            ? error instanceof Error
-              ? error.message
-              : t("failed")
+            ? errorText(error, t("failed"))
             : undefined
         }
       />

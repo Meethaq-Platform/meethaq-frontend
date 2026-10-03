@@ -14,9 +14,11 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import InputError from "@/src/shared/components/InputError";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 export function LoginForm() {
   const t = useTranslations("auth.login");
+  const errorText = useErrorText();
   const tValidation = useTranslations("auth.validation");
   const loginSchema = useMemo(() => createLoginSchema(tValidation), [tValidation]);
 
@@ -73,9 +75,7 @@ export function LoginForm() {
         {isError && (
           <InputError
             message={
-              error instanceof Error
-                ? error.message
-                : t("failed")
+              errorText(error, t("failed"))
             }
           />
         )}

@@ -15,6 +15,7 @@ import type { Project } from "../types/project";
 import Input from "@/src/shared/components/Input";
 import InputError from "@/src/shared/components/InputError";
 import Textarea from "@/src/shared/components/Textarea";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface EditProjectFormProps {
   project: Project;
@@ -28,6 +29,7 @@ export function EditProjectForm({
   onDirtyChange,
 }: EditProjectFormProps) {
   const t = useTranslations("projects.form");
+  const errorText = useErrorText();
   const tValidation = useTranslations("projects.validation");
   const updateProjectSchema = useMemo(() => createUpdateProjectSchema(tValidation), [tValidation]);
 
@@ -93,7 +95,7 @@ export function EditProjectForm({
       {isError && (
         <InputError
           message={
-            error instanceof Error ? error.message : t("updateFailed")
+            errorText(error, t("updateFailed"))
           }
         />
       )}

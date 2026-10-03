@@ -9,7 +9,7 @@ import Modal from "@/src/shared/components/Modal";
 import Button from "@/src/shared/components/Button";
 import Textarea from "@/src/shared/components/Textarea";
 import InputError from "@/src/shared/components/InputError";
-import { getErrorMessage } from "@/src/shared/lib/getErrorMessage";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface CompleteProjectButtonProps {
   projectId: number;
@@ -24,6 +24,7 @@ export function CompleteProjectButton({
   projectId,
 }: CompleteProjectButtonProps) {
   const t = useTranslations("projects.complete");
+  const errorText = useErrorText();
   const tActions = useTranslations("common.actions");
   const [open, setOpen] = useState(false);
   const [notes, setNotes] = useState("");
@@ -63,7 +64,7 @@ export function CompleteProjectButton({
 
           {isError && (
             <InputError
-              message={getErrorMessage(error, t("failed"))}
+              message={errorText(error, t("failed"))}
             />
           )}
 

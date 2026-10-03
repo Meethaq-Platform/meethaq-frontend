@@ -11,6 +11,7 @@ import { useUnassignClient } from "../hooks/useUnassignClient";
 import Button from "@/src/shared/components/Button";
 import ConfirmModal from "@/src/shared/components/ConfirmModal";
 import InputError from "@/src/shared/components/InputError";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface AssignClientControlProps {
   projectId: number;
@@ -24,6 +25,7 @@ export function AssignClientControl({
   clientName,
 }: AssignClientControlProps) {
   const t = useTranslations("projects.assignClient");
+  const errorText = useErrorText();
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<{
@@ -115,9 +117,7 @@ export function AssignClientControl({
           isConfirming={unassignClient.isPending}
           errorMessage={
             unassignClient.isError
-              ? unassignClient.error instanceof Error
-                ? unassignClient.error.message
-                : t("unassignFailed")
+              ? errorText(unassignClient.error, t("unassignFailed"))
               : undefined
           }
         />
@@ -194,9 +194,7 @@ export function AssignClientControl({
       {assignClient.isError && (
         <InputError
           message={
-            assignClient.error instanceof Error
-              ? assignClient.error.message
-              : t("assignFailed")
+            errorText(assignClient.error, t("assignFailed"))
           }
         />
       )}

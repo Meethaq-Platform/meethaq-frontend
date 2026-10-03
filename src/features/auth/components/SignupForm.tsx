@@ -18,9 +18,11 @@ import Input from "@/src/shared/components/Input";
 import InputError from "@/src/shared/components/InputError";
 import PasswordInput from "@/src/shared/components/PasswordInput";
 import SuccessfulRegister from "./SuccessfulRegister";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 export function SignupForm() {
   const t = useTranslations("auth.signup");
+  const errorText = useErrorText();
   const tValidation = useTranslations("auth.validation");
   const signupSchema = useMemo(() => createSignupSchema(tValidation), [tValidation]);
 
@@ -122,9 +124,7 @@ export function SignupForm() {
               {isError && (
                 <InputError
                   message={
-                    error instanceof Error
-                      ? error.message
-                      : t("failed")
+                    errorText(error, t("failed"))
                   }
                 />
               )}

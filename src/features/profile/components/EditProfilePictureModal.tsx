@@ -9,6 +9,7 @@ import { useDeleteProfilePicture } from "../hooks/useDeleteProfilePicture";
 import { useUploadProfilePicture } from "../hooks/useUploadProfilePicture";
 import Button from "@/src/shared/components/Button";
 import Modal from "@/src/shared/components/Modal";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
 const MAX_SIZE_BYTES = 5 * 1024 * 1024;
@@ -27,6 +28,7 @@ export function EditProfilePictureModal({
   profileImage,
 }: EditProfilePictureModalProps) {
   const t = useTranslations("profile.photo");
+  const errorText = useErrorText();
   const tActions = useTranslations("common.actions");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
@@ -97,8 +99,8 @@ export function EditProfilePictureModal({
 
   const errorMessage =
     validationError ??
-    (upload.error instanceof Error ? upload.error.message : null) ??
-    (remove.error instanceof Error ? remove.error.message : null);
+    (upload.isError ? errorText(upload.error, t("uploadFailed")) : null) ??
+    (remove.isError ? errorText(remove.error, t("deleteFailed")) : null);
 
   return (
     <Modal open={open} onClose={handleClose} title={t("title")}>

@@ -31,7 +31,9 @@
     "tooLarge": "Image must be under 5 MB.",
     "save": "Save Photo",
     "upload": "Upload Photo",
-    "delete": "Delete Photo"
+    "delete": "Delete Photo",
+    "uploadFailed": "Failed to upload profile picture.",
+    "deleteFailed": "Failed to delete profile picture."
   },
   "validation": {
     "fullNameMin": "Full name must be at least {min, number, plain} characters",
