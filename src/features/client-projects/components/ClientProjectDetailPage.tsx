@@ -25,6 +25,11 @@ import Tabs from "@/src/shared/components/Tabs";
 import { useProjectTab } from "@/src/features/projects/hooks/useProjectTab";
 import { PROJECT_TABS } from "@/src/features/projects/lib/project-tabs";
 import { formatCurrency } from "@/src/shared/lib/format";
+import {
+  useClearUpdates,
+  useProjectUpdates,
+} from "@/src/features/notifications/hooks/useProjectUpdates";
+import { useActivityUpdates } from "@/src/features/activity-log/hooks/useActivityUpdates";
 
 interface ClientProjectDetailPageProps {
   projectId: string;
@@ -39,6 +44,11 @@ export default function ClientProjectDetailPage({
   const tPageTitles = useTranslations("pageTitles");
   usePageTitle(data ? tPageTitles("project", { title: data.title }) : undefined);
   const [tab, setTab] = useProjectTab();
+  const updates = useProjectUpdates();
+  const activityUpdates = useActivityUpdates(projectId);
+  // Opening a tab clears its tab-wide updates (chat, overview...); updates
+  // about one record clear when that record is opened.
+  useClearUpdates(projectId, tab, null, Boolean(data));
 
   return (
     <div className="space-y-6 mx-auto h-full">
@@ -97,7 +107,14 @@ export default function ClientProjectDetailPage({
           <Tabs
             value={tab}
             onChange={setTab}
-            options={PROJECT_TABS.map((value) => ({ value, label: t(`tabs.${value}`) }))}
+            options={PROJECT_TABS.map((value) => ({
+              value,
+              label: t(`tabs.${value}`),
+              dot:
+                value === "activity"
+                  ? activityUpdates.hasNew
+                  : updates.forTab(projectId, value),
+            }))}
           />
 
           {tab === "overview" && (

@@ -9,6 +9,7 @@ import { useFormat } from "@/src/shared/hooks/useFormat";
 import { useProject } from "@/src/features/projects/hooks/useProject";
 import { useContract } from "../hooks/useContract";
 import { usePageTitle } from "@/src/shared/hooks/usePageTitle";
+import { useClearUpdates } from "@/src/features/notifications/hooks/useProjectUpdates";
 import { CONTRACT_STATUS_TO_PROJECT_STATUS } from "../types/contract";
 import { ContractStatusBadge } from "./ContractStatusBadge";
 import { ContractForm } from "./ContractForm";
@@ -40,6 +41,8 @@ export default function ContractWorkspacePage({
   usePageTitle(
     project.data ? tPageTitles("projectContract", { title: project.data.title }) : undefined,
   );
+  // Contract events show as overview updates.
+  useClearUpdates(projectId, "overview", null);
   const [isEditing, setIsEditing] = useState(false);
   const [isFormDirty, setIsFormDirty] = useState(false);
   const [isSaving, setIsSaving] = useState(false);

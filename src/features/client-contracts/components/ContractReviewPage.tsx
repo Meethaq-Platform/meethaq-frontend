@@ -8,6 +8,7 @@ import { useFormat } from "@/src/shared/hooks/useFormat";
 import { useClientProject } from "@/src/features/client-projects/hooks/useClientProject";
 import { useClientContract } from "../hooks/useClientContract";
 import { usePageTitle } from "@/src/shared/hooks/usePageTitle";
+import { useClearUpdates } from "@/src/features/notifications/hooks/useProjectUpdates";
 import { ApproveContractButton } from "./ApproveContractButton";
 import { RequestChangesButton } from "./RequestChangesButton";
 import { ContractFeedbackHistory } from "./ContractFeedbackHistory";
@@ -34,6 +35,8 @@ export default function ContractReviewPage({ projectId }: ContractReviewPageProp
   usePageTitle(
     project.data ? tPageTitles("projectContract", { title: project.data.title }) : undefined,
   );
+  // Contract events show as overview updates.
+  useClearUpdates(projectId, "overview", null);
 
   const isLoading = project.isLoading || contractQuery.isLoading;
   const isError = project.isError || contractQuery.isError;
