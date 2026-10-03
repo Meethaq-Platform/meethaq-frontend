@@ -204,6 +204,20 @@
   --font-numbers: var(--font-plex-arabic);
 }
 
+/* Entrance motion for the landing hero. `both` keeps each element hidden
+   during its delay, so use them under `motion-safe:` only. */
+@theme {
+  --animate-rise-in: rise-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      translate: 0 0.4em;
+      filter: blur(6px);
+    }
+  }
+}
+
 /* Mirrors direction-bearing icons (arrows, chevrons, send, logout, undo) in
    RTL. Apply only to icons that point somewhere; symmetric icons, up/down
    arrows, clocks and media controls stay as they are. Uses the individual

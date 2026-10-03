@@ -9,3 +9,15 @@ export const pillLarge = "px-7.5 py-3.75 text-base";
 
 export const sectionTitle =
   "font-bold text-[clamp(1.6rem,1.8vw+1rem,2.1rem)] text-center leading-snug";
+
+// The landing page's content column, shared so every section lines up.
+export const container = "mx-auto px-4 sm:px-6 max-w-320";
+
+// A section's heading block: a short colored line above a large title, with
+// the lead paragraph under it.
+export const sectionEyebrow = "mb-4 font-bold text-sm md:text-base";
+
+export const sectionDisplayTitle =
+  "font-bold text-[clamp(2rem,2.8vw+1rem,3.25rem)] leading-tight tracking-tight";
+
+export const sectionLead = "mt-6 text-text-secondary md:text-lg leading-loose";

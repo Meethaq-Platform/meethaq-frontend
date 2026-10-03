@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
-import { sectionTitle } from "../lib/styles";
+import { container, sectionTitle } from "../lib/styles";
 import { Reveal } from "./Reveal";
 
 const STEPS = ["create", "agree", "deliver", "accept", "release"] as const;
@@ -11,7 +11,7 @@ export function FlowSection() {
 
   return (
     <section id="how" className="py-18 scroll-mt-16">
-      <div className="lg:flex items-center gap-14 mx-auto px-4 sm:px-6 max-w-295">
+      <div className={`lg:flex items-center gap-14 ${container}`}>
         <div className="hidden lg:block flex-[1_1_340px] max-w-100">
           <Image
             src="/illustrations/steps.svg"
