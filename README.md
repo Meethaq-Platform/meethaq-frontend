@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Meethaq
 
-## Getting Started
+Meethaq is a web app for freelancers and their clients. It keeps the contract, chat, delivery and payment for a project on one documented track, and a milestone's payment only becomes due after the client accepts the work.
 
-First, run the development server:
+The repo holds the Next.js frontend. It talks to a separate backend API through server-side route handlers.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## How it works
+
+1. **Create the client and project.** The freelancer adds a client and opens a project space for them.
+2. **Agree on the milestones.** Scope, deadline, acceptance criteria and value for each milestone, approved by both sides as a contract.
+3. **Deliver each milestone.** Files or links are attached to the milestone they belong to.
+4. **Review the delivery.** The client accepts it or asks for a specific revision. Every decision is recorded with a date.
+5. **Release the payment.** Once a milestone is accepted, its value becomes due, and the payment and its evidence are tracked against it.
+
+The app also covers contract amendments, change requests, disputes, a per-project chat, an activity log, dashboards with financial trends, and real-time notifications.
+
+There are two roles:
+
+- **Freelancer:** manages clients and projects, drafts contracts and milestones, and submits deliveries.
+- **Client:** accepts project invitations, approves contracts, reviews submissions and records payments.
+
+## Tech stack
+
+| Area                 | Tools                                                               |
+| -------------------- | ------------------------------------------------------------------- |
+| Framework            | [Next.js 16](https://nextjs.org) (App Router), React 19, TypeScript |
+| Styling              | Tailwind CSS 4                                                      |
+| Data fetching        | TanStack React Query                                                |
+| Forms and validation | react-hook-form, Zod                                                |
+| Internationalization | next-intl (English and Arabic, with RTL)                            |
+| Real-time            | Microsoft SignalR                                                   |
+| Charts               | Recharts                                                            |
+| UI extras            | lucide-react icons, sonner toasts                                   |
+
+## Project structure
+
+```
+src/
+├── app/                  # Routes (App Router)
+│   ├── (auth)/           # Login and register pages
+│   ├── (protected)/      # Pages that need a signed-in user: dashboard, clients, projects, profile
+│   └── api/              # Route handlers that proxy requests to the backend API
+├── features/             # One folder per feature
+│   └── <feature>/
+│       ├── components/
+│       ├── hooks/        # React Query hooks
+│       ├── lib/          # API calls, cache keys and helpers
+│       ├── schemas/      # Zod schemas
+│       └── types/
+├── shared/               # Code used across features: components, hooks, lib, providers
+└── i18n/                 # Locale config, formats and message catalogs
+docs/i18n/                # Arabic glossary
+scripts/                  # Repo scripts, such as the i18n checker
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Features include `auth`, `dashboard`, `clients`, `projects`, `contracts`, `milestones`, `submissions`, `payments`, `change-requests`, `disputes`, `project-chat`, `activity-log`, `notifications` and `profile`. Client-side views live in their own `client-*` folders.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Authentication and the API layer
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The browser never calls the backend directly. Components call the route handlers under `src/app/api`, and those handlers forward each request to `API_URL`. On login, the handler stores the access and refresh tokens in HTTP-only cookies. The `(protected)` layout sends anyone without an `access_token` cookie to `/login`.
 
-## Learn More
+## Internationalization
 
-To learn more about Next.js, take a look at the following resources:
+The app supports English (`en`, the default) and Arabic (`ar`, right-to-left).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- The locale comes from the `NEXT_LOCALE` cookie. URLs don't include a locale prefix.
+- Messages live in `src/i18n/messages/<locale>/`, with one JSON file per feature.
+- Digits are always Western (0–9), including in Arabic. In messages, write counts as `{n, number, integer}`, not `#` or a bare `{n, number}`.
+- Arabic copy follows the terms and style rules in [docs/i18n/glossary.md](docs/i18n/glossary.md).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Run `pnpm i18n:check` after you change any messages. It checks that every locale has the same files and keys as English, that no message is empty, and that numbers use the approved formats.
 
-## Deploy on Vercel
+## Continuous integration
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+GitHub Actions (`.github/workflows/ci.yml`) runs on pushes and pull requests to `main`. It installs dependencies, lints, generates Next.js types, type-checks with `tsc --noEmit`, and runs a production build.
