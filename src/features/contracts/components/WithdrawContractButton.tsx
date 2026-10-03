@@ -6,9 +6,11 @@ import { useTranslations } from "next-intl";
 
 import { useWithdrawContract } from "../hooks/useWithdrawContract";
 import ConfirmModal from "@/src/shared/components/ConfirmModal";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 export function WithdrawContractButton({ projectId }: { projectId: string }) {
   const t = useTranslations("contracts.withdraw");
+  const errorText = useErrorText();
   const [open, setOpen] = useState(false);
   const { mutate, isPending, isError, error } = useWithdrawContract(projectId);
 
@@ -35,9 +37,7 @@ export function WithdrawContractButton({ projectId }: { projectId: string }) {
         isConfirming={isPending}
         errorMessage={
           isError
-            ? error instanceof Error
-              ? error.message
-              : t("failed")
+            ? errorText(error, t("failed"))
             : undefined
         }
       />

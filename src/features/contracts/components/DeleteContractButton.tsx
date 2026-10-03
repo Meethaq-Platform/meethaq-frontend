@@ -7,9 +7,11 @@ import { useTranslations } from "next-intl";
 
 import { useDeleteContract } from "../hooks/useDeleteContract";
 import ConfirmModal from "@/src/shared/components/ConfirmModal";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 export function DeleteContractButton({ projectId }: { projectId: string }) {
   const t = useTranslations("contracts.delete");
+  const errorText = useErrorText();
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const { mutate, isPending, isError, error } = useDeleteContract(projectId);
@@ -47,9 +49,7 @@ export function DeleteContractButton({ projectId }: { projectId: string }) {
         isConfirming={isPending || isRedirecting}
         errorMessage={
           isError
-            ? error instanceof Error
-              ? error.message
-              : t("failed")
+            ? errorText(error, t("failed"))
             : undefined
         }
       />
