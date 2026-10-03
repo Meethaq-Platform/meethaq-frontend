@@ -50,6 +50,11 @@
     "clientGuidance": "ستظهر المشاريع هنا عندما يشارك أحد المستقلين الوصول إليها.",
     "reviewInvitations": "مراجعة {count, plural, one {الدعوة المعلّقة} two {الدعوتين المعلّقتين} few {{count, number, plain} دعوات معلّقة} many {{count, number, plain} دعوة معلّقة} other {{count, number, plain} دعوة معلّقة}}"
   },
+  "onboarding": {
+    "title": "إكمال إعداد الحساب",
+    "subtitle": "بقيت خطوات قليلة لإرسال أول عقد إلى العميل.",
+    "progress": "اكتمل {done, number, plain} من {total, number, plain}"
+  },
   "metric": {
     "help": "ما المقصود بـ «{title}»؟",
     "periods": {
