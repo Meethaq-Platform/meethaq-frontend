@@ -9,6 +9,7 @@ import LanguageSwitcher from "@/src/shared/components/LanguageSwitcher";
 import ThemeToggle from "@/src/shared/components/ThemeToggle";
 
 import { useSidebar } from "../context/SidebarContext";
+import { useProjectUpdates } from "@/src/features/notifications/hooks/useProjectUpdates";
 import { getNavItems } from "../lib/nav-items";
 import { NavItem } from "./NavItem";
 import { NavLogoutButton } from "./NavLogoutButton";
@@ -23,6 +24,7 @@ export function Sidebar() {
   const t = useTranslations("layout");
   const { data: user } = useCurrentUser();
   const navItems = getNavItems(user?.roles[0]);
+  const updates = useProjectUpdates();
 
   return (
     <aside
@@ -50,7 +52,11 @@ export function Sidebar() {
 
       <nav className="flex flex-col flex-1 gap-1 px-3 py-4">
         {navItems.map((item) => (
-          <NavItem key={item.href} item={item} />
+          <NavItem
+            key={item.href}
+            item={item}
+            hasUpdates={item.href === "/projects" && updates.any}
+          />
         ))}
 
         <div className="md:hidden flex flex-col gap-1 mt-2 pt-3 border-border border-t">

@@ -8,6 +8,7 @@ import { toast } from "sonner";
 
 import { useNotificationsHub } from "../hooks/useNotificationsHub";
 import { useMarkNotificationRead } from "../hooks/useMarkNotificationRead";
+import { UNREAD_UPDATES_KEY } from "../hooks/useProjectUpdates";
 import type { Notification, NotificationListData } from "../types/notification";
 import { notificationHref } from "../lib/notificationHref";
 import { useEventText } from "@/src/shared/hooks/useEventText";
@@ -62,9 +63,14 @@ export function NotificationsRealtime({ hubUrl }: { hubUrl: string | null }) {
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
     }
 
+    if (!isNew) return;
+
+    // Red update dots (sidebar, project rows, tabs, records).
+    queryClient.invalidateQueries({ queryKey: UNREAD_UPDATES_KEY });
+
     // Chat messages still land in the bell, but a toast per message is too
     // noisy during a conversation.
-    if (!isNew || CHAT_EVENT_TYPES.has(notification.eventType)) return;
+    if (CHAT_EVENT_TYPES.has(notification.eventType)) return;
 
     toast(eventText.notificationTitle(notification.eventType, notification.title), {
       // A redelivered notification replaces its toast rather than stacking.

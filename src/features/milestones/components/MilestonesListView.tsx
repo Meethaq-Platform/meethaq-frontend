@@ -10,6 +10,8 @@ import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 import EmptyState from "@/src/shared/components/EmptyState";
 import { formatCurrency } from "@/src/shared/lib/format";
+import UpdateDot from "@/src/shared/components/UpdateDot";
+import { useProjectUpdates } from "@/src/features/notifications/hooks/useProjectUpdates";
 
 interface MilestonesListViewProps {
   projectId: string;
@@ -32,6 +34,7 @@ export function MilestonesListView({
 }: MilestonesListViewProps) {
   const t = useTranslations("milestones.list");
   const format = useFormat();
+  const updates = useProjectUpdates();
 
   if (isLoading) {
     return (
@@ -64,9 +67,12 @@ export function MilestonesListView({
           className="group flex sm:flex-row flex-col justify-between items-start sm:items-center gap-3 hover:bg-surface-muted active:bg-border/40 p-4 border-border border-b last:border-b-0 transition"
         >
           <div className="flex-1 min-w-0">
-            <h3 dir="auto" className="font-semibold text-text-primary group-hover:text-primary text-sm transition-colors">
-              {milestone.title}
-            </h3>
+            <div className="flex items-center gap-2">
+              {updates.forItem(projectId, "milestones", milestone.milestoneId) && <UpdateDot />}
+              <h3 dir="auto" className="font-semibold text-text-primary group-hover:text-primary text-sm transition-colors">
+                {milestone.title}
+              </h3>
+            </div>
             <p className="mt-1 text-text-secondary text-xs">
               {t("due", { date: format.date(milestone.dueDate) })} ·{" "}
               <bdi>{formatCurrency(milestone.calculatedAmount)}</bdi>

@@ -13,6 +13,11 @@ import { DisputeDetailModal } from "./DisputeDetailModal";
 import Spinner from "@/src/shared/components/Spinner";
 import ErrorState from "@/src/shared/components/ErrorState";
 import EmptyState from "@/src/shared/components/EmptyState";
+import UpdateDot from "@/src/shared/components/UpdateDot";
+import {
+  useClearUpdates,
+  useProjectUpdates,
+} from "@/src/features/notifications/hooks/useProjectUpdates";
 
 interface DisputesTabProps {
   projectId: string;
@@ -25,6 +30,8 @@ export function DisputesTab({ projectId }: DisputesTabProps) {
     null,
   );
   const { data, isLoading, isError, refetch } = useDisputes(projectId);
+  const updates = useProjectUpdates();
+  useClearUpdates(projectId, "disputes", selected?.disputeId ?? null, selected !== null);
 
   const items = data?.pages.flatMap((page) => page?.items ?? []) ?? [];
 
@@ -59,9 +66,12 @@ export function DisputesTab({ projectId }: DisputesTabProps) {
               className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-3 hover:bg-surface-muted p-4 border-border border-b last:border-b-0 w-full text-start transition"
             >
               <div className="min-w-0">
-                <h3 dir="auto" className="font-semibold text-text-primary text-sm truncate">
-                  {item.milestoneTitle}
-                </h3>
+                <div className="flex items-center gap-2">
+                  {updates.forItem(projectId, "disputes", item.id) && <UpdateDot />}
+                  <h3 dir="auto" className="font-semibold text-text-primary text-sm truncate">
+                    {item.milestoneTitle}
+                  </h3>
+                </div>
                 <div className="flex items-center gap-2 mt-1">
                   <DisputeCategoryBadge category={item.category} />
                   <span className="text-text-secondary text-xs">
