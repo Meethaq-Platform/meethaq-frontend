@@ -19,6 +19,12 @@ const sectionTabs: Record<string, ProjectTab> = {
 // most of which has no page here. Maps it onto the routes that exist; a
 // shape it doesn't recognize falls back to the project tab for the event.
 export function notificationHref(notification: Notification): string {
+  // The client can't open the project itself until they accept, so an
+  // invitation always opens the invitation page (its id is the project id).
+  if (notification.eventType === "ClientAssigned") {
+    return `/projects/invitations/${notification.projectId}`;
+  }
+
   const fallback = projectHref(
     notification.projectId,
     projectTabFor(notification.eventType),
