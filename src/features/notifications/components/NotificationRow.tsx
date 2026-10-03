@@ -2,6 +2,7 @@ import Link from "next/link";
 import {
   AlertTriangle,
   Bell,
+  BellRing,
   CalendarClock,
   CheckCircle2,
   Clock,
@@ -25,12 +26,14 @@ import { eventToneClasses, getEventTone } from "@/src/shared/lib/eventTone";
 // value falls back to a generic bell icon rather than breaking the row.
 const eventIcons: Record<string, LucideIcon> = {
   NewProjectMessage: MessageSquare,
+  ChatMessageReceived: MessageSquare,
   MilestoneSubmitted: Upload,
   RevisionRequested: MessageSquareWarning,
   DeliverableAccepted: CheckCircle2,
   MilestoneDeadlineApproaching: CalendarClock,
   ReviewDeadlineApproaching: Clock,
   ReviewOverdue: AlertTriangle,
+  ReviewReminder: BellRing,
   PaymentEligible: CreditCard,
   PaymentEvidenceSubmitted: CreditCard,
   PaymentEvidenceUpdated: CreditCard,

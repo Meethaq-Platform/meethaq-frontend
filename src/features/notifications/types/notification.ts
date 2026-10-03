@@ -4,12 +4,14 @@
 // for any unrecognized value, so a casing mismatch degrades gracefully.
 export type NotificationEventType =
   | "NewProjectMessage"
+  | "ChatMessageReceived"
   | "MilestoneSubmitted"
   | "RevisionRequested"
   | "DeliverableAccepted"
   | "MilestoneDeadlineApproaching"
   | "ReviewDeadlineApproaching"
-  | "ReviewOverdue";
+  | "ReviewOverdue"
+  | "ReviewReminder";
 
 // Mirrors InAppNotificationDto. There is no projectTitle field — the
 // server-rendered title/message are expected to carry enough context on
