@@ -3,6 +3,8 @@ import UpdateDot from "./UpdateDot";
 export interface TabOption<T extends string> {
   value: T;
   label: string;
+  // Item count pill after the label (already formatted, e.g. "4" or "20+").
+  count?: string;
   // Red "new updates" dot on the tab's top corner.
   dot?: boolean;
 }
@@ -36,6 +38,11 @@ export default function Tabs<T extends string>({
             }`}
           >
             {option.label}
+            {option.count && (
+              <span className="bg-accent-value px-1.5 rounded-full min-w-5 font-numbers font-bold text-[11px] text-on-accent-value text-center leading-5">
+                {option.count}
+              </span>
+            )}
             {/* Top-right corner in both directions, tucked inside the tab. */}
             {option.dot && <UpdateDot className="top-1 right-1 absolute" />}
           </button>

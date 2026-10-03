@@ -30,6 +30,8 @@ import {
   useProjectUpdates,
 } from "@/src/features/notifications/hooks/useProjectUpdates";
 import { useActivityUpdates } from "@/src/features/activity-log/hooks/useActivityUpdates";
+import { useClientContract } from "@/src/features/client-contracts/hooks/useClientContract";
+import { useProjectTabCounts } from "@/src/features/projects/hooks/useProjectTabCounts";
 
 interface ClientProjectDetailPageProps {
   projectId: string;
@@ -46,6 +48,12 @@ export default function ClientProjectDetailPage({
   const [tab, setTab] = useProjectTab();
   const updates = useProjectUpdates();
   const activityUpdates = useActivityUpdates(projectId);
+  // Clients only see a contract once it has been sent to them.
+  const contract = useClientContract(
+    projectId,
+    Boolean(data) && data?.contractStatus !== "None" && data?.contractStatus !== "Draft",
+  );
+  const tabCounts = useProjectTabCounts(projectId, contract.data?.milestones.length);
   // Opening a tab clears its tab-wide updates (chat, overview...); updates
   // about one record clear when that record is opened.
   useClearUpdates(projectId, tab, null, Boolean(data));
@@ -110,6 +118,7 @@ export default function ClientProjectDetailPage({
             options={PROJECT_TABS.map((value) => ({
               value,
               label: t(`tabs.${value}`),
+              count: tabCounts[value],
               dot:
                 value === "activity"
                   ? activityUpdates.hasNew
