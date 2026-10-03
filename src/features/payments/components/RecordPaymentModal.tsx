@@ -19,7 +19,7 @@ import Input from "@/src/shared/components/Input";
 import Textarea from "@/src/shared/components/Textarea";
 import InputError from "@/src/shared/components/InputError";
 import FileAttachmentInput from "@/src/shared/components/FileAttachmentInput";
-import { getErrorMessage } from "@/src/shared/lib/getErrorMessage";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface RecordPaymentModalProps {
   projectId: string;
@@ -39,6 +39,7 @@ export function RecordPaymentModal({
   currency,
 }: RecordPaymentModalProps) {
   const t = useTranslations("payments");
+  const errorText = useErrorText();
   const tActions = useTranslations("common.actions");
   const tValidation = useTranslations("payments.validation");
   const recordPaymentFormSchema = useMemo(() => createRecordPaymentFormSchema(tValidation), [tValidation]);
@@ -153,7 +154,7 @@ export function RecordPaymentModal({
           </div>
 
           {isError && (
-            <InputError message={getErrorMessage(error, t("record.failed"))} />
+            <InputError message={errorText(error, t("record.failed"))} />
           )}
 
           <div className="flex justify-end gap-3 pt-2">

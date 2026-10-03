@@ -15,6 +15,7 @@ import Input from "@/src/shared/components/Input";
 import InputError from "@/src/shared/components/InputError";
 import Textarea from "@/src/shared/components/Textarea";
 import Button from "@/src/shared/components/Button";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface AddProjectFormProps {
   onSuccess: () => void;
@@ -23,6 +24,7 @@ interface AddProjectFormProps {
 
 export function AddProjectForm({ onSuccess, onCancel }: AddProjectFormProps) {
   const t = useTranslations("projects.form");
+  const errorText = useErrorText();
   const tActions = useTranslations("common.actions");
   const tValidation = useTranslations("projects.validation");
   const createProjectSchema = useMemo(() => createCreateProjectSchema(tValidation), [tValidation]);
@@ -50,7 +52,7 @@ export function AddProjectForm({ onSuccess, onCancel }: AddProjectFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form noValidate onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
         <Input label={t("title")} {...register("title")} />
         <InputError message={errors.title?.message} />
@@ -76,7 +78,7 @@ export function AddProjectForm({ onSuccess, onCancel }: AddProjectFormProps) {
       {isError && (
         <InputError
           message={
-            error instanceof Error ? error.message : t("createFailed")
+            errorText(error, t("createFailed"))
           }
         />
       )}

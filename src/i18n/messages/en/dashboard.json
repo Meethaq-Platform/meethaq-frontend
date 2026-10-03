@@ -36,8 +36,8 @@
     "waitingSince": "Waiting since <time></time>"
   },
   "firstUse": {
-    "freelancerTitle": "Welcome, {name} — let's start your first Project",
-    "freelancerTitleNoName": "Welcome, there — let's start your first Project",
+    "freelancerTitle": "Welcome, {name} - let's start your first Project",
+    "freelancerTitleNoName": "Welcome, there - let's start your first Project",
     "freelancerSubtitle": "Complete these steps to get your first agreement moving.",
     "steps": {
       "addClient": "Add a Client",
@@ -48,7 +48,46 @@
     "clientTitle": "Welcome, {name}",
     "clientTitleNoName": "Welcome, there",
     "clientGuidance": "Your Projects will appear here when a Freelancer shares access with you.",
-    "reviewInvitations": "Review {count, number, plain} Pending {count, plural, one {Invitation} other {Invitations}}"
+    "reviewInvitations": "Review {count, number, plain} Pending {count, plural, one {Invitation} other {Invitations}}",
+    "eyebrow": "Getting started",
+    "stepDetails": {
+      "addClient": {
+        "description": "Save who you're working with: their name and contact details.",
+        "cta": "Add a Client"
+      },
+      "createProject": {
+        "description": "Give the work its own space, linked to that client.",
+        "cta": "Create a Project"
+      },
+      "prepareContract": {
+        "description": "Set the milestones, deadlines and value of each one.",
+        "cta": "Prepare the Contract"
+      },
+      "sendForApproval": {
+        "description": "Send it to your client to review and approve.",
+        "cta": "Send for Approval"
+      }
+    },
+    "clientStepsTitle": "How it works",
+    "clientSteps": {
+      "invited": {
+        "title": "A Freelancer invites you",
+        "description": "The invitation gives you access to their Project."
+      },
+      "review": {
+        "title": "Review and approve the Contract",
+        "description": "Check the milestones, deadlines and amounts before agreeing."
+      },
+      "track": {
+        "title": "Follow the work",
+        "description": "Review each delivery and accept it once it meets the criteria."
+      }
+    }
+  },
+  "onboarding": {
+    "title": "Finish setting up",
+    "subtitle": "A few more steps to get your first contract to a client.",
+    "progress": "{done, number, plain} of {total, number, plain} done"
   },
   "metric": {
     "help": "What does \"{title}\" mean?",

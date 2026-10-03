@@ -18,6 +18,7 @@ import Button from "@/src/shared/components/Button";
 import Input from "@/src/shared/components/Input";
 import InputError from "@/src/shared/components/InputError";
 import Textarea from "@/src/shared/components/Textarea";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface MilestoneFormModalProps {
   open: boolean;
@@ -39,6 +40,7 @@ export function MilestoneFormModal({
   milestone,
 }: MilestoneFormModalProps) {
   const t = useTranslations("contracts.milestoneForm");
+  const errorText = useErrorText();
   const tActions = useTranslations("common.actions");
   const tValidation = useTranslations("contracts.milestoneValidation");
   const milestoneFormSchema = useMemo(() => createMilestoneFormSchema(tValidation), [tValidation]);
@@ -104,7 +106,7 @@ export function MilestoneFormModal({
       onClose={handleClose}
       title={milestone ? t("editTitle") : t("addTitle")}
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form noValidate onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <Input label={t("title")} {...register("title")} />
           <InputError message={errors.title?.message} />
@@ -154,9 +156,7 @@ export function MilestoneFormModal({
         {mutation.isError && (
           <InputError
             message={
-              mutation.error instanceof Error
-                ? mutation.error.message
-                : t("saveFailed")
+              errorText(mutation.error, t("saveFailed"))
             }
           />
         )}

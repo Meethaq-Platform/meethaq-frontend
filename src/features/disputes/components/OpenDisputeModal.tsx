@@ -22,7 +22,7 @@ import Modal from "@/src/shared/components/Modal";
 import Textarea from "@/src/shared/components/Textarea";
 import InputError from "@/src/shared/components/InputError";
 import FileAttachmentInput from "@/src/shared/components/FileAttachmentInput";
-import { getErrorMessage } from "@/src/shared/lib/getErrorMessage";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface OpenDisputeModalProps {
   projectId: string;
@@ -33,6 +33,7 @@ interface OpenDisputeModalProps {
 
 export function OpenDisputeModal({ projectId, milestoneId: fixedMilestoneId }: OpenDisputeModalProps) {
   const t = useTranslations("disputes.open");
+  const errorText = useErrorText();
   const tActions = useTranslations("common.actions");
   const tValidation = useTranslations("disputes.validation");
   const openDisputeSchema = useMemo(() => createOpenDisputeSchema(tValidation), [tValidation]);
@@ -169,7 +170,7 @@ export function OpenDisputeModal({ projectId, milestoneId: fixedMilestoneId }: O
           </div>
 
           {isError && (
-            <InputError message={getErrorMessage(error, t("failed"))} />
+            <InputError message={errorText(error, t("failed"))} />
           )}
 
           <div className="flex justify-end gap-3 pt-2">

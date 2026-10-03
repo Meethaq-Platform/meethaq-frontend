@@ -12,10 +12,15 @@ import type { Notification, NotificationListData } from "../types/notification";
 import { notificationHref } from "../lib/notificationHref";
 import { useEventText } from "@/src/shared/hooks/useEventText";
 
+// The hub sends ChatMessageReceived for chat messages; NewProjectMessage is
+// the older name still listed in NotificationEventType.
+const CHAT_EVENT_TYPES = new Set(["ChatMessageReceived", "NewProjectMessage"]);
+
 // Mounted once in the protected layout, which only renders for a signed-in
 // user — so the hub connects on sign-in and closes when logout navigates
 // away from it. Renders nothing; it feeds pushed notifications into the
-// same ["notifications"] cache the bell reads, and toasts them.
+// same ["notifications"] cache the bell reads, and toasts them (except chat
+// messages).
 export function NotificationsRealtime({ hubUrl }: { hubUrl: string | null }) {
   const t = useTranslations("notifications");
   const queryClient = useQueryClient();
@@ -57,7 +62,9 @@ export function NotificationsRealtime({ hubUrl }: { hubUrl: string | null }) {
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
     }
 
-    if (!isNew) return;
+    // Chat messages still land in the bell, but a toast per message is too
+    // noisy during a conversation.
+    if (!isNew || CHAT_EVENT_TYPES.has(notification.eventType)) return;
 
     toast(eventText.notificationTitle(notification.eventType, notification.title), {
       // A redelivered notification replaces its toast rather than stacking.

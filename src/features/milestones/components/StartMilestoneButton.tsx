@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { useStartMilestone } from "../hooks/useStartMilestone";
 import Button from "@/src/shared/components/Button";
 import ConfirmModal from "@/src/shared/components/ConfirmModal";
-import { getErrorMessage } from "@/src/shared/lib/getErrorMessage";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface StartMilestoneButtonProps {
   projectId: string;
@@ -19,6 +19,7 @@ export function StartMilestoneButton({
   milestoneId,
 }: StartMilestoneButtonProps) {
   const t = useTranslations("milestones.start");
+  const errorText = useErrorText();
   const [open, setOpen] = useState(false);
   const { mutate, isPending, isError, error } = useStartMilestone(projectId);
 
@@ -43,7 +44,7 @@ export function StartMilestoneButton({
         confirmingLabel={t("confirming")}
         variant="primary"
         isConfirming={isPending}
-        errorMessage={isError ? getErrorMessage(error, t("failed")) : undefined}
+        errorMessage={isError ? errorText(error, t("failed")) : undefined}
       />
     </>
   );

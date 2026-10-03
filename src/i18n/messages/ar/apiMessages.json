@@ -74,5 +74,6 @@
   "failed_to_add_evidence": "تعذّر إضافة الدليل.",
   "failed_to_add_client": "تعذّر إضافة العميل.",
   "failed_to_accept_invitation": "تعذّر قبول الدعوة.",
-  "failed_to_accept_deliverable": "تعذّر قبول المُخرَج."
+  "failed_to_accept_deliverable": "تعذّر قبول المُخرَج.",
+  "a_reminder_was_already_sent_recently": "تم إرسال تذكير مؤخرًا بالفعل."
 }

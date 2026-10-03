@@ -9,6 +9,7 @@ import { useDeleteMilestone } from "../hooks/useDeleteMilestone";
 import type { ContractAllocationMode, Milestone } from "../types/contract";
 import { formatCurrency } from "@/src/shared/lib/format";
 import ConfirmModal from "@/src/shared/components/ConfirmModal";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface MilestoneRowProps {
   projectId: string;
@@ -34,6 +35,7 @@ export function MilestoneRow({
   isReordering,
 }: MilestoneRowProps) {
   const t = useTranslations("contracts.milestones");
+  const errorText = useErrorText();
   const format = useFormat();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const deleteMilestone = useDeleteMilestone(projectId);
@@ -147,9 +149,7 @@ export function MilestoneRow({
         isConfirming={deleteMilestone.isPending}
         errorMessage={
           deleteMilestone.isError
-            ? deleteMilestone.error instanceof Error
-              ? deleteMilestone.error.message
-              : t("deleteFailed")
+            ? errorText(deleteMilestone.error, t("deleteFailed"))
             : undefined
         }
       />

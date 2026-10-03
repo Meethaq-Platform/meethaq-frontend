@@ -18,6 +18,25 @@ function toKey(message: string) {
     .replace(/^_|_$/g, "");
 }
 
+// For errors shown inline in a form or dialog. Same lookup as useApiMessage,
+// but an untranslated message falls back to the caller's own (already
+// translated, more specific) line instead of a generic one, so an Arabic
+// form never shows the API's English text.
+export function useErrorText() {
+  const locale = useLocale();
+  const t = useTranslations("apiMessages");
+
+  return useCallback(
+    (error: unknown, fallback: string): string => {
+      if (!(error instanceof Error) || !error.message) return fallback;
+      if (locale === "en") return error.message;
+      const key = toKey(error.message) as "operation_completed_successfully";
+      return key && t.has(key) ? t(key) : fallback;
+    },
+    [locale, t],
+  );
+}
+
 // Messages shown to the user from API responses and the service layer
 // ("Operation completed successfully.", "Failed to record payment.") are
 // English. English shows them as sent; other languages use the translation

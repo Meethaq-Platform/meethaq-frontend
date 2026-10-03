@@ -22,7 +22,7 @@ import Spinner from "@/src/shared/components/Spinner";
 import AttachmentList from "@/src/shared/components/AttachmentList";
 import { formatCurrency } from "@/src/shared/lib/format";
 import { useFormat } from "@/src/shared/hooks/useFormat";
-import { getErrorMessage } from "@/src/shared/lib/getErrorMessage";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface ChangeRequestDetailModalProps {
   projectId: string;
@@ -40,6 +40,7 @@ export function ChangeRequestDetailModal({
   onClose,
 }: ChangeRequestDetailModalProps) {
   const t = useTranslations("changeRequests.detail");
+  const errorText = useErrorText();
   const tValidation = useTranslations("changeRequests.validation");
   const decideChangeRequestSchema = useMemo(
     () => createDecideChangeRequestSchema(tValidation),
@@ -185,7 +186,7 @@ export function ChangeRequestDetailModal({
 
           {(decide.isError || withdraw.isError) && (
             <InputError
-              message={getErrorMessage(decide.error ?? withdraw.error, t("failed"))}
+              message={errorText(decide.error ?? withdraw.error, t("failed"))}
             />
           )}
 

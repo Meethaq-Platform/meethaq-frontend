@@ -16,7 +16,7 @@ import Textarea from "@/src/shared/components/Textarea";
 import InputError from "@/src/shared/components/InputError";
 import FileAttachmentInput from "@/src/shared/components/FileAttachmentInput";
 import LinkInput from "@/src/shared/components/LinkInput";
-import { getErrorMessage } from "@/src/shared/lib/getErrorMessage";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface SubmitWorkFormProps {
   projectId: string;
@@ -30,6 +30,7 @@ export function SubmitWorkForm({
   onSuccess,
 }: SubmitWorkFormProps) {
   const t = useTranslations("submissions.form");
+  const errorText = useErrorText();
   const tValidation = useTranslations("submissions.validation");
   const submissionFormSchema = useMemo(() => createSubmissionFormSchema(tValidation), [tValidation]);
 
@@ -87,7 +88,7 @@ export function SubmitWorkForm({
 
       {createSubmission.isError && (
         <InputError
-          message={getErrorMessage(createSubmission.error, t("failed"))}
+          message={errorText(createSubmission.error, t("failed"))}
         />
       )}
 

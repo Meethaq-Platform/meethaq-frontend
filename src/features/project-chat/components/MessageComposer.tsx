@@ -17,7 +17,7 @@ import Textarea from "@/src/shared/components/Textarea";
 import InputError from "@/src/shared/components/InputError";
 import FileAttachmentInput from "@/src/shared/components/FileAttachmentInput";
 import FilePreviewStrip from "@/src/shared/components/FilePreviewStrip";
-import { getErrorMessage } from "@/src/shared/lib/getErrorMessage";
+import { useErrorText } from "@/src/shared/hooks/useApiMessage";
 
 interface MessageComposerProps {
   projectId: string;
@@ -25,6 +25,7 @@ interface MessageComposerProps {
 
 export function MessageComposer({ projectId }: MessageComposerProps) {
   const t = useTranslations("chat");
+  const errorText = useErrorText();
   const tValidation = useTranslations("chat.validation");
   const chatMessageFormSchema = useMemo(
     () => createChatMessageFormSchema(tValidation),
@@ -125,7 +126,7 @@ export function MessageComposer({ projectId }: MessageComposerProps) {
 
       {sendMessage.isError && (
         <InputError
-          message={getErrorMessage(
+          message={errorText(
             sendMessage.error,
             t("sendFailed"),
           )}
