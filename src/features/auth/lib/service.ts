@@ -33,8 +33,6 @@ export async function loginUser(data: LoginRequest): Promise<LoginResponse> {
 
   const result = await response.json();
 
-  console.log("Backend login response:", result);
-
   if (!response.ok) {
     throw new Error(result.message || "Login failed.");
   }
